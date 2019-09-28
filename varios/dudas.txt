@@ -1,16 +1,22 @@
 ART:
 .La ART tiene asignado un prestador y auditor que figuran como profesionales o sólo necesitan el dato?
- #prestador = models.ForeignKey('ent_medico_prof',db_column='lista_precios_defecto',blank=True, null=True) #Cliente/Pro    
- #auditor = models.ForeignKey('ent_medico_prof',db_column='lista_precios_defecto',blank=True, null=True) #Cliente/Pro
-
+ Sólo necesita el dato.
 
 EMPL:
-.Tipificar cargos/puestos?
+.Tipificar cargos/puestos? 
+Si hacerlo
 
 
 AUSENTISMO:
-.Datos ausencia vs Datos ART. Por que??
+.Datos ausencia vs Datos ART?
+Que salga uno u otro segun el tipo de ausentismo (junto con los campos obligatorios)
 
 Gral:
-.NOMBRE DE FANTASIA LaboralSalud??
-.Logo?
+.NOMBRE DE FANTASIA LaboralSalud?? SI
+.Logo? me lo manda por email
+
+
+
+NUEVO!!:
+========
+Agregar pantalla para que los de una empresa puedan cargar datos de cuando va a ir algun paciente para que ellos lo atiendan (onda turnos para determinado dia)

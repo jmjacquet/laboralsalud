@@ -4,16 +4,24 @@ from django.core.urlresolvers import reverse
 from django.db import models
 from django.contrib.auth.models import User
 from datetime import datetime,date
-from dateutil.relativedelta import *
 from django.conf import settings
 import os 
 from laboralsalud.utilidades import TIPO_USR
 
+class UsuCategPermisos(models.Model):
+    id = models.AutoField(db_column='ID',primary_key=True) # Field name made lowercase.
+    categoria = models.CharField(db_column='CATEGORIA', max_length=100, blank=True, null=True) # Field name made lowercase.
+    orden = models.IntegerField(db_column='ORDEN',blank=True, null=True) # Field name made lowercase.    
+    class Meta:
+        db_table = 'usu_permiso_categ'
+
+    def __unicode__(self):
+        return self.categoria
+        
 class UsuPermiso(models.Model):
     id_permiso = models.AutoField(db_column='ID_PERMISO', primary_key=True) # Field name made lowercase.
     permiso = models.CharField(db_column='PERMISO', max_length=100, blank=True) # Field name made lowercase.    
-    permiso_name = models.CharField(db_column='PERMISO_NAME', max_length=100, blank=True) # Field name made lowercase.
-    grupo = models.ForeignKey(UsuGrupo, db_column='GRUPO', blank=True, null=True,on_delete=models.SET_NULL) # Field name made lowercase.
+    permiso_name = models.CharField(db_column='PERMISO_NAME', max_length=100, blank=True) # Field name made lowercase.    
     categoria = models.ForeignKey(UsuCategPermisos, db_column='CATEGORIA', blank=True, null=True,on_delete=models.SET_NULL) # Field name made lowercase.
     class Meta:        
         db_table = 'usu_permiso'
@@ -46,7 +54,7 @@ class UsuUsuario(models.Model):
 
 #Tabla de Usuario con datos Extra
 class UserProfile(models.Model):
-    id_usuario = models.ForeignKey(usu_usuario,db_column='id_usuario',blank=True, null=True,on_delete=models.SET_NULL)
+    id_usuario = models.ForeignKey(UsuUsuario,db_column='id_usuario',blank=True, null=True,on_delete=models.SET_NULL)
     user = models.OneToOneField(User)
 
     class Meta:
