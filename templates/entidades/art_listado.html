@@ -1,0 +1,81 @@
+{% extends "index_jmj.html" %}
+{% load static from staticfiles %}
+{% load i18n l10n %}
+{% load humanize %}
+{% block pantalla %}LISTADO ARTs <small>carga e impresión</small>{% endblock pantalla%}
+{% block principal %}         
+
+                   
+                    <a class="btn btn-primary fm-create" style="float:left;margin-right:20px;" href="" data-fm-head="AGREGAR CLIENTE" data-fm-callback="reload">Nueva ART</a>
+                   
+                    <table width="100%" id="dataTables-primary"  class="table table-striped compact table-hover table-no-bordered tabla_nueva nowrap">         
+                        <thead >
+                            <tr>
+                                <th></th>
+                                <th class="imprimir">Código</th>
+                                <th class="imprimir">Nombre</th>
+                                <th class="imprimir">Prestador</th>
+                                <th class="imprimir">Auditor</th>
+                                <th class="imprimir">Contacto</th>
+                                <th class="imprimir">Tel.Fijo</th>
+                                <th class="imprimir">celular</th>           
+                                <th class="imprimir">EMail</th>                                           
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for a in art %}
+                            <tr
+                             {% if a.baja %}
+                                class='danger'
+                             {% endif %}
+                            >
+                                
+                                <td><div class="btn-group">
+                                      <button type="button"  title="{{ a.pk|safe}}" class="btn btn-xs" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <ion-icon name="apps"></ion-icon> <span class="caret"></span>
+                                      </button>
+                                      <ul class="dropdown-menu dropdown-menu-default">
+                                        <li><a href="" class="modal-detail" data-modal-head="DETALLE CLIENTE {{a.codigo}}" data-fm-callback="reload">
+                                        <i class=" icon-screen-desktop"></i> Detalle</a></li>
+                                        
+                                        <li><a href="{% url 'art_editar' id=a.pk %}" class="fm-update " title="Editar" data-fm-callback="reload" data-fm-head="EDITAR CLIENTE"data-fm-target="#object-{{ a.pk }}"><i class="icon-note"></i> Editar</a></li>
+                                                                        
+                                                                        
+                                        
+                                      </ul>
+                                    </div>
+                                </td>
+                                <td>{{ a.codigo|default_if_none:'' }}</td>
+                                <td>{{ a.nombre|default_if_none:'' }}</td>
+                                <td>{{ a.prestador|default_if_none:'' }}</td>
+                                <td>{{ a.auditor|default_if_none:'' }}</td>
+                                <td>{{ a.contacto_nombre|default_if_none:'' }}</td>
+                                <td>{{ a.contacto_telfijo|default_if_none:'' }}</td>
+                                <td>{{ a.contacto_telcel|default_if_none:'' }}</td>
+                                <td>{{ a.contacto_email|default_if_none:'' }}</td>                                
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th></th> 
+                                <th></th> 
+                                <th></th>                                
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>                                                                
+                            </tr>
+                        </tfoot>
+                        
+                    </table>                   
+     
+
+{% endblock principal %}
+
+
+
+
+
