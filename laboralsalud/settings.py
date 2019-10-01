@@ -38,6 +38,7 @@ INSTALLED_APPS = (
     'reportes',
     'crispy_forms',
     'fm',
+    'modal',
 
 )
 

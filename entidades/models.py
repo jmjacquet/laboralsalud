@@ -92,12 +92,12 @@ class ent_medico_prof(models.Model):
 
 class ent_art(models.Model):    
 	codigo = models.CharField(u'Código',max_length=50,blank=True, null=True)   
-	nombre = models.CharField(max_length=500, blank=True, null=True) # Field name made lowercase.    
-	prestador = models.CharField(max_length=500, blank=True, null=True)
-	auditor = models.CharField(max_length=500, blank=True, null=True)
-	contacto_nombre = models.CharField(max_length=500, blank=True, null=True)
-	contacto_telfijo = models.CharField(max_length=100, blank=True, null=True)
-	contacto_telcel = models.CharField(max_length=100, blank=True, null=True)
+	nombre = models.CharField(u'Nombre',max_length=500, blank=True, null=True) # Field name made lowercase.    
+	prestador = models.CharField('Prestador',max_length=500, blank=True, null=True)
+	auditor = models.CharField('Auditor',max_length=500, blank=True, null=True)
+	contacto_nombre = models.CharField('Nombre',max_length=500, blank=True, null=True)
+	contacto_telfijo = models.CharField('Tel.Fijo',max_length=100, blank=True, null=True)
+	contacto_telcel = models.CharField('Celular',max_length=100, blank=True, null=True)
 	contacto_email = models.EmailField('Email',blank=True)
 	baja = models.BooleanField(default=False)
 	fecha_creacion = models.DateTimeField(auto_now_add = True)
@@ -108,6 +108,7 @@ class ent_art(models.Model):
 
 	def __unicode__(self):
 	    return u'%s' % (self.nombre)
+	
 
 #Tabla de la Base de Configuracion
 class ent_empleado(models.Model):	
