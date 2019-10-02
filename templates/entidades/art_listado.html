@@ -32,7 +32,7 @@
                             >
                                 
                                 <td><div class="btn-group">
-                                      <button class="btn btn-xs btn-secondary dropdown-toggle" title="{{ a.pk|safe}}" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-cog"></i></button>
+                                      <button class="btn btn-xs btn-secondary dropdown-toggle" title="{{ a.pk|safe}}" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="icon-settings"></i></button>
                                                                              
                                       <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                         <a class="dropdown-item fm-update" href="{% url 'art_editar' id=a.pk %}" title="Editar" data-fm-callback="reload" data-fm-head="EDITAR ART"data-fm-target="#object-{{ a.pk }}">Editar</a></a>
