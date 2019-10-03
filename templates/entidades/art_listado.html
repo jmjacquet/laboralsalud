@@ -2,72 +2,85 @@
 {% load static from staticfiles %}
 {% load i18n l10n %}
 {% load humanize %}
-{% block pantalla %}LISTADO ARTs <small>carga e impresión</small>{% endblock pantalla%}
-{% block botones %}<a class="btn btn-outline-primary btn-sm fm-create" href="{% url 'art_nuevo'%}" data-fm-head="AGREGAR ART" data-fm-callback="reload">Nueva ART</a>{% endblock botones %}
+
+{% block breadcrumbs %}              
+        <div class="breadcrumbs">
+            Listado de ARTs <small> carga e impresión</small>
+        </div>
+{% endblock breadcrumbs %}
 {% block principal %}                            
-                    <div id="cargando" class="cargando" >
-                        <span class="cargando-txt">CARGANDO...</span>
-                        <img class="cargando-img" src="{% static 'img/loading-bars.svg' %}">
-                    </div>
-                    <table width="100%" id="art" style="display:none;" class="table table-striped compact table-hover table-no-bordered tabla_nueva nowrap">         
-                        <thead >
-                            <tr>
-                                <th>#</th>
-                                <th class="imprimir">Código</th>
-                                <th class="imprimir">Nombre</th>
-                                <th class="imprimir">Prestador</th>
-                                <th class="imprimir">Auditor</th>
-                                <th class="imprimir">Contacto</th>
-                                <th class="imprimir">Teléfono</th>
-                                <th class="imprimir">Celular</th>           
-                                <th class="imprimir">EMail</th>                                           
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for a in art %}
-                            <tr
-                             {% if a.baja %}
-                                class='danger'
-                             {% endif %}
-                            >
-                                
-                                <td><div class="btn-group">
-                                      <button class="btn btn-xs btn-secondary dropdown-toggle" title="{{ a.pk|safe}}" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="icon-settings"></i></button>
-                                                                             
-                                      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                        <a class="dropdown-item fm-update" href="{% url 'art_editar' id=a.pk %}" title="Editar" data-fm-callback="reload" data-fm-head="EDITAR ART"data-fm-target="#object-{{ a.pk }}">Editar</a></a>
-                                        <a class="dropdown-item modal-detail" href="{% url 'art_detalles' id=a.pk %}" data-modal-head="DETALLE ART {{a.codigo}}">Detalle</a>
-                                        
-                                      </div>
-                                                               
-                                    </div>
-                                </td>                
-                                <td>{{ a.codigo|default_if_none:'' }}</td>
-                                <td>{{ a.nombre|default_if_none:'' }}</td>
-                                <td>{{ a.prestador|default_if_none:'' }}</td>
-                                <td>{{ a.auditor|default_if_none:'' }}</td>
-                                <td>{{ a.contacto_nombre|default_if_none:'' }}</td>
-                                <td>{{ a.contacto_telfijo|default_if_none:'' }}</td>
-                                <td>{{ a.contacto_telcel|default_if_none:'' }}</td>
-                                <td>{{ a.contacto_email|default_if_none:'' }}</td>                                
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                        <tfoot>
-                            <tr>
-                                <th></th> 
-                                <th></th> 
-                                <th></th>                                
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>                                                                
-                            </tr>
-                        </tfoot>
+
+    <div id="cargando" class="cargando" >
+        <span class="cargando-txt">CARGANDO...</span>
+        <img class="cargando-img" src="{% static 'img/loading-bars.svg' %}">
+    </div>
+     <a class="btn btn-xs btn-primary fm-create" style="float:left;margin-right:20px;" href="{% url 'art_nuevo' %}" data-fm-head="AGREGAR ART" data-fm-callback="reload">Nueva ART</a>
+    <table width="100%" id="art" style="display:none;" class="table table-striped compact table-hover table-no-bordered tabla_nueva nowrap">         
+        <thead >
+            <tr>
+                <th>#</th>
+                <th class="imprimir">Código</th>
+                <th class="imprimir">Nombre</th>
+                <th class="imprimir">Prestador</th>
+                <th class="imprimir">Auditor</th>
+                <th class="imprimir">Contacto</th>
+                <th class="imprimir">Teléfono</th>
+                <th class="imprimir">Celular</th>           
+                <th class="imprimir">EMail</th>                                           
+            </tr>
+        </thead>
+        <tbody>
+            {% for a in art %}
+            <tr
+             {% if a.baja %}
+                class='danger'
+             {% endif %}>
+                
+                <td><div class="btn-group">
+                      <button type="button" title="{{ a.pk|safe}}" class="btn btn-xs color_barra" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="icon-settings"> </i> <span class="caret"></span>
+                      </button>
+                      <ul class="dropdown-menu">
+                        <li><a href="{% url 'art_detalles' id=a.pk %}" class="modal-detail" data-modal-head="DETALLE ART {{a.codigo}}" data-fm-callback="reload">
+                        <i class=" icon-screen-desktop"></i> Detalle</a></li>
                         
-                    </table>                   
+                        <li><a href="{% url 'art_editar' id=a.pk %}"  class="fm-update " title="Editar" data-fm-callback="reload" data-fm-head="EDITAR ART"data-fm-target="#object-{{ a.pk }}"><i class="icon-note"></i> Editar</a></li>
+
+                        <li><a href="#" 
+                                onClick="alerta= alertify.dialog('confirm').set({'labels':{ok:'Aceptar', cancel:'Cancelar'},'message': '¿DESEA DAR DE BAJA/REACTIVAR EL REGISTRO ACTUAL?',transition:'fade','onok': function(){ window.location.href = '{% url 'art_baja_alta' id=a.pk  %}'; },'oncancel': function(){ return true;} }); alerta.setting('modal', true); alerta.setHeader('BAJA/REACTIVAR'); alerta.show(); return true;" ><i class="icon-dislike"></i><i class="icon-like"></i>Baja/Reactivar</a>
+                            </li>     
+                        
+                        
+                      </ul>                                      
+                    </div>
+                </td>              
+                
+                <td>{{ a.codigo|default_if_none:'' }}</td>
+                <td>{{ a.nombre|default_if_none:'' }}</td>
+                <td>{{ a.prestador|default_if_none:'' }}</td>
+                <td>{{ a.auditor|default_if_none:'' }}</td>
+                <td>{{ a.contacto_nombre|default_if_none:'' }}</td>
+                <td>{{ a.contacto_telfijo|default_if_none:'' }}</td>
+                <td>{{ a.contacto_telcel|default_if_none:'' }}</td>
+                <td>{{ a.contacto_email|default_if_none:'' }}</td>                                
+            </tr>
+            {% endfor %}
+        </tbody>
+        <tfoot>
+            <tr>
+                <th></th> 
+                <th></th> 
+                <th></th>                                
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>                                                                
+            </tr>
+        </tfoot>
+        
+    </table>                   
 
 {% endblock principal %}
 

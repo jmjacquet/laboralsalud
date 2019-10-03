@@ -100,3 +100,12 @@ class ARTVerView(VariablesMixin,DetailView):
     # @method_decorator(login_required)
     # def dispatch(self, *args, **kwargs): 
     #     return super(VendedoresVerView, self).dispatch(*args, **kwargs)        
+
+
+# @login_required 
+def art_baja_alta(request,id):
+    art = ent_art.objects.get(pk=id)     
+    art.baja = not art.baja
+    art.save()       
+    messages.success(request, u'¡Los datos se guardaron con éxito!')
+    return HttpResponseRedirect(reverse("art_listado")) 
