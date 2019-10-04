@@ -74,9 +74,7 @@ class ent_medico_prof(models.Model):
 	cod_postal = models.CharField('CP',max_length=50,blank=True, null=True)
 	email = models.EmailField('Email',blank=True)
 	telefono = models.CharField(u'Teléfono',max_length=50,blank=True, null=True)   
-	celular = models.CharField('Celular',max_length=50,blank=True, null=True)   
-
-	tipo_entidad = models.IntegerField(choices=TIPO_ENTIDAD, blank=True, null=True,default=1)
+	celular = models.CharField('Celular',max_length=50,blank=True, null=True)   	
 	especialidad = models.ForeignKey('ent_especialidad',db_column='especialidad',blank=True, null=True,related_name='med_especialidad',on_delete=models.SET_NULL)
 	observaciones = models.TextField('Observaciones',blank=True, null=True)       
 	baja = models.BooleanField(default=False)
@@ -88,8 +86,6 @@ class ent_medico_prof(models.Model):
 		db_table = 'ent_medico_prof'
 		ordering = ['apellido_y_nombre','codigo']
 		
-
-
 class ent_art(models.Model):    
 	codigo = models.CharField(u'Código',max_length=50,blank=True, null=True)   
 	nombre = models.CharField(u'Nombre',max_length=500, blank=True, null=True) # Field name made lowercase.    
@@ -109,7 +105,6 @@ class ent_art(models.Model):
 	def __unicode__(self):
 	    return u'%s' % (self.nombre)
 	
-
 #Tabla de la Base de Configuracion
 class ent_empleado(models.Model):	
 	nro_doc = models.CharField(u'Documento',max_length=50,blank=True, null=True)

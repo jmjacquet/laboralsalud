@@ -57,8 +57,7 @@
 		     	alertify.errorAlert("{% for err in form.non_field_errors %}{{ err }}{% endfor %}");
 		     	</script>
 		    {% endif %}       	        
-	        {% for hidden in form.hidden_fields %} {{ hidden }} {% endfor %}
-
+	        {% for hidden in form.hidden_fields %} {{ hidden }} {% endfor %}	       
     </form>
 </div>
 

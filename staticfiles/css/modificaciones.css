@@ -454,9 +454,57 @@ textarea.form-control{height:auto}
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#6e87a4', endColorstr='#394f67', GradientType=0);
 }
 
+
+/*Navbar*/
+
 .navbar {
     margin-bottom: 0;
+    background-color: #417690;
+    color: #000;
+    border-radius: 0px;
+    font-size: 12px;
+    min-height: 40px;
 }
+
+.navbar-default .navbar-nav > .active > a, .navbar-default .navbar-nav > .active > a:hover, .navbar-default .navbar-nav > .active > a:focus {
+    color: #ffffff;
+    background-color: #2c5c73;
+}
+.navbar-default .navbar-nav > .open > a, .navbar-default .navbar-nav > .open > a:hover, .navbar-default .navbar-nav > .open > a:focus {
+    color: #ffffff;
+    background-color: #2c5c73;
+}
+
+.navbar-default .navbar-nav > li > a:hover, .navbar-default .navbar-nav > li > a:focus {
+    color: #fff;    
+    background-color: transparent;
+}
+
+.navbar-default .navbar-brand:hover, .navbar-default .navbar-brand:focus {
+    color: #fff;
+    background-color: transparent;
+}
+
+.navbar-brand {
+    float: left;
+    height: 40px;
+    padding: 10px 10px;
+    font-size: 19px;
+    line-height: 21px;    
+    min-width: 100px;  
+
+}
+
+.navbar-brand > img {
+    display: inline;
+}
+
+.navbar-header {
+    margin-right: 20px;
+}
+
+
+
 
 
 .ayuda_tooltip{
@@ -493,6 +541,14 @@ textarea.form-control{height:auto}
     color: #1ABB9C;
 }
 
+.green {
+    color: #1ABB9C;
+}
+
+.table > thead > tr > td.danger, .table > thead > tr > th.danger, .table > thead > tr.danger > td, .table > thead > tr.danger > th, .table > tbody > tr > td.danger, .table > tbody > tr > th.danger, .table > tbody > tr.danger > td, .table > tbody > tr.danger > th, .table > tfoot > tr > td.danger, .table > tfoot > tr > th.danger, .table > tfoot > tr.danger > td, .table > tfoot > tr.danger > th {
+    background: #f2dede;
+    color: #a94442;
+}
 .alert {
     padding: 5px;
     margin-bottom: 10px;
@@ -526,7 +582,7 @@ textarea.form-control{height:auto}
 .pagination .active > a,
 .pagination .active > a:hover{background:#eee;border-color:#dddddd;color:#333;}
 
-.btn-xs{padding:1px 5px;}
+.btn-xs{padding:2px 5px;font-size:12px;}
 .btn-xs > i{font-size:12px;}
 
 /* BREADCRUMBS */
@@ -535,7 +591,7 @@ div.breadcrumbs {
     background: #79aec8;
     padding: 10px 40px;
     border: none;
-    font-size: 14px;
+    font-size: 16px;
     color: #fff;
     text-align: left;
 }
@@ -547,3 +603,4 @@ div.breadcrumbs a {
 div.breadcrumbs a:focus, div.breadcrumbs a:hover {
     color: #c4dce8;
 }
+

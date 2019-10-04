@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from datetime import datetime, timedelta,date
+import calendar
 
 TIPO_USR = (
     (0, u'Administrador'),
@@ -75,3 +76,129 @@ PROVINCIAS = (
 (24,'Tierra del Fuego/Antártida/Islas Malvinas'),
 )   
 
+
+URL_API = "http://afip.grupoguadalupe.com.ar/?cuit="
+EMAIL_CONTACTO = 'contacto@ironweb.com.ar'
+
+from django.forms import Widget
+from django.utils.safestring import mark_safe
+class PrependWidget(Widget):
+    def __init__(self, base_widget, data, *args, **kwargs):
+        u"""Initialise widget and get base instance"""
+        super(PrependWidget, self).__init__(*args, **kwargs)
+        self.base_widget = base_widget(*args, **kwargs)
+        self.data = data
+
+    def render(self, name, value, attrs=None):
+        u"""Render base widget and add bootstrap spans"""
+        field = self.base_widget.render(name, value, attrs)
+        return mark_safe((
+            u'<div class="input-group">'
+            u'    <span class="input-group-addon">%(data)s</span>%(field)s'
+            u'</div>'
+        ) % {'field': field, 'data': self.data})
+
+class PostPendWidget(Widget):
+    def __init__(self, base_widget, data,tooltip, *args, **kwargs):
+        u"""Initialise widget and get base instance"""
+        super(PostPendWidget, self).__init__(*args, **kwargs)
+        self.base_widget = base_widget(*args, **kwargs)
+        self.data = data
+        self.tooltip = tooltip
+
+    def render(self, name, value, attrs=None):
+        field = self.base_widget.render(name, value, attrs)
+        return mark_safe((
+            u'<div class="input-group">'
+            u'    %(field)s<span class="input-group-addon" title="%(tooltip)s">%(data)s</span>'
+            u'</div>'
+        ) % {'field': field, 'data': self.data,'tooltip':self.tooltip})
+
+class PostPendWidgetBuscar(Widget):
+    def __init__(self, base_widget, data,tooltip, *args, **kwargs):
+        u"""Initialise widget and get base instance"""
+        super(PostPendWidgetBuscar, self).__init__(*args, **kwargs)
+        self.base_widget = base_widget(*args, **kwargs)
+        self.data = data
+        self.tooltip = tooltip
+
+    def render(self, name, value, attrs=None):
+        field = self.base_widget.render(name, value, attrs)
+        return mark_safe((
+            u'<div class="input-group">'
+            u'    %(field)s<span class="input-group-addon btnBuscar" type="button" id="Buscar" title="%(tooltip)s"><strong>%(data)s</strong></span>'
+            u''
+            u'</div>'
+        ) % {'field': field, 'data': self.data,'tooltip':self.tooltip})   
+
+
+
+
+
+def inicioMes():
+    hoy=date.today()
+    hoy = date(hoy.year,hoy.month,1)
+    return hoy
+
+def hoy():
+    return date.today()    
+
+def inicioMesAnt():
+    hoy=inicioMes()
+    dia =hoy - timedelta(days=30)
+    return dia
+
+def finMes():
+    hoy=date.today()
+    hoy = date(hoy.year,hoy.month,calendar.monthrange(hoy.year, hoy.month)[1])
+    return hoy
+
+def ultimo_semestre():
+    hoy = date.today()
+    fecha = hoy - timedelta(days=180)
+    return fecha
+
+def ultimo_anio():
+    hoy = date.today()
+    fecha = hoy - timedelta(days=365)
+    return fecha
+
+import re
+
+def mobile(request):
+    MOBILE_AGENT_RE=re.compile(r".*(iphone|mobile|androidtouch)",re.IGNORECASE)
+    if MOBILE_AGENT_RE.match(request.META['HTTP_USER_AGENT']):
+        return True
+    else:
+        return False        
+
+def ultimoNroId(tabla):
+    try:
+        ultimo = tabla.objects.latest('id').id
+    except:
+        ultimo = 0
+    return ultimo
+
+
+def validar_cuit(cuit):
+    # validaciones minimas    
+    if len(cuit) < 11:
+        return False
+
+    base = [5, 4, 3, 2, 7, 6, 5, 4, 3, 2]
+
+    cuit = cuit.replace("-", "") # remuevo las barras
+
+    # calculo el digito verificador:
+    aux = 0
+    for i in xrange(10):
+        aux += int(cuit[i]) * base[i]
+
+    aux = 11 - (aux - (int(aux / 11) * 11))
+
+    if aux == 11:
+        aux = 0
+    if aux == 10:
+        aux = 9
+
+    return aux == int(cuit[10])        

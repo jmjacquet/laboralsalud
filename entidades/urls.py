@@ -8,4 +8,22 @@ urlpatterns = [
     url(r'^art/editar/(?P<id>\d+)/$', ARTEditView.as_view(), name="art_editar"),    
     url(r'^art/detalles/(?P<id>\d+)/$', ARTVerView.as_view(), name="art_detalles"),    
     url(r'^art/baja_alta/(?P<id>\d+)/$', art_baja_alta, name='art_baja_alta'),
+
+    url(r'^cargo/$', CargoView.as_view(),name="cargo_listado"),
+    url(r'^cargo/nuevo/$', CargoCreateView.as_view(), name="cargo_nuevo"),
+    url(r'^cargo/editar/(?P<id>\d+)/$', CargoEditView.as_view(), name="cargo_editar"),    
+    url(r'^cargo/detalles/(?P<id>\d+)/$', CargoVerView.as_view(), name="cargo_detalles"),    
+    url(r'^cargo/baja_alta/(?P<id>\d+)/$', cargo_baja_alta, name='cargo_baja_alta'),
+
+    url(r'^especialidad/$', EspecialidadView.as_view(),name="especialidad_listado"),
+    url(r'^especialidad/nuevo/$', EspecialidadCreateView.as_view(), name="especialidad_nuevo"),
+    url(r'^especialidad/editar/(?P<id>\d+)/$', EspecialidadEditView.as_view(), name="especialidad_editar"),    
+    url(r'^especialidad/detalles/(?P<id>\d+)/$', EspecialidadVerView.as_view(), name="especialidad_detalles"),    
+    url(r'^especialidad/baja_alta/(?P<id>\d+)/$', especialidad_baja_alta, name='especialidad_baja_alta'),
+
+    url(r'^medico_prof/$', MedProfView.as_view(),name="medico_prof_listado"),
+    url(r'^medico_prof/nuevo/$', MedProfCreateView.as_view(), name="medico_prof_nuevo"),
+    url(r'^medico_prof/editar/(?P<id>\d+)/$', MedProfEditView.as_view(), name="medico_prof_editar"),    
+    url(r'^medico_prof/detalles/(?P<id>\d+)/$', MedProfVerView.as_view(), name="medico_prof_detalles"),    
+    url(r'^medico_prof/baja_alta/(?P<id>\d+)/$', medico_prof_baja_alta, name='medico_prof_baja_alta'),
 ]

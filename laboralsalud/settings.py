@@ -30,7 +30,8 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_extensions',  
-    'django.contrib.humanize',  
+    'django.contrib.humanize', 
+    'localflavor', 
     'usuarios',
     'general',
     'entidades',
@@ -39,7 +40,6 @@ INSTALLED_APPS = (
     'crispy_forms',
     'fm',
     'modal',
-
 )
 
 MIDDLEWARE_CLASSES = (
@@ -130,4 +130,4 @@ MESSAGE_TAGS = {message_constants.DEBUG: 'debug',
                 message_constants.ERROR: 'error',} 
 
 
-CRISPY_TEMPLATE_PACK = 'bootstrap4'                
+CRISPY_TEMPLATE_PACK = 'bootstrap3'                
