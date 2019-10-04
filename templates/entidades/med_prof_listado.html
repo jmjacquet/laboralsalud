@@ -1,0 +1,261 @@
+{% extends "base.html" %}
+{% load static from staticfiles %}
+{% load i18n l10n %}
+{% load humanize %}
+
+{% block breadcrumbs %}              
+        <div class="breadcrumbs">
+            Listado de Médicos/Profesionales <small> carga e impresión</small>
+        </div>
+{% endblock breadcrumbs %}
+{% block principal %}                            
+
+    <div id="cargando" class="cargando" >
+        <span class="cargando-txt">CARGANDO...</span>
+        <img class="cargando-img" src="{% static 'img/loading-bars.svg' %}">
+    </div>
+     <a class="btn btn-xs btn-primary fm-create" style="float:left;margin-right:20px;" href="{% url 'medico_prof_nuevo' %}" data-fm-head="AGREGAR MÉDICO/PROF." data-fm-callback="reload">Nueva Méd/Prof</a>
+    <table width="100%" id="med" style="display:none;" class="table table-striped compact table-hover table-no-bordered tabla_nueva nowrap">         
+        <thead >
+            <tr>
+                <th>#</th>
+                <th class="imprimir">Código</th>
+                <th class="imprimir">Nombre</th>
+                <th class="imprimir">CUIT</th>
+                <th class="imprimir">Documento</th>
+                <th class="imprimir">Especialidad</th>
+                <th class="imprimir">EMail</th>                                           
+                <th class="imprimir">Domicilio</th>
+                <th class="imprimir">Localidad</th>           
+                <th class="imprimir">Provincia</th>           
+                <th class="imprimir">Tel.</th>                           
+                <th class="imprimir">Cel.</th>                           
+            </tr>
+        </thead>
+        <tbody>
+            {% for a in med %}
+            <tr
+             {% if a.baja %}
+                class='danger'
+             {% endif %}>
+                
+                <td><div class="btn-group">
+                      <button type="button" title="{{ a.pk|safe}}" class="btn btn-xs color_barra" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="icon-settings"> </i> <span class="caret"></span>
+                      </button>
+                      <ul class="dropdown-menu">
+                        <li><a href="{% url 'medico_prof_detalles' id=a.pk %}" class="modal-detail" data-modal-head="DETALLE MÉDICO/PROF. {{a.codigo}}" data-fm-callback="reload">
+                        <i class=" icon-screen-desktop"></i> Detalle</a></li>
+                        
+                        <li><a href="{% url 'medico_prof_editar' id=a.pk %}"  class="fm-update " title="Editar" data-fm-callback="reload" data-fm-head="EDITAR MÉDICO/PROF."data-fm-target="#object-{{ a.pk }}"><i class="icon-note"></i> Editar</a></li>
+
+                        <li><a href="#" 
+                                onClick="alerta= alertify.dialog('confirm').set({'labels':{ok:'Aceptar', cancel:'Cancelar'},'message': '¿DESEA DAR DE BAJA/REACTIVAR EL REGISTRO ACTUAL?',transition:'fade','onok': function(){ window.location.href = '{% url 'medico_prof_baja_alta' id=a.pk  %}'; },'oncancel': function(){ return true;} }); alerta.setting('modal', true); alerta.setHeader('BAJA/REACTIVAR'); alerta.show(); return true;" ><i class="icon-dislike"></i><i class="icon-like"></i>Baja/Reactivar</a>
+                            </li>     
+                        
+                        
+                      </ul>                                      
+                    </div>
+                </td>              
+                
+                <td>{{ a.codigo|default_if_none:'' }}</td>
+                <td>{{ a.apellido_y_nombre|default_if_none:'' }}</td>
+                <td>{{ a.cuit|default_if_none:'' }}</td>
+                <td>{{ a.nro_doc|default_if_none:'' }}</td>
+                <td>{{ a.especialidad|default_if_none:'' }}</td>
+                <td>{{ a.email|default_if_none:'' }}</td>
+                <td>{{ a.domicilio|default_if_none:'' }}</td>
+                <td>{{ a.localidad|default_if_none:'' }}</td>                                
+                <td>{{ a.get_provincia_display|default_if_none:'' }}</td>                                
+                <td>{{ a.telefono|default_if_none:'' }}</td>                                
+                <td>{{ a.celular|default_if_none:'' }}</td>                                
+            </tr>
+            {% endfor %}
+        </tbody>
+        <tfoot>
+            <tr>
+                <th></th> 
+                <th></th>
+                <th></th> 
+                <th></th>                                
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>                                                                
+                <th></th>                                                                
+                <th></th>                                                                
+            </tr>
+        </tfoot>
+        
+    </table>                   
+
+{% endblock principal %}
+
+{% block scripts_js %}     
+<script type="text/javascript">
+
+$(document).ready(function() { 
+   
+moment.locale('es');
+$.fn.dataTable.moment('DD/MM/YYYY'); 
+var tabla = $('#med').DataTable({
+            "language": {
+                "decimal": ",",
+                "thousands": ".",                 
+                "sProcessing": "Procesando...",
+                "sLengthMenu": "Mostrar _MENU_ registros",
+                "sZeroRecords": "No se encontraron resultados",
+                "sEmptyTable": "No hay registros en esta tabla",
+                "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                "sInfoPostFix": "",
+                "sSearch": "Buscar:",
+                "sUrl": "",
+                "sInfoThousands": ",",
+                "sLoadingRecords": "Cargando...",
+                "oPaginate": {
+                    "sFirst": "Primero",
+                    "sLast": "Ãšltimo",
+                    "sNext": "Siguiente",
+                    "sPrevious": "Anterior"
+                },
+                "oAria": {
+                    "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                    "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                },
+                "decimal": ",",
+                "thousands": ".",                
+            },                      
+           
+         "columnDefs": [ {
+                  "targets"  : 'no-sort',
+                  "orderable": false,
+                }],          
+           "paging":   true,
+           "lengthMenu": [[20, 50, -1], [20, 50, "Todos"]],
+           "autoWidth": false,
+           "order": [],
+           "colReorder": true,
+           "searching": true,
+            fixedHeader: {
+              header: true,
+              footer: false
+              },
+            responsive: true,
+            dom: 'Bfrtlip',
+            buttons: [
+                {
+                    extend:    'colvis',
+                    text:      '<i class="fa fa-list"></i>',
+                    titleAttr: 'Ver/Ocultar',
+                    className: 'btnToolbar',                    
+                },
+                {
+                    extend:    'copyHtml5',
+                    text:      '<i class="fa fa-files-o"></i>',
+                    titleAttr: 'Copiar',
+                    exportOptions: { columns: ':visible' },
+                    className: 'btnToolbar',                    
+                },
+                {
+                    extend:    'excel',
+                    text:      '<i class="fa fa-file-excel-o"></i>',
+                    titleAttr: 'Excel',
+                    filename: 'MEDICO_PROF.',                    
+                    exportOptions: {  modifier: {
+                                        page: 'current'
+                                    }, 
+                                      columns: '.imprimir',
+                                      format: {
+                                      body: function(data, row, column, node) {
+                                        var floatVal = function (i) {
+                                            if (typeof i === "number") {
+                                                return i;
+                                            } else if (typeof i === "string") {
+                                                i = i.replace(/\$/g, "");
+                    i = i.replace(/\,/g ,"");                    
+                    i = i.replace(/\./g, "");
+                                                var result = parseFloat(i)/100;
+                                                // console.log(result);
+                                                if (isNaN(result)) {
+                                                    try {
+                                                        var result = $jq(i).text();
+                                                        result = parseFloat(result);
+                                                        if (isNaN(result)) { result = 0 };
+                                                        return result * 1;
+                                                    } catch (error) {
+                                                        return 0;
+                                                    }
+                                                } else {
+                                                    return result * 1;
+                                                }
+                                            } else {
+                                                alert("Unhandled type for totals [" + (typeof i) + "]");
+                                                return 0
+                                            }
+                                        };
+                                          data = $('<p>' + data + '</p>').text();
+                                          return (node.className=='importe') ? floatVal(data)  : data;
+                                      }
+                                    }},
+                    className: 'btnToolbar',     
+                },
+               
+                {
+                    extend:    'pdfHtml5',
+                    text:      '<i class="fa fa-file-pdf-o"></i>',
+                    titleAttr: 'PDF',footer: true,
+                    exportOptions: { columns: '.imprimir'},
+                    orientation: 'landscape',
+                    className: 'btnToolbar',                    
+                },
+                {
+                    extend: 'print',
+                    text:      '<i class="fa fa-print"></i>',
+                    titleAttr: 'Imprimir',
+                    exportOptions: { columns: '.imprimir' },
+                    className: 'btnToolbar',                    
+                },
+            ],
+            PreDrawCallback:function(){
+            $("#cargando").show();
+            },
+            initComplete: function () {
+               // this.api().columns().every( function () {[0, 1, 9]
+                this.api().columns([5,8,9]).every( function () {
+                    var column = this;
+                    var select = $('<select class="form-control"><option value="">Todos</option></select>')
+                        .appendTo( $(column.footer()).empty() )
+                        .on( 'change', function () {
+                            var val = $.fn.dataTable.util.escapeRegex(
+                                $(this).val()
+                            );
+     
+                            column
+                                .search( val ? '^'+val+'$' : '', true, false )
+                                .draw();
+                        } );
+     
+                     column.data().unique().sort().each( function ( d, j ) {
+                    //column.cells('', column[0]).render('display').sort().unique().each( function ( d, j ){
+                        select.append( '<option value="'+d+'">'+d+'</option>' )
+                    } );
+                } );
+                $("#med").show();
+                  this.fnAdjustColumnSizing();
+                $("#cargando").hide();
+            }
+        });
+
+
+
+
+});
+</script> 
+{% endblock scripts_js %}
+
+
+

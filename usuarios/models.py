@@ -29,7 +29,6 @@ class UsuPermiso(models.Model):
     def __unicode__(self):
         return u'{0}'.format(self.permiso)
 
-
 class UsuUsuario(models.Model):
     id_usuario = models.AutoField(db_column='ID_USUARIO', primary_key=True,unique=True) # Field name made lowercase.    
     nombre = models.CharField(db_column='NOMBRE', max_length=200, blank=True) # Field name made lowercase.
@@ -50,7 +49,6 @@ class UsuUsuario(models.Model):
     def get_ultimo_logueo(self):
         usr = UserProfile.objects.get(id_usuario=self.id_usuario).user
         return usr.last_login
-
 
 #Tabla de Usuario con datos Extra
 class UserProfile(models.Model):

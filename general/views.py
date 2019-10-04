@@ -1,7 +1,12 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-
+from django.shortcuts import *
 from django.shortcuts import render
+from laboralsalud.utilidades import URL_API
+from django.core.serializers.json import DjangoJSONEncoder
+import json
+import urllib
+
 
 class VariablesMixin(object):
     def get_context_data(self, **kwargs):
@@ -51,3 +56,29 @@ class VariablesMixin(object):
         # context['EMAIL_CONTACTO'] = EMAIL_CONTACTO                        
         return context
 
+# @login_required 
+def buscarDatosAPICUIT(request):      
+   try:                            
+    cuit = request.GET['cuit']
+    data = urllib.urlopen(URL_API+cuit).read()    
+    d = json.loads(data) 
+
+    imp = [x['idImpuesto'] for x in d['impuesto']]    
+    if (10 in imp):
+        id_cat=1
+    elif (11 in imp):
+        id_cat=1
+    elif (30 in imp):
+        id_cat=1
+    elif (20 in imp):
+        id_cat=6
+    elif (32 in imp):
+        id_cat=4
+    elif (33 in imp):
+        id_cat=2
+    else:
+        id_cat=5
+    d.update({'categoria': id_cat})        
+   except:
+    d= []
+   return HttpResponse( json.dumps(d), content_type='application/json' ) 

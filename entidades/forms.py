@@ -2,7 +2,7 @@
 from django import forms
 from django.forms import ModelForm
 from django.forms.widgets import TextInput,NumberInput,Select
-from .models import ent_art,ent_cargo,ent_especialidad,ent_medico_prof
+from .models import ent_art,ent_cargo,ent_especialidad,ent_medico_prof,ent_empresa
 
 from laboralsalud.utilidades import *
 
@@ -41,7 +41,7 @@ class EspecialidadForm(forms.ModelForm):
 class MedProfForm(forms.ModelForm):		
 	cuit = forms.IntegerField(label='CUIT',required = False,widget=PostPendWidgetBuscar(attrs={'class':'form-control','autofocus':'autofocus'},
 			base_widget=TextInput,data='<i class="fa fa-search" aria-hidden="true"></i>',tooltip=u"Buscar datos y validar CUIT en AFIP"))			
-	nro_doc = forms.IntegerField(label=u'Número',required = False)		
+	nro_doc = forms.IntegerField(label=u'Documento',required = True)		
 	cod_postal = forms.IntegerField(label='CP',required = False)			
 	observaciones = forms.CharField(label='Observaciones / Datos adicionales',widget=forms.Textarea(attrs={'class':'form-control2', 'rows': 5}),required = False)	
 	tipo_form = forms.CharField(widget = forms.HiddenInput(), required = False)	
@@ -74,3 +74,19 @@ class MedProfForm(forms.ModelForm):
 
 
 	# 	return self.cleaned_data
+
+
+
+class EmpresaForm(forms.ModelForm):		
+	cuit = forms.IntegerField(label='CUIT',required = False,widget=PostPendWidgetBuscar(attrs={'class':'form-control','autofocus':'autofocus'},
+			base_widget=TextInput,data='<i class="fa fa-search" aria-hidden="true"></i>',tooltip=u"Buscar datos y validar CUIT en AFIP"))				
+	cod_postal = forms.IntegerField(label='CP',required = False)			
+	observaciones = forms.CharField(label='Observaciones / Datos adicionales',widget=forms.Textarea(attrs={'class':'form-control2', 'rows': 5}),required = False)	
+	# tipo_form = forms.CharField(widget = forms.HiddenInput(), required = False)	
+	class Meta:
+			model = ent_empresa
+			exclude = ['id','fecha_creacion','fecha_modif','usuario_carga']
+
+	def __init__(self, *args, **kwargs):
+		request = kwargs.pop('request', None)
+		super(EmpresaForm, self).__init__(*args, **kwargs)		

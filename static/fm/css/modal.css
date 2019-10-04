@@ -1,16 +1,19 @@
 
 
-.fm-modal .modal-content{max-width:668px;position:relative;z-index:1050;padding:0px 5px 20px 5px;margin-right:auto;margin-left:auto;border-radius:5px;font-size:11px;}
+.fm-modal .modal-content{
+	max-width:668px;position:relative;z-index:1050;
+	padding:0px 0px 20px 0px;margin-right:auto;margin-left:auto;border-radius:5px;font-size:11px;}
 @media (min-width:768px){.modal-dialog{width:668px;margin:20px auto;}
 .modal-content{-webkit-box-shadow:0 5px 15px rgba(0, 0, 0, 0.5);box-shadow:0 5px 15px rgba(0, 0, 0, 0.5);}
 .modal-sm{width:300px;}
 }
 .fm-modal .modal-head{
-	border-bottom:5px solid rgb(110, 135, 164);	
+	background-color:#417690;	
+	color: #fff;
 	text-align:center;	
 	min-height:20px;
 	font-weight:bold; 
-	font-size: 18px;
+	font-size: 16px;
     padding:7px 0px 5px 0px;
     }
 .fm-modal .modal-body{padding:10px;}

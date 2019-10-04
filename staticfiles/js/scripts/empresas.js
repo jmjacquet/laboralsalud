@@ -7,22 +7,22 @@ $("input[type=number]").click(function(){
 
 $( "#Buscar" ).click(function() {
       var e = $.Event( "keyup", { which: 13 } );
-      $('#id_fact_cuit').trigger(e);
+      $('#id_cuit').trigger(e);
  });
 
 
-$("#id_fact_cuit").keyup(function(e){  
+$("#id_cuit").keyup(function(e){  
   if(e.which === 13) {
-     consulta = $("#id_fact_cuit").val();
+     consulta = $("#id_cuit").val();
      if (consulta.length<6)
      {
       alertify.alert('Búsqueda por CUIT','Debe ingresar un CUIT válido!.');
-      $("#id_fact_cuit").focus();
+      $("#id_cuit").focus();
      }
      else{
         $.ajax({
         data: {'cuit': consulta},
-        url: '/buscarDatosAPICUIT/',
+        url: '/general/buscarDatosAPICUIT/',
         type: 'get',
         cache: true,
         beforeSend: function(){
@@ -32,26 +32,19 @@ $("#id_fact_cuit").keyup(function(e){
             $('#cargando').hide();
         },
         success : function(data) {
-             console.log(data);
              if (data!='')
                 {
                     if (data['tipoPersona']=='JURIDICA'){
-                      $("#id_apellido_y_nombre").val(data['razonSocial']);
-                      $("#id_nro_doc").val(data['idPersona']);
-                      $("#id_tipo_doc").find('option[value="80"]').attr("selected",true);
+                      $("#id_razon_social").val(data['razonSocial']);
                     }else{
-                      $("#id_apellido_y_nombre").val(data['apellido']+' '+data['nombre']);
-                      $("#id_nro_doc").val(data['numeroDocumento']);
-                      $("#id_tipo_doc").find('option[value="99"]').attr("selected",true);
+                      $("#id_razon_social").val(data['apellido']+' '+data['nombre']);
                     };
-                    $("#id_fact_razon_social").val( $("#id_apellido_y_nombre").val());
                     if (data['categoria']!=''){
-                       $("#id_fact_categFiscal").find('option[value="'+data['categoria']+'"]').attr("selected",true);
+                       $("#id_categFiscal").find('option[value="'+data['categoria']+'"]').attr("selected",true);
                     };
                     
                     if (data['telefono']!= undefined ){ 
                       $("#id_telefono").val(data['telefono']['numero']);
-                      $("#id_fact_telefono").val(data['telefono']['numero']);
                     };
 
                     if (data['email']!= undefined ){ 
@@ -60,7 +53,6 @@ $("#id_fact_cuit").keyup(function(e){
 
                     if (data['domicilio']!= undefined ){ 
                       $("#id_domicilio").val(data['domicilio'][0]['direccion']);
-                      $("#id_fact_direccion").val(data['domicilio'][0]['direccion']);
                       $("#id_localidad").val(data['domicilio'][0]['localidad']);                                
                       idProv = data['domicilio'][0]['idProvincia']                       
                       $("#id_provincia").find('option[value="'+idProv+'"]').attr("selected",true);
@@ -68,21 +60,17 @@ $("#id_fact_cuit").keyup(function(e){
 
                     else{
                        $("#id_domicilio").val('');
-                       $("#id_fact_direccion").val('');          
                        $("#id_localidad").val('');
                        $("#id_cod_postal").val('');
                     };                   
                 }else
                 {                 
-                  $("#id_fact_cuit").val('');
-                  $("#id_apellido_y_nombre").val('');
-                  $("#id_fact_nro_doc").val('');
-                  $("#id_fact_tipo_doc").val('');
+                  $("#id_cuit").val('');
+                  $("#id_razon_social").val('');
                   $("#id_domicilio").val('');
-                  $("#id_fact_direccion").val('');          
                   $("#id_localidad").val('');
                   $("#id_cod_postal").val('');   
-                  $("#id_fact_cuit").focus();
+                  $("#id_cuit").focus();
                   alertify.alert('Búsqueda por CUIT','No se encontraron contribuyentes con el CUIT '+consulta+'. <br>El servicio de consulta de CUIT ONline (AFIP) puede estar momentáneamente interrumpido. Vuelva a intentarlo mas tarde.');
                 }
         },

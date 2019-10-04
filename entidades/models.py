@@ -25,43 +25,6 @@ class ent_especialidad(models.Model):
     def __unicode__(self):
         return u'%s' % self.especialidad 
 
-class ent_empresa(models.Model):
-	razon_social = models.CharField(u'Razón Social',max_length=200,blank=True, null=True)	
-	cuit = models.CharField('CUIT',max_length=50,blank=True, null=True)   
-	direccion = models.CharField(u'Dirección',max_length=200,blank=True, null=True)   
-	telefono = models.CharField(u'Teléfono',max_length=50,blank=True, null=True)   
-	categFiscal = models.IntegerField(u'Categoría Fiscal',choices=CATEG_FISCAL, blank=True, null=True)   
-	codigo = models.CharField(u'Código',max_length=50,blank=True, null=True)   
-	iibb = models.CharField(u'Nº IIBB',max_length=50,blank=True, null=True)
-	fecha_inicio_activ = models.DateTimeField('Fecha Inicio Actividades',null=True)
-	domicilio = models.CharField('Domicilio',max_length=200,blank=True, null=True)   
-	provincia = models.IntegerField('Provincia',choices=PROVINCIAS, blank=True, null=True,default=12)
-	localidad = models.CharField('Localidad',max_length=100,blank=True, null=True)   
-	cod_postal = models.CharField('CP',max_length=50,blank=True, null=True)
-	email = models.EmailField('Email')
-	telefono = models.CharField(u'Teléfono',max_length=50,blank=True, null=True)   
-	celular = models.CharField('Celular',max_length=50,blank=True, null=True)   
-	baja = models.BooleanField(default=False)
-	fecha_creacion = models.DateField(auto_now_add = True)    
-	fecha_modif = models.DateTimeField(auto_now = True)	
-	usuario_carga = models.ForeignKey('usuarios.UsuUsuario',db_column='usuario_carga',blank=True, null=True,related_name='empr_usuario_carga',on_delete=models.SET_NULL)
-
-	rubro =  models.CharField(u'Rubro',max_length=200,blank=True, null=True)   
-	cant_empleados = models.IntegerField(u'DireCant.Empleados',blank=True, null=True)   
-	art = models.ForeignKey('ent_art',db_column='art',blank=True, null=True,related_name='empr_art',on_delete=models.SET_NULL)
-	medico_prof = models.ForeignKey('ent_medico_prof',db_column='medico_prof',blank=True, null=True,related_name='empr_medico_prof',on_delete=models.SET_NULL)
-
-	casa_central = models.ForeignKey('ent_empresa',db_column='casa_central',blank=True, null=True,related_name='empr_casa_central',on_delete=models.SET_NULL)
-
-	contacto_nombre=models.CharField('Contacto Nombre',max_length=200,blank=True, null=True)   
-	contacto_email=models.EmailField('contacto Email',blank=True, null=True)
-	contacto_tel=models.CharField(u'Teléfono',max_length=50,blank=True, null=True)   
-	contacto_cargo = models.ForeignKey('ent_cargo',db_column='cargo',blank=True, null=True,related_name='empr_cargo',on_delete=models.SET_NULL)
-	contacto_profesion = models.ForeignKey('ent_especialidad',db_column='especialidad',blank=True, null=True,related_name='empr_especialidad',on_delete=models.SET_NULL)
-	class Meta:
-		db_table = 'ent_empresa'
-		ordering = ['razon_social','cuit']
-
 #Tabla de la Base de Configuracion
 class ent_medico_prof(models.Model):	
 	apellido_y_nombre =  models.CharField('Apellido y Nombre',max_length=200)   
@@ -85,7 +48,48 @@ class ent_medico_prof(models.Model):
 	class Meta:
 		db_table = 'ent_medico_prof'
 		ordering = ['apellido_y_nombre','codigo']
-		
+
+	def __unicode__(self):
+		return u'%s' % (self.apellido_y_nombre)		
+
+class ent_empresa(models.Model):
+	razon_social = models.CharField(u'Razón Social',max_length=200,blank=True, null=True)	
+	cuit = models.CharField('CUIT',max_length=50,blank=True, null=True)   	
+	categFiscal = models.IntegerField(u'Categoría Fiscal',choices=CATEG_FISCAL, blank=True, null=True)   
+	codigo = models.CharField(u'Código',max_length=50,blank=True, null=True)   
+	iibb = models.CharField(u'Nº IIBB',max_length=50,blank=True, null=True)
+	fecha_inicio_activ = models.DateTimeField('Fecha Inicio Actividades',null=True)
+	domicilio = models.CharField('Domicilio',max_length=200,blank=True, null=True)   
+	provincia = models.IntegerField('Provincia',choices=PROVINCIAS, blank=True, null=True,default=12)
+	localidad = models.CharField('Localidad',max_length=100,blank=True, null=True)   
+	cod_postal = models.CharField('CP',max_length=50,blank=True, null=True)
+	email = models.EmailField('Email')
+	telefono = models.CharField(u'Teléfono',max_length=50,blank=True, null=True)   
+	celular = models.CharField('Celular',max_length=50,blank=True, null=True)   
+	baja = models.BooleanField(default=False)
+	fecha_creacion = models.DateField(auto_now_add = True)    
+	fecha_modif = models.DateTimeField(auto_now = True)	
+	usuario_carga = models.ForeignKey('usuarios.UsuUsuario',db_column='usuario_carga',blank=True, null=True,related_name='empr_usuario_carga',on_delete=models.SET_NULL)
+
+	rubro =  models.CharField(u'Rubro',max_length=200,blank=True, null=True)   
+	cant_empleados = models.IntegerField(u'Cant.Empl.',blank=True, null=True)   
+	art = models.ForeignKey('ent_art',verbose_name='ART',db_column='art',blank=True, null=True,related_name='empr_art',on_delete=models.SET_NULL)
+	medico_prof = models.ForeignKey('ent_medico_prof',verbose_name=u'Médico/Prof.',db_column='medico_prof',blank=True, null=True,related_name='empr_medico_prof',on_delete=models.SET_NULL)
+
+	casa_central = models.ForeignKey('ent_empresa',verbose_name=u'Casa Central',db_column='casa_central',blank=True, null=True,related_name='empr_casa_central',on_delete=models.SET_NULL)
+	observaciones = models.TextField('Observaciones',blank=True, null=True)       
+	contacto_nombre=models.CharField('Nombre',max_length=200,blank=True, null=True)   
+	contacto_email=models.EmailField('Email',blank=True, null=True)
+	contacto_tel=models.CharField(u'Teléfono',max_length=50,blank=True, null=True)   
+	contacto_cargo = models.ForeignKey('ent_cargo',verbose_name=u'Cargo',db_column='cargo',blank=True, null=True,related_name='empr_cargo',on_delete=models.SET_NULL)
+	contacto_profesion = models.ForeignKey('ent_especialidad',verbose_name=u'Profesión',db_column='especialidad',blank=True, null=True,related_name='empr_especialidad',on_delete=models.SET_NULL)
+	class Meta:
+		db_table = 'ent_empresa'
+		ordering = ['razon_social','cuit']
+
+	def __unicode__(self):
+	    return u'%s' % (self.razon_social)
+	
 class ent_art(models.Model):    
 	codigo = models.CharField(u'Código',max_length=50,blank=True, null=True)   
 	nombre = models.CharField(u'Nombre',max_length=500, blank=True, null=True) # Field name made lowercase.    
@@ -149,3 +153,6 @@ class ent_empleado(models.Model):
 	class Meta:
 		db_table = 'ent_empleado'
 		ordering = ['apellido','nombre']
+
+	def __unicode__(self):
+	    return u'%s %s' % (self.apellido, self.nombre)

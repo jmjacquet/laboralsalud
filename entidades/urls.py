@@ -26,4 +26,10 @@ urlpatterns = [
     url(r'^medico_prof/editar/(?P<id>\d+)/$', MedProfEditView.as_view(), name="medico_prof_editar"),    
     url(r'^medico_prof/detalles/(?P<id>\d+)/$', MedProfVerView.as_view(), name="medico_prof_detalles"),    
     url(r'^medico_prof/baja_alta/(?P<id>\d+)/$', medico_prof_baja_alta, name='medico_prof_baja_alta'),
+
+    url(r'^empresa/$', EmpresaView.as_view(),name="empresa_listado"),
+    url(r'^empresa/nuevo/$', EmpresaCreateView.as_view(), name="empresa_nuevo"),
+    url(r'^empresa/editar/(?P<id>\d+)/$', EmpresaEditView.as_view(), name="empresa_editar"),    
+    url(r'^empresa/detalles/(?P<id>\d+)/$', EmpresaVerView.as_view(), name="empresa_detalles"),    
+    url(r'^empresa/baja_alta/(?P<id>\d+)/$', empresa_baja_alta, name='empresa_baja_alta'),
 ]

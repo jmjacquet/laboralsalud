@@ -9,7 +9,7 @@ from django.conf import settings
 from general.views import VariablesMixin
 from fm.views import AjaxCreateView,AjaxUpdateView,AjaxDeleteView
 from django.utils.decorators import method_decorator
-from .forms import ARTForm,CargoForm,EspecialidadForm,MedProfForm
+from .forms import ARTForm,CargoForm,EspecialidadForm,MedProfForm,EmpresaForm
 from django.contrib import messages
 from laboralsalud.utilidades import ultimoNroId
 
@@ -303,9 +303,9 @@ def especialidad_baja_alta(request,id):
 ############ MEDICO / PROFESIONAL ############################
 
 class MedProfView(VariablesMixin,ListView):
-    model = ent_cargo
-    template_name = 'entidades/cargo_listado.html'
-    context_object_name = 'cargo'
+    model = ent_medico_prof
+    template_name = 'entidades/med_prof_listado.html'
+    context_object_name = 'med'
 
     # @method_decorator(login_required)
     # def dispatch(self, *args, **kwargs): 
@@ -395,3 +395,101 @@ def medico_prof_baja_alta(request,id):
     ent.save()       
     messages.success(request, u'¡Los datos se guardaron con éxito!')
     return HttpResponseRedirect(reverse("medico_prof_listado"))        
+
+
+
+############ EMPRESAS ############################
+
+class EmpresaView(VariablesMixin,ListView):
+    model = ent_empresa
+    template_name = 'entidades/empresa_listado.html'
+    context_object_name = 'empresas'
+
+    # @method_decorator(login_required)
+    # def dispatch(self, *args, **kwargs): 
+    #     if not tiene_permiso(self.request,'ent_clientes'):
+    #         return redirect(reverse('principal'))
+    #     return super(ARTView, self).dispatch(*args, **kwargs)
+    
+
+class EmpresaCreateView(VariablesMixin,AjaxCreateView):
+    form_class = EmpresaForm
+    template_name = 'fm/entidades/form_empresa.html'
+
+    # @method_decorator(login_required)
+    # def dispatch(self, *args, **kwargs): 
+    #     if not tiene_permiso(self.request,'ent_vendedores_abm'):
+    #         return redirect(reverse('principal'))
+    #     return super(ARTCreateView, self).dispatch(*args, **kwargs)
+
+    def form_valid(self, form):                
+        #form.instance.empresa = empresa_actual(self.request)
+        # form.instance.usuario = usuario_actual(self.request)
+        messages.success(self.request, u'Los datos se guardaron con éxito!')
+        return super(EmpresaCreateView, self).form_valid(form)
+
+    def get_form_kwargs(self):
+        kwargs = super(EmpresaCreateView, self).get_form_kwargs()
+        kwargs['request'] = self.request
+        return kwargs  
+
+    def get_initial(self):    
+        initial = super(EmpresaCreateView, self).get_initial()               
+        initial['codigo'] = '{0:0{width}}'.format((ultimoNroId(ent_empresa)+1),width=4)
+        initial['request'] = self.request        
+        initial['tipo_form'] = 'ALTA'  
+        return initial    
+
+    def form_invalid(self, form):
+        return super(EmpresaCreateView, self).form_invalid(form)
+
+
+class EmpresaEditView(VariablesMixin,AjaxUpdateView):
+    form_class = EmpresaForm
+    model = ent_empresa
+    pk_url_kwarg = 'id'
+    template_name = 'fm/entidades/form_empresa.html'
+    
+
+    # @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs): 
+        # if not tiene_permiso(self.request,'ent_clientes_abm'):
+        #     return redirect(reverse('principal'))
+        return super(EmpresaEditView, self).dispatch(*args, **kwargs)
+
+    def form_valid(self, form):        
+        messages.success(self.request, u'Los datos se guardaron con éxito!')
+        return super(EmpresaEditView, self).form_valid(form)
+
+    def form_invalid(self, form):
+        return super(EmpresaEditView, self).form_invalid(form)
+
+    def get_form_kwargs(self):
+        kwargs = super(EmpresaEditView, self).get_form_kwargs()
+        kwargs['request'] = self.request
+        return kwargs  
+
+    def get_initial(self):    
+        initial = super(EmpresaEditView, self).get_initial()                      
+        initial['tipo_form'] = 'EDICION'  
+        return initial            
+
+
+class EmpresaVerView(VariablesMixin,DetailView):
+    model = ent_empresa
+    pk_url_kwarg = 'id'
+    context_object_name = 'empresa'
+    template_name = 'entidades/empresa_detalle.html'
+
+    # @method_decorator(login_required)
+    # def dispatch(self, *args, **kwargs): 
+    #     return super(VendedoresVerView, self).dispatch(*args, **kwargs)        
+
+
+# @login_required 
+def empresa_baja_alta(request,id):
+    ent = ent_empresa.objects.get(pk=id)     
+    ent.baja = not ent.baja
+    ent.save()       
+    messages.success(request, u'¡Los datos se guardaron con éxito!')
+    return HttpResponseRedirect(reverse("empresa_listado"))            
