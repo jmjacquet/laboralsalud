@@ -9,7 +9,7 @@ from django.conf import settings
 from general.views import VariablesMixin
 from fm.views import AjaxCreateView,AjaxUpdateView,AjaxDeleteView
 from django.utils.decorators import method_decorator
-from .forms import ARTForm,CargoForm,EspecialidadForm,MedProfForm,EmpresaForm
+from .forms import ARTForm,CargoForm,EspecialidadForm,MedProfForm,EmpresaForm,EmpleadoForm
 from django.contrib import messages
 from laboralsalud.utilidades import ultimoNroId
 
@@ -493,3 +493,100 @@ def empresa_baja_alta(request,id):
     ent.save()       
     messages.success(request, u'¡Los datos se guardaron con éxito!')
     return HttpResponseRedirect(reverse("empresa_listado"))            
+
+
+############ EMPLEADOS ############################
+
+class EmpleadoView(VariablesMixin,ListView):
+    model = ent_empleado
+    template_name = 'entidades/empleado_listado.html'
+    context_object_name = 'empleados'
+
+    # @method_decorator(login_required)
+    # def dispatch(self, *args, **kwargs): 
+    #     if not tiene_permiso(self.request,'ent_clientes'):
+    #         return redirect(reverse('principal'))
+    #     return super(ARTView, self).dispatch(*args, **kwargs)
+    
+
+class EmpleadoCreateView(VariablesMixin,AjaxCreateView):
+    form_class = EmpleadoForm
+    template_name = 'fm/entidades/form_empleado.html'
+
+    # @method_decorator(login_required)
+    # def dispatch(self, *args, **kwargs): 
+    #     if not tiene_permiso(self.request,'ent_vendedores_abm'):
+    #         return redirect(reverse('principal'))
+    #     return super(ARTCreateView, self).dispatch(*args, **kwargs)
+
+    def form_valid(self, form):                
+        #form.instance.empresa = empresa_actual(self.request)
+        # form.instance.usuario = usuario_actual(self.request)
+        messages.success(self.request, u'Los datos se guardaron con éxito!')
+        return super(EmpleadoCreateView, self).form_valid(form)
+
+    def get_form_kwargs(self):
+        kwargs = super(EmpleadoCreateView, self).get_form_kwargs()
+        kwargs['request'] = self.request
+        return kwargs  
+
+    def get_initial(self):    
+        initial = super(EmpleadoCreateView, self).get_initial()               
+        initial['legajo'] = '{0:0{width}}'.format((ultimoNroId(ent_empleado)+1),width=4)
+        initial['request'] = self.request        
+        initial['tipo_form'] = 'ALTA'  
+        return initial    
+
+    def form_invalid(self, form):
+        return super(EmpleadoCreateView, self).form_invalid(form)
+
+
+class EmpleadoEditView(VariablesMixin,AjaxUpdateView):
+    form_class = EmpleadoForm
+    model = ent_empleado
+    pk_url_kwarg = 'id'
+    template_name = 'fm/entidades/form_empleado.html'
+    
+
+    # @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs): 
+        # if not tiene_permiso(self.request,'ent_clientes_abm'):
+        #     return redirect(reverse('principal'))
+        return super(EmpleadoEditView, self).dispatch(*args, **kwargs)
+
+    def form_valid(self, form):        
+        messages.success(self.request, u'Los datos se guardaron con éxito!')
+        return super(EmpleadoEditView, self).form_valid(form)
+
+    def form_invalid(self, form):
+        return super(EmpleadoEditView, self).form_invalid(form)
+
+    def get_form_kwargs(self):
+        kwargs = super(EmpleadoEditView, self).get_form_kwargs()
+        kwargs['request'] = self.request
+        return kwargs  
+
+    def get_initial(self):    
+        initial = super(EmpleadoEditView, self).get_initial()                      
+        initial['tipo_form'] = 'EDICION'  
+        return initial            
+
+
+class EmpleadoVerView(VariablesMixin,DetailView):
+    model = ent_empleado
+    pk_url_kwarg = 'id'
+    context_object_name = 'empleados'
+    template_name = 'entidades/empleado_detalle.html'
+
+    # @method_decorator(login_required)
+    # def dispatch(self, *args, **kwargs): 
+    #     return super(VendedoresVerView, self).dispatch(*args, **kwargs)        
+
+
+# @login_required 
+def empleado_baja_alta(request,id):
+    ent = ent_empleado.objects.get(pk=id)     
+    ent.baja = not ent.baja
+    ent.save()       
+    messages.success(request, u'¡Los datos se guardaron con éxito!')
+    return HttpResponseRedirect(reverse("empleado_listado"))   

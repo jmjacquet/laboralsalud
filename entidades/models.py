@@ -4,6 +4,8 @@ from __future__ import unicode_literals
 from django.db import models
 from laboralsalud.utilidades import *
 from usuarios.models import *
+import datetime
+import dateutil
 
 class ent_cargo(models.Model):
     id = models.AutoField(primary_key=True,db_index=True)    
@@ -58,12 +60,12 @@ class ent_empresa(models.Model):
 	categFiscal = models.IntegerField(u'Categoría Fiscal',choices=CATEG_FISCAL, blank=True, null=True)   
 	codigo = models.CharField(u'Código',max_length=50,blank=True, null=True)   
 	iibb = models.CharField(u'Nº IIBB',max_length=50,blank=True, null=True)
-	fecha_inicio_activ = models.DateTimeField('Fecha Inicio Actividades',null=True)
+	fecha_inicio_activ = models.DateField('Fecha Inicio Actividades',null=True,blank=True)
 	domicilio = models.CharField('Domicilio',max_length=200,blank=True, null=True)   
 	provincia = models.IntegerField('Provincia',choices=PROVINCIAS, blank=True, null=True,default=12)
 	localidad = models.CharField('Localidad',max_length=100,blank=True, null=True)   
 	cod_postal = models.CharField('CP',max_length=50,blank=True, null=True)
-	email = models.EmailField('Email')
+	email = models.EmailField('Email',blank=True, null=True)
 	telefono = models.CharField(u'Teléfono',max_length=50,blank=True, null=True)   
 	celular = models.CharField('Celular',max_length=50,blank=True, null=True)   
 	baja = models.BooleanField(default=False)
@@ -113,9 +115,8 @@ class ent_art(models.Model):
 class ent_empleado(models.Model):	
 	nro_doc = models.CharField(u'Documento',max_length=50,blank=True, null=True)
 	legajo = models.CharField(u'Legajo',max_length=50,blank=True, null=True)   	
-	apellido = models.CharField('Apellido',max_length=200)   
-	nombre =  models.CharField('Nombre',max_length=200)   
-	fecha_nac = models.DateField(blank=True, null=True)
+	apellido_y_nombre = models.CharField('Apelido y Nombre',max_length=200)   	
+	fecha_nac = models.DateField('Fecha Nacimiento',blank=True, null=True)
 	domicilio = models.CharField('Domicilio',max_length=200,blank=True, null=True)   
 	provincia = models.IntegerField('Provincia',choices=PROVINCIAS, blank=True, null=True,default=12)
 	localidad = models.CharField('Localidad',max_length=100,blank=True, null=True)   
@@ -123,18 +124,18 @@ class ent_empleado(models.Model):
 	email = models.EmailField('Email',blank=True)
 	telefono = models.CharField(u'Teléfono',max_length=50,blank=True, null=True)   
 	celular = models.CharField('Celular',max_length=50,blank=True, null=True)   
-	art = models.ForeignKey('ent_art',db_column='art',blank=True, null=True,related_name='empl_art',on_delete=models.SET_NULL)
+	art = models.ForeignKey('ent_art',verbose_name='ART',db_column='art',blank=True, null=True,related_name='empl_art',on_delete=models.SET_NULL)
 
-	empresa = models.ForeignKey('ent_empresa',db_column='empresa',blank=True, null=True,related_name='empl_empresa',on_delete=models.SET_NULL)
-	empr_fingreso = models.DateField(blank=True, null=True)	
-	trab_cargo = models.ForeignKey('ent_cargo',db_column='cargo',blank=True, null=True,related_name='empl_cargo',on_delete=models.SET_NULL)
-	trab_fingreso = models.DateField(blank=True, null=True)
-	trab_fbaja = models.DateField(blank=True, null=True)
+	empresa = models.ForeignKey('ent_empresa',verbose_name='Empresa',db_column='empresa',blank=True, null=True,related_name='empl_empresa',on_delete=models.SET_NULL)
+	empr_fingreso = models.DateField(u'Fecha Ingreso',blank=True, null=True)	
+	trab_cargo = models.ForeignKey('ent_cargo',verbose_name='Puesto de Trabajo',db_column='cargo',blank=True, null=True,related_name='empl_cargo',on_delete=models.SET_NULL)
+	trab_fingreso = models.DateField(u'Fecha Ingreso',blank=True, null=True)
+	trab_fbaja = models.DateField(u'Fecha Baja',blank=True, null=True)
 
-	trab_armas = models.BooleanField(default=False)
-	trab_tareas_dif = models.BooleanField(default=False)
-	trab_preocupac = models.BooleanField(default=False)
-	trab_preocup_fecha = models.DateField(blank=True, null=True)
+	trab_armas = models.BooleanField(u'¿Portación de Armas?',default=False)
+	trab_tareas_dif = models.BooleanField(u'¿Tareas Diferentes?',default=False)
+	trab_preocupac = models.BooleanField(u'¿Preocupacional?',default=False)
+	trab_preocup_fecha = models.DateField(u'Fecha Preocup.',blank=True, null=True)
 
 	trab_preocup_conclus = models.TextField(u'Conclusión Preocupacional',blank=True, null=True) 
 	trab_factores_riesgo = models.TextField(u'Factores de Riesgo a lo que está Expuesto',blank=True, null=True) 
@@ -144,7 +145,7 @@ class ent_empleado(models.Model):
 	trab_accidentes = models.TextField(u'Accidentes ART',blank=True, null=True) 
 	trab_vacunas = models.TextField(u'Vacunas',blank=True, null=True) 
 
-	observaciones = models.TextField('Observaciones',blank=True, null=True)       
+	observaciones = models.TextField('Otras Observaciones',blank=True, null=True)       
 	baja = models.BooleanField(default=False)
 	fecha_creacion = models.DateTimeField(auto_now_add = True)
 	fecha_modif = models.DateTimeField(auto_now = True)			
@@ -152,7 +153,50 @@ class ent_empleado(models.Model):
 
 	class Meta:
 		db_table = 'ent_empleado'
-		ordering = ['apellido','nombre']
+		ordering = ['apellido_y_nombre']
 
 	def __unicode__(self):
-	    return u'%s %s' % (self.apellido, self.nombre)
+	    return u'%s' % (self.apellido_y_nombre)
+
+	@property
+	def get_edad(self):
+		try:
+			if self.fecha_nac:
+				hoy = datetime.datetime.utcnow().date()
+				edad = dateutil.relativedelta.relativedelta(now, self.fecha_nac).years
+				return edad
+			else:
+				return 0
+		except:
+			return 0
+
+	@property
+	def get_antiguedad_trab(self):
+		try:
+			if self.trab_fingreso:
+				if self.trab_fbaja:
+					hasta = self.trab_fbaja
+				else:
+					hasta = datetime.datetime.utcnow().date()
+					antig = dateutil.relativedelta.relativedelta(hasta, self.trab_fingreso).years
+					return antig
+			else:
+				return 0
+		except:
+			return 0
+
+	@property
+	def get_antiguedad_empr(self):
+		try:
+			if self.empr_fingreso:
+				if self.trab_fbaja:
+					hasta = self.trab_fbaja
+				else:
+					hasta = datetime.datetime.utcnow().date()
+					antig = dateutil.relativedelta.relativedelta(hasta, self.empr_fingreso).years
+					return antig
+			else:
+				return 0
+		except:
+			return 0
+

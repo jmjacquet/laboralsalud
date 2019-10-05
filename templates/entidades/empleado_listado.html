@@ -5,7 +5,7 @@
 
 {% block breadcrumbs %}              
         <div class="breadcrumbs">
-            Listado de Empresas <small> carga e impresión</small>
+            Listado de Empleados <small> carga e impresión</small>
         </div>
 {% endblock breadcrumbs %}
 {% block principal %}                            
@@ -14,8 +14,8 @@
         <span class="cargando-txt">CARGANDO...</span>
         <img class="cargando-img" src="{% static 'img/loading-bars.svg' %}">
     </div>
-     <a class="btn btn-xs btn-primary fm-create" style="float:left;margin-right:20px;" href="{% url 'empresa_nuevo' %}" data-fm-head="AGREGAR EMPRESA" data-fm-callback="reload">Nueva Empresa</a>
-    <table width="100%" id="empresa" style="display:none;" class="table table-striped compact table-hover table-no-bordered tabla_nueva nowrap">         
+     <a class="btn btn-xs btn-primary fm-create" style="float:left;margin-right:20px;" href="{% url 'empleado_nuevo' %}" data-fm-head="AGREGAR EMPLEADO" data-fm-callback="reload">Nuevo Empleado</a>
+    <table width="100%" id="empleado" style="display:none;" class="table table-striped compact table-hover table-no-bordered tabla_nueva nowrap">         
         <thead >
             <tr>
                 <th>#</th>
@@ -35,7 +35,7 @@
             </tr>
         </thead>
         <tbody>
-            {% for a in empresas %}
+            {% for a in empleados %}
             <tr
              {% if a.baja %}
                 class='danger'
@@ -46,13 +46,13 @@
                         <i class="icon-settings"> </i> <span class="caret"></span>
                       </button>
                       <ul class="dropdown-menu">
-                        <li><a href="{% url 'empresa_detalles' id=a.pk %}" class="modal-detail" data-modal-head="DETALLE EMPRESA {{a.codigo}}" data-fm-callback="reload">
+                        <li><a href="{% url 'empleado_detalles' id=a.pk %}" class="modal-detail" data-modal-head="DETALLE EMPLEADO {{a.codigo}}" data-fm-callback="reload">
                         <i class=" icon-screen-desktop"></i> Detalle</a></li>
                         
-                        <li><a href="{% url 'empresa_editar' id=a.pk %}"  class="fm-update " title="Editar" data-fm-callback="reload" data-fm-head="EDITAR EMPRESA"data-fm-target="#object-{{ a.pk }}"><i class="icon-note"></i> Editar</a></li>
+                        <li><a href="{% url 'empleado_editar' id=a.pk %}"  class="fm-update " title="Editar" data-fm-callback="reload" data-fm-head="EDITAR EMPLEADO"data-fm-target="#object-{{ a.pk }}"><i class="icon-note"></i> Editar</a></li>
 
                         <li><a href="#" 
-                                onClick="alerta= alertify.dialog('confirm').set({'labels':{ok:'Aceptar', cancel:'Cancelar'},'message': '¿DESEA DAR DE BAJA/REACTIVAR EL REGISTRO ACTUAL?',transition:'fade','onok': function(){ window.location.href = '{% url 'empresa_baja_alta' id=a.pk  %}'; },'oncancel': function(){ return true;} }); alerta.setting('modal', true); alerta.setHeader('BAJA/REACTIVAR'); alerta.show(); return true;" ><i class="icon-dislike"></i><i class="icon-like"></i>Baja/Reactivar</a>
+                                onClick="alerta= alertify.dialog('confirm').set({'labels':{ok:'Aceptar', cancel:'Cancelar'},'message': '¿DESEA DAR DE BAJA/REACTIVAR EL REGISTRO ACTUAL?',transition:'fade','onok': function(){ window.location.href = '{% url 'empleado_baja_alta' id=a.pk  %}'; },'oncancel': function(){ return true;} }); alerta.setting('modal', true); alerta.setHeader('BAJA/REACTIVAR'); alerta.show(); return true;" ><i class="icon-dislike"></i><i class="icon-like"></i>Baja/Reactivar</a>
                             </li>     
                         
                         
@@ -106,7 +106,7 @@ $(document).ready(function() {
    
 moment.locale('es');
 $.fn.dataTable.moment('DD/MM/YYYY'); 
-var tabla = $('#empresa').DataTable({
+var tabla = $('#empleado').DataTable({
             "language": {
                 "decimal": ",",
                 "thousands": ".",                 
@@ -250,7 +250,7 @@ var tabla = $('#empresa').DataTable({
                         select.append( '<option value="'+d+'">'+d+'</option>' )
                     } );
                 } );
-                $("#empresa").show();
+                $("#empleado").show();
                   this.fnAdjustColumnSizing();
                 $("#cargando").hide();
             }
