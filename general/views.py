@@ -6,7 +6,7 @@ from laboralsalud.utilidades import URL_API
 from django.core.serializers.json import DjangoJSONEncoder
 import json
 import urllib
-
+from django.views.generic import TemplateView
 
 class VariablesMixin(object):
     def get_context_data(self, **kwargs):
@@ -82,3 +82,15 @@ def buscarDatosAPICUIT(request):
    except:
     d= []
    return HttpResponse( json.dumps(d), content_type='application/json' ) 
+
+class PrincipalView(VariablesMixin,TemplateView):
+    template_name = 'base.html'
+
+    # @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(PrincipalView, self).dispatch(*args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super(PrincipalView, self).get_context_data(**kwargs)              
+        # vars_sistema = settings
+        return context
