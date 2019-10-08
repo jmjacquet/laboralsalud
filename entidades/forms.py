@@ -93,7 +93,10 @@ class EmpleadoForm(forms.ModelForm):
 	nro_doc = forms.IntegerField(label=u'Documento',required = True)		
 	cod_postal = forms.IntegerField(label='CP',required = False)			
 	observaciones = forms.CharField(label='',widget=forms.Textarea(attrs={'class':'form-control2', 'rows': 10}),required = False)	
-
+	fecha_nac = forms.DateField(required = False,widget=forms.DateInput(attrs={'class': 'form-control datepicker'}))
+	empr_fingreso = forms.DateField(required = False,widget=forms.DateInput(attrs={'class': 'form-control datepicker'}))
+	trab_fingreso = forms.DateField(required = False,widget=forms.DateInput(attrs={'class': 'form-control datepicker'}))
+	trab_fbaja = forms.DateField(required = False,widget=forms.DateInput(attrs={'class': 'form-control datepicker'}))
 	trab_preocup_conclus = forms.CharField(label=u'Conclusión Preocupacional',widget=forms.Textarea(attrs={'class':'form-control2', 'rows': 2}),required = False)	
 	trab_factores_riesgo = forms.CharField(label=u'Factores de Riesgo a lo que está Expuesto',widget=forms.Textarea(attrs={'class':'form-control2', 'rows': 2}),required = False)	
 	trab_tareas_dif = forms.CharField(label=u'Descripción Tareas Diferentes',widget=forms.Textarea(attrs={'class':'form-control2', 'rows': 2}),required = False)	

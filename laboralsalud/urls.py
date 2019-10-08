@@ -23,5 +23,5 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^entidades/', include('entidades.urls')),
-    url(r'^$', include('general.urls')),
+    url(r'^', include('general.urls')),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

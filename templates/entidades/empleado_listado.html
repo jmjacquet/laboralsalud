@@ -18,20 +18,23 @@
     <table width="100%" id="empleado" style="display:none;" class="table table-striped compact table-hover table-no-bordered tabla_nueva nowrap">         
         <thead >
             <tr>
-                <th>#</th>
-                <th class="imprimir">Legajo</th>
-                <th class="imprimir">Razón Social</th>
-                <th class="imprimir">Documento</th>
-                <th class="imprimir">Rubro</th>
-                <th class="imprimir">Cant.Empl.</th>
+                <th data-priority="1">#</th>
+                <th class="imprimir" data-priority="1">Legajo</th>
+                <th class="imprimir" data-priority="2">Apellido y Nombre</th>
+                <th class="imprimir" data-priority="3">Documento</th>
+                <th class="imprimir" data-priority="4">F.Nacim.</th>
+                <th class="imprimir">Edad</th>
+                <th class="imprimir">Empresa</th>
+                <th class="imprimir">Antig.</th>
                 <th class="imprimir">ART</th>
-                <th class="imprimir">EMail</th>                                           
+                <th class="imprimir">EMail</th>
                 <th class="imprimir">Domicilio</th>
                 <th class="imprimir">Localidad</th>           
                 <th class="imprimir">Provincia</th>           
-                <th class="imprimir">Tel.</th>                           
-                <th class="imprimir">Cel.</th>                           
-                <th class="imprimir">Casa Central</th> 
+                <th class="imprimir">Puesto/Cargo</th>           
+                
+                
+                                                           
             </tr>
         </thead>
         <tbody>
@@ -61,18 +64,19 @@
                 </td>              
                 
                 <td>{{ a.legajo|default_if_none:'' }}</td>
-                <td>{{ a.apellido_y_nombre|default_if_none:'' }}</td>
+                <td title="{{ a.apellido_y_nombre}}">{{ a.apellido_y_nombre|default_if_none:''|truncatechars:60 }}</td>
                 <td>{{ a.nro_doc|default_if_none:'' }}</td>
-                <td>{{ a.rubro|default_if_none:'' }}</td>
-                <td>{{ a.cant_empleados|default_if_none:'' }}</td>
-                <td>{{ a.art|default_if_none:'' }}</td>
+                <td>{{ a.fecha_nac|date:'d/m/Y' }}</td>
+                <td>{{ a.get_edad|default_if_none:'' }}</td>
+                <td title="{{ a.empresa}}">{{ a.empresa|default_if_none:''|truncatechars:60 }}</td>
+                <td>{{ a.get_antiguedad_empr|default_if_none:'' }}</td>
+                <td title="{{ a.art}}">{{ a.art|default_if_none:''|truncatechars:60 }}</td>
                 <td>{{ a.email|default_if_none:'' }}</td>
-                <td>{{ a.domicilio|default_if_none:'' }}</td>
+                <td title="{{ a.domicilio}}">{{ a.domicilio|default_if_none:''|truncatechars:60 }}</td>
                 <td>{{ a.localidad|default_if_none:'' }}</td>                                
                 <td>{{ a.get_provincia_display|default_if_none:'' }}</td>                                
-                <td>{{ a.telefono|default_if_none:'' }}</td>                                
-                <td>{{ a.celular|default_if_none:'' }}</td>                                
-                <td>{{ a.casa_central|default_if_none:'' }}</td>
+                <td title="{{ a.trab_cargo}}">{{ a.trab_cargo|default_if_none:''|truncatechars:60 }}</td>                                                                
+                
             </tr>
             {% endfor %}
         </tbody>

@@ -5,7 +5,7 @@ from django.db import models
 from laboralsalud.utilidades import *
 from usuarios.models import *
 import datetime
-import dateutil
+from dateutil.relativedelta import relativedelta
 
 class ent_cargo(models.Model):
     id = models.AutoField(primary_key=True,db_index=True)    
@@ -160,10 +160,12 @@ class ent_empleado(models.Model):
 
 	@property
 	def get_edad(self):
+		hoy = datetime.datetime.utcnow().date()				
+		edad = relativedelta(hoy, self.fecha_nac).years
 		try:
 			if self.fecha_nac:
-				hoy = datetime.datetime.utcnow().date()
-				edad = dateutil.relativedelta.relativedelta(now, self.fecha_nac).years
+				hoy = datetime.datetime.utcnow().date()				
+				edad = relativedelta(hoy, self.fecha_nac).years				
 				return edad
 			else:
 				return 0
@@ -178,7 +180,7 @@ class ent_empleado(models.Model):
 					hasta = self.trab_fbaja
 				else:
 					hasta = datetime.datetime.utcnow().date()
-					antig = dateutil.relativedelta.relativedelta(hasta, self.trab_fingreso).years
+					antig = relativedelta(hasta, self.trab_fingreso).years
 					return antig
 			else:
 				return 0
@@ -193,7 +195,7 @@ class ent_empleado(models.Model):
 					hasta = self.trab_fbaja
 				else:
 					hasta = datetime.datetime.utcnow().date()
-					antig = dateutil.relativedelta.relativedelta(hasta, self.empr_fingreso).years
+					antig = relativedelta(hasta, self.empr_fingreso).years
 					return antig
 			else:
 				return 0
