@@ -14,6 +14,22 @@ TIPO_ENTIDAD = (
     (3, 'Empleado'),
 )
 
+TIPO_AUSENCIA = (    
+    (1, 'Inculpable'),
+    (2, 'Accidente'),
+    (3, 'Enfermedad'),
+)
+
+TIPO_ALTA = (    
+    (1, 'Definitiva'),
+    (2, u'Con Restricción'),    
+)
+
+TIPO_ACCIDENTE = (    
+    (1, 'En Puesto de Trabajo'),
+    (2, u'In Itínere'),    
+)
+
 CATEG_FISCAL = (
 (1, 'IVA Responsable Inscripto'),          
 (2, 'Responsable No Inscripto'),          

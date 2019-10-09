@@ -2,5 +2,68 @@
 from __future__ import unicode_literals
 
 from django.db import models
+from laboralsalud.utilidades import *
+from entidades.models import ent_empleado,ent_medico_prof
 
-# Create your models here.
+
+
+
+#Tabla de la Base de Configuracion
+class ausentismo(models.Model):	
+	empleado = models.ForeignKey(ent_empleado,verbose_name='Empleado',db_column='empleado',blank=True, null=True,related_name='aus_empleado',on_delete=models.SET_NULL)
+	tipo_ausentismo = models.IntegerField('Ausentismo',choices=TIPO_AUSENCIA, blank=True, null=True,default=12)
+
+	aus_control = models.BooleanField(u'¿Asistió a Control?',default=False)
+	aus_fcontrol = models.DateField(u'Fecha Control',blank=True, null=True)
+	aus_certificado = models.BooleanField(u'¿Presenta Certificado?',default=False)
+	aus_fcertif = models.DateField(u'Fecha Certificado',blank=True, null=True)
+	aus_fentrega_certif = models.DateField(u'Fecha Entrega Certif.',blank=True, null=True)
+
+	aus_fcrondesde = models.DateField(u'Cronológica Desde',blank=True, null=True)
+	aus_fcronhasta = models.DateField(u'Cronológica Hasta',blank=True, null=True)
+	aus_diascaidos = models.IntegerField(u'Días Caídos',blank=True, null=True)
+	aus_diasjustif = models.IntegerField(u'Días Justif.',blank=True, null=True)
+	aus_freintegro = models.DateField(u'Reintegro',blank=True, null=True)
+	aus_falta = models.DateField(u'Fecha Alta',blank=True, null=True)
+	aus_tipo_alta = models.IntegerField('Tipo Alta',choices=TIPO_ALTA, blank=True, null=True)
+	aus_frevision = models.DateField(u'Fecha Revisión',blank=True, null=True)
+	aus_medico = models.ForeignKey(ent_medico_prof,verbose_name=u'Médico Tratante',db_column='aus_medico',blank=True, null=True,related_name='aus_medico',on_delete=models.SET_NULL)
+	aus_grupop = models.CharField(u'Grupo Patológico',max_length=200,blank=True, null=True)
+	aus_diagn = models.TextField(u'Diagnóstico',blank=True, null=True) 
+
+	art_tipo_accidente = models.IntegerField('Tipo Alta',choices=TIPO_ACCIDENTE, blank=True, null=True)
+	art_ndenuncia = models.CharField(u'Nº Denuncia',max_length=50,blank=True, null=True)
+	art_fcontrol = models.DateField(u'Fecha Control',blank=True, null=True)
+	art_faccidente = models.DateField(u'Fecha Accidente',blank=True, null=True)
+	art_fdenuncia = models.DateField(u'Fecha Denuncia',blank=True, null=True)
+	art_fcrondesde = models.DateField(u'Cronológica Desde',blank=True, null=True)
+	art_fcronhasta = models.DateField(u'Cronológica Hasta',blank=True, null=True)
+	art_diascaidos = models.IntegerField(u'Días Caídos',blank=True, null=True)
+	art_freintegro = models.DateField(u'Reintegro',blank=True, null=True)
+	art_falta = models.DateField(u'Fecha Alta',blank=True, null=True)
+	art_tipo_alta = models.IntegerField('Tipo Alta',choices=TIPO_ALTA, blank=True, null=True)
+	art_frevision = models.DateField(u'Fecha Revisión',blank=True, null=True)
+	art_medico = models.ForeignKey(ent_medico_prof,verbose_name=u'Médico ART',db_column='art_medico',blank=True, null=True,related_name='art_medico',on_delete=models.SET_NULL)
+
+	observaciones = models.TextField('Observaciones',blank=True, null=True)       
+	descr_altaparc = models.TextField(u'Descr.Alta Parcial',blank=True, null=True)       
+	detalle_acc_art = models.TextField(u'Detalle Acc.ART',blank=True, null=True)       
+	estudios_partic = models.TextField(u'Estudios Particulares',blank=True, null=True)       
+	estudios_art = models.TextField(u'Estudios ART',blank=True, null=True)       
+	recalificac_art = models.TextField(u'Recalificación ART',blank=True, null=True)       
+
+	baja = models.BooleanField(default=False)
+	fecha_creacion = models.DateTimeField(auto_now_add = True)
+	fecha_modif = models.DateTimeField(auto_now = True)			
+	usuario_carga = models.ForeignKey('usuarios.UsuUsuario',db_column='usuario_carga',blank=True, null=True,related_name='aus_usuario_carga',on_delete=models.SET_NULL)
+
+	class Meta:
+		db_table = 'ausentismo'
+		ordering = ['empleado']
+
+	def __unicode__(self):
+	    return u'%s' % (self.empleado)
+
+
+
+
