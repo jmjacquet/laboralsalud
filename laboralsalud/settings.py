@@ -32,7 +32,6 @@ INSTALLED_APPS = (
     'django_extensions',  
     'django.contrib.humanize', 
     'localflavor', 
-    'chosen',
     'usuarios',
     'general',
     'entidades',
