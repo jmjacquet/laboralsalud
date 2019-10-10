@@ -32,6 +32,7 @@ INSTALLED_APPS = (
     'django_extensions',  
     'django.contrib.humanize', 
     'localflavor', 
+    'chosen',
     'usuarios',
     'general',
     'entidades',
@@ -79,12 +80,21 @@ WSGI_APPLICATION = 'laboralsalud.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
 
+DB_USER = "jumaja"
+DB_PASS = "qwerty"
+DB_HOST = "web603.webfaction.com"
+
+
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'default': {
+            'ENGINE': 'django.db.backends.mysql', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
+            'NAME': 'laboralsalud',           # Or path to database file if using sqlite3.
+            'USER':  DB_USER,    
+            'PASSWORD':  DB_PASS,            # Not used with sqlite3.
+            'HOST':  DB_HOST,                      # Set to empty string for localhost. Not used with sqlite3.
+            'PORT': '',      
+        },
     }
-}
 
 
 # Internationalization

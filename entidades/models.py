@@ -202,3 +202,11 @@ class ent_empleado(models.Model):
 		except:
 			return 0
 
+	def get_empleado(self):
+		entidad=u'%s' % self.apellido_y_nombre.upper()
+		if self.nro_doc:
+			entidad = entidad + u' - %s' % (self.nro_doc)
+		if self.empresa:
+			entidad = entidad + u' - %s' % (self.empresa)
+		return entidad.upper()
+

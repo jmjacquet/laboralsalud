@@ -1,0 +1,170 @@
+{% extends "base.html" %}
+{% load static from staticfiles %}
+{% load i18n %}
+{% load crispy_forms_tags %}
+{% load humanize %}
+
+{% block extra_css %}
+ 	<link rel="stylesheet" href="{% static 'css/abms.css'%}?{% now "Ymd"%}" type="text/css" >  
+{% endblock %}
+{% block extra_js %}
+ <script src="{% static 'js/scripts/ausentismos.js' %}" type="text/javascript"></script>
+{% endblock %}
+
+{% block breadcrumbs %}              
+        <div class="breadcrumbs">
+            CARGA DE AUSENTISMOS
+        </div>
+{% endblock breadcrumbs %}
+{% block principal %}  
+
+<div class="col-sm-12 col-md-12 col-xs-12">	
+ <div class="panel  panel_centrado">
+       
+	   <div class="panel-body"> 
+	    <form role="form" class="form abm form-horizontal " method="POST" action="" id="form-alta" enctype="multipart/form-data">
+	     {% csrf_token %}                 
+	        {{ form.errors }}			       	
+		       	<div class="col-xs-12">
+		       	  <div class="row cerca">
+							       	<div class="col-sm-12">{{ form.empleado|as_crispy_field }}</div>
+			     </div>		
+		       	  <div class="row">	
+		       	  	<div class="col-xs-12 col-sm-6">									       	
+				       		<fieldset>
+				       		<legend>DATOS EMPLEADO</legend>
+						       <div class="col-xs-12">
+				                <table class="table table-striped table-hover table-condensed table-no-bordered">
+								    <tbody>
+								    <tr>
+								      <td  class="titulo">Apellido y Nombre:</td><td colspan="3">{{art.nombre|default_if_none:''}}</td>
+								    </tr>
+								    <tr>
+								      <td class="titulo">Documento:</td><td>{{entidad.nro_doc|default_if_none:''}}</td>
+								      <td class="titulo">Nº Legajo:</td><td>{{entidad.fact_cuit|default_if_none:''}}</td>
+								    </tr>
+								    <tr>
+								      <td class="titulo">Condic.IVA:</td><td>{{entidad.get_fact_categFiscal_display|default_if_none:''}}</td>
+								      <td class="titulo">Domicilio:</td><td>{{ entidad.domicilio|default_if_none:'' }} - {{ entidad.cod_postal|default_if_none:'' }} - {{ entidad.localidad|default_if_none:'' }} - {{ entidad.get_provincia_display|default_if_none:'' }}</td>
+								    </tr>
+								    <tr>
+								      <td class="titulo">Teléfono/Celular:</td><td>{{entidad.telefono|default_if_none:''}} / {{ entidad.celular|default_if_none:'' }}</td>      
+								      <td class="titulo">E-mail Principal:</td><td>{{ entidad.email|default_if_none:'' }}</td>
+								    </tr>
+
+								    <tr>
+								      <td class="titulo">Contacto 1:</td><td colspan="3">{{entidad.contacto1_nombre|default_if_none:''}} {{ entidad.contacto1_email|default_if_none:'' }} {{ entidad.contacto1_tel|default_if_none:'' }} </td>            
+								    </tr>
+								    <tr>
+								      <td class="titulo">Contacto 2:</td><td colspan="3">{{entidad.contacto2_nombre|default_if_none:''}} {{ entidad.contacto2_email|default_if_none:'' }} {{ entidad.contacto2_tel|default_if_none:'' }} </td>            
+								    </tr>
+								    <tr>
+								      <td class="titulo">Contacto 3:</td><td colspan="3">{{entidad.contacto3_nombre|default_if_none:''}} {{ entidad.contacto3_email|default_if_none:'' }} {{ entidad.contacto3_tel|default_if_none:'' }} </td>            
+								    </tr>
+								    <tr>
+								      <td class="titulo">Contacto 4:</td><td colspan="3">{{entidad.contacto4_nombre|default_if_none:''}} {{ entidad.contacto4_email|default_if_none:'' }} {{ entidad.contacto4_tel|default_if_none:'' }} </td>            
+								    </tr>
+								    <tr>
+								      <td class="titulo">Contacto 5:</td><td colspan="3">{{entidad.contacto5_nombre|default_if_none:''}} {{ entidad.contacto5_email|default_if_none:'' }} {{ entidad.contacto5_tel|default_if_none:'' }} </td>            
+								    </tr>
+								    <tr>
+								      <td class="titulo">Detalle/Observaciones:</td><td colspan="3">{{entidad.observaciones|default_if_none:''}} </td>            
+								    </tr>
+
+								    </tbody>
+								  </table>													 
+				               </div>                                       						         
+				       		</fieldset>		
+				    </div>								       	
+				    <div class="col-xs-12 col-sm-6">									       	
+				       		<fieldset>
+				       		<legend>DATOS LABORALES</legend>
+						       <div class="col-xs-12">
+				                <table class="table table-striped table-hover table-condensed table-no-bordered">
+								    <tbody>
+								    <tr>
+								      <td  class="titulo">Apellido y Nombre:</td><td colspan="3">{{art.nombre|default_if_none:''}}</td>
+								    </tr>
+								    <tr>
+								      <td class="titulo">Prestador:</td><td colspan="3">{{art.prestador|default_if_none:''}}</td>
+								    </tr>
+								    <tr>
+								      <td class="titulo">Documento:</td><td>{{entidad.get_tipo_doc_display|default_if_none:''}} {{entidad.nro_doc|default_if_none:''}}</td>
+								      <td class="titulo">CUIT/CUIL:</td><td>{{entidad.fact_cuit|default_if_none:''}}</td>
+								    </tr>
+								    <tr>
+								      
+								    </tr>
+								    <tr>
+								      <td class="titulo">Condic.IVA:</td><td>{{entidad.get_fact_categFiscal_display|default_if_none:''}}</td>
+								      <td class="titulo">Domicilio:</td><td>{{ entidad.domicilio|default_if_none:'' }} - {{ entidad.cod_postal|default_if_none:'' }} - {{ entidad.localidad|default_if_none:'' }} - {{ entidad.get_provincia_display|default_if_none:'' }}</td>
+								    </tr>
+								    <tr>
+								      <td class="titulo">Teléfono/Celular:</td><td>{{entidad.telefono|default_if_none:''}} / {{ entidad.celular|default_if_none:'' }}</td>      
+								      <td class="titulo">E-mail Principal:</td><td>{{ entidad.email|default_if_none:'' }}</td>
+								    </tr>
+
+								    <tr>
+								      <td class="titulo">Contacto 1:</td><td colspan="3">{{entidad.contacto1_nombre|default_if_none:''}} {{ entidad.contacto1_email|default_if_none:'' }} {{ entidad.contacto1_tel|default_if_none:'' }} </td>            
+								    </tr>
+								    <tr>
+								      <td class="titulo">Contacto 2:</td><td colspan="3">{{entidad.contacto2_nombre|default_if_none:''}} {{ entidad.contacto2_email|default_if_none:'' }} {{ entidad.contacto2_tel|default_if_none:'' }} </td>            
+								    </tr>
+								    <tr>
+								      <td class="titulo">Contacto 3:</td><td colspan="3">{{entidad.contacto3_nombre|default_if_none:''}} {{ entidad.contacto3_email|default_if_none:'' }} {{ entidad.contacto3_tel|default_if_none:'' }} </td>            
+								    </tr>
+								    <tr>
+								      <td class="titulo">Contacto 4:</td><td colspan="3">{{entidad.contacto4_nombre|default_if_none:''}} {{ entidad.contacto4_email|default_if_none:'' }} {{ entidad.contacto4_tel|default_if_none:'' }} </td>            
+								    </tr>
+								    <tr>
+								      <td class="titulo">Contacto 5:</td><td colspan="3">{{entidad.contacto5_nombre|default_if_none:''}} {{ entidad.contacto5_email|default_if_none:'' }} {{ entidad.contacto5_tel|default_if_none:'' }} </td>            
+								    </tr>
+								    <tr>
+								      <td class="titulo">Detalle/Observaciones:</td><td colspan="3">{{entidad.observaciones|default_if_none:''}} </td>            
+								    </tr>
+
+								    </tbody>
+								  </table>													 
+				               </div>                                       						         
+				       		</fieldset>		
+				    </div>		
+			      </div>
+			   
+                  								       
+		          <div class="row">
+			       		<fieldset>
+			       		<legend>CONFIGURACIÓN TRIBUTARIA/FACTURACIÓN</legend>										       		
+				       		<div class="col-xs-12">
+				       							
+							</div>
+						
+						</fieldset>		
+              	  </div>  
+				</div>
+
+			{% if form.non_field_errors  %}
+		     	<script type="text/javascript">
+		     	alertify.errorAlert("{% for err in form.non_field_errors %}{{ err }}{% endfor %}");
+		     	</script>
+		    {% endif %}       
+	        {% for hidden in form.hidden_fields %} {{ hidden }} {% endfor %}
+	     	<br>		                 
+	        
+	         <div class="row">
+                <div class="col-xs-6">
+                 <button href="{% url 'ausentismo_listado' %}" class="btn btn-sm pull-left btn btn-danger" type="button">
+                      <i class="fa fa-times"></i>Cancelar
+                 </button>
+                </div>
+                <div class="col-xs-6">
+                 <button class="btn pull-right btn-sm btn-primary" id="Guardar" type="submit"><i class="fa fa-check"></i>Guardar</button>
+                </div>              
+              </div>             
+	    </form>
+	   </div>
+ </div>
+         
+</div>	
+
+
+{% endblock %}

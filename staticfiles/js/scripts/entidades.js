@@ -22,7 +22,7 @@ $("#id_cuit").keyup(function(e){
      else{
         $.ajax({
         data: {'cuit': consulta},
-        url: '/general/buscarDatosAPICUIT/',
+        url: '/buscarDatosAPICUIT/',
         type: 'get',
         cache: true,
         beforeSend: function(){

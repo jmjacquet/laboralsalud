@@ -11,7 +11,7 @@ from entidades.models import ent_empleado,ent_medico_prof
 #Tabla de la Base de Configuracion
 class ausentismo(models.Model):	
 	empleado = models.ForeignKey(ent_empleado,verbose_name='Empleado',db_column='empleado',blank=True, null=True,related_name='aus_empleado',on_delete=models.SET_NULL)
-	tipo_ausentismo = models.IntegerField('Ausentismo',choices=TIPO_AUSENCIA, blank=True, null=True,default=12)
+	tipo_ausentismo = models.IntegerField('Ausentismo',choices=TIPO_AUSENCIA, blank=True, null=True)
 
 	aus_control = models.BooleanField(u'¿Asistió a Control?',default=False)
 	aus_fcontrol = models.DateField(u'Fecha Control',blank=True, null=True)
@@ -63,6 +63,8 @@ class ausentismo(models.Model):
 
 	def __unicode__(self):
 	    return u'%s' % (self.empleado)
+
+	
 
 
 
