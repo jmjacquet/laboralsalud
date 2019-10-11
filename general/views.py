@@ -7,6 +7,7 @@ from django.core.serializers.json import DjangoJSONEncoder
 import json
 import urllib
 from django.views.generic import TemplateView
+from entidades.models import ent_empleado
 
 class VariablesMixin(object):
     def get_context_data(self, **kwargs):
@@ -56,6 +57,21 @@ class VariablesMixin(object):
         # context['EMAIL_CONTACTO'] = EMAIL_CONTACTO                        
         return context
 
+class PrincipalView(VariablesMixin,TemplateView):
+    template_name = 'base.html'
+
+    # @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(PrincipalView, self).dispatch(*args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super(PrincipalView, self).get_context_data(**kwargs)              
+        # vars_sistema = settings
+        return context
+
+
+
+
 # @login_required 
 def buscarDatosAPICUIT(request):      
    try:                            
@@ -83,14 +99,26 @@ def buscarDatosAPICUIT(request):
     d= []
    return HttpResponse( json.dumps(d), content_type='application/json' ) 
 
-class PrincipalView(VariablesMixin,TemplateView):
-    template_name = 'base.html'
+from django.forms.models import model_to_dict
+def buscarDatosEntidad(request):                     
+   lista= {}
+   id = request.GET['id']
+   e = ent_empleado.objects.get(pk=id)   
+   lista = {'id':e.id,'nro_doc':e.nro_doc,'legajo':e.legajo,'apellido_y_nombre':e.apellido_y_nombre,'fecha_nac':e.fecha_nac,
+            'domicilio':e.domicilio,'provincia':e.get_provincia_display(),'localidad':e.localidad,'cod_postal':e.cod_postal,
+            'email':e.email,'telefono':e.telefono,'celular':e.celular,'art':e.get_art(),'empresa':e.get_empresa(),
+            'empr_fingreso':e.empr_fingreso,'trab_cargo':e.get_cargo(),'trab_fingreso':e.trab_fingreso,'trab_fbaja':e.trab_fbaja,
+            'trab_armas':e.trab_armas,'trab_tareas_dif':e.trab_tareas_dif,'trab_preocupac':e.trab_preocupac,'trab_preocup_fecha':e.trab_preocup_fecha,
+            'edad':e.get_edad,'antig_empresa':e.get_antiguedad_empr,'antig_trabajo':e.get_antiguedad_trab
+        }
+   # try:
+   #    id = request.GET['id']
+   #    entidad = ent_empleado.objects.get(id=id)   
+   #    qs_json = serializers.serialize('json', entidad)
 
-    # @method_decorator(login_required)
-    def dispatch(self, *args, **kwargs):
-        return super(PrincipalView, self).dispatch(*args, **kwargs)
 
-    def get_context_data(self, **kwargs):
-        context = super(PrincipalView, self).get_context_data(**kwargs)              
-        # vars_sistema = settings
-        return context
+   # except:
+   #  lista= {}
+   return HttpResponse( json.dumps(lista, cls=DjangoJSONEncoder), content_type='application/json' )  
+
+

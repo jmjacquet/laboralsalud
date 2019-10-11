@@ -99,11 +99,14 @@ class EmpleadoForm(forms.ModelForm):
 	trab_fbaja = forms.DateField(required = False,widget=forms.DateInput(attrs={'class': 'form-control datepicker'}))
 	trab_preocup_conclus = forms.CharField(label=u'Conclusión Preocupacional',widget=forms.Textarea(attrs={'class':'form-control2', 'rows': 2}),required = False)	
 	trab_factores_riesgo = forms.CharField(label=u'Factores de Riesgo a lo que está Expuesto',widget=forms.Textarea(attrs={'class':'form-control2', 'rows': 2}),required = False)	
-	trab_tareas_dif = forms.CharField(label=u'Descripción Tareas Diferentes',widget=forms.Textarea(attrs={'class':'form-control2', 'rows': 2}),required = False)	
+	trab_tareas_dif_det = forms.CharField(label=u'Descripción Tareas Diferentes',widget=forms.Textarea(attrs={'class':'form-control2', 'rows': 2}),required = False)	
 	trab_anteriores = forms.CharField(label=u'Trabajos Anteriores',widget=forms.Textarea(attrs={'class':'form-control2', 'rows': 2}),required = False)	
 	trab_antecedentes = forms.CharField(label=u'Antecedentes Patológicos',widget=forms.Textarea(attrs={'class':'form-control2', 'rows': 2}),required = False)	
 	trab_accidentes = forms.CharField(label=u'Accidentes ART',widget=forms.Textarea(attrs={'class':'form-control2', 'rows': 2}),required = False)	
 	trab_vacunas = forms.CharField(label=u'Vacunas',widget=forms.Textarea(attrs={'class':'form-control2', 'rows': 2}),required = False)	
+	trab_armas = forms.ChoiceField(label=u'¿Portación de Armas?',choices=SINO,required=True,initial='N')
+	trab_tareas_dif = forms.ChoiceField(label=u'¿Tareas Diferentes?',choices=SINO,required=True,initial='N')
+	trab_preocupac = forms.ChoiceField(label='¿Preocupacional?',choices=SINO,required=True,initial='N')
 	
 	# tipo_form = forms.CharField(widget = forms.HiddenInput(), required = False)	
 	class Meta:

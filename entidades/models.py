@@ -132,14 +132,14 @@ class ent_empleado(models.Model):
 	trab_fingreso = models.DateField(u'Fecha Ingreso',blank=True, null=True)
 	trab_fbaja = models.DateField(u'Fecha Baja',blank=True, null=True)
 
-	trab_armas = models.BooleanField(u'¿Portación de Armas?',default=False)
-	trab_tareas_dif = models.BooleanField(u'¿Tareas Diferentes?',default=False)
-	trab_preocupac = models.BooleanField(u'¿Preocupacional?',default=False)
+	trab_armas = models.CharField(u'¿Portación de Armas?',max_length=1,default='N')
+	trab_tareas_dif = models.CharField(u'¿Tareas Diferentes?',max_length=1,default='N')
+	trab_preocupac = models.CharField(u'¿Preocupacional?',max_length=1,default='N')
 	trab_preocup_fecha = models.DateField(u'Fecha Preocup.',blank=True, null=True)
 
 	trab_preocup_conclus = models.TextField(u'Conclusión Preocupacional',blank=True, null=True) 
 	trab_factores_riesgo = models.TextField(u'Factores de Riesgo a lo que está Expuesto',blank=True, null=True) 
-	trab_tareas_dif = models.TextField(u'Descripción Tareas Diferentes',blank=True, null=True) 
+	trab_tareas_dif_det = models.TextField(u'Descripción Tareas Diferentes',blank=True, null=True) 
 	trab_anteriores = models.TextField(u'Trabajos Anteriores',blank=True, null=True) 
 	trab_antecedentes = models.TextField(u'Antecedentes Patológicos',blank=True, null=True) 
 	trab_accidentes = models.TextField(u'Accidentes ART',blank=True, null=True) 
@@ -209,4 +209,22 @@ class ent_empleado(models.Model):
 		if self.empresa:
 			entidad = entidad + u' - %s' % (self.empresa)
 		return entidad.upper()
+
+	def get_cargo(self):
+		if self.trab_cargo:
+			return unicode(self.trab_cargo.cargo)
+		else:
+			return ''
+
+	def get_empresa(self):
+		if self.empresa:
+			return unicode(self.empresa.razon_social)
+		else:
+			return ''
+
+	def get_art(self):
+		if self.art:
+			return unicode(self.art.nombre)
+		else:
+			return ''
 

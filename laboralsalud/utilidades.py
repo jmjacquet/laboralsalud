@@ -30,6 +30,11 @@ TIPO_ACCIDENTE = (
     (2, u'In Itínere'),    
 )
 
+SINO = (    
+    ('S', u'S'),
+    ('N', u'N'),
+)
+
 CATEG_FISCAL = (
 (1, 'IVA Responsable Inscripto'),          
 (2, 'Responsable No Inscripto'),          

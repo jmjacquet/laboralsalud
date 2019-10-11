@@ -17,7 +17,10 @@
         </div>
 {% endblock breadcrumbs %}
 {% block principal %}  
-
+<div id="cargando" class="cargando" >
+        <span class="cargando-txt">CARGANDO...</span>
+        <img class="cargando-img" src="{% static 'img/loading-bars.svg' %}">
+</div>
 <div class="col-sm-12 col-md-12 col-xs-12">	
  <div class="panel  panel_centrado">
        
@@ -38,22 +41,22 @@
 						       	 <table class="table table-striped table-hover table-condensed table-no-bordered">
 								    <tbody>
 								    <tr>
-								      <td  class="titulo">Apellido y Nombre:</td><td colspan="3">JACQUET JUAN MANUEL</td>
+								      <td  class="titulo">Apellido y Nombre:</td><td colspan="3" id="apellido_y_nombre">JACQUET JUAN MANUEL</td>
 								    </tr>								 
 								    <tr>
-								      <td class="titulo">Documento:</td><td>29387656</td>
-								      <td class="titulo">Nº Legajo:</td><td>98989898</td>
+								      <td class="titulo">Documento:</td><td id="nro_doc">29387656</td>
+								      <td class="titulo">Nº Legajo:</td><td id="legajo">98989898</td>
 								    </tr>
 								    <tr>
-								      <td class="titulo">Fecha Nacimiento:</td><td>99/99/9999</td>
-								      <td class="titulo">Edad:</td><td>99 años</td>
+								      <td class="titulo">Fecha Nacimiento:</td><td id="fecha_nac">99/99/9999</td>
+								      <td class="titulo">Edad:</td><td id="edad">99 años</td>
 								    </tr>
 								    <tr>
-								      <td class="titulo">Teléfono/Celular:</td><td>87979879 / 45456464</td>      
-								      <td class="titulo">E-mail:</td><td></td>
+								      <td class="titulo">Teléfono/Celular:</td><td id="telcel">87979879 / 45456464</td>      
+								      <td class="titulo">E-mail:</td><td id="email"></td>
 								    </tr>
 								    <tr>
-								      <td class="titulo">ART:</td><td colspan="3">SANCOR SEGUROS ART</td>  								      
+								      <td class="titulo">ART:</td><td colspan="3" id="art">SANCOR SEGUROS ART</td>  								      
 								    </tr>
 								    </tbody>
 								  </table>													 
@@ -65,29 +68,29 @@
 				                <table class="table table-striped table-hover table-condensed table-no-bordered">
 								    <tbody>
 								    <tr>
-								      <td  class="titulo">Empresa:</td><td colspan="3">COLOME SA</td>
+								      <td  class="titulo">Empresa:</td><td colspan="3" id="empresa">COLOME SA</td>
 								    </tr>								 
 								    <tr>
-								      <td class="titulo">Fecha Ingreso Empresa:</td><td>99/99/9999</td>
-								      <td class="titulo">Antigüedad Laboral:</td><td>99 años</td>
+								      <td class="titulo">Fecha Ingreso Empresa:</td><td id="empr_fingreso">99/99/9999</td>
+								      <td class="titulo">Antigüedad Laboral:</td><td id="antig_empresa">99 años</td>
 								    </tr>
 								    <tr>
-								      <td  class="titulo">Puesto/Cargo:</td><td colspan="3">MEDICO GENERAL</td>
+								      <td  class="titulo">Puesto/Cargo:</td><td colspan="3" id="trab_cargo">MEDICO GENERAL</td>
 								    </tr>
 								    <tr>
-								      <td class="titulo">Fecha Ingreso Puesto:</td><td>99/99/9999</td>
-								      <td class="titulo">Antigüedad Puesto:</td><td>99 años</td>
+								      <td class="titulo">Fecha Ingreso Puesto:</td><td id="trab_fingreso">99/99/9999</td>
+								      <td class="titulo">Antigüedad Puesto:</td><td id="antig_trabajo">99 años</td>
 								    </tr>
 								    <tr>
-								      <td class="titulo">Fecha Cese de Actividad:</td><td <td colspan="3">99/99/9999</td>								      
+								      <td class="titulo">Fecha Cese de Actividad:</td><td <td colspan="3" id="trab_fbaja">99/99/9999</td>								      
 								    </tr>
 								    <tr>
-								      <td class="titulo">¿Portación de Armas?</td><td>NO</td>
-								      <td class="titulo">¿Tareas Diferentes?</td><td>NO</td>								      
+								      <td class="titulo">¿Portación de Armas?</td><td id="trab_armas">NO</td>
+								      <td class="titulo">¿Tareas Diferentes?</td><td id="trab_tareas_dif">NO</td>								      
 								    </tr>
 								    <tr>
-								      <td class="titulo">¿Preocupacional?</td><td>SI</td>
-								      <td class="titulo">Fecha Preocupacional:</td><td>99/99/9999</td>								      
+								      <td class="titulo">¿Preocupacional?</td><td id="trab_preocupac">SI</td>
+								      <td class="titulo">Fecha Preocupacional:</td><td id="trab_preocup_fecha">99/99/9999</td>								      
 								    </tr>
 								    </tbody>
 								  </table>				
