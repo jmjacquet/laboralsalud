@@ -24,16 +24,16 @@ $("input[type=number]").click(function(){
             this.select()
           });
 
-  // $.fm({        
-  //         custom_callbacks: {
-  //             "recargarC": function(data, options) {
-  //                recargarClientes();
-  //                },
-  //             "recargarV": function(data, options) {
-  //                recargarVendedores();
-  //                }
-  //             }
-  //   });
+  $.fm({        
+          custom_callbacks: {
+              "recargarE": function(data, options) {
+                 recargarEmpleados();
+                 },
+              // "recargarV": function(data, options) {
+              //    recargarVendedores();
+              //    }
+              }
+    });
 
   $("#id_empleado").chosen({
             no_results_text: "Empleado inexistente...",
@@ -65,7 +65,7 @@ $("#id_empleado").change(function(){
                           $("#fecha_nac").text(moment(data['fecha_nac']).format("DD/MM/YYYY")); 
                           $("#legajo").text(data['legajo']); 
                           $("#edad").text(data['edad']+' años'); 
-                          $("#telcel").text(data['telefono']+'/'+data['celular']); 
+                          $("#telcel").text((data['telefono']||'')+' / '+(data['celular']||'')); 
                           $("#email").text(data['email']); 
                           $("#cod_postal").text(data['cod_postal']);
                           $("#domicilio").text(data['domicilio']);
@@ -163,7 +163,6 @@ $("#id_empleado").change(function(){
 $('#id_tipo_ausentismo').change(function()
 {
   var id =  $("#id_tipo_ausentismo").val();
-  console.log(id);
   if (id==1){
     $('#tab_ausencia').show();
     $('#tab_art').hide();

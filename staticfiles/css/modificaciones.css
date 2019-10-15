@@ -2,8 +2,7 @@ body {background-color:#e6e6e6;color:#000000;}
 
 .page-content-wrapper .page-content {
     margin-left: 5px;
-    margin-top: 0px;
-    min-height: 850px;
+    margin-top: 0px;   
     padding: 0px 10px 10px 10px;
 }
 
@@ -606,3 +605,6 @@ div.breadcrumbs a:focus, div.breadcrumbs a:hover {
     color: #c4dce8;
 }
 
+.dato{
+    font-weight: bold;
+}

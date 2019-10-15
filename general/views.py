@@ -122,3 +122,14 @@ def buscarDatosEntidad(request):
    return HttpResponse( json.dumps(lista, cls=DjangoJSONEncoder), content_type='application/json' )  
 
 
+# @login_required 
+def recargar_empleados(request):
+    context={}
+    lista = []
+    empleados = ent_empleado.objects.filter(baja=False).order_by('apellido_y_nombre')    
+    for e in empleados:
+        lista.append({'id':e.pk,'nombre':e.get_empleado()})
+    context["empleados"]=lista
+    print lista
+    return HttpResponse(json.dumps(context))
+

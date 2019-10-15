@@ -13,20 +13,21 @@ class EntidadModelChoiceField(forms.ModelChoiceField):
 
 
 class AusentismoForm(forms.ModelForm):
-	empleado = EntidadModelChoiceField(label='',queryset=ent_empleado.objects.filter(baja=False),empty_label='---',required = False)	
+	empleado = EntidadModelChoiceField(label='',queryset=ent_empleado.objects.filter(baja=False),empty_label='---',required = True)	
 	# apellido_y_nombre = forms.CharField(label='',widget=forms.TextInput(attrs={ 'class':'form-control','readonly': 'readonly'}),required = False)				
 	# nro_doc = forms.IntegerField(label='',widget=forms.TextInput(attrs={ 'class':'form-control','readonly': 'readonly'}),required = False)
 	# legajo = forms.IntegerField(label='',widget=forms.TextInput(attrs={ 'class':'form-control','readonly': 'readonly'}),required = False)
 	tipo_ausentismo = forms.ChoiceField(label='',choices=TIPO_AUSENCIA,required=False,initial=1)
 	aus_control = forms.ChoiceField(label=u'¿Asistió a Control?',choices=SINO,required=False,initial='N')
 	aus_certificado = forms.ChoiceField(label=u'¿Presenta Certificado?',choices=SINO,required=False,initial='N')
-	aus_diagn = forms.CharField(label='Diagnóstico',widget=forms.Textarea(attrs={'class':'form-control2', 'rows': 2}),required = False)	
+	aus_diagn = forms.CharField(label='Diagnóstico',widget=forms.Textarea(attrs={'class':'form-control2', 'rows': 2}),required = True)	
 	observaciones = forms.CharField(label='Observaciones',widget=forms.Textarea(attrs={'class':'form-control2', 'rows': 2}),required = False)	
 	descr_altaparc = forms.CharField(label=u'Descripción Alta Parcial',widget=forms.Textarea(attrs={'class':'form-control2', 'rows': 2}),required = False)	
 	detalle_acc_art = forms.CharField(label='Detalle Accidente ART',widget=forms.Textarea(attrs={'class':'form-control2', 'rows': 2}),required = False)	
 	estudios_partic = forms.CharField(label=u'Estudios Particulares',widget=forms.Textarea(attrs={'class':'form-control2', 'rows': 2}),required = False)	
 	estudios_art = forms.CharField(label='Estudios ART',widget=forms.Textarea(attrs={'class':'form-control2', 'rows': 2}),required = False)	
 	recalificac_art = forms.CharField(label=u'Recalificación ART',widget=forms.Textarea(attrs={'class':'form-control2', 'rows': 2}),required = False)	
+	aus_grupop = forms.CharField(label=u'Grupo Patológico',required=True)
 	class Meta:
 			model = ausentismo
 			exclude = ['id','fecha_creacion','fecha_modif','usuario_carga']
@@ -34,4 +35,42 @@ class AusentismoForm(forms.ModelForm):
 	def __init__(self, *args, **kwargs):
 		request = kwargs.pop('request', None)
 		super(AusentismoForm, self).__init__(*args, **kwargs)		
+
+	def clean(self):		
+		tipo_ausentismo = self.cleaned_data.get('tipo_ausentismo')	
+		if tipo_ausentismo==1:
+			aus_fcrondesde = self.cleaned_data.get('aus_fcrondesde')	
+			aus_fcronhasta = self.cleaned_data.get('aus_fcronhasta')	
+			aus_diascaidos= self.cleaned_data.get('aus_diascaidos')	
+			if not aus_fcrondesde:
+				self._errors['aus_fcrondesde'] = u'¡Cargar una Fecha!'
+			if not aus_fcronhasta:
+				self._errors['aus_fcronhasta'] = u'¡Cargar una Fecha!'
+			if not aus_diascaidos:
+				self._errors['aus_diascaidos'] = u'¡Cargar una Fecha!'
+		else:
+			art_tipo_accidente = self.cleaned_data.get('art_tipo_accidente')							
+			if not art_tipo_accidente:
+				# self._errors['art_tipo_accidente'] = u'seleccionar Tipo Accidente!'
+				# self._errors['art_tipo_accidente'] = u' '
+				raise forms.ValidationError("¡Debe seleccionar un Tipo de Accidente! Verifique.")
+			else:
+				art_faccidente = self.cleaned_data.get('art_faccidente')
+				if not art_faccidente:
+					self._errors['art_faccidente'] = u'¡Cargar una Fecha!'
+				art_fdenuncia = self.cleaned_data.get('art_fdenuncia')
+				if not art_fdenuncia:
+					self._errors['art_fdenuncia'] = u'¡Cargar una Fecha!'
+				art_fcrondesde = self.cleaned_data.get('art_fcrondesde')	
+				art_fcronhasta = self.cleaned_data.get('art_fcronhasta')	
+				art_diascaidos= self.cleaned_data.get('art_diascaidos')	
+				if not art_fcrondesde:
+					self._errors['art_fcrondesde'] = u'¡Cargar una Fecha!'
+				if not art_fcronhasta:
+					self._errors['art_fcronhasta'] = u'¡Cargar una Fecha!'
+				if not art_diascaidos:
+					self._errors['art_diascaidos'] = u'¡Cargar una Fecha!'
+
+			
+		return self.cleaned_data
 	

@@ -31,7 +31,7 @@ class ausentismo(models.Model):
 	aus_grupop = models.CharField(u'Grupo Patológico',max_length=200,blank=True, null=True)
 	aus_diagn = models.TextField(u'Diagnóstico',blank=True, null=True) 
 
-	art_tipo_accidente = models.IntegerField('Tipo Accidente',choices=TIPO_ACCIDENTE, blank=True, null=True)
+	art_tipo_accidente = models.IntegerField('Tipo Accidente/Enfermedad',choices=TIPO_ACCIDENTE, blank=True, null=True)
 	art_ndenuncia = models.CharField(u'Nº Denuncia',max_length=50,blank=True, null=True)
 	art_fcontrol = models.DateField(u'Fecha Control',blank=True, null=True)
 	art_faccidente = models.DateField(u'Fecha Accidente',blank=True, null=True)
