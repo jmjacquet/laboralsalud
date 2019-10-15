@@ -13,9 +13,9 @@ class ausentismo(models.Model):
 	empleado = models.ForeignKey(ent_empleado,verbose_name='Empleado',db_column='empleado',blank=True, null=True,related_name='aus_empleado',on_delete=models.SET_NULL)
 	tipo_ausentismo = models.IntegerField('Ausentismo',choices=TIPO_AUSENCIA, blank=True, null=True)
 
-	aus_control = models.BooleanField(u'¿Asistió a Control?',default=False)
+	aus_control = models.CharField(u'¿Asistió a Control?',max_length=1,default='N')
 	aus_fcontrol = models.DateField(u'Fecha Control',blank=True, null=True)
-	aus_certificado = models.BooleanField(u'¿Presenta Certificado?',default=False)
+	aus_certificado = models.CharField(u'¿Presenta Certificado?',max_length=1,default='N')
 	aus_fcertif = models.DateField(u'Fecha Certificado',blank=True, null=True)
 	aus_fentrega_certif = models.DateField(u'Fecha Entrega Certif.',blank=True, null=True)
 
@@ -31,7 +31,7 @@ class ausentismo(models.Model):
 	aus_grupop = models.CharField(u'Grupo Patológico',max_length=200,blank=True, null=True)
 	aus_diagn = models.TextField(u'Diagnóstico',blank=True, null=True) 
 
-	art_tipo_accidente = models.IntegerField('Tipo Alta',choices=TIPO_ACCIDENTE, blank=True, null=True)
+	art_tipo_accidente = models.IntegerField('Tipo Accidente',choices=TIPO_ACCIDENTE, blank=True, null=True)
 	art_ndenuncia = models.CharField(u'Nº Denuncia',max_length=50,blank=True, null=True)
 	art_fcontrol = models.DateField(u'Fecha Control',blank=True, null=True)
 	art_faccidente = models.DateField(u'Fecha Accidente',blank=True, null=True)

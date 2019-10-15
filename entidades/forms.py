@@ -116,3 +116,11 @@ class EmpleadoForm(forms.ModelForm):
 	def __init__(self, *args, **kwargs):
 		request = kwargs.pop('request', None)
 		super(EmpleadoForm, self).__init__(*args, **kwargs)				
+
+	def clean(self):		
+		trab_preocupac = self.cleaned_data.get('trab_preocupac')	
+		trab_preocup_fecha = self.cleaned_data.get('trab_preocup_fecha')	
+		if (trab_preocupac=='S') and (not trab_preocup_fecha):
+				self._errors['tipo_doc'] = u'Debe cargar una Fecha!'
+						
+		return self.cleaned_data

@@ -23,71 +23,118 @@ $("input[type=number]").click(function(){
         });
 
 $("#id_empleado").change(function(){
-  // var id =  $("#id_entidad").val();
-  // if (id!='')
-  //   {
-  //         $.ajax({
-  //               data: {'id': id},
-  //               url: '/comprobantes/buscarDatosEntidad/',
-  //               type: 'get',
-  //               cache: true,          
-  //               success : function(data) {
+  var id =  $("#id_empleado").val();
+  if (id!='')
+    {
+          $.ajax({
+                data: {'id': id},
+                url: '/buscarDatosEntidad/',
+                type: 'get',
+                cache: true,          
+                beforeSend: function(){
+                $('#cargando').show();
+                },
+                complete: function(){
+                    $('#cargando').hide();
+                },
+                success : function(data) {
                      
-  //                    if (data!='')
-  //                       {
-  //                         $("#id_cliente_categ_fiscal").val(data['fact_categFiscal']); 
-  //                         if (data['dcto_general']==''){
-  //                           $("#id_cliente_descuento").val(data['dcto_general'])
-  //                         }else {$("#id_cliente_descuento").val(0);};                          
-  //                         if (data['lista_precios']!=''){
-  //                            $("#id_lista_precios").find('option[value="'+data['lista_precios']+'"]').attr("selected",true);
-  //                         };
+                     if (data!='')
+                        {
+                          $("#apellido_y_nombre").text(data['apellido_y_nombre']); 
+                          $("#nro_doc").text(data['nro_doc']); 
+                          $("#fecha_nac").text(moment(data['fecha_nac']).format("DD/MM/YYYY")); 
+                          $("#legajo").text(data['legajo']); 
+                          $("#edad").text(data['edad']+' años'); 
+                          $("#telcel").text(data['telefono']+'/'+data['celular']); 
+                          $("#email").text(data['email']); 
+                          $("#art").text(data['art']); 
 
-  //                         var tot = data['saldo_sobrepaso'];
-  //                         if (tot>0){
-  //                           alertify.alert("TOPE SALDO PERMITIDO CLIENTES","¡El saldo pendiente sobrepasa al tope permitido por <b>$"+tot+"</b>!"); 
-  //                         };
-  //                       }
-  //                       else{                 
-  //                        $("#id_cliente_categ_fiscal").val(5); 
-  //                         $("#id_cliente_descuento").val(0); 
-  //                       };
+                          $("#empresa").text(data['empresa']); 
+                          if (data['empr_fingreso']!=null){
+                            $("#empr_fingreso").text(''); 
+                          }else{
+                            $("#empr_fingreso").text(moment(data['empr_fingreso']).format("DD/MM/YYYY")); };
+                          $("#trab_cargo").text(data['trab_cargo']); 
+                          if (data['trab_fingreso']!=null){
+                            $("#trab_fingreso").text(''); 
+                          }else{
+                          $("#trab_fingreso").text(moment(data['trab_fingreso']).format("DD/MM/YYYY")); };
+                          if (data['trab_fbaja']!=null){
+                            $("#trab_fbaja").text(''); 
+                          }else{
+                          $("#trab_fbaja").text(moment(data['trab_fbaja']).format("DD/MM/YYYY"));}; 
+                          $("#trab_armas").text(data['trab_armas']); 
+                          $("#trab_tareas_dif").text(data['trab_tareas_dif']); 
+                          $("#trab_preocupac").text(data['trab_preocupac']); 
+                          if (data['trab_preocup_fecha']!=null){
+                            $("#trab_preocup_fecha").text(''); 
+                          }else{
+                          $("#trab_preocup_fecha").text(moment(data['trab_preocup_fecha']).format("DD/MM/YYYY")); };
+                          $("#antig_empresa").text(data['antig_empresa']+' años'); 
+                          $("#antig_trabajo").text(data['antig_trabajo']+' años'); 
+                          
+                        }
+                        else{                 
+                          $("#apellido_y_nombre").text(''); 
+                          $("#nro_doc").text(''); 
+                          $("#fecha_nac").text('');
+                          $("#legajo").text('');
+                          $("#edad").text('');
+                          $("#telcel").text('');
+                          $("#email").text('');
+                          $("#art").text('');
 
-  //                       calcularTotales();
-  //               },
-  //               error : function(message) {
-  //                    /*alertify.alert('Búsqueda por CUIT','No se encontró el Proveedor.');*/
-  //                    console.log(message);
-  //                 }
-  //             });
+                          $("#empresa").text(''); 
+                          $("#empr_fingreso").text(''); 
+                          $("#trab_cargo").text('');
+                          $("#trab_fingreso").text('');
+                          $("#trab_fbaja").text('');
+                          $("#trab_preocupac").text('');
+                          $("#trab_armas").text('');
+                          $("#trab_tareas_dif").text('');
+                          $("#trab_preocup_fecha").text('');
+                          $("#antig_empresa").text('');
+                          $("#antig_trabajo").text('');
+                        };
 
-  //     if ($('#id_tipo_form').val()=='ALTA')
-  //     {        
-  //           $.ajax({
-  //                 data: {'id': id},
-  //                 url: '/comprobantes/setearLetraCPB/',
-  //                 type: 'get',
-  //                 cache: true,          
-  //                 success : function(data) {
-                       
-  //                      if (data!='')
-  //                         {
-  //                           $("#id_letra").val(data[0]); 
-  //                           $("#id_letra").trigger("change");
-  //                         }
-                         
-  //                 },
-  //                 error : function(message) {
-  //                      /*alertify.alert('Búsqueda por CUIT','No se encontró el Proveedor.');*/
-  //                      console.log(message);
-  //                   }
-  //               });
-  //       }
-  //   }
+                        
+                },
+                error : function(message) {
+                     /*alertify.alert('Búsqueda por CUIT','No se encontró el Proveedor.');*/
+                     console.log(message);
+                  }
+              });
+     
+    }else{                 
+            $("#apellido_y_nombre").text(''); 
+            $("#nro_doc").text(''); 
+            $("#fecha_nac").text('');
+            $("#legajo").text('');
+            $("#edad").text('');
+            $("#telcel").text('');
+            $("#email").text('');
+            $("#art").text('');
+            $("#empresa").text(''); 
+            $("#empr_fingreso").text(''); 
+            $("#trab_cargo").text('');
+            $("#trab_fingreso").text('');
+            $("#trab_fbaja").text('');
+            $("#trab_armas").text('');
+            $("#trab_tareas_dif").text('');
+            $("#trab_preocup_fecha").text('');
+            $("#antig_empresa").text('');
+            $("#antig_trabajo").text('');
+            $("#trab_preocupac").text('');
+          };
 
   }); 
 
 
+
+
+$('#cargando').hide();
+$("#id_empleado").trigger("change");
 
 
  });

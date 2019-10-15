@@ -24,7 +24,7 @@
         margin: 5px 10px 5px 5px;       
         position: relative;
         border-radius:4px;
-        background-color:#F1F3FA;
+        /*background-color:#F1F3FA;*/
     }   
     
 .abm legend
@@ -48,13 +48,14 @@
 }
 .abm .form-group {
     margin-bottom: 5px;
+    
 }
 
 .abm textarea.form-control2 {
     height: auto
 }
 .abm .form-control {
-    display: block;
+    display:inline-block;float:left
     /*width: 100%;*/
     height: 25px;
     padding: 4px 4px;
