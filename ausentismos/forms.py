@@ -38,16 +38,17 @@ class AusentismoForm(forms.ModelForm):
 
 	def clean(self):		
 		tipo_ausentismo = self.cleaned_data.get('tipo_ausentismo')	
-		if tipo_ausentismo==1:
+		
+		if int(tipo_ausentismo)== 1:
 			aus_fcrondesde = self.cleaned_data.get('aus_fcrondesde')	
 			aus_fcronhasta = self.cleaned_data.get('aus_fcronhasta')	
 			aus_diascaidos= self.cleaned_data.get('aus_diascaidos')	
 			if not aus_fcrondesde:
-				self._errors['aus_fcrondesde'] = u'¡Cargar una Fecha!'
+				self._errors['aus_fcrondesde'] = u'¡Cargar Fecha!'
 			if not aus_fcronhasta:
-				self._errors['aus_fcronhasta'] = u'¡Cargar una Fecha!'
+				self._errors['aus_fcronhasta'] = u'¡Cargar Fecha!'
 			if not aus_diascaidos:
-				self._errors['aus_diascaidos'] = u'¡Cargar una Fecha!'
+				self._errors['aus_diascaidos'] = u'¡Cargar un día!'
 		else:
 			art_tipo_accidente = self.cleaned_data.get('art_tipo_accidente')							
 			if not art_tipo_accidente:

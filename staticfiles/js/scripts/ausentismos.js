@@ -174,6 +174,53 @@ $('#id_tipo_ausentismo').change(function()
 })
 
 
+$('#id_aus_fcrondesde').change(function()
+{  
+  if ($("#id_aus_fcronhasta").val()=='')
+  {
+    $("#id_aus_fcronhasta").val($('#id_aus_fcrondesde').val());
+  };
+  diasRestantes($('#id_aus_fcrondesde'),$("#id_aus_fcronhasta"),$("#id_aus_diascaidos"));
+});
+
+$('#id_aus_fcronhasta').change(function()
+{  
+  if ($("#id_aus_fcrondesde").val() == '')
+  {
+    $("#id_aus_fcrondesde").val($('#id_aus_fcronhasta').val());
+  };
+  diasRestantes($('#id_aus_fcrondesde'),$("#id_aus_fcronhasta"),$("#id_aus_diascaidos"));
+});
+
+
+$('#id_aus_fcrondesde').change(function()
+{  
+  if ($("#id_aus_fcronhasta").val()=='')
+  {
+    $("#id_aus_fcronhasta").val($('#id_aus_fcrondesde').val());
+  };
+  diasRestantes($('#id_aus_fcrondesde'),$("#id_aus_fcronhasta"),$("#id_aus_diascaidos"));
+});
+
+$('#id_aus_fcronhasta').change(function()
+{  
+  if ($("#id_aus_fcrondesde").val() == '')
+  {
+    $("#id_aus_fcrondesde").val($('#id_aus_fcronhasta').val());
+  };
+  diasRestantes($('#id_aus_fcrondesde'),$("#id_aus_fcronhasta"),$("#id_aus_diascaidos"));
+});
+
+
+
+ function diasRestantes(desde,hasta,dias){
+        var a = moment(desde.val(),'D/M/YYYY');
+        var b = moment(hasta.val(),'D/M/YYYY');
+        var diffDays = b.diff(a, 'days');        
+        if (diffDays < 0) {diffDays=0};
+        dias.val(diffDays);
+    };
+
 $('#cargando').hide();
 $("#id_empleado").trigger("change");
 $("#id_tipo_ausentismo").trigger("change");
