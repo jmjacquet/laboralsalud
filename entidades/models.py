@@ -42,11 +42,11 @@ class ent_medico_prof(models.Model):
 	celular = models.CharField('Celular',max_length=50,blank=True, null=True)   	
 	especialidad = models.ForeignKey('ent_especialidad',db_column='especialidad',blank=True, null=True,related_name='med_especialidad',on_delete=models.SET_NULL)
 	observaciones = models.TextField('Observaciones',blank=True, null=True)       
+	
 	baja = models.BooleanField(default=False)
 	fecha_creacion = models.DateTimeField(auto_now_add = True)
-	fecha_modif = models.DateTimeField(auto_now = True)			
+	fecha_modif = models.DateTimeField(auto_now = True)				
 	usuario_carga = models.ForeignKey('usuarios.UsuUsuario',db_column='usuario_carga',blank=True, null=True,related_name='med_usuario_carga',on_delete=models.SET_NULL)
-		
 	class Meta:
 		db_table = 'ent_medico_prof'
 		ordering = ['apellido_y_nombre','codigo']

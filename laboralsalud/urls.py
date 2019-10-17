@@ -19,10 +19,17 @@ from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+from .views import login,logout,volverHome
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^entidades/', include('entidades.urls')),
     url(r'^ausentismos/', include('ausentismos.urls')),
+    url(r'^usuarios/', include('usuarios.urls')),
     url(r'^', include('general.urls')),
+    url(r'^login/$', login,name="login"),
+    url(r'^logout/$', logout,name="logout"),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+handler500 = volverHome
+handler404 = volverHome

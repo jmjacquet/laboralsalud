@@ -63,4 +63,20 @@
             }
         };
     },true,'alert'); 
+
+
+ function recargarEmpleados(){
+        $.getJSON('/recargar_empleados/',{},
+        function (c) {
+            $("#id_empleado").empty().append('<option value="">---</option>');
+            $.each(c["empleados"], function (idx, item) {
+                jQuery("<option/>").text(item['nombre']).attr("value", item['id']).appendTo("#id_empleado");
+            })
+            $('#id_empleado').trigger("chosen:updated");
+            $("#recargarEmpleados").trigger("click");
+        });      
     };
+
+
+
+};  

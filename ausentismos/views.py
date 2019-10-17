@@ -11,7 +11,7 @@ from general.views import VariablesMixin
 from django.utils.decorators import method_decorator
 from .forms import AusentismoForm
 from django.contrib import messages
-from laboralsalud.utilidades import ultimoNroId
+from laboralsalud.utilidades import ultimoNroId,usuario_actual
 
 
 ############ ART ############################
@@ -36,8 +36,7 @@ class AusentismoCreateView(VariablesMixin,CreateView):
 
     def form_valid(self, form):                
         #form.instance.empresa = empresa_actual(self.request)
-        # form.instance.usuario = usuario_actual(self.request)
-        messages.success(self.request, u'Los datos se guardaron con éxito!')
+        form.instance.usuario = usuario_actual(self.request)        
         return super(AusentismoCreateView, self).form_valid(form)
 
     def get_form_kwargs(self):
@@ -53,7 +52,11 @@ class AusentismoCreateView(VariablesMixin,CreateView):
     def form_invalid(self, form):
         return super(AusentismoCreateView, self).form_invalid(form)
 
+    def get_success_url(self):
+        messages.success(self.request, u'Los datos se guardaron con éxito!')
+        return reverse('ausentismo_listado')
 
+    
 class AusentismoEditView(VariablesMixin,UpdateView):
     form_class = AusentismoForm
     model = ausentismo
@@ -81,7 +84,10 @@ class AusentismoEditView(VariablesMixin,UpdateView):
 
     def get_initial(self):    
         initial = super(AusentismoEditView, self).get_initial()                      
-        return initial            
+        return initial  
+
+    def get_success_url(self):        
+        return reverse('ausentismo_listado')          
 
 
 class AusentismoVerView(VariablesMixin,DetailView):

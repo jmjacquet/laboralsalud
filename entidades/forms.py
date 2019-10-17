@@ -95,7 +95,7 @@ class EmpleadoForm(forms.ModelForm):
 	nro_doc = forms.IntegerField(label=u'Documento',required = True)		
 	cod_postal = forms.IntegerField(label='CP',required = False)			
 	observaciones = forms.CharField(label='',widget=forms.Textarea(attrs={'class':'form-control2', 'rows': 10}),required = False)	
-	fecha_nac = forms.DateField(required = True,widget=forms.DateInput(attrs={'class': 'form-control datepicker'}))
+	fecha_nac = forms.DateField(label=u'Fecha Nacimiento',required = True,widget=forms.DateInput(attrs={'class': 'form-control datepicker'}))
 	empr_fingreso = forms.DateField(required = False,widget=forms.DateInput(attrs={'class': 'form-control datepicker'}))
 	trab_fingreso = forms.DateField(required = False,widget=forms.DateInput(attrs={'class': 'form-control datepicker'}))
 	trab_fbaja = forms.DateField(required = False,widget=forms.DateInput(attrs={'class': 'form-control datepicker'}))
@@ -109,6 +109,7 @@ class EmpleadoForm(forms.ModelForm):
 	trab_armas = forms.ChoiceField(label=u'¿Portación de Armas?',choices=SINO,required=True,initial='N')
 	trab_tareas_dif = forms.ChoiceField(label=u'¿Tareas Diferentes?',choices=SINO,required=True,initial='N')
 	trab_preocupac = forms.ChoiceField(label='¿Preocupacional?',choices=SINO,required=True,initial='N')
+	empresa = forms.ModelChoiceField(label='Empresa',queryset=ent_empresa.objects.filter(baja=False),required=True)
 	
 	# tipo_form = forms.CharField(widget = forms.HiddenInput(), required = False)	
 	class Meta:
@@ -117,12 +118,13 @@ class EmpleadoForm(forms.ModelForm):
 
 	def __init__(self, *args, **kwargs):
 		request = kwargs.pop('request', None)
-		super(EmpleadoForm, self).__init__(*args, **kwargs)				
+		super(EmpleadoForm, self).__init__(*args, **kwargs)
+		self.fields['empresa'].queryset = ent_empresa.objects.filter(baja=False,pk__in=empresas_habilitadas(request))				
 
 	def clean(self):		
 		trab_preocupac = self.cleaned_data.get('trab_preocupac')	
 		trab_preocup_fecha = self.cleaned_data.get('trab_preocup_fecha')	
 		if (trab_preocupac=='S') and (not trab_preocup_fecha):
-				self._errors['trab_preocup_fecha'] = u'Debe cargar una Fecha!'
+				self.add_error("trab_preocup_fecha",u'¡Debe cargar una Fecha!')
 						
 		return self.cleaned_data

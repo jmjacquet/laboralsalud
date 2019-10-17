@@ -19,10 +19,11 @@
         <thead >
             <tr>
                 <th data-priority="1">#</th>
-                <th class="imprimir" data-priority="1">Documento</th>
-                <th class="imprimir" data-priority="2">Apellido y Nombre</th>
-                <th class="imprimir" data-priority="3">ART</th>
-                <th class="imprimir" data-priority="4">Empresa</th>
+                <th class="imprimir" data-priority="2">Fecha</th>
+                <th class="imprimir" data-priority="2">Documento</th>
+                <th class="imprimir" data-priority="3">Apellido y Nombre</th>
+                <th class="imprimir" data-priority="4">ART</th>
+                <th class="imprimir" data-priority="5">Empresa</th>
                 <th class="imprimir">Tipo Ausentismo</th>
             </tr>
         </thead>
@@ -51,16 +52,18 @@
                       </ul>                                      
                     </div>
                 </td>              
+                <td title="Usuario Creación: {{a.usuario_carga}} | Última Modificación: {{a.fecha_modif|date:'d/m/Y H:i'}}">{{ a.fecha_creacion|date:'d/m/Y' }}</td>
                 <td>{{ a.empleado.nro_doc|default_if_none:'' }}</td>
                 <td title="{{ a.empleado.apellido_y_nombre}}">{{ a.empleado.apellido_y_nombre|default_if_none:''|truncatechars:60 }}</td>
-                <td title="{{ a.art}}">{{ a.art|default_if_none:''|truncatechars:60 }}</td>
-                <td title="{{ a.empresa}}">{{ a.empresa|default_if_none:''|truncatechars:60 }}</td>
+                <td title="{{ a.empleado.art}}">{{ a.empleado.art|default_if_none:''|truncatechars:60 }}</td>
+                <td title="{{ a.empleado.empresa}}">{{ a.empleado.empresa|default_if_none:''|truncatechars:60 }}</td>
                 <td>{{ a.get_tipo_ausentismo_display|default_if_none:'' }}</td>               
             </tr>
             {% endfor %}
         </tbody>
         <tfoot>
             <tr>
+                <th></th> 
                 <th></th> 
                 <th></th>
                 <th></th> 
@@ -206,7 +209,7 @@ var tabla = $('#ausentismos').DataTable({
             },
             initComplete: function () {
                // this.api().columns().every( function () {[0, 1, 9]
-                this.api().columns([3,4,5]).every( function () {
+                this.api().columns([4,5,6]).every( function () {
                     var column = this;
                     var select = $('<select class="form-control"><option value="">Todos</option></select>')
                         .appendTo( $(column.footer()).empty() )

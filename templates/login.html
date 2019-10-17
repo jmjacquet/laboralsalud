@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% load static from staticfiles %}
+{% load i18n %}
+
+{% block extra_css %}
+	<link rel="stylesheet" href="{% static 'css/login.css'%}?{% now "Ymd"%}" type="text/css" />
+{% endblock %}
+
+{% block login %}	
+<body class="login">
+
+
+	<!-- END LOGO -->
+	<!-- BEGIN LOGIN -->
+	<div class="content">
+		<!-- BEGIN LOGIN FORM -->
+		<div>
+				<img  src="{% static 'images/loguito.png' %}?{% now "Ymd"%}"  class="logo_login" >				
+		
+		</div>
+		
+		<form class="login-form" accept-charset="UTF-8" role="form abm" action="/login/" method="post">
+	       {% csrf_token %}
+
+			<div class="form-group">				
+				<label class="control-label visible-ie8 visible-ie9">Usuario</label>
+				<input class="form-control form-control-solid placeholder-no-fix" type="text" required autofocus autocomplete="off" placeholder="Usuario" name="username"/>
+			</div>
+			<div class="form-group">
+				<label class="control-label visible-ie8 visible-ie9">Contraseña</label>
+				<input class="form-control placeholder-no-fix" type="password" required placeholder="Contraseña" name="password"/>
+			</div>
+			<div class="form-group">	                                                    
+		            <select id="empresa" class="select form-control" name="empresa" required>
+					<option value="" disabled selected hidden>Seleccionar Empresa</option>
+					{% for e in empresas %}
+					    <option value="{{ e.pk }}">{{ e }}</option>
+					{% endfor %}
+					</select> 
+            </div>
+			
+			<div class="form-actions">
+				<input type="submit" name="login" class="btn btn-primary uppercase" value="Ingresar">				
+			</div>		
+
+		</form>
+		
+		<!-- END LOGIN FORM -->
+		<!-- BEGIN FORGOT PASSWORD FORM -->
+		
+		<!-- END FORGOT PASSWORD FORM -->
+		
+	</div>
+</body>	
+
+
+{% endblock login %}

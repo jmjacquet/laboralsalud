@@ -35,43 +35,42 @@ class AusentismoForm(forms.ModelForm):
 	def __init__(self, *args, **kwargs):
 		request = kwargs.pop('request', None)
 		super(AusentismoForm, self).__init__(*args, **kwargs)		
+		self.fields['empleado'].queryset = ent_empleado.objects.filter(empresa__pk__in=empresas_habilitadas(request))
 
 	def clean(self):		
+		super(forms.ModelForm,self).clean()	
 		tipo_ausentismo = self.cleaned_data.get('tipo_ausentismo')	
 		
 		if int(tipo_ausentismo)== 1:
 			aus_fcrondesde = self.cleaned_data.get('aus_fcrondesde')	
 			aus_fcronhasta = self.cleaned_data.get('aus_fcronhasta')	
-			aus_diascaidos= self.cleaned_data.get('aus_diascaidos')	
+			aus_diascaidos= self.cleaned_data.get('aus_diascaidos')				
 			if not aus_fcrondesde:
-				self._errors['aus_fcrondesde'] = u'¡Cargar Fecha!'
+				self.add_error("aus_fcrondesde",u'¡Debe cargar una Fecha!')
 			if not aus_fcronhasta:
-				self._errors['aus_fcronhasta'] = u'¡Cargar Fecha!'
+				self.add_error("aus_fcronhasta",u'¡Debe cargar una Fecha!')
 			if not aus_diascaidos:
-				self._errors['aus_diascaidos'] = u'¡Cargar un día!'
+				self.add_error("aus_diascaidos",u'¡Debe cargar un Día!')
 		else:
 			art_tipo_accidente = self.cleaned_data.get('art_tipo_accidente')							
 			if not art_tipo_accidente:
-				# self._errors['art_tipo_accidente'] = u'seleccionar Tipo Accidente!'
-				# self._errors['art_tipo_accidente'] = u' '
-				raise forms.ValidationError("¡Debe seleccionar un Tipo de Accidente! Verifique.")
+				self.add_error("art_tipo_accidente",u'¡Debe seleccionar un Tipo de Accidente! Verifique.')
 			else:
 				art_faccidente = self.cleaned_data.get('art_faccidente')
 				if not art_faccidente:
-					self._errors['art_faccidente'] = u'¡Cargar una Fecha!'
+					self.add_error("art_faccidente",u'¡Debe cargar una Fecha!')
 				art_fdenuncia = self.cleaned_data.get('art_fdenuncia')
 				if not art_fdenuncia:
-					self._errors['art_fdenuncia'] = u'¡Cargar una Fecha!'
+					self.add_error("art_fdenuncia",u'¡Debe cargar una Fecha!')					
 				art_fcrondesde = self.cleaned_data.get('art_fcrondesde')	
 				art_fcronhasta = self.cleaned_data.get('art_fcronhasta')	
 				art_diascaidos= self.cleaned_data.get('art_diascaidos')	
 				if not art_fcrondesde:
-					self._errors['art_fcrondesde'] = u'¡Cargar una Fecha!'
+					self.add_error("art_fcrondesde",u'¡Debe cargar una Fecha!')
 				if not art_fcronhasta:
-					self._errors['art_fcronhasta'] = u'¡Cargar una Fecha!'
+					self.add_error("art_fcronhasta",u'¡Debe cargar una Fecha!')
 				if not art_diascaidos:
-					self._errors['art_diascaidos'] = u'¡Cargar una Fecha!'
+					self.add_error("art_diascaidos",u'¡Debe cargar un Día!')
 
-			
 		return self.cleaned_data
 	

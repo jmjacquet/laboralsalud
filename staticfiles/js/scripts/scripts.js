@@ -78,5 +78,9 @@
     };
 
 
+$('#cambiar_passwd').click(function(){
+   
+     return abrir_modal('/usuarios/cambiar_password');
+});   
 
 };  

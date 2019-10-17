@@ -7,23 +7,24 @@ from django.core.serializers.json import DjangoJSONEncoder
 import json
 import urllib
 from django.views.generic import TemplateView
-from entidades.models import ent_empleado
+from entidades.models import ent_empleado,ent_empresa
+from laboralsalud.utilidades import hoy,usuario_actual,empresa_actual
 
 class VariablesMixin(object):
     def get_context_data(self, **kwargs):
         context = super(VariablesMixin, self).get_context_data(**kwargs)
         # context['ENTIDAD_ID'] = settings.ENTIDAD_ID
         # context['ENTIDAD_DIR'] = settings.ENTIDAD_DIR
-        # usr= self.request.user     
-        # try:
-        #     context['usuario'] = usuario_actual(self.request)                        
-        # except:
-        #     context['usuario'] = None         
-
-        # try:
-        #     context['usr'] = usr                        
-        # except:
-        #     context['usr'] = None 
+        usr= self.request.user     
+        try:
+            context['usuario'] = usuario_actual(self.request)                        
+        except:
+            context['usuario'] = None         
+        
+        try:
+            context['usr'] = usr                        
+        except:
+            context['usr'] = None 
 
         # try:
         #     empresa = empresa_actual(self.request)
@@ -33,13 +34,10 @@ class VariablesMixin(object):
         # context['empresa'] = empresa           
         # context['settings'] = settings 
         
-        # try:
-        #     tipo_usr = usr.userprofile.id_usuario.tipoUsr
-        #     context['tipo_usr'] = tipo_usr
-        #     context['habilitado_contador'] = habilitado_contador(tipo_usr)
-        # except:
-        #     context['tipo_usr'] = 1
-        #     context['habilitado_contador'] = False
+        try:            
+            context['empresa'] = empresa_actual(self.request)   
+        except:
+            context['empresa'] = None    
 
         # permisos_grupo = ver_permisos(self.request)
         # context['permisos_grupo'] = permisos_grupo        
@@ -51,9 +49,9 @@ class VariablesMixin(object):
         # context['permisos_entidades'] = ('ent_clientes' in permisos_grupo)or('ent_proveedores' in permisos_grupo)or('ent_vendedores' in permisos_grupo)        
         # context['permisos_productos'] = ('prod_productos' in permisos_grupo)or('prod_productos_abm' in permisos_grupo)
         # context['permisos_rep_finanzas'] = ('rep_caja_diaria' in permisos_grupo)or('rep_seguim_cheques' in permisos_grupo)or('rep_saldos_cuentas' in permisos_grupo)
-        # context['homologacion'] = empresa.homologacion
+        context['empresas'] = ent_empresa.objects.filter(baja=False)
         # context['sitio_mobile'] = mobile(self.request)
-        # context['hoy'] =  hoy()
+        context['hoy'] =  hoy()
         # context['EMAIL_CONTACTO'] = EMAIL_CONTACTO                        
         return context
 

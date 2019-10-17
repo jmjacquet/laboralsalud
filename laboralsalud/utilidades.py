@@ -223,3 +223,24 @@ def validar_cuit(cuit):
         aux = 9
 
     return aux == int(cuit[10])        
+
+
+def usuario_actual(request):    
+    return request.user.userprofile.id_usuario
+
+from entidades.models import ent_empresa
+def empresa_actual(request):    
+    empresa = None
+    try:                    
+        if 'empresa' in request.session:
+            empresa = ent_empresa.objects.get(pk=int(request.session['empresa']))
+    except:
+        pass
+    return empresa
+
+#Incluye la empresa del usuario + la empresa 1 universal
+def empresas_habilitadas(request):    
+    e = empresa_actual(request)    
+    sucursales = list(ent_empresa.objects.filter(casa_central=e).values_list('id', flat=True))    
+    lista = [int(e.id)] + sucursales        
+    return lista

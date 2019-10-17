@@ -33,12 +33,12 @@ INSTALLED_APPS = (
     'django.contrib.humanize', 
     'localflavor',
     'bootstrap3', 
+    'crispy_forms',
     'usuarios',
     'general',
     'entidades',
     'ausentismos',
-    'reportes',
-    'crispy_forms',
+    'reportes',    
     'fm',
     'modal',
 )
@@ -138,7 +138,7 @@ STATICFILES_FINDERS = [
 ROOT_URL = '/'
 LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL='/'
-AUTHENTICATION_BACKENDS = ('django.contrib.auth.backends.ModelBackend',)
+AUTHENTICATION_BACKENDS = ('django.contrib.auth.backends.ModelBackend','usuarios.authentication.UsuarioBackend',)
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 SESSION_COOKIE_NAME = "grupogua"
 
@@ -150,4 +150,6 @@ MESSAGE_TAGS = {message_constants.DEBUG: 'debug',
                 message_constants.ERROR: 'error',} 
 
 
-CRISPY_TEMPLATE_PACK = 'bootstrap3'                
+CRISPY_TEMPLATE_PACK = 'bootstrap3'           
+
+     

@@ -14,6 +14,7 @@
         <img src="{% static 'img/loguito.jpg' %}"class="brand-image img-circle elevation-3"
            style="opacity: .8"> LBS</a>
     </div>
+
     <!-- Group the nav links, forms, drop-down menus and other elements for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav ">
@@ -33,16 +34,19 @@
           </ul>
         </li>
       </ul>
-      
+      <div class="navbar-header">
+        <span class="titulo">{{empresa}}</span>
+      </div>
+        
       <ul class="nav navbar-nav navbar-right">
         <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> USUARIO DEMO <b class="caret"></b></a>
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown"> {{usuario}}  <i class="fa fa-user"></i> <b class="caret"></b></a>
           <ul class="dropdown-menu">
             <li><a href="#">Action</a></li>
             <li><a href="#">Another action</a></li>
-            <li><a href="#">Something else here</a></li>
+            <li><a id="cambiar_passwd" href="#"><i class="icon-key"></i>Cambiar Contraseña</a></li>   
             <li class="divider"></li>
-            <li><a href="#">Separated link</a></li>
+            <li><a href="{% url 'logout' %}">Salir</a></li>
           </ul>
         </li>
       </ul>

@@ -4,6 +4,7 @@
 {% load i18n %}
 {% load crispy_forms_tags %}
 {% load humanize %}
+
 {% block extra_css %}
 	<link rel="stylesheet" href="{% static 'css/abms.css'%}?{% now "Ymd"%}" type="text/css" >
 {% endblock %}
@@ -199,7 +200,7 @@
 												</div>
 												<div class="row cerca">
 													<div class="col-sm-2">														
-														{% bootstrap_field form.art_fcrondesde show_label=False  %}
+														{{form.art_fcrondesde|as_crispy_field}}
 													</div>
 													<div class="col-sm-2">
 														{{form.art_fcronhasta|as_crispy_field}}
