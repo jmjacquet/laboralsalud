@@ -23,7 +23,7 @@ body{
     -ms-border-radius: 7px;
     -o-border-radius: 7px;
     border-radius: 7px;
-    width: 20em;
+    width: 21em;
     margin: 40px auto 0px auto;
     padding: 20px;
     padding-top: 10px;
@@ -37,7 +37,7 @@ body{
 .login .content .hint{color:#999;padding:0;margin:15px 0 7px 0;}
 .login .content .login-form,
 .login .content .forget-form{padding:0px;margin-top:10px;}
-.login .content .form-control{background-color:#dde3ec;height:30px;color:#000;border:1px solid #cfcfd0;}
+.login .content .form-control{background-color:#dde3ec;height:30px;color:#000;border:1px solid #cfcfd0;font-size:15px; }
 .login .content .form-control:focus, .login .content .form-control:active{border:1px solid #c3ccda;}
 .login .content .form-control::-moz-placeholder{color:#8290a3;opacity:1;}
 .login .content .form-control:-ms-input-placeholder{color:#8290a3;}
