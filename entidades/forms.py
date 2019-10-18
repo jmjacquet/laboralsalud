@@ -17,7 +17,6 @@ class ARTForm(forms.ModelForm):
 		request = kwargs.pop('request', None)
 		super(ARTForm, self).__init__(*args, **kwargs)				
 
-
 class CargoForm(forms.ModelForm):	
 	class Meta:
 			model = ent_cargo
@@ -35,7 +34,6 @@ class EspecialidadForm(forms.ModelForm):
 	def __init__(self, *args, **kwargs):
 		request = kwargs.pop('request', None)
 		super(EspecialidadForm, self).__init__(*args, **kwargs)	
-
 
 
 class MedProfForm(forms.ModelForm):		
@@ -72,7 +70,6 @@ class MedProfForm(forms.ModelForm):
 				#because we didn't get a match
 					pass
 		return self.cleaned_data
-
 
 
 class EmpresaForm(forms.ModelForm):		

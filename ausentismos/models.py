@@ -6,7 +6,27 @@ from laboralsalud.utilidades import *
 from entidades.models import ent_empleado,ent_medico_prof
 
 
+class aus_patologia(models.Model):
+    id = models.AutoField(primary_key=True,db_index=True)    
+    codigo =  models.CharField(max_length=200)
+    patologia =  models.CharField(max_length=200)
+    baja = models.BooleanField(default=False)
+    class Meta:
+        db_table = 'aus_patologia'
+    
+    def __unicode__(self):
+        return u'%s' % self.patologia 
 
+class aus_diagnostico(models.Model):
+    id = models.AutoField(primary_key=True,db_index=True)    
+    codigo =  models.CharField(max_length=200)
+    diagnostico =  models.CharField(max_length=200)
+    baja = models.BooleanField(default=False)
+    class Meta:
+        db_table = 'aus_diagnostico'
+    
+    def __unicode__(self):
+        return u'%s' % self.patologia         
 
 #Tabla de la Base de Configuracion
 class ausentismo(models.Model):	
@@ -28,8 +48,8 @@ class ausentismo(models.Model):
 	aus_tipo_alta = models.IntegerField('Tipo Alta',choices=TIPO_ALTA, blank=True, null=True)
 	aus_frevision = models.DateField(u'Fecha Revisión',blank=True, null=True)
 	aus_medico = models.ForeignKey(ent_medico_prof,verbose_name=u'Médico Tratante',db_column='aus_medico',blank=True, null=True,related_name='aus_medico',on_delete=models.SET_NULL)
-	aus_grupop = models.CharField(u'Grupo Patológico',max_length=200,blank=True, null=True)
-	aus_diagn = models.TextField(u'Diagnóstico',blank=True, null=True) 
+	aus_grupop = models.ForeignKey(aus_patologia,verbose_name=u'Grupo Patológico',db_column='aus_grupop',blank=True, null=True,related_name='aus_grupop',on_delete=models.SET_NULL)
+	aus_diagn = models.ForeignKey(aus_diagnostico,verbose_name=u'Diagnóstico',db_column='aus_diagn',blank=True, null=True,related_name='aus_diagn',on_delete=models.SET_NULL)
 
 	art_tipo_accidente = models.IntegerField('Tipo Accidente/Enfermedad',choices=TIPO_ACCIDENTE, blank=True, null=True)
 	art_ndenuncia = models.CharField(u'Nº Denuncia',max_length=50,blank=True, null=True)

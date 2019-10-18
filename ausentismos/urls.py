@@ -8,4 +8,10 @@ urlpatterns = [
     url(r'^editar/(?P<id>\d+)/$', AusentismoEditView.as_view(), name="ausentismo_editar"),    
     url(r'^detalles/(?P<id>\d+)/$', AusentismoVerView.as_view(), name="ausentismo_detalles"),    
     url(r'^baja_alta/(?P<id>\d+)/$', ausentismo_baja_alta, name='ausentismo_baja_alta'),
+
+    url(r'^patologia/$', PatologiaView.as_view(),name="apatologia_listado"),
+    url(r'^patologia/nuevo/$', PatologiaCreateView.as_view(), name="patologia_nuevo"),
+    url(r'^patologia/editar/(?P<id>\d+)/$', PatologiaEditView.as_view(), name="patologia_editar"),    
+    # url(r'^patologia/detalles/(?P<id>\d+)/$', ARTVerView.as_view(), name="patologia_detalles"),    
+    # url(r'^patologia/baja_alta/(?P<id>\d+)/$', art_baja_alta, name='patologia_baja_alta'),
 ]

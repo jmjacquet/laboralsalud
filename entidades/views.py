@@ -8,12 +8,11 @@ from django.views.generic import TemplateView,ListView,CreateView,UpdateView,For
 from django.conf import settings
 from general.views import VariablesMixin
 from fm.views import AjaxCreateView,AjaxUpdateView,AjaxDeleteView
-from django.utils.decorators import method_decorator
 from .forms import ARTForm,CargoForm,EspecialidadForm,MedProfForm,EmpresaForm,EmpleadoForm
 from django.contrib import messages
 from laboralsalud.utilidades import ultimoNroId,usuario_actual,empresa_actual,empresas_habilitadas
 from django.contrib.auth.decorators import login_required
-
+from django.utils.decorators import method_decorator
 ############ ART ############################
 
 class ARTView(VariablesMixin,ListView):

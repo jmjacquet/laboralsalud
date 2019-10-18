@@ -20,14 +20,14 @@ class AusentismoForm(forms.ModelForm):
 	tipo_ausentismo = forms.ChoiceField(label='',choices=TIPO_AUSENCIA,required=False,initial=1)
 	aus_control = forms.ChoiceField(label=u'¿Asistió a Control?',choices=SINO,required=False,initial='N')
 	aus_certificado = forms.ChoiceField(label=u'¿Presenta Certificado?',choices=SINO,required=False,initial='N')
-	aus_diagn = forms.CharField(label='Diagnóstico',widget=forms.Textarea(attrs={'class':'form-control2', 'rows': 2}),required = True)	
 	observaciones = forms.CharField(label='Observaciones',widget=forms.Textarea(attrs={'class':'form-control2', 'rows': 2}),required = False)	
 	descr_altaparc = forms.CharField(label=u'Descripción Alta Parcial',widget=forms.Textarea(attrs={'class':'form-control2', 'rows': 2}),required = False)	
 	detalle_acc_art = forms.CharField(label='Detalle Accidente ART',widget=forms.Textarea(attrs={'class':'form-control2', 'rows': 2}),required = False)	
 	estudios_partic = forms.CharField(label=u'Estudios Particulares',widget=forms.Textarea(attrs={'class':'form-control2', 'rows': 2}),required = False)	
 	estudios_art = forms.CharField(label='Estudios ART',widget=forms.Textarea(attrs={'class':'form-control2', 'rows': 2}),required = False)	
 	recalificac_art = forms.CharField(label=u'Recalificación ART',widget=forms.Textarea(attrs={'class':'form-control2', 'rows': 2}),required = False)	
-	aus_grupop = forms.CharField(label=u'Grupo Patológico',required=True)
+	aus_grupop = forms.ModelChoiceField(label=u'Grupo Patológico',queryset=aus_patologia.objects.filter(baja=False),required=True)
+	aus_diagn = forms.ModelChoiceField(label=u'Diagnóstico',queryset=aus_diagnostico.objects.filter(baja=False),required=True)
 	class Meta:
 			model = ausentismo
 			exclude = ['id','fecha_creacion','fecha_modif','usuario_carga']
@@ -51,6 +51,8 @@ class AusentismoForm(forms.ModelForm):
 				self.add_error("aus_fcronhasta",u'¡Debe cargar una Fecha!')
 			if not aus_diascaidos:
 				self.add_error("aus_diascaidos",u'¡Debe cargar un Día!')
+			if aus_fcrondesde > aus_fcronhasta:
+				self.add_error("aus_fcrondesde",u'¡Verifique las Fechas!')
 		else:
 			art_tipo_accidente = self.cleaned_data.get('art_tipo_accidente')							
 			if not art_tipo_accidente:
@@ -71,6 +73,22 @@ class AusentismoForm(forms.ModelForm):
 					self.add_error("art_fcronhasta",u'¡Debe cargar una Fecha!')
 				if not art_diascaidos:
 					self.add_error("art_diascaidos",u'¡Debe cargar un Día!')
+				if art_fcrondesde > art_fcronhasta:
+					self.add_error("art_fcrondesde",u'¡Verifique las Fechas!')
+
+		if self._errors:
+			raise forms.ValidationError("¡Existen errores en la carga!.<br>Por favor verifique los campos marcados en rojo.")
 
 		return self.cleaned_data
-	
+
+
+class PatologiaForm(forms.ModelForm):
+	patologia = forms.CharField(widget=forms.TextInput(attrs={'autofocus': 'autofocus'}),required=True)	
+	codigo = forms.CharField(required=True)	
+	class Meta:
+			model = aus_patologia
+			exclude = ['id','baja']
+
+	def __init__(self, *args, **kwargs):
+		request = kwargs.pop('request', None)
+		super(PatologiaForm, self).__init__(*args, **kwargs)		

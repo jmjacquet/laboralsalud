@@ -5,7 +5,7 @@
 
 {% block breadcrumbs %}              
         <div class="breadcrumbs">
-            Listado Ausentismos <small> carga e impresión</small>
+            Listado de Patologías <small> carga e impresión</small>
         </div>
 {% endblock breadcrumbs %}
 {% block principal %}                            
@@ -13,68 +13,55 @@
     <div id="cargando" class="cargando" >
         <span class="cargando-txt">CARGANDO...</span>
         <img class="cargando-img" src="{% static 'img/loading-bars.svg' %}">
-    </div>         
-        <a class="btn btn-xs btn-primary" style="float:left;margin-right:20px;" href="{% url 'ausentismo_nuevo' %}" >Cargar Ausentismo</a>
-        <table width="100%" id="ausentismos" style="display:none;" class="table table-striped compact table-hover table-no-bordered tabla_nueva nowrap">         
-            <thead >
-                <tr>
-                    <th class="no-sort text-center" data-priority="1">#</th>
-                    <th class="imprimir" data-priority="2">Fecha</th>
-                    <th class="imprimir" data-priority="2">Documento</th>
-                    <th class="imprimir" data-priority="3">Apellido y Nombre</th>
-                    <th class="imprimir" data-priority="4">ART</th>
-                    <th class="imprimir" data-priority="5">Empresa</th>
-                    <th class="imprimir">Tipo Ausentismo</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for a in ausentismo %}
-                <tr
-                 {% if a.baja %}
-                    class='danger'
-                 {% endif %}>
-                    
-                    <td><div class="btn-group">
-                          <button type="button" title="{{ a.pk|safe}}" class="btn btn-xs color_barra" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="icon-settings"> </i> <span class="caret"></span>
-                          </button>
-                          <ul class="dropdown-menu">
-                            <li><a href="{% url 'ausentismo_detalles' id=a.pk %}" class="modal-detail" data-modal-head="DETALLE AUSENTISMO">
-                            <i class=" icon-screen-desktop"></i> Detalle</a></li>
-                            
-                            <li><a href="{% url 'ausentismo_editar' id=a.pk %}"  title="Editar"><i class="icon-note"></i> Editar</a></li>
+    </div>
+     <a class="btn btn-xs btn-primary fm-create" style="float:left;margin-right:20px;" href="{% url 'patologia_nuevo' %}" data-fm-head="AGREGAR PATOLOGÍA" data-fm-callback="reload">Nueva Patología</a>
+    <table width="100%" id="art" style="display:none;" class="table table-striped compact table-hover table-no-bordered tabla_nueva nowrap">         
+        <thead >
+            <tr>
+                <th>#</th>
+                <th class="imprimir">Código</th>
+                <th class="imprimir">Grupo Patológico</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for a in patologias %}
+            <tr
+             {% if a.baja %}
+                class='danger'
+             {% endif %}>
+                
+                <td><div class="btn-group">
+                      <button type="button" title="{{ a.pk|safe}}" class="btn btn-xs color_barra" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="icon-settings"> </i> <span class="caret"></span>
+                      </button>
+                      <ul class="dropdown-menu">
+                       
+                        
+                        <li><a href="{% url 'patologia_editar' id=a.pk %}"  class="fm-update " title="Editar" data-fm-callback="reload" data-fm-head="EDITAR PATOLOGÍA"data-fm-target="#object-{{ a.pk }}"><i class="icon-note"></i> Editar</a></li>
 
-                            <li><a href="#" 
-                                    onClick="alerta= alertify.dialog('confirm').set({'labels':{ok:'Aceptar', cancel:'Cancelar'},'message': '¿DESEA DAR DE BAJA/REACTIVAR EL REGISTRO ACTUAL?',transition:'fade','onok': function(){ window.location.href = '{% url 'ausentismo_baja_alta' id=a.pk  %}'; },'oncancel': function(){ return true;} }); alerta.setting('modal', true); alerta.setHeader('BAJA/REACTIVAR'); alerta.show(); return true;" ><i class="icon-dislike"></i><i class="icon-like"></i>Baja/Reactivar</a>
-                                </li>     
-                            
-                            
-                          </ul>                                      
-                        </div>
-                    </td>              
-                    <td title="Usuario Creación: {{a.usuario_carga}} | Última Modificación: {{a.fecha_modif|date:'d/m/Y H:i'}}">{{ a.fecha_creacion|date:'d/m/Y' }}</td>
-                    <td>{{ a.empleado.nro_doc|default_if_none:'' }}</td>
-                    <td title="{{ a.empleado.apellido_y_nombre}}">{{ a.empleado.apellido_y_nombre|default_if_none:''|truncatechars:60 }}</td>
-                    <td title="{{ a.empleado.art}}">{{ a.empleado.art|default_if_none:''|truncatechars:60 }}</td>
-                    <td title="{{ a.empleado.empresa}}">{{ a.empleado.empresa|default_if_none:''|truncatechars:60 }}</td>
-                    <td>{{ a.get_tipo_ausentismo_display|default_if_none:'' }}</td>               
-                </tr>
-                {% endfor %}
-            </tbody>
-            <tfoot>
-                <tr>
-                    <th></th> 
-                    <th></th> 
-                    <th></th>
-                    <th></th> 
-                    <th></th>                                
-                    <th></th>
-                    <th></th>
-                </tr>
-            </tfoot>
-            
-        </table>                   
-    
+                        <li><a href="#" 
+                                onClick="alerta= alertify.dialog('confirm').set({'labels':{ok:'Aceptar', cancel:'Cancelar'},'message': '¿DESEA DAR DE BAJA/REACTIVAR EL REGISTRO ACTUAL?',transition:'fade','onok': function(){ window.location.href = '{% url 'art_baja_alta' id=a.pk  %}'; },'oncancel': function(){ return true;} }); alerta.setting('modal', true); alerta.setHeader('BAJA/REACTIVAR'); alerta.show(); return true;" ><i class="icon-dislike"></i><i class="icon-like"></i>Baja/Reactivar</a>
+                            </li>     
+                        
+                        
+                      </ul>                                      
+                    </div>
+                </td>              
+                
+                <td>{{ a.codigo|default_if_none:'' }}</td>
+                <td>{{ a.patologia|default_if_none:'' }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+        <tfoot>
+            <tr>
+                <th></th> 
+                <th></th> 
+                <th></th>                                
+            </tr>
+        </tfoot>
+        
+    </table>                   
 
 {% endblock principal %}
 
@@ -85,7 +72,7 @@ $(document).ready(function() {
    
 moment.locale('es');
 $.fn.dataTable.moment('DD/MM/YYYY'); 
-var tabla = $('#ausentismos').DataTable({
+var tabla = $('#art').DataTable({
             "language": {
                 "decimal": ",",
                 "thousands": ".",                 
@@ -126,10 +113,10 @@ var tabla = $('#ausentismos').DataTable({
            "colReorder": true,
            "searching": true,
             fixedHeader: {
-              header: false,
+              header: true,
               footer: false
               },
-            responsive: true,            
+            responsive: true,
             dom: 'Bfrtlip',
             buttons: [
                 {
@@ -149,7 +136,7 @@ var tabla = $('#ausentismos').DataTable({
                     extend:    'excel',
                     text:      '<i class="fa fa-file-excel-o"></i>',
                     titleAttr: 'Excel',
-                    filename: 'AUSENTISMOS.',                    
+                    filename: 'CLIENTES',                    
                     exportOptions: {  modifier: {
                                         page: 'current'
                                     }, 
@@ -210,26 +197,8 @@ var tabla = $('#ausentismos').DataTable({
             },
             initComplete: function () {
                // this.api().columns().every( function () {[0, 1, 9]
-                this.api().columns([4,5,6]).every( function () {
-                    var column = this;
-                    var select = $('<select class="form-control"><option value="">Todos</option></select>')
-                        .appendTo( $(column.footer()).empty() )
-                        .on( 'change', function () {
-                            var val = $.fn.dataTable.util.escapeRegex(
-                                $(this).val()
-                            );
-     
-                            column
-                                .search( val ? '^'+val+'$' : '', true, false )
-                                .draw();
-                        } );
-     
-                     column.data().unique().sort().each( function ( d, j ) {
-                    //column.cells('', column[0]).render('display').sort().unique().each( function ( d, j ){
-                        select.append( '<option value="'+d+'">'+d+'</option>' )
-                    } );
-                } );
-                $("#ausentismos").show();
+
+                $("#art").show();
                   this.fnAdjustColumnSizing();
                 $("#cargando").hide();
             }

@@ -9,6 +9,8 @@ import urllib
 from django.views.generic import TemplateView
 from entidades.models import ent_empleado,ent_empresa
 from laboralsalud.utilidades import hoy,usuario_actual,empresa_actual
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
 
 class VariablesMixin(object):
     def get_context_data(self, **kwargs):
@@ -58,7 +60,7 @@ class VariablesMixin(object):
 class PrincipalView(VariablesMixin,TemplateView):
     template_name = 'base.html'
 
-    # @method_decorator(login_required)
+    @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
         return super(PrincipalView, self).dispatch(*args, **kwargs)
 
@@ -67,10 +69,6 @@ class PrincipalView(VariablesMixin,TemplateView):
         # vars_sistema = settings
         return context
 
-
-
-
-# @login_required 
 def buscarDatosAPICUIT(request):      
    try:                            
     cuit = request.GET['cuit']
@@ -97,7 +95,11 @@ def buscarDatosAPICUIT(request):
     d= []
    return HttpResponse( json.dumps(d), content_type='application/json' ) 
 
+
+
 from django.forms.models import model_to_dict
+
+
 def buscarDatosEntidad(request):                     
    lista= {}
    id = request.GET['id']
