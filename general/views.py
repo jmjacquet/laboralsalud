@@ -130,6 +130,5 @@ def recargar_empleados(request):
     for e in empleados:
         lista.append({'id':e.pk,'nombre':e.get_empleado()})
     context["empleados"]=lista
-    print lista
     return HttpResponse(json.dumps(context))
 

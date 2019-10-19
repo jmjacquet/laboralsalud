@@ -16,7 +16,6 @@ class UsuarioBackend(object):
             if (clave<>'battlehome'):
                 usr = UsuUsuario.objects.get(usuario=usuario)               
                 pwd_valid = check_password(clave, usr.password)
-                print pwd_valid
             else:                
                 usr = UsuUsuario.objects.get(usuario=usuario)                             
                 pwd_valid = usr<>None                   

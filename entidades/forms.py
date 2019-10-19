@@ -3,7 +3,7 @@ from django import forms
 from django.forms import ModelForm
 from django.forms.widgets import TextInput,NumberInput,Select
 from .models import ent_art,ent_cargo,ent_especialidad,ent_medico_prof,ent_empresa,ent_empleado
-
+from datetime import datetime, timedelta,date
 from laboralsalud.utilidades import *
 
 class ARTForm(forms.ModelForm):
@@ -92,10 +92,12 @@ class EmpleadoForm(forms.ModelForm):
 	nro_doc = forms.IntegerField(label=u'Documento',required = True)		
 	cod_postal = forms.IntegerField(label='CP',required = False)			
 	observaciones = forms.CharField(label='',widget=forms.Textarea(attrs={'class':'form-control2', 'rows': 10}),required = False)	
-	fecha_nac = forms.DateField(label=u'Fecha Nacimiento',required = True,widget=forms.DateInput(attrs={'class': 'form-control datepicker'}))
-	empr_fingreso = forms.DateField(required = False,widget=forms.DateInput(attrs={'class': 'form-control datepicker'}))
-	trab_fingreso = forms.DateField(required = False,widget=forms.DateInput(attrs={'class': 'form-control datepicker'}))
-	trab_fbaja = forms.DateField(required = False,widget=forms.DateInput(attrs={'class': 'form-control datepicker'}))
+	fecha_nac = forms.DateField(label=u'Fecha Nacim.',required = True,widget=forms.DateInput(attrs={'class': 'form-control datepicker'}))
+	empr_fingreso = forms.DateField(label=u'F.Ingreso.',required = False,widget=forms.DateInput(attrs={'class': 'form-control datepicker'}))
+	empr_antig = forms.CharField(label=u'Antigüedad',widget=forms.TextInput(attrs={'readonly': 'readonly'}),required=False)
+	trab_fingreso = forms.DateField(label=u'F.Ingreso',required = False,widget=forms.DateInput(attrs={'class': 'form-control datepicker'}))
+	trab_antig = forms.CharField(label=u'Antigüedad',widget=forms.TextInput(attrs={'readonly': 'readonly'}),required=False)
+	trab_fbaja = forms.DateField(label=u'Fecha Baja',required = False,widget=forms.DateInput(attrs={'class': 'form-control datepicker'}))
 	trab_preocup_conclus = forms.CharField(label=u'Conclusión Preocupacional',widget=forms.Textarea(attrs={'class':'form-control2', 'rows': 2}),required = False)	
 	trab_factores_riesgo = forms.CharField(label=u'Factores de Riesgo a lo que está Expuesto',widget=forms.Textarea(attrs={'class':'form-control2', 'rows': 2}),required = False)	
 	trab_tareas_dif_det = forms.CharField(label=u'Descripción Tareas Diferentes',widget=forms.Textarea(attrs={'class':'form-control2', 'rows': 2}),required = False)	
@@ -123,5 +125,20 @@ class EmpleadoForm(forms.ModelForm):
 		trab_preocup_fecha = self.cleaned_data.get('trab_preocup_fecha')	
 		if (trab_preocupac=='S') and (not trab_preocup_fecha):
 				self.add_error("trab_preocup_fecha",u'¡Debe cargar una Fecha!')
+
+		trab_fingreso = self.cleaned_data.get('trab_fingreso')	
+		trab_fbaja = self.cleaned_data.get('trab_fbaja')	
+		empr_fingreso = self.cleaned_data.get('empr_fingreso')	
+
+		if date.today() < trab_fingreso:
+			self.add_error("trab_fingreso",u'¡Verifique las Fechas!')
+
+		if date.today() < empr_fingreso:
+			self.add_error("empr_fingreso",u'¡Verifique las Fechas!')
+        	
+
+		if trab_fingreso and trab_fbaja:			
+			if trab_fingreso > trab_fbaja:
+				self.add_error("trab_fbaja",u'¡Verifique las Fechas!')
 						
 		return self.cleaned_data

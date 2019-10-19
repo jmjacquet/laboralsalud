@@ -26,7 +26,7 @@ class aus_diagnostico(models.Model):
         db_table = 'aus_diagnostico'
     
     def __unicode__(self):
-        return u'%s' % self.patologia         
+        return u'%s' % self.diagnostico         
 
 #Tabla de la Base de Configuracion
 class ausentismo(models.Model):	

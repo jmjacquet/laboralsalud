@@ -5,7 +5,7 @@
 
 {% block breadcrumbs %}              
         <div class="breadcrumbs">
-            Listado de Patologías <small> carga e impresión</small>
+            Listado de Diagnósticos <small> carga e impresión</small>
         </div>
 {% endblock breadcrumbs %}
 {% block principal %}                            
@@ -14,17 +14,17 @@
         <span class="cargando-txt">CARGANDO...</span>
         <img class="cargando-img" src="{% static 'img/loading-bars.svg' %}">
     </div>
-     <a class="btn btn-xs btn-primary fm-create" style="float:left;margin-right:20px;" href="{% url 'patologia_nuevo' %}" data-fm-head="AGREGAR PATOLOGÍA" data-fm-callback="reload">Nueva Patología</a>
-    <table width="100%" id="patologia" style="display:none;" class="table table-striped compact table-hover table-no-bordered tabla_nueva nowrap">         
+     <a class="btn btn-xs btn-primary fm-create" style="float:left;margin-right:20px;" href="{% url 'diagnostico_nuevo' %}" data-fm-head="AGREGAR DIAGNÓSTICO" data-fm-callback="reload">Nuevo Diagnóstico</a>
+    <table width="100%" id="diagnosticos" style="display:none;" class="table table-striped compact table-hover table-no-bordered tabla_nueva nowrap">         
         <thead >
             <tr>
                 <th>#</th>
                 <th class="imprimir">Código</th>
-                <th class="imprimir">Grupo Patológico</th>
+                <th class="imprimir">Diagnóstico</th>
             </tr>
         </thead>
         <tbody>
-            {% for a in patologias %}
+            {% for a in diagnosticos %}
             <tr
              {% if a.baja %}
                 class='danger'
@@ -49,7 +49,7 @@
                 </td>              
                 
                 <td>{{ a.codigo|default_if_none:'' }}</td>
-                <td>{{ a.patologia|default_if_none:'' }}</td>
+                <td>{{ a.diagnostico|default_if_none:'' }}</td>
             </tr>
             {% endfor %}
         </tbody>
@@ -72,7 +72,7 @@ $(document).ready(function() {
    
 moment.locale('es');
 $.fn.dataTable.moment('DD/MM/YYYY'); 
-var tabla = $('#patologia').DataTable({
+var tabla = $('#diagnosticos').DataTable({
             "language": {
                 "decimal": ",",
                 "thousands": ".",                 
@@ -136,7 +136,7 @@ var tabla = $('#patologia').DataTable({
                     extend:    'excel',
                     text:      '<i class="fa fa-file-excel-o"></i>',
                     titleAttr: 'Excel',
-                    filename: 'PATOLOGIAS',                    
+                    filename: 'DIAGNOSTICOS',                    
                     exportOptions: {  modifier: {
                                         page: 'current'
                                     }, 
@@ -198,7 +198,7 @@ var tabla = $('#patologia').DataTable({
             initComplete: function () {
                // this.api().columns().every( function () {[0, 1, 9]
 
-                $("#patologia").show();
+                $("#diagnosticos").show();
                   this.fnAdjustColumnSizing();
                 $("#cargando").hide();
             }

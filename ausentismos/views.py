@@ -9,14 +9,14 @@ from django.conf import settings
 from general.views import VariablesMixin
 # from fm.views import AjaxCreateView,AjaxUpdateView,AjaxDeleteView
 from django.utils.decorators import method_decorator
-from .forms import AusentismoForm,PatologiaForm
+from .forms import AusentismoForm,PatologiaForm,DiagnosticoForm
 from django.contrib import messages
 from laboralsalud.utilidades import ultimoNroId,usuario_actual
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from fm.views import AjaxCreateView,AjaxUpdateView,AjaxDeleteView
 
-############ aus_patologia ############################
+############ PATOLOGIAS ############################
 
 class PatologiaView(VariablesMixin,ListView):
     model = aus_patologia
@@ -109,9 +109,80 @@ class PatologiaEditView(VariablesMixin,AjaxUpdateView):
 #     return HttpResponseRedirect(reverse("art_listado")) 
 
 
+############ DIAGNOSTICOS ############################
+
+class DiagnosticoView(VariablesMixin,ListView):
+    model = aus_diagnostico
+    template_name = 'ausentismos/diagnostico_listado.html'
+    context_object_name = 'diagnosticos'
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs): 
+        # if not tiene_permiso(self.request,'ent_clientes'):
+        #     return redirect(reverse('principal'))
+        return super(DiagnosticoView, self).dispatch(*args, **kwargs)
+    
+
+class DiagnosticoCreateView(VariablesMixin,AjaxCreateView):
+    form_class = DiagnosticoForm
+    template_name = 'fm/entidades/form_diagnostico.html'
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs): 
+        # if not tiene_permiso(self.request,'ent_vendedores_abm'):
+        #     return redirect(reverse('principal'))
+        return super(DiagnosticoCreateView, self).dispatch(*args, **kwargs)
+
+    def form_valid(self, form):                        
+        messages.success(self.request, u'Los datos se guardaron con éxito!')
+        return super(DiagnosticoCreateView, self).form_valid(form)
+
+    def get_form_kwargs(self):
+        kwargs = super(DiagnosticoCreateView, self).get_form_kwargs()
+        kwargs['request'] = self.request
+        return kwargs  
+
+    def get_initial(self):    
+        initial = super(DiagnosticoCreateView, self).get_initial()               
+        # initial['codigo'] = 'ART'+'{0:0{width}}'.format((ultimoNroId(aus_patologia)+1),width=4)
+        initial['request'] = self.request        
+        return initial    
+
+    def form_invalid(self, form):
+        return super(DiagnosticoCreateView, self).form_invalid(form)
 
 
-############ ART ############################
+class DiagnosticoEditView(VariablesMixin,AjaxUpdateView):
+    form_class = DiagnosticoForm
+    model = aus_diagnostico
+    pk_url_kwarg = 'id'
+    template_name = 'fm/entidades/form_diagnostico.html'
+    
+
+    # @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs): 
+        # if not tiene_permiso(self.request,'ent_clientes_abm'):
+        #     return redirect(reverse('principal'))
+        return super(DiagnosticoEditView, self).dispatch(*args, **kwargs)
+
+    def form_valid(self, form):        
+        messages.success(self.request, u'Los datos se guardaron con éxito!')
+        return super(DiagnosticoEditView, self).form_valid(form)
+
+    def form_invalid(self, form):
+        return super(DiagnosticoEditView, self).form_invalid(form)
+
+    def get_form_kwargs(self):
+        kwargs = super(DiagnosticoEditView, self).get_form_kwargs()
+        kwargs['request'] = self.request
+        return kwargs  
+
+    def get_initial(self):    
+        initial = super(DiagnosticoEditView, self).get_initial()                      
+        return initial            
+
+
+############ AUSENTISMOS ############################
 
 class AusentismoView(VariablesMixin,ListView):
     model = ausentismo

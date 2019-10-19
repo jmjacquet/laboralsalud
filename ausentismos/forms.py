@@ -92,3 +92,14 @@ class PatologiaForm(forms.ModelForm):
 	def __init__(self, *args, **kwargs):
 		request = kwargs.pop('request', None)
 		super(PatologiaForm, self).__init__(*args, **kwargs)		
+
+class DiagnosticoForm(forms.ModelForm):
+	diagnostico = forms.CharField(widget=forms.TextInput(attrs={'autofocus': 'autofocus'}),required=True)	
+	codigo = forms.CharField(required=True)	
+	class Meta:
+			model = aus_diagnostico
+			exclude = ['id','baja']
+
+	def __init__(self, *args, **kwargs):
+		request = kwargs.pop('request', None)
+		super(DiagnosticoForm, self).__init__(*args, **kwargs)			

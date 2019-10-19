@@ -490,25 +490,30 @@ textarea.form-control{height:auto}
     padding: 10px 10px;
     font-size: 19px;
     line-height: 21px;    
-    min-width: 100px;  
+   
 
 }
 
 .navbar-brand > img {
     display: inline;
+    height: 40px;
+   /* width: 40px;*/
 }
 
 .navbar-header {
     margin-right: 20px;
 }
+.navbar-header > span.titulo_empresa{
+    padding: 10px 40px;
+    margin-right: 30px;    
+    border: none;
+    font-size: 18px;
+    color: #fff;
+    text-align: right;
+    font-weight: bold;
+    text-transform: uppercase;
+    line-height: 60px;
 
-span .titulo{
-    position: absolute;    
-    width: 100%;
-    left: 0;
-    top: 1em;
-    text-align: center;
-    margin: auto;
 }
 
 

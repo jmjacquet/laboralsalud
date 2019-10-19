@@ -53,6 +53,18 @@ $("#id_aus_diagn").chosen({
       allow_single_deselect: true,
   });
 
+$("#id_aus_medico").chosen({
+      no_results_text: "Médico inexistente...",
+      placeholder_text_single:"Seleccione un Médico",
+      allow_single_deselect: true,
+  });
+
+$("#id_art_medico").chosen({
+      no_results_text: "Médico inexistente...",
+      placeholder_text_single:"Seleccione un Médico",
+      allow_single_deselect: true,
+  });
+
 $("#id_empleado").change(function(){
   var id =  $("#id_empleado").val();
   if (id!='')

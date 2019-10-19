@@ -8,7 +8,7 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>LBSF</title>
-  <link rel="shortcut icon" href="{% static 'img/loguito.jpg' %}"  type="image/jpg">
+  <link rel="shortcut icon" href="{% static 'img/logo.jpg' %}"  type="image/jpg">
   <!-- Tell the browser to be responsive to screen width -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- Font Awesome -->
@@ -104,7 +104,7 @@
     
     $(function() {
         
-        $.fm({debug: false});
+        $.fm({debug: true});
         $.modal({debug: true});
         {% if messages %}
           {% for message in messages %}                                                

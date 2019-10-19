@@ -186,8 +186,8 @@ var tabla = $('#empleado').DataTable({
                                                 return i;
                                             } else if (typeof i === "string") {
                                                 i = i.replace(/\$/g, "");
-                    i = i.replace(/\,/g ,"");                    
-                    i = i.replace(/\./g, "");
+                                                i = i.replace(/\,/g ,"");                    
+                                                i = i.replace(/\./g, "");
                                                 var result = parseFloat(i)/100;
                                                 // console.log(result);
                                                 if (isNaN(result)) {
@@ -235,7 +235,7 @@ var tabla = $('#empleado').DataTable({
             },
             initComplete: function () {
                // this.api().columns().every( function () {[0, 1, 9]
-                this.api().columns([4,6,9,10,13]).every( function () {
+                this.api().columns([6,8,11,12,13]).every( function () {
                     var column = this;
                     var select = $('<select class="form-control"><option value="">Todos</option></select>')
                         .appendTo( $(column.footer()).empty() )

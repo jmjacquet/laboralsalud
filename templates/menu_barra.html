@@ -11,8 +11,7 @@
         <span class="icon-bar"></span>
       </button>
      <a class="navbar-brand" href="#">
-        <img src="{% static 'img/loguito.jpg' %}"class="brand-image img-circle elevation-3"
-           style="opacity: .8"> LBS</a>
+        <img src="{% static 'img/membrete1.jpg' %}"class="brand-image"></a>
     </div>
 
     <!-- Group the nav links, forms, drop-down menus and other elements for toggling -->
@@ -29,14 +28,15 @@
             <li><a href="{% url 'empresa_listado' %}">Empresas</a></li>
             <li><a href="{% url 'medico_prof_listado' %}">Médicos/Profesionales</a></li>
             <li class="divider"></li>
+            <li><a href="{% url 'patologia_listado' %}">Patologías</a></li>
+            <li><a href="{% url 'diagnostico_listado' %}">Diagnósticos</a></li>
+            <li class="divider"></li>
             <li><a href="{% url 'cargo_listado' %}">Cargos</a></li>
             <li><a href="{% url 'especialidad_listado' %}">Especialidades</a></li>
           </ul>
         </li>
       </ul>
-      <div class="navbar-header">
-        <span class="titulo">{{empresa}}</span>
-      </div>
+      
         
       <ul class="nav navbar-nav navbar-right">
         <li class="dropdown">
@@ -50,6 +50,10 @@
           </ul>
         </li>
       </ul>
+
+      <div class="navbar-header navbar-right">
+        <span class="titulo_empresa">{{empresa}}</span>
+      </div>
     </div><!-- /.navbar-collapse -->
 
 </nav>

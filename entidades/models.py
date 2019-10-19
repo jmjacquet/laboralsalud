@@ -135,7 +135,7 @@ class ent_empleado(models.Model):
 	trab_armas = models.CharField(u'¿Portación de Armas?',max_length=1,default='N')
 	trab_tareas_dif = models.CharField(u'¿Tareas Diferentes?',max_length=1,default='N')
 	trab_preocupac = models.CharField(u'¿Preocupacional?',max_length=1,default='N')
-	trab_preocup_fecha = models.DateField(u'Fecha Preocup.',blank=True, null=True)
+	trab_preocup_fecha = models.DateField(u'Fecha Preocupacional',blank=True, null=True)
 
 	trab_preocup_conclus = models.TextField(u'Conclusión Preocupacional',blank=True, null=True) 
 	trab_factores_riesgo = models.TextField(u'Factores de Riesgo a lo que está Expuesto',blank=True, null=True) 
@@ -160,11 +160,9 @@ class ent_empleado(models.Model):
 
 	@property
 	def get_edad(self):
-		hoy = datetime.datetime.utcnow().date()				
-		edad = relativedelta(hoy, self.fecha_nac).years
+		hoy = date.today()		
 		try:
-			if self.fecha_nac:
-				hoy = datetime.datetime.utcnow().date()				
+			if self.fecha_nac:				
 				edad = relativedelta(hoy, self.fecha_nac).years				
 				return edad
 			else:
@@ -179,7 +177,7 @@ class ent_empleado(models.Model):
 				if self.trab_fbaja:
 					hasta = self.trab_fbaja
 				else:
-					hasta = datetime.datetime.utcnow().date()
+					hasta = date.today()		
 					antig = relativedelta(hasta, self.trab_fingreso).years
 					return antig
 			else:
@@ -194,7 +192,7 @@ class ent_empleado(models.Model):
 				if self.trab_fbaja:
 					hasta = self.trab_fbaja
 				else:
-					hasta = datetime.datetime.utcnow().date()
+					hasta = date.today()		
 					antig = relativedelta(hasta, self.empr_fingreso).years
 					return antig
 			else:
