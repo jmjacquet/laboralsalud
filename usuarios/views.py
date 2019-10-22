@@ -49,8 +49,9 @@ from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
 from django.shortcuts import render, redirect
 from django.utils.translation import ugettext as _
+import json
 
-@login_required 
+
 def cambiar_password(request):            
     form = UsuarioCambiarPasswdForm(request.POST or None)
     if request.method == 'POST' and request.is_ajax():                                       
@@ -68,5 +69,4 @@ def cambiar_password(request):
             
         return HttpResponse(json.dumps(response,default=default), content_type='application/json')
     else:                
-        variables = RequestContext(request, {'form':form})        
-        return render_to_response("general/cambiar_password.html", variables)
+        return render(request,"general/cambiar_password.html",{'form':form})
