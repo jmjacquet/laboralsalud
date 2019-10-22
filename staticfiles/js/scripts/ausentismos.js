@@ -29,9 +29,15 @@ $("input[type=number]").click(function(){
               "recargarE": function(data, options) {
                  recargarEmpleados();
                  },
-              // "recargarV": function(data, options) {
-              //    recargarVendedores();
-              //    }
+              "recargarM": function(data, options) {
+                 recargarMedicos();
+                 },
+              "recargarGP": function(data, options) {
+                 recargarPatologias();
+                 },
+              "recargarD": function(data, options) {
+                 recargarDiagnosticos();
+                 },
               }
     });
 

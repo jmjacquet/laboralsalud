@@ -8,12 +8,15 @@
             Listado de Médicos/Profesionales <small> carga e impresión</small>
         </div>
 {% endblock breadcrumbs %}
+{% block cargando %}            
+  <div id="cargando" class="cargando" >
+    <span class="cargando-txt">CARGANDO...</span>
+    <img class="cargando-img" src="{% static 'img/loading-bars.svg' %}">
+  </div>
+{% endblock cargando %}
 {% block principal %}                            
 <br>
-    <div id="cargando" class="cargando" >
-        <span class="cargando-txt">CARGANDO...</span>
-        <img class="cargando-img" src="{% static 'img/loading-bars.svg' %}">
-    </div>
+   
      <a class="btn btn-xs btn-primary fm-create" style="float:left;margin-right:20px;" href="{% url 'medico_prof_nuevo' %}" data-fm-head="AGREGAR MÉDICO/PROF." data-fm-callback="reload">Nueva Méd/Prof</a>
     <table width="100%" id="med" style="display:none;" class="table table-striped compact table-hover table-no-bordered tabla_nueva nowrap">         
         <thead >

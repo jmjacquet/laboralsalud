@@ -7,4 +7,7 @@ urlpatterns = [
     url(r'^buscarDatosAPICUIT/$', buscarDatosAPICUIT, name='buscarDatosAPICUIT'),
     url(r'^buscarDatosEntidad/$', buscarDatosEntidad, name='buscarDatosEntidad'),
     url(r'^recargar_empleados/$', recargar_empleados, name='recargar_empleados'),
+    url(r'^recargar_medicos/$', recargar_medicos, name='recargar_medicos'),
+    url(r'^recargar_diagnosticos/$', recargar_diagnosticos, name='recargar_diagnosticos'),
+    url(r'^recargar_patologias/$', recargar_patologias, name='recargar_patologias'),
 ]

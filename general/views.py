@@ -7,7 +7,8 @@ from django.core.serializers.json import DjangoJSONEncoder
 import json
 import urllib
 from django.views.generic import TemplateView
-from entidades.models import ent_empleado,ent_empresa
+from ausentismos.models import aus_patologia,aus_diagnostico
+from entidades.models import ent_empleado,ent_empresa,ent_medico_prof
 from laboralsalud.utilidades import hoy,usuario_actual,empresa_actual
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
@@ -27,30 +28,12 @@ class VariablesMixin(object):
             context['usr'] = usr                        
         except:
             context['usr'] = None 
-
-        # try:
-        #     empresa = empresa_actual(self.request)
-        # except gral_empresa.DoesNotExist:
-        #     empresa = None
-                      
-        # context['empresa'] = empresa           
-        # context['settings'] = settings 
-        
+       
         try:            
             context['empresa'] = empresa_actual(self.request)   
         except:
             context['empresa'] = None    
-
-        # permisos_grupo = ver_permisos(self.request)
-        # context['permisos_grupo'] = permisos_grupo        
-        # context['permisos_ingresos'] = ('cpb_ventas' in permisos_grupo)or('cpb_cobranzas' in permisos_grupo)or('cpb_remitos' in permisos_grupo)or('cpb_presupuestos' in permisos_grupo)or('cpb_liqprod_abm' in permisos_grupo)        
-        # context['permisos_egresos'] = ('cpb_compras' in permisos_grupo)or('cpb_pagos' in permisos_grupo)or('cpb_movimientos' in permisos_grupo)        
-        # context['permisos_trabajos'] = ('trab_pedidos' in permisos_grupo)or('trab_trabajos' in permisos_grupo)or('trab_colocacion' in permisos_grupo)
-        # context['permisos_rep_ingr_egr'] = ('rep_cta_cte_clientes' in permisos_grupo)or('rep_saldos_clientes' in permisos_grupo)or('rep_cta_cte_prov' in permisos_grupo)or('rep_saldos_prov' in permisos_grupo)or('rep_varios' in permisos_grupo)
-        # context['permisos_rep_contables'] = ('rep_libro_iva' in permisos_grupo)or('rep_libro_iva' in permisos_grupo)        
-        # context['permisos_entidades'] = ('ent_clientes' in permisos_grupo)or('ent_proveedores' in permisos_grupo)or('ent_vendedores' in permisos_grupo)        
-        # context['permisos_productos'] = ('prod_productos' in permisos_grupo)or('prod_productos_abm' in permisos_grupo)
-        # context['permisos_rep_finanzas'] = ('rep_caja_diaria' in permisos_grupo)or('rep_seguim_cheques' in permisos_grupo)or('rep_saldos_cuentas' in permisos_grupo)
+   
         context['empresas'] = ent_empresa.objects.filter(baja=False)
         # context['sitio_mobile'] = mobile(self.request)
         context['hoy'] =  hoy()
@@ -126,9 +109,35 @@ def buscarDatosEntidad(request):
 def recargar_empleados(request):
     context={}
     lista = []
-    empleados = ent_empleado.objects.filter(baja=False).order_by('apellido_y_nombre')    
+    empleados = ent_empleado.objects.filter(empresa__pk__in=empresas_habilitadas(request),baja=False).order_by('apellido_y_nombre')    
     for e in empleados:
         lista.append({'id':e.pk,'nombre':e.get_empleado()})
     context["empleados"]=lista
     return HttpResponse(json.dumps(context))
 
+def recargar_medicos(request):
+    context={}
+    lista = []
+    medicos = ent_medico_prof.objects.filter(baja=False).order_by('apellido_y_nombre')    
+    for e in medicos:
+        lista.append({'id':e.pk,'nombre':e.get_medico()})
+    context["medicos"]=lista
+    return HttpResponse(json.dumps(context))    
+
+def recargar_diagnosticos(request):
+    context={}
+    lista = []
+    medicos = ent_medico_prof.objects.filter(baja=False).order_by('apellido_y_nombre')    
+    for e in medicos:
+        lista.append({'id':e.pk,'nombre':e.get_diagnostico()})
+    context["diagnosticos"]=lista
+    return HttpResponse(json.dumps(context))    
+
+def recargar_patologias(request):
+    context={}
+    lista = []
+    medicos = aus_patologia.objects.filter(baja=False).order_by('apellido_y_nombre')    
+    for e in medicos:
+        lista.append({'id':e.pk,'nombre':e.get_patologia()})
+    context["patologias"]=lista
+    return HttpResponse(json.dumps(context))        

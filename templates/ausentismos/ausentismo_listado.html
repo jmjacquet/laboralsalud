@@ -8,12 +8,15 @@
             Listado Ausentismos <small> carga e impresión</small>
         </div>
 {% endblock breadcrumbs %}
+{% block cargando %}            
+  <div id="cargando" class="cargando" >
+    <span class="cargando-txt">CARGANDO...</span>
+    <img class="cargando-img" src="{% static 'img/loading-bars.svg' %}">
+  </div>
+{% endblock cargando %}
 {% block principal %}                            
 <br>
-    <div id="cargando" class="cargando" >
-        <span class="cargando-txt">CARGANDO...</span>
-        <img class="cargando-img" src="{% static 'img/loading-bars.svg' %}">
-    </div>         
+         
         <a class="btn btn-xs btn-primary" style="float:left;margin-right:20px;" href="{% url 'ausentismo_nuevo' %}" >Cargar Ausentismo</a>
         <table width="100%" id="ausentismos" style="display:none;" class="table table-striped compact table-hover table-no-bordered tabla_nueva nowrap">         
             <thead >

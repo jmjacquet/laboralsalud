@@ -72,8 +72,47 @@
             $.each(c["empleados"], function (idx, item) {
                 jQuery("<option/>").text(item['nombre']).attr("value", item['id']).appendTo("#id_empleado");
             })
-            $('#id_empleado').trigger("chosen:updated");
-            $("#recargarEmpleados").trigger("click");
+            $('#id_empleado').trigger("chosen:updated");            
+        });      
+    };
+
+function recargarDiagnosticos(){
+        $.getJSON('/recargar_diagnosticos/',{},
+        function (c) {
+            $("#id_aus_diagn").empty().append('<option value="">---</option>');
+            $.each(c["diagnosticos"], function (idx, item) {
+                jQuery("<option/>").text(item['nombre']).attr("value", item['id']).appendTo("#id_aus_diagn");
+            })
+            $('#id_aus_diagn').trigger("chosen:updated");            
+        });      
+    };
+    
+function recargarPatologias(){
+        $.getJSON('/recargar_patologias/',{},
+        function (c) {
+            $("#id_aus_grupop").empty().append('<option value="">---</option>');
+            $.each(c["patologias"], function (idx, item) {
+                jQuery("<option/>").text(item['nombre']).attr("value", item['id']).appendTo("#id_aus_grupop");
+            })
+            $('#id_aus_grupop').trigger("chosen:updated");            
+        });      
+    };
+
+
+function recargarMedicos(){
+        $.getJSON('/recargar_medicos/',{},
+        function (c) {
+            $("#id_aus_medico").empty().append('<option value="">---</option>');
+            $.each(c["medicos"], function (idx, item) {
+                jQuery("<option/>").text(item['nombre']).attr("value", item['id']).appendTo("#id_aus_medico");
+            })
+            $('#id_aus_medico').trigger("chosen:updated");
+            $("#id_art_medico").empty().append('<option value="">---</option>');
+            $.each(c["medicos"], function (idx, item) {
+                jQuery("<option/>").text(item['nombre']).attr("value", item['id']).appendTo("#id_art_medico");
+            })
+            $('#id_art_medico').trigger("chosen:updated");
+           
         });      
     };
 

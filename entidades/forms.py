@@ -130,11 +130,13 @@ class EmpleadoForm(forms.ModelForm):
 		trab_fbaja = self.cleaned_data.get('trab_fbaja')	
 		empr_fingreso = self.cleaned_data.get('empr_fingreso')	
 
-		if date.today() < trab_fingreso:
-			self.add_error("trab_fingreso",u'¡Verifique las Fechas!')
+		if trab_fingreso:
+			if date.today() < trab_fingreso:
+				self.add_error("trab_fingreso",u'¡Verifique las Fechas!')
 
-		if date.today() < empr_fingreso:
-			self.add_error("empr_fingreso",u'¡Verifique las Fechas!')
+		if empr_fingreso:
+			if date.today() < empr_fingreso:
+				self.add_error("empr_fingreso",u'¡Verifique las Fechas!')
         	
 
 		if trab_fingreso and trab_fbaja:			

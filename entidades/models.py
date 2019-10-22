@@ -52,7 +52,13 @@ class ent_medico_prof(models.Model):
 		ordering = ['apellido_y_nombre','codigo']
 
 	def __unicode__(self):
-		return u'%s' % (self.apellido_y_nombre)		
+		return u'%s' % (self.apellido_y_nombre)
+
+	def get_medico(self):
+		entidad=u'%s' % self.apellido_y_nombre.upper()
+		if self.nro_doc:
+			entidad = entidad + u' - %s' % (self.nro_doc)		
+		return entidad.upper()		
 
 class ent_empresa(models.Model):
 	razon_social = models.CharField(u'Razón Social',max_length=200,blank=True, null=True)	

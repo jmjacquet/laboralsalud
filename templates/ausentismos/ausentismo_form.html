@@ -19,11 +19,13 @@
 		CARGA DE AUSENTISMOS
 	</div>
 {% endblock breadcrumbs %}
+{% block cargando %}            
+  <div id="cargando" class="cargando" >
+    <span class="cargando-txt">CARGANDO...</span>
+    <img class="cargando-img" src="{% static 'img/loading-bars.svg' %}">
+  </div>
+{% endblock cargando %}
 {% block principal %}
-	<div id="cargando" class="cargando" >
-		<span class="cargando-txt">CARGANDO...</span>
-		<img class="cargando-img" src="{% static 'img/loading-bars.svg' %}">
-	</div>
 	<div class="col-sm-12 col-md-12 col-xs-12">
 		<div class="panel panel-body panel-primary panel_centrado">
 			<form role="form" class="form abm" method="POST" action="" id="form-alta" enctype="multipart/form-data">
@@ -36,9 +38,9 @@
 							<legend>EMPLEADO</legend>
 							<div class="col-sm-11 col-xs-12">{% bootstrap_field form.empleado show_label=False  %}</div>
 							{% if not sitio_mobile %}
-												<div class="col-sm-1 hidden-xs">						                  
-									                  		<a id="nuevoEmpleado" href="{% url 'empleado_nuevo' %}" data-fm-head="AGREGAR EMPLEADO" class="recargarDatos fm-create" type="button" data-toggle="tooltip" data-fm-callback="recargarE" data-placement="top" title="Agregar Empleado"><i class="icon-users"></i></a>
-								                </div>        				
+								<div class="col-sm-1 hidden-xs">						                  
+					                  		<a id="nuevoEmpleado" href="{% url 'empleado_nuevo' %}" data-fm-head="AGREGAR EMPLEADO" class="recargarDatos fm-create" type="button" data-toggle="tooltip" data-fm-callback="recargarE" data-placement="top" title="Agregar Empleado"><i class="icon-users"></i></a>
+				                </div>        				
 						    {% endif %}		
 						</fieldset>						
 					  </div>
@@ -175,6 +177,16 @@
 													<div class="col-sm-4">
 														{{form.aus_medico|as_crispy_field}}
 													</div>
+													{% if not sitio_mobile %}
+														<div class="col-sm-1 hidden-xs">						                  
+															<div id="div_id_aus_medico" class="form-group">
+																<label for="id_aus_medico" class="control-label "></label>
+																<div class="controls">
+																	<a id="nuevoMedicoAUS" href="{% url 'medico_prof_nuevo' %}" data-fm-head="AGREGAR MÉDICO" class="recargarDatos fm-create" type="button" data-toggle="tooltip" data-fm-callback="recargarM" data-placement="top" title="Agregar Médico"><i class="icon-users"></i></a>
+																</div>
+															</div>
+										                </div>        	    				
+												    {% endif %}	
 												</div>												
 										</fieldset>
 									</div>
@@ -228,9 +240,16 @@
 													<div class="col-sm-4">
 														{{form.art_medico|as_crispy_field}}
 													</div>
-													<div class="col-sm-2">
-														
-													</div>													
+													{% if not sitio_mobile %}													
+														<div class="col-sm-1 hidden-xs">						                  
+															<div id="div_id_aus_medico" class="form-group">
+																<label for="id_aus_medico" class="control-label "></label>
+																<div class="controls ">
+																	<a id="nuevoMedicoART" href="{% url 'medico_prof_nuevo' %}" data-fm-head="AGREGAR MÉDICO" class="recargarDatos fm-create" type="button" data-toggle="tooltip" data-fm-callback="recargarM" data-placement="top" title="Agregar Médico"><i class="icon-users"></i></a>
+																</div>
+															</div>
+										                </div>        				
+												    {% endif %}														
 												</div>
 										</fieldset>								
 									</div>							
@@ -241,12 +260,32 @@
 						<fieldset>
 							<legend>OBSERVACIONES/ESTUDIOS/DETALLES</legend>
 								<div class="row cerca">
-									<div class="col-sm-6">
+									<div class="col-sm-5">
 										{{form.aus_grupop|as_crispy_field}}
-									</div>	
-									<div class="col-sm-6">
+									</div>
+									{% if not sitio_mobile %}
+										<div class="col-sm-1 hidden-xs">						                  
+											<div id="div_id_grupopo" class="form-group">
+												<label for="id_grupop" class="control-label "></label>
+												<div class="controls ">
+													<a id="nuevoGrupoP" href="{% url 'patologia_nuevo' %}" data-fm-head="AGREGAR PATOLOGÍA" class="recargarDatos fm-create" type="button" data-toggle="tooltip" data-fm-callback="recargarGP" data-placement="top" title="Agregar Patología"><i class="icon-magnifier-add"></i></a>
+												</div>
+											</div>
+						                </div>        	    				
+								    {% endif %}		
+									<div class="col-sm-5">
 										{{form.aus_diagn|as_crispy_field}}
 									</div>
+									{% if not sitio_mobile %}
+										<div class="col-sm-1 hidden-xs">						                  
+											<div id="div_id_nuevoDiagn" class="form-group">
+												<label for="id_nuevoDiagn" class="control-label "></label>
+												<div class="controls ">
+													<a id="nuevoDiagn" href="{% url 'diagnostico_nuevo' %}" data-fm-head="AGREGAR DIAGNÓSTICO" class="recargarDatos fm-create" type="button" data-toggle="tooltip" data-fm-callback="recargarD" data-placement="top" title="Agregar Diagnóstico"><i class="icon-magnifier-add"></i></a>
+												</div>
+											</div>
+						                </div>        	    				
+								    {% endif %}	
 								</div>
 								<div class="row cerca">
 									<div class="col-sm-12">

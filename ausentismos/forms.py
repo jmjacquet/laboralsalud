@@ -3,17 +3,20 @@ from django import forms
 from django.forms import ModelForm
 from django.forms.widgets import TextInput,NumberInput,Select
 from .models import *
-from entidades.models import ent_empleado
+from entidades.models import ent_empleado,ent_medico_prof
 from laboralsalud.utilidades import *
 
 
-class EntidadModelChoiceField(forms.ModelChoiceField):
+class EmpleadoModelChoiceField(forms.ModelChoiceField):
     def label_from_instance(self, obj):		
 		return obj.get_empleado()
 
+class MedicoModelChoiceField(forms.ModelChoiceField):
+    def label_from_instance(self, obj):		
+		return obj.get_medico()
 
 class AusentismoForm(forms.ModelForm):
-	empleado = EntidadModelChoiceField(label='',queryset=ent_empleado.objects.filter(baja=False),empty_label='---',required = True)	
+	empleado = EmpleadoModelChoiceField(label='',queryset=ent_empleado.objects.filter(baja=False),empty_label='---',required = False)	
 	# apellido_y_nombre = forms.CharField(label='',widget=forms.TextInput(attrs={ 'class':'form-control','readonly': 'readonly'}),required = False)				
 	# nro_doc = forms.IntegerField(label='',widget=forms.TextInput(attrs={ 'class':'form-control','readonly': 'readonly'}),required = False)
 	# legajo = forms.IntegerField(label='',widget=forms.TextInput(attrs={ 'class':'form-control','readonly': 'readonly'}),required = False)
@@ -26,8 +29,10 @@ class AusentismoForm(forms.ModelForm):
 	estudios_partic = forms.CharField(label=u'Estudios Particulares',widget=forms.Textarea(attrs={'class':'form-control2', 'rows': 2}),required = False)	
 	estudios_art = forms.CharField(label='Estudios ART',widget=forms.Textarea(attrs={'class':'form-control2', 'rows': 2}),required = False)	
 	recalificac_art = forms.CharField(label=u'Recalificación ART',widget=forms.Textarea(attrs={'class':'form-control2', 'rows': 2}),required = False)	
-	aus_grupop = forms.ModelChoiceField(label=u'Grupo Patológico',queryset=aus_patologia.objects.filter(baja=False),required=True)
-	aus_diagn = forms.ModelChoiceField(label=u'Diagnóstico',queryset=aus_diagnostico.objects.filter(baja=False),required=True)
+	aus_grupop = forms.ModelChoiceField(label=u'Grupo Patológico',queryset=aus_patologia.objects.filter(baja=False),required=False)
+	aus_diagn = forms.ModelChoiceField(label=u'Diagnóstico',queryset=aus_diagnostico.objects.filter(baja=False),required=False)
+	aus_medico = MedicoModelChoiceField(label=u'Médico Tratante',queryset=ent_medico_prof.objects.filter(baja=False),required=False)
+	art_medico = MedicoModelChoiceField(label=u'Médico ART',queryset=ent_medico_prof.objects.filter(baja=False),required=False)
 	class Meta:
 			model = ausentismo
 			exclude = ['id','fecha_creacion','fecha_modif','usuario_carga']
@@ -35,10 +40,23 @@ class AusentismoForm(forms.ModelForm):
 	def __init__(self, *args, **kwargs):
 		request = kwargs.pop('request', None)
 		super(AusentismoForm, self).__init__(*args, **kwargs)		
-		self.fields['empleado'].queryset = ent_empleado.objects.filter(empresa__pk__in=empresas_habilitadas(request))
+		self.fields['empleado'].queryset = ent_empleado.objects.filter(baja=False,empresa__pk__in=empresas_habilitadas(request))
 
 	def clean(self):		
 		super(forms.ModelForm,self).clean()	
+		
+		empleado = self.cleaned_data.get('empleado')	
+		if not empleado:
+				self.add_error("empleado",u'¡Debe cargar un Empleado!')
+
+		aus_grupop = self.cleaned_data.get('aus_grupop')	
+		if not aus_grupop:
+				self.add_error("aus_grupop",u'¡Debe cargar un Grupo Patológico!')
+		aus_diagn = self.cleaned_data.get('aus_diagn')	
+		if not aus_diagn:
+				self.add_error("aus_diagn",u'¡Debe cargar un Diagnóstico!')
+
+
 		tipo_ausentismo = self.cleaned_data.get('tipo_ausentismo')	
 		
 		if int(tipo_ausentismo)== 1:

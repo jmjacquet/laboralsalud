@@ -15,7 +15,13 @@ class aus_patologia(models.Model):
         db_table = 'aus_patologia'
     
     def __unicode__(self):
-        return u'%s' % self.patologia 
+        return u'%s - %s' % (self.codigo,self.patologia)         
+
+    def get_patologia(self):
+		entidad=u'%s' % self.patologia.upper()
+		if self.codigo:
+			entidad = u'%s - ' % (self.codigo)+entidad				
+		return entidad.upper()		
 
 class aus_diagnostico(models.Model):
     id = models.AutoField(primary_key=True,db_index=True)    
@@ -26,7 +32,13 @@ class aus_diagnostico(models.Model):
         db_table = 'aus_diagnostico'
     
     def __unicode__(self):
-        return u'%s' % self.diagnostico         
+        return u'%s - %s' % (self.codigo,self.diagnostico)  
+	
+	def get_diagnostico(self):
+		entidad=u'%s' % self.diagnostico.upper()
+		if self.codigo:
+			entidad = u'%s - ' % (self.codigo)+entidad		
+		return entidad.upper()		               
 
 #Tabla de la Base de Configuracion
 class ausentismo(models.Model):	
