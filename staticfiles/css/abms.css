@@ -51,6 +51,10 @@
     
 }
 
+.abm .form-group  {
+    margin-bottom: 5px;
+    
+}
 .abm textarea.form-control2 {
     height: auto;
     font-weight:bold;
