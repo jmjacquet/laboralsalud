@@ -118,7 +118,7 @@ def recargar_empleados(request):
 def recargar_medicos(request):
     context={}
     lista = []
-    medicos = ent_medico_prof.objects.filter(baja=False).order_by('apellido_y_nombre')    
+    medicos = ent_medico_prof.objects.filter(baja=False)   
     for e in medicos:
         lista.append({'id':e.pk,'nombre':e.get_medico()})
     context["medicos"]=lista
@@ -127,8 +127,8 @@ def recargar_medicos(request):
 def recargar_diagnosticos(request):
     context={}
     lista = []
-    medicos = ent_medico_prof.objects.filter(baja=False).order_by('apellido_y_nombre')    
-    for e in medicos:
+    diagnosticos = aus_diagnostico.objects.filter(baja=False)   
+    for e in diagnosticos:
         lista.append({'id':e.pk,'nombre':e.get_diagnostico()})
     context["diagnosticos"]=lista
     return HttpResponse(json.dumps(context))    
@@ -136,8 +136,8 @@ def recargar_diagnosticos(request):
 def recargar_patologias(request):
     context={}
     lista = []
-    medicos = aus_patologia.objects.filter(baja=False).order_by('apellido_y_nombre')    
-    for e in medicos:
+    patologias = aus_patologia.objects.filter(baja=False)
+    for e in patologias:
         lista.append({'id':e.pk,'nombre':e.get_patologia()})
     context["patologias"]=lista
     return HttpResponse(json.dumps(context))        
