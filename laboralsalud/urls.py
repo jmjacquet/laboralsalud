@@ -25,6 +25,7 @@ urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^entidades/', include('entidades.urls')),
     url(r'^ausentismos/', include('ausentismos.urls')),
+    url(r'^reportes/', include('reportes.urls')),
     url(r'^usuarios/', include('usuarios.urls')),
     url(r'^', include('general.urls')),
     url(r'^login/$', login,name="login"),

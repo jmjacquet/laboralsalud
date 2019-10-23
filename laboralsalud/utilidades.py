@@ -20,6 +20,13 @@ TIPO_AUSENCIA = (
     (3, 'Enfermedad'),
 )
 
+TIPO_AUSENCIA_ = (    
+    (0, 'Todas'),
+    (1, 'Inculpable'),
+    (2, 'Accidente'),
+    (3, 'Enfermedad'),
+)
+
 TIPO_ALTA = (    
     (1, 'Definitiva'),
     (2, u'Con Restricción'),    
@@ -244,3 +251,11 @@ def empresas_habilitadas(request):
     sucursales = list(ent_empresa.objects.filter(casa_central=e).values_list('id', flat=True))    
     lista = [int(e.id)] + sucursales        
     return lista
+
+import json
+from decimal import Decimal
+class DecimalEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, Decimal):
+            return float(obj)
+        return json.JSONEncoder.default(self, obj)
