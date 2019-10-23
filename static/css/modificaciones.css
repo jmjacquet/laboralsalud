@@ -1,5 +1,20 @@
-body {background-color:#e6e6e6;color:#000000;}
-
+html{
+    background: none;
+    background: url("../img/pattern.png") repeat;
+    color:#333333!important;padding:0px !important;margin:0px !important;font-size:13px!important;direction:ltr;width:100%!important;height: 100%!important;}
+html:after {
+    content: "";
+    
+    opacity: 0.7;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    position: absolute;
+    z-index: -1;   
+}
+body {background: none;color:#000000;}
+a , i{text-decoration: none;}
 .page-content-wrapper .page-content {
     margin-left: 5px;
     margin-top: 0px;   
@@ -126,8 +141,9 @@ textarea.form-control{height:auto}
 .control-label{margin-top:4px;text-align:right;}
 .verdadero{color:#fff;text-shadow:1px 1px 1px #ccc;font-size:1.5em;}
 .has-error .help-block, .has-error .help-inline, .has-error .control-label, .has-error .radio, .has-error .checkbox, .has-error .radio-inline, .has-error .checkbox-inline{color:#a94442;font-size:9px;}
-.recargarDatos{margin-left: 3px; font-size:10px;font-weight:bold;color:#4f5a67;line-height:1.42857143;}
-.recargarDatos i{margin-left: 3px; font-size:10px;font-weight:bold;color:#4f5a67;}
+.recargarDatos{font-weight:bold;color:#4f5a67;line-height:1.42857143;vertical-align: middle;}
+.recargarDatos i{margin-left: -10px; font-size:12px;font-weight:bold;color:#4f5a67;margin-top: 2px;}
+
 .panel_centrado{max-width:1000px;display:block;margin-right:auto;margin-left:auto;padding: 5px;}
 .tabla_cpbs th{background:#4f5a67;vertical-align:middle;#fff;font-weight:400;font-size:10px;height:20px;}
 .tabla_cpbs > thead > tr > th, .tabla_cpbs > tbody > tr > th, .tabla_cpbs > tfoot > tr > th, .tabla_cpbs > thead > tr > td, .tabla_cpbs > tbody > tr > td, .tabla_cpbs > tfoot > tr > td{padding-left:10px;padding-right:10px;vertical-align:middle;border-top:none;border-bottom:none;font-size:10px;}
@@ -490,18 +506,31 @@ textarea.form-control{height:auto}
     padding: 10px 10px;
     font-size: 19px;
     line-height: 21px;    
-    min-width: 100px;  
+   
 
 }
 
 .navbar-brand > img {
     display: inline;
+    height: 40px;
+   /* width: 40px;*/
 }
 
 .navbar-header {
     margin-right: 20px;
 }
+.navbar-header > span.titulo_empresa{
+    padding: 10px 40px;
+    margin-right: 30px;    
+    border: none;
+    font-size: 18px;
+    color: #fff;
+    text-align: right;
+    font-weight: bold;
+    text-transform: uppercase;
+    line-height: 60px;
 
+}
 
 
 
@@ -607,4 +636,8 @@ div.breadcrumbs a:focus, div.breadcrumbs a:hover {
 
 .dato{
     font-weight: bold;
+}
+
+.table-hover > tbody > tr > td.danger:hover, .table-hover > tbody > tr > th.danger:hover, .table-hover > tbody > tr.danger:hover > td, .table-hover > tbody > tr:hover > .danger, .table-hover > tbody > tr.danger:hover > th {
+    background-color: #ffcac5;
 }

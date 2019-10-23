@@ -9,16 +9,16 @@ $.fn.datepicker.dates['es'] = {
     today: "Hoy"
   };
   
-   $('.dateinput').datepicker({
-          format: "dd/mm/yyyy",
-          language: "es",
-          autoclose: true,
-          todayHighlight: true
-    });
+ $('.dateinput').datepicker({
+        format: "dd/mm/yyyy",
+        language: "es",
+        autoclose: true,
+        todayHighlight: true
+  });
 
-    $('.dateinput').each(function(){
-        $(this).datepicker();
-    });
+  $('.dateinput').each(function(){
+      $(this).datepicker();
+  });
 
 $("input[type=number]").click(function(){
             this.select()
@@ -29,17 +29,47 @@ $("input[type=number]").click(function(){
               "recargarE": function(data, options) {
                  recargarEmpleados();
                  },
-              // "recargarV": function(data, options) {
-              //    recargarVendedores();
-              //    }
+              "recargarM": function(data, options) {
+                 recargarMedicos();
+                 },
+              "recargarGP": function(data, options) {
+                 recargarPatologias();
+                 },
+              "recargarD": function(data, options) {
+                 recargarDiagnosticos();
+                 },
               }
     });
 
-  $("#id_empleado").chosen({
-            no_results_text: "Empleado inexistente...",
-            placeholder_text_single:"Seleccione un Empleado",
-            allow_single_deselect: true,
-        });
+$("#id_empleado").chosen({
+      no_results_text: "Empleado inexistente...",
+      placeholder_text_single:"Seleccione un Empleado",
+      allow_single_deselect: true,
+  });
+
+$("#id_aus_grupop").chosen({
+      no_results_text: "Patología inexistente...",
+      placeholder_text_single:"Seleccione una Patología",
+      allow_single_deselect: true,
+  });
+
+$("#id_aus_diagn").chosen({
+      no_results_text: "Diagnóstico inexistente...",
+      placeholder_text_single:"Seleccione un Diagnóstico",
+      allow_single_deselect: true,
+  });
+
+$("#id_aus_medico").chosen({
+      no_results_text: "Médico inexistente...",
+      placeholder_text_single:"Seleccione un Médico",
+      allow_single_deselect: true,
+  });
+
+$("#id_art_medico").chosen({
+      no_results_text: "Médico inexistente...",
+      placeholder_text_single:"Seleccione un Médico",
+      allow_single_deselect: true,
+  });
 
 $("#id_empleado").change(function(){
   var id =  $("#id_empleado").val();
@@ -193,22 +223,22 @@ $('#id_aus_fcronhasta').change(function()
 });
 
 
-$('#id_aus_fcrondesde').change(function()
+$('#id_art_fcrondesde').change(function()
 {  
-  if ($("#id_aus_fcronhasta").val()=='')
+  if ($("#id_art_fcronhasta").val()=='')
   {
-    $("#id_aus_fcronhasta").val($('#id_aus_fcrondesde').val());
+    $("#id_art_fcronhasta").val($('#id_art_fcrondesde').val());
   };
-  diasRestantes($('#id_aus_fcrondesde'),$("#id_aus_fcronhasta"),$("#id_aus_diascaidos"));
+  diasRestantes($('#id_art_fcrondesde'),$("#id_art_fcronhasta"),$("#id_art_diascaidos"));
 });
 
-$('#id_aus_fcronhasta').change(function()
+$('#id_art_fcronhasta').change(function()
 {  
-  if ($("#id_aus_fcrondesde").val() == '')
+  if ($("#id_art_fcrondesde").val() == '')
   {
-    $("#id_aus_fcrondesde").val($('#id_aus_fcronhasta').val());
+    $("#id_art_fcrondesde").val($('#id_art_fcronhasta').val());
   };
-  diasRestantes($('#id_aus_fcrondesde'),$("#id_aus_fcronhasta"),$("#id_aus_diascaidos"));
+  diasRestantes($('#id_art_fcrondesde'),$("#id_art_fcronhasta"),$("#id_art_diascaidos"));
 });
 
 
