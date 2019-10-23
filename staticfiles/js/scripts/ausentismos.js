@@ -9,16 +9,16 @@ $.fn.datepicker.dates['es'] = {
     today: "Hoy"
   };
   
-   $('.dateinput').datepicker({
-          format: "dd/mm/yyyy",
-          language: "es",
-          autoclose: true,
-          todayHighlight: true
-    });
+ $('.dateinput').datepicker({
+        format: "dd/mm/yyyy",
+        language: "es",
+        autoclose: true,
+        todayHighlight: true
+  });
 
-    $('.dateinput').each(function(){
-        $(this).datepicker();
-    });
+  $('.dateinput').each(function(){
+      $(this).datepicker();
+  });
 
 $("input[type=number]").click(function(){
             this.select()

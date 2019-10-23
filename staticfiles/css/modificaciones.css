@@ -637,3 +637,7 @@ div.breadcrumbs a:focus, div.breadcrumbs a:hover {
 .dato{
     font-weight: bold;
 }
+
+.table-hover > tbody > tr > td.danger:hover, .table-hover > tbody > tr > th.danger:hover, .table-hover > tbody > tr.danger:hover > td, .table-hover > tbody > tr:hover > .danger, .table-hover > tbody > tr.danger:hover > th {
+    background-color: #ffcac5;
+}

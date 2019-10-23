@@ -40,6 +40,29 @@ class VariablesMixin(object):
         # context['EMAIL_CONTACTO'] = EMAIL_CONTACTO                        
         return context
 
+def getVariablesMixin(request):
+    context = {}     
+    usr= request.user     
+    try:
+        context['usuario'] = usuario_actual(request)                        
+    except:
+        context['usuario'] = None         
+    
+    try:
+        context['usr'] = usr                        
+    except:
+        context['usr'] = None 
+   
+    try:            
+        context['empresa'] = empresa_actual(request)   
+    except:
+        context['empresa'] = None    
+
+    context['empresas'] = ent_empresa.objects.filter(baja=False)
+    # context['sitio_mobile'] = mobile(self.request)
+    context['hoy'] =  hoy()
+    return context
+    
 class PrincipalView(VariablesMixin,TemplateView):
     template_name = 'base.html'
 

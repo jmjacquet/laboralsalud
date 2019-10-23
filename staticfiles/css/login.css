@@ -16,7 +16,7 @@ html:after {
 body{
     background: none!important;
 }
-.login .logo_login{text-align:center;width:12em;height:10em;}
+.login .logo_login{text-align:center;width:12em;height:11em;}
 .login .content{background-color: #c1c1c1;
     -webkit-border-radius: 7px;
     -moz-border-radius: 7px;
@@ -37,7 +37,7 @@ body{
 .login .content .hint{color:#999;padding:0;margin:15px 0 7px 0;}
 .login .content .login-form,
 .login .content .forget-form{padding:0px;margin-top:10px;}
-.login .content .form-control{background-color:#dde3ec;text-align: center;height:30px;color:#000;border:1px solid #cfcfd0;font-size:13px; }
+.login .content .form-control{background-color:#dde3ec;height:30px;color:#000;border:1px solid #cfcfd0;font-size:13px; }
 .login .content .form-control:focus, .login .content .form-control:active{border:1px solid #c3ccda;}
 .login .content .form-control::-moz-placeholder{color:#8290a3;opacity:1;}
 .login .content .form-control:-ms-input-placeholder{color:#8290a3;}

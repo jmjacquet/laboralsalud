@@ -1,15 +1,23 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from django.shortcuts import render
-# -*- coding: utf-8 -*-
-from django.template import RequestContext,Context
 from django.shortcuts import *
+from django.template import RequestContext,Context
 from .models import *
 from django.contrib.auth.decorators import login_required
 from fm.views import AjaxDeleteView
 from django.views.generic import TemplateView,ListView,CreateView,UpdateView
 from .forms import *
+from django.contrib import messages
+from laboralsalud.utilidades import hoy,usuario_actual,empresa_actual
+from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth.hashers import make_password
+from django.utils.translation import ugettext as _
+from general.views import VariablesMixin,getVariablesMixin
+from django.utils.decorators import method_decorator
+import json
+
 
 @login_required 
 def ver_permisos(request):
@@ -34,8 +42,6 @@ def tiene_permiso(request,permiso):
     return (permiso in permisos)
 
 
-from django.contrib.auth.hashers import make_password
-
 # @login_required 
 def password(request):
   if request.method == 'GET':
@@ -45,11 +51,6 @@ def password(request):
 
   return HttpResponse( clave, content_type='application/json' ) 
 
-from django.contrib.auth import update_session_auth_hash
-from django.contrib.auth.forms import PasswordChangeForm
-from django.shortcuts import render, redirect
-from django.utils.translation import ugettext as _
-import json
 
 
 def cambiar_password(request):            
@@ -67,6 +68,84 @@ def cambiar_password(request):
             errors = form.errors            
             response = {'status': 0, 'message': json.dumps(errors)} 
             
-        return HttpResponse(json.dumps(response,default=default), content_type='application/json')
+        return HttpResponse(json.dumps(response), content_type='application/json')
     else:                
         return render(request,"general/cambiar_password.html",{'form':form})
+
+
+
+class UsuarioList(VariablesMixin,ListView):
+    template_name = 'usuarios/usuario_listado.html'
+    model = UsuUsuario
+    context_object_name = 'usuarios'
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):                
+        # if not tiene_permiso(self.request,'gral_configuracion'):
+        #     return redirect(reverse('principal'))
+        return super(UsuarioList, self).dispatch(*args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super(UsuarioList, self).get_context_data(**kwargs)        
+        context['usuarios'] = UsuUsuario.objects.all().order_by('nombre').select_related('grupo')           
+        return context
+
+@login_required
+def UsuarioCreateView(request):    
+    # if not tiene_permiso(request,'gral_configuracion'):
+    #         return redirect(reverse('usuarios'))
+    context = {}
+    context = getVariablesMixin(request)    
+    try:
+        empresa = empresa_actual(request)
+    except gral_empresa.DoesNotExist:
+        empresa = None 
+      
+    usuario = usuario_actual(request)
+    if request.method == 'POST':
+        form = UsuarioForm(request,usuario,request.POST,request.FILES)
+        if form.is_valid():
+            post = form.save(commit=False)                                    
+            post.save()
+            form.save_m2m()                            
+            messages.success(request, u'Los datos se guardaron con éxito!')
+            return HttpResponseRedirect(reverse('usuarios'))  
+    else:
+        form = UsuarioForm(request,usuario=usuario)
+
+    context['form'] = form
+    return render(request, 'usuarios/usuario_form.html',context)
+
+@login_required
+def UsuarioEditView(request,id):
+    # if not tiene_permiso(request,'gral_configuracion'):
+    #         return redirect(reverse('usuarios'))
+    context = {}
+    context = getVariablesMixin(request)    
+   
+    usuario = usuario_actual(request)
+    
+    usr = get_object_or_404(UsuUsuario, id_usuario=id)
+
+    if request.method == 'POST':
+        form = UsuarioForm(request,usuario,request.POST,request.FILES,instance=usr)
+        if form.is_valid():
+            post = form.save(commit=False)                                    
+            post.save()
+            form.save_m2m()
+            messages.success(request, u'Los datos se guardaron con éxito!')
+            return HttpResponseRedirect(reverse('usuarios'))                    
+    else:
+        form = UsuarioForm(request,usuario,instance=usr)
+
+    context['form'] = form
+    return render(request, 'usuarios/usuario_form.html',context)
+
+
+@login_required
+def usuarios_baja_reactivar(request,id):
+    usr = UsuUsuario.objects.get(pk=id) 
+    usr.baja = not usr.baja
+    usr.save()  
+    messages.success(request, u'Los datos se guardaron con éxito!')
+    return HttpResponseRedirect(reverse('usuarios'))           

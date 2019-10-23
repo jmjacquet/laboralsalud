@@ -7,6 +7,7 @@ $("#checkall").click (function () {
         $(this).change();
      });
   });
+$('#cargando').hide();
 
 });
 

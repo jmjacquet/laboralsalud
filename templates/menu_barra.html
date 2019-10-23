@@ -10,14 +10,14 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-     <a class="navbar-brand" href="#">
+     <a class="navbar-brand" href="{% url 'principal' %}">
         <img src="{% static 'img/membrete1.jpg' %}"class="brand-image"></a>
     </div>
 
     <!-- Group the nav links, forms, drop-down menus and other elements for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav ">
-        <li class="active"><a href="#">Inicio</a></li>
+        <li class="active"><a href="{% url 'principal' %}">Inicio</a></li>
         <li><a href="{% url 'ausentismo_listado' %}">Ausentismos</a></li>
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">Entidades <b class="caret"></b></a>
@@ -40,11 +40,11 @@
         
       <ul class="nav navbar-nav navbar-right">
         <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown"> {{usuario}}  <i class="fa fa-user"></i> <b class="caret"></b></a>
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown"> {{usuario}}  <i class="icon-user"></i> <b class="caret"></b></a>
           <ul class="dropdown-menu">
-            <li><a href="#">Action</a></li>
-            <li><a href="#">Another action</a></li>
-            <li><a id="cambiar_passwd" href="#"><i class="icon-key"></i>Cambiar Contraseña</a></li>   
+            <li><a href="{% url 'usuarios' %}">Configurar Usuarios</a></li>
+            <li><a href="#">Configuración General</a></li>
+            <li><a id="cambiar_passwd" href="#">Cambiar Contraseña</a></li>   
             <li class="divider"></li>
             <li><a href="{% url 'logout' %}">Salir</a></li>
           </ul>
