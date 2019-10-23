@@ -15,7 +15,7 @@ class aus_patologia(models.Model):
         db_table = 'aus_patologia'
     
     def __unicode__(self):
-        return u'%s - %s' % (self.codigo,self.patologia)         
+        return u'%s' % (self.patologia)         
 
     def get_patologia(self):
 		entidad=u'%s' % self.patologia.upper()
@@ -32,7 +32,7 @@ class aus_diagnostico(models.Model):
         db_table = 'aus_diagnostico'
     
     def __unicode__(self):
-        return u'%s - %s' % (self.codigo,self.diagnostico)  
+        return u'%s' % (self.diagnostico)  
 	
 	def get_diagnostico(self):
 		entidad=u'%s' % self.diagnostico.upper()
