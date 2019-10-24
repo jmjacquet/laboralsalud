@@ -20,6 +20,11 @@ from django.db.models.functions import Coalesce
 import decimal
 ################################################################
 
+def calcular_tasa_ausentismo(dias_caidos_tot,dias_laborables,empleados_tot):
+    tasa_ausentismo = (Decimal(dias_caidos_tot) / Decimal(dias_laborables * empleados_tot))*100 
+    tasa_ausentismo = Decimal(tasa_ausentismo).quantize(Decimal("0.01"), decimal.ROUND_HALF_UP) 
+    return tasa_ausentismo
+
 class ReporteResumenPeriodo(VariablesMixin,TemplateView):
     template_name = 'reportes/resumen_periodo.html'
 
@@ -47,10 +52,10 @@ class ReporteResumenPeriodo(VariablesMixin,TemplateView):
 
             ausentismos = ausentismo.objects.filter(baja=False)                      
           
-            if fdesde:
-                ausentismos= ausentismos.filter(fecha_creacion__gte=fdesde)            
-            if fhasta:
-                ausentismos= ausentismos.filter(fecha_creacion__lte=fhasta)           
+            if fdesde:                
+                ausentismos = ausentismos.filter(Q(aus_fcrondesde__gte=fdesde,tipo_ausentismo=1)|Q(art_fcrondesde__gte=fdesde,tipo_ausentismo__gte=2))                         
+            if fhasta:                
+                ausentismos = ausentismos.filter(Q(aus_fcronhasta__lte=fhasta,tipo_ausentismo=1)|Q(art_fcronhasta__lte=fhasta,tipo_ausentismo__gte=2))         
             if empresa:
                 ausentismos= ausentismos.filter(empleado__empresa=empresa)            
             if empleado:
@@ -75,41 +80,58 @@ class ReporteResumenPeriodo(VariablesMixin,TemplateView):
         dias_trab_tot = 0
         tasa_ausentismo = 0
         aus_total = None
-        dias_laborables = int(relativedelta(fhasta,fdesde).days)       
+        aus_inc = None
+        aus_acc = None
+        dias_laborables = int(relativedelta(fhasta,fdesde).days)+1       
         porc_dias_trab_tot = 100
         if ausentismos:
             
-            # empleados_tot = ausentismos.values('empleado').distinct().count()
-            empleados_tot = 77
+            #AUSENTISMO TOTAL            
+            empleados_tot = ausentismos.values('empleado').distinct().count()
+            # empleados_tot = 77
             dias_caidos_tot = ausentismos.aggregate(dias_caidos=Sum(Coalesce('aus_diascaidos', 0)+Coalesce('art_diascaidos', 0)))['dias_caidos'] or 0
+            # dias_caidos_tot = 67            
             dias_trab_tot = (dias_laborables * empleados_tot)-dias_caidos_tot
-            tasa_ausentismo = (Decimal(dias_caidos_tot) / Decimal(dias_trab_tot))*100 
-            tasa_ausentismo = Decimal(tasa_ausentismo).quantize(Decimal("0.01"), decimal.ROUND_HALF_UP)                        
-            porc_dias_trab_tot = 100 - tasa_ausentismo
- 
-        #     cpb_detalles = cpb_comprobante_detalle.objects.filter(cpb_comprobante__in=comprobantes)
-        #     productos_vendidos = cpb_detalles.filter(cpb_comprobante__cpb_tipo__compra_venta='V')
-        #     productos_vendidos_total = productos_vendidos.aggregate(sum=Sum(F('importe_total')*F('cpb_comprobante__cpb_tipo__signo_ctacte'), output_field=DecimalField()))['sum'] or 0 
-        #     productos_vendidos = productos_vendidos.values('producto__nombre').annotate(tot=Sum(F('importe_total')*F('cpb_comprobante__cpb_tipo__signo_ctacte'),output_field=DecimalField())).order_by('-tot')[:10]
-        #     context['productos_vendidos'] = productos_vendidos
+            tasa_ausentismo = calcular_tasa_ausentismo(dias_caidos_tot,dias_laborables,empleados_tot)        
+            porc_dias_trab_tot = 100 - tasa_ausentismo        
+            aus_total = {'dias_caidos_tot':dias_caidos_tot,'empleados_tot':empleados_tot,'dias_trab_tot':dias_trab_tot,'tasa_ausentismo':tasa_ausentismo,
+            'dias_laborables':dias_laborables,'porc_dias_trab_tot':porc_dias_trab_tot}
 
-        #     productos_comprados = cpb_detalles.filter(cpb_comprobante__cpb_tipo__compra_venta='C')
-        #     productos_comprados_total = productos_comprados.aggregate(sum=Sum(F('importe_total')*F('cpb_comprobante__cpb_tipo__signo_ctacte'), output_field=DecimalField()))['sum'] or 0 
-        #     productos_comprados = productos_comprados.values('producto__nombre').annotate(tot=Sum(F('importe_total')*F('cpb_comprobante__cpb_tipo__signo_ctacte'),output_field=DecimalField())).order_by('-tot')[:10]
-        #     context['productos_comprados'] = productos_comprados
+            #AUSENTISMO INCULPABLE
+            ausentismos = ausentismos.filter(tipo_ausentismo=1)
+            if ausentismos:
+                empleados_tot = ausentismos.values('empleado').distinct().count()
+                # empleados_tot = 77
+                dias_caidos_tot = ausentismos.aggregate(dias_caidos=Sum(Coalesce('aus_diascaidos', 0)+Coalesce('art_diascaidos', 0)))['dias_caidos'] or 0
+                # dias_caidos_tot = 67            
+                dias_trab_tot = (dias_laborables * empleados_tot)-dias_caidos_tot
+
+                tasa_ausentismo = calcular_tasa_ausentismo(dias_caidos_tot,dias_laborables,empleados_tot)                      
+                porc_agudos = Decimal(74.6).quantize(Decimal("0.01"), decimal.ROUND_HALF_UP)
+                porc_cronicos = Decimal(25).quantize(Decimal("0.01"), decimal.ROUND_HALF_UP)
+                porc_dias_trab_tot = 100 - tasa_ausentismo        
+                aus_inc = {'dias_caidos_tot':dias_caidos_tot,'empleados_tot':empleados_tot,'dias_trab_tot':dias_trab_tot,'tasa_ausentismo':tasa_ausentismo,
+                'dias_laborables':dias_laborables,'porc_dias_trab_tot':porc_dias_trab_tot,'porc_agudos':porc_agudos,'porc_cronicos':porc_cronicos}
+
+            #AUSENTISMO ACCIDENTES
+            ausentismos = ausentismos.filter(tipo_ausentismo=2)
+            if ausentismos:
+                empleados_tot = ausentismos.values('empleado').distinct().count()
+                # empleados_tot = 77
+                dias_caidos_tot = ausentismos.aggregate(dias_caidos=Sum(Coalesce('aus_diascaidos', 0)+Coalesce('art_diascaidos', 0)))['dias_caidos'] or 0
+                # dias_caidos_tot = 67            
+                dias_trab_tot = (dias_laborables * empleados_tot)-dias_caidos_tot
+
+                tasa_ausentismo = calcular_tasa_ausentismo(dias_caidos_tot,dias_laborables,empleados_tot)                       
+                porc_dias_trab_tot = 100 - tasa_ausentismo        
+                aus_acc = {'dias_caidos_tot':dias_caidos_tot,'empleados_tot':empleados_tot,'dias_trab_tot':dias_trab_tot,'tasa_ausentismo':tasa_ausentismo,
+                'dias_laborables':dias_laborables,'porc_dias_trab_tot':porc_dias_trab_tot}
+
+            
                     
-        #     ranking_vendedores = comprobantes.values('vendedor__apellido_y_nombre').annotate(tot=Sum(F('importe_total'),output_field=DecimalField())).order_by('-tot')[:10]
-        #     context['ranking_vendedores'] = ranking_vendedores
-
-        #     ranking_clientes = comprobantes.filter(cpb_tipo__compra_venta='V').values('entidad__apellido_y_nombre').annotate(tot=Sum(F('importe_total')*F('cpb_tipo__signo_ctacte'),output_field=DecimalField())).order_by('-tot')[:10]
-        #     context['ranking_clientes'] = ranking_clientes
-
-        #     ranking_proveedores = comprobantes.filter(cpb_tipo__compra_venta='C').values('entidad__apellido_y_nombre').annotate(tot=Sum(F('importe_total')*F('cpb_tipo__signo_ctacte'),output_field=DecimalField())).order_by('-tot')[:10]
-        #     context['ranking_proveedores'] = ranking_proveedores
-
-        # context['meses']= json.dumps(meses,cls=DecimalEncoder)       
-        datos = {'dias_caidos_tot':dias_caidos_tot,'empleados_tot':empleados_tot,'dias_trab_tot':dias_trab_tot,'tasa_ausentismo':tasa_ausentismo,'dias_laborables':dias_laborables,'porc_dias_trab_tot':porc_dias_trab_tot}
-        context['aus_total']=  datos
+        context['aus_total']=  aus_total
+        context['aus_inc']=  aus_inc
+        context['aus_acc']=  aus_acc
         context['dias_laborables']=  dias_laborables
         # context['ventas_pagos']=  json.dumps(ventas_pagos,cls=DecimalEncoder)
         # context['compras_deuda']= json.dumps(compras_deuda,cls=DecimalEncoder)

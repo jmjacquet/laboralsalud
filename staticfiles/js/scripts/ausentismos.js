@@ -246,7 +246,7 @@ $('#id_art_fcronhasta').change(function()
  function diasRestantes(desde,hasta,dias){
         var a = moment(desde.val(),'D/M/YYYY');
         var b = moment(hasta.val(),'D/M/YYYY');
-        var diffDays = b.diff(a, 'days');        
+        var diffDays = b.diff(a, 'days')+1;        
         if (diffDays < 0) {diffDays=0};
         dias.val(diffDays);
     };

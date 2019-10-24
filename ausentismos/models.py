@@ -98,23 +98,29 @@ class ausentismo(models.Model):
 
 	@property
 	def get_dias_caidos(self):
-		if self.aus_diascaidos:
-			return self.aus_diascaidos
-		if self.art_diascaidos:
-			return self.art_diascaidos
+		dias = 0
+		if self.tipo_ausentismo==1:
+			if self.aus_diascaidos:
+				dias = self.aus_diascaidos
+		else:
+			if self.art_diascaidos:
+				dias = self.art_diascaidos
+		return dias
 
 	@property
 	def get_fechas(self):        
 		desde=''
 		hasta=''
-		if self.aus_fcrondesde:
-			desde = self.aus_fcrondesde.strftime('DD/MM/YYYY')		
-		if self.aus_fcronhasta:
-			hasta = self.aus_fcronhasta.strftime('DD/MM/YYYY')
-		if self.art_fcrondesde:
-			desde = self.art_fcrondesde.strftime('DD/MM/YYYY')		
-		if self.art_fcronhasta:
-			hasta = self.art_fcronhasta.strftime('DD/MM/YYYY')
+		if self.tipo_ausentismo==1:
+			if self.aus_fcrondesde:
+				desde = self.aus_fcrondesde.strftime('%d/%m/%Y')		
+			if self.aus_fcronhasta:
+				hasta = self.aus_fcronhasta.strftime('%d/%m/%Y')
+		else:
+			if self.art_fcrondesde:
+				desde = self.art_fcrondesde.strftime('%d/%m/%Y')		
+			if self.art_fcronhasta:
+				hasta = self.art_fcronhasta.strftime('%d/%m/%Y')
 		return '%s hasta %s' % (desde,hasta)
 
 	
