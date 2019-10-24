@@ -21,16 +21,9 @@
             
             <div class="panel panel-primary panel_centrado ">
                 <div class="panel-heading">
-                    <div class="caption bold">
                                 <i class="icon-pie"></i>REPORTE DISTRIBUCIÓN VENTAS/COMPRAS
-                    </div>
-                    <div class="actions">
-                            <button tittle="Búsqueda Avanzada" data-toggle="collapse" aria-expanded="true"  class="btn btn-circle active" data-target="#barra_busqueda" aria-controls="barra_busqueda"><i class="glyphicon glyphicon-search"></i></button>                          
-                    </div>
-
                 </div> 
-            </div>                 
-             <div class="row collapse" id="barra_busqueda">
+                <div class="panel-body">
                         <div class="col-md-12">
                          <form class="form" accept-charset="UTF-8" role="form" action="" method="post">
                             {% csrf_token %} 
@@ -42,7 +35,8 @@
                             </div>     
                             </form>         
                         </div>
-                    </div>                                                      
+                </div>  
+            </div>                                                        
             <div class="row">  
                 <div class="col-sm-12">
                    {{aus_total}}

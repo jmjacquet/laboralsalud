@@ -15,6 +15,8 @@ from django.views.generic import TemplateView,ListView,CreateView,UpdateView,For
 from django.db.models import DateTimeField, ExpressionWrapper, F,DecimalField,IntegerField
 import json
 from decimal import *
+from django.db.models import Q,Sum,Count,FloatField,Func
+from django.db.models.functions import Coalesce
 
 ################################################################
 
@@ -67,10 +69,23 @@ class ReporteResumenPeriodo(VariablesMixin,TemplateView):
         context['fdesde'] = fdesde
         context['fhasta'] = fhasta
         context['ausentismos'] = ausentismos
+        dias_laborales = 0
+        dias_caidos_tot = 0
+        empleados_tot = 0
+        dias_trab_tot = 0
+        tasa_ausentismo = 0
         aus_total = None
+        dias_laborables = int(relativedelta(fhasta,fdesde).days)       
+
         if ausentismos:
-                        
-            aus_total = ausentismos.annotate(dias_caidos=Sum('aus_diascaidos',output_field=IntegerField()),cant_empl=Count('empleado',output_field=IntegerField()))
+            
+            empleados_tot = ausentismos.values('empleado').distinct().count()
+            dias_caidos_tot = ausentismos.aggregate(dias_caidos=Sum(Coalesce('aus_diascaidos', 0)+Coalesce('art_diascaidos', 0)))['dias_caidos'] or 0
+            dias_trab_tot = (dias_laborables * empleados_tot)-dias_caidos_tot
+            tasa_ausentismo = Decimal(dias_caidos_tot) / Decimal(dias_trab_tot)                 
+ 
+                
+
         #     ventas = cpbs.filter(cpb_tipo__compra_venta='V').annotate(pendiente=Sum(F('saldo')*F('cpb_tipo__signo_ctacte'),output_field=DecimalField()),saldado=Sum((F('importe_total')-F('saldo'))*F('cpb_tipo__signo_ctacte'),output_field=DecimalField())).order_by(F('m'))
         #     compras = cpbs.filter(cpb_tipo__compra_venta='C').annotate(pendiente=Sum(F('saldo')*F('cpb_tipo__signo_ctacte'),output_field=DecimalField()),saldado=Sum((F('importe_total')-F('saldo'))*F('cpb_tipo__signo_ctacte'),output_field=DecimalField())).order_by(F('m'))
 
@@ -106,7 +121,9 @@ class ReporteResumenPeriodo(VariablesMixin,TemplateView):
         #     context['ranking_proveedores'] = ranking_proveedores
 
         # context['meses']= json.dumps(meses,cls=DecimalEncoder)       
-        context['aus_total']=  json.dumps(aus_total,cls=DecimalEncoder)
+        datos = {'dias_caidos_tot':dias_caidos_tot,'empleados_tot':empleados_tot,'dias_trab_tot':dias_trab_tot,'tasa_ausentismo':tasa_ausentismo,'dias_laborables':dias_laborables}
+        context['aus_total']=  json.dumps(datos,cls=DecimalEncoder)
+        context['dias_laborables']=  dias_laborables
         # context['ventas_pagos']=  json.dumps(ventas_pagos,cls=DecimalEncoder)
         # context['compras_deuda']= json.dumps(compras_deuda,cls=DecimalEncoder)
         # context['compras_pagos']= json.dumps(compras_pagos,cls=DecimalEncoder)
@@ -115,3 +132,4 @@ class ReporteResumenPeriodo(VariablesMixin,TemplateView):
 
     def post(self, *args, **kwargs):
         return self.get(*args, **kwargs)
+

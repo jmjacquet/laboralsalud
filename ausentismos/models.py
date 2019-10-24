@@ -96,6 +96,27 @@ class ausentismo(models.Model):
 	def __unicode__(self):
 	    return u'%s' % (self.empleado)
 
+	@property
+	def get_dias_caidos(self):
+		if self.aus_diascaidos:
+			return self.aus_diascaidos
+		if self.art_diascaidos:
+			return self.art_diascaidos
+
+	@property
+	def get_fechas(self):        
+		desde=''
+		hasta=''
+		if self.aus_fcrondesde:
+			desde = self.aus_fcrondesde.strftime('DD/MM/YYYY')		
+		if self.aus_fcronhasta:
+			hasta = self.aus_fcronhasta.strftime('DD/MM/YYYY')
+		if self.art_fcrondesde:
+			desde = self.art_fcrondesde.strftime('DD/MM/YYYY')		
+		if self.art_fcronhasta:
+			hasta = self.art_fcronhasta.strftime('DD/MM/YYYY')
+		return '%s hasta %s' % (desde,hasta)
+
 	
 
 
