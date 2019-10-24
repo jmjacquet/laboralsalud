@@ -17,37 +17,162 @@
 <br>
     
 
-          <div class="col-md-12">   
-            
-            <div class="panel panel-primary panel_centrado ">
-                <div class="panel-heading">
-                                <i class="icon-pie"></i>REPORTE DISTRIBUCIÓN VENTAS/COMPRAS
-                </div> 
-                <div class="panel-body">
-                        <div class="col-md-12">
-                         <form class="form" accept-charset="UTF-8" role="form" action="" method="post">
-                            {% csrf_token %} 
-                            <div class="barra_busqueda col-sm-12">                                    
-                                    <div class="col-sm-1">{% bootstrap_field form.fdesde  %}</div>                                
-                                    <div class="col-sm-1">{% bootstrap_field form.fhasta  %}</div>                                    
-                                    <div class="col-sm-3">{% bootstrap_field form.tipo_ausentismo  %}</div>                                    
-                                    <div class="col-sm-1"><button class="btn btn-sm btn-primary text-center" type="submit">Buscar</button></div>
-                            </div>     
-                            </form>         
-                        </div>
-                </div>  
-            </div>                                                        
-            <div class="row">  
-                <div class="col-sm-12">
-                   {{aus_total}}
-                </div>                                          
-     
-                                            
+<div class="col-md-12">   
+  
+  <div class="panel panel-primary ">
+      <div class="panel-heading">
+                      <i class="icon-pie"></i>REPORTE DISTRIBUCIÓN VENTAS/COMPRAS
+      </div> 
+      <div class="panel-body">
+              <div class="col-md-12">
+               <form class="form" accept-charset="UTF-8" role="form" action="" method="post">
+                  {% csrf_token %} 
+                  <div class="barra_busqueda col-sm-12">                                    
+                          <div class="col-sm-1">{% bootstrap_field form.fdesde  %}</div>                                
+                          <div class="col-sm-1">{% bootstrap_field form.fhasta  %}</div>                                    
+                          <div class="col-sm-3">{% bootstrap_field form.empresa  %}</div>                                    
+                          <div class="col-sm-3">{% bootstrap_field form.tipo_ausentismo  %}</div>                            
+                          <div class="col-sm-3">{% bootstrap_field form.empleado  %}</div>                                            
+                          <div class="col-sm-1"><button class="btn btn-sm btn-primary text-center" type="submit">Buscar</button></div>
+                  </div>     
+                  </form>         
+              </div>
+      </div>  
+  </div>                                                        
+  <div class="row">  
+      <div class="col-sm-4">
+          <div class="panel panel-primary">
+            <div class="panel-heading">
+              <h3 class="panel-title text-center">AUSENTISMO TOTAL</h3>
             </div>
-                     
-        </div>
+            <div class="panel-body">
+              <div class="row">
+                <div class="col-sm-12">
+                  <table class="table table-striped table-hover table-condensed table-no-bordered">
+                    <tbody>
+                      <tr>
+                        <td  class="titulo">Días caídos Totales</td><td class="dato">{{aus_total.dias_caidos_tot}}</td>
+                      </tr>
+                      <tr>
+                        <td class="titulo">Cantidad de Empleados</td><td class="dato">{{aus_total.empleados_tot}}</td>                
+                      </tr>
+                      <tr>
+                        <td  class="titulo">Días laborables del período</td><td class="dato">{{aus_total.dias_laborables}}</td>
+                      </tr>
+                      <tr>
+                        <td class="titulo">Tasa de ausentismo Total</td><td class="dato">{{aus_total.tasa_ausentismo}}%</td>                
+                      </tr>
+                      <tr>
+                        <td class="titulo">Días trabajados Totales</td><td class="dato">{{aus_total.dias_trab_tot}}</td>                
+                      </tr>                  
+                    </tbody>
+                  </table>
+                </div>
+               </div>
+               <div class="row">
+                <div class="col-sm-12">
+                     <div class="chart" style="padding: 0px; position: relative;"> 
+                                <div id="ausentismo_tot" style="width: 100%; height: 100%; margin: 0 auto"></div>
+                      </div>    
+                </div>  
+              </div>
+                
+            </div>
+          </div>
+          
+      </div>                                                                        
+      <div class="col-sm-4">
+          <div class="panel panel-primary">
+            <div class="panel-heading">
+              <h3 class="panel-title text-center">AUSENTISMO INCULPABLE</h3>
+            </div>
+            <div class="panel-body">
+              <div class="row">
+                <div class="col-sm-12">
+                  <table class="table table-striped table-hover table-condensed table-no-bordered">
+                    <tbody>
+                      <tr>
+                        <td  class="titulo">Días caídos Totales</td><td class="dato">{{aus_total.dias_caidos_tot}}</td>
+                      </tr>
+                      <tr>
+                        <td class="titulo">Cantidad de Empleados</td><td class="dato">{{aus_total.empleados_tot}}</td>                
+                      </tr>
+                      <tr>
+                        <td  class="titulo">Días laborables del período</td><td class="dato">{{aus_total.dias_laborables}}</td>
+                      </tr>
+                      <tr>
+                        <td class="titulo">Tasa de ausentismo Total</td><td class="dato">{{aus_total.tasa_ausentismo}}%</td>                
+                      </tr>
+                      <tr>
+                        <td class="titulo">Días trabajados Totales</td><td class="dato">{{aus_total.dias_trab_tot}}</td>                
+                      </tr>                  
+                    </tbody>
+                  </table>
+                </div>
+               </div>
+               <div class="row">
+                <div class="col-sm-12">
+                     <div class="chart" style="padding: 0px; position: relative;"> 
+                                <div id="ausentismo_inc" style="width: 100%; height: 100%; margin: 0 auto"></div>
+                      </div>    
+                </div>  
+              </div>
+                
+            </div>
+          </div>
+          
+      </div>                     
+      <div class="col-sm-4">
+          <div class="panel panel-primary">
+            <div class="panel-heading">
+              <h3 class="panel-title text-center">AUSENTISMO ACCIDENTES</h3>
+            </div>
+            <div class="panel-body">
+              <div class="row">
+                <div class="col-sm-12">
+                  <table class="table table-striped table-hover table-condensed table-no-bordered">
+                    <tbody>
+                      <tr>
+                        <td  class="titulo">Días caídos Totales</td><td class="dato">{{aus_total.dias_caidos_tot}}</td>
+                      </tr>
+                      <tr>
+                        <td class="titulo">Cantidad de Empleados</td><td class="dato">{{aus_total.empleados_tot}}</td>                
+                      </tr>
+                      <tr>
+                        <td  class="titulo">Días laborables del período</td><td class="dato">{{aus_total.dias_laborables}}</td>
+                      </tr>
+                      <tr>
+                        <td class="titulo">Tasa de ausentismo Total</td><td class="dato">{{aus_total.tasa_ausentismo}}%</td>                
+                      </tr>
+                      <tr>
+                        <td class="titulo">Días trabajados Totales</td><td class="dato">{{aus_total.dias_trab_tot}}</td>                
+                      </tr>                  
+                    </tbody>
+                  </table>
+                </div>
+               </div>
+               <div class="row">
+                <div class="col-sm-12">
+                     <div class="chart" style="padding: 0px; position: relative;"> 
+                                <div id="ausentismo_acc" style="width: 100%; height: 100%; margin: 0 auto"></div>
+                      </div>    
+                </div>  
+              </div>
+                
+            </div>
+          </div>
+          
+      </div>                     
+  </div>
+           
+</div>
+
+
+
 <script type="text/javascript">
-  $.fn.datepicker.dates['es'] = {
+  
+$(document).ready(function() {  
+$.fn.datepicker.dates['es'] = {
     days: ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"],
     daysShort: ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb", "Dom"],
     daysMin: ["Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa", "Do"],
@@ -56,12 +181,107 @@
     today: "Hoy"
   };
   
-  $('.datepicker').datepicker({
-          format: "dd/mm/yyyy",
-          language: "es",
-          autoclose: true,
-          todayHighlight: true
+ $('.datepicker').datepicker({
+        format: "dd/mm/yyyy",
+        language: "es",
+        autoclose: true,
+        todayHighlight: true
+  });
+
+  $('.datepicker').each(function(){
+      $(this).datepicker();
+  });
+
+  $("#id_empleado").chosen({
+      no_results_text: "Empleado inexistente...",
+      placeholder_text_single:"Seleccione un Empleado",
+      allow_single_deselect: true,
+  });
+
+  $("#id_empresa").chosen({
+      no_results_text: "Empresa inexistente...",
+      placeholder_text_single:"Seleccione una Empresa",
+      allow_single_deselect: true,
+  });
+});      
+jQuery(document).ready(function($) {       
+    Highcharts.setOptions({
+    spacingBottom: 5,
+    spacingTop: 0,
+    spacingLeft: 0,
+    spacingRight: 0,    
+    colors: [ '#f7a35c','#7798BF','#55BF3B','#7cb5ec','#90ee7e', '#7798BF', '#aaeeee', '#ff0066',
+        '#eeaaee',  '#DF5353',  '#aaeeee'],
+    chart: {
+        plotBackgroundColor: null,
+        plotBorderWidth: null,
+        plotShadow: false,
+        type: 'pie'
+    },   
+    tooltip: {
+        pointFormat: '{series.name}: <b>{point.y:.2f}%</b>'
+    },
+    credits: {
+                  enabled: false
+                },
+    title: {
+            text : null,
+          },
+    plotOptions: {
+        pie: {
+            innerSize:'50%' ,
+            allowPointSelect: true,
+            cursor: 'pointer',
+            dataLabels: {
+                enabled: true,
+                format: '<b>{point.name}</b>: {point.percentage:.2f} %',
+                style: {
+                    color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black',
+                    fontSize: "8px",
+                },
+                connectorColor: 'silver',                 
+            }
+        }
+    },
+
+  });
+    
+    Highcharts.chart('ausentismo_tot', {
+        
+        series: [{
+            name: 'AUSENTISMO TOTAL',
+            data: [                
+                    { name: 'Dias Caidos Totales', y: {{aus_total.tasa_ausentismo|safe}},sliced: true,  selected: true  },           
+                    { name: 'Dias Trab Totales', y: {{aus_total.porc_dias_trab_tot|safe}} },                           
+            ]
+        }]
     });
+
+    Highcharts.chart('ausentismo_inc', {
+        
+        series: [{
+            name: 'AUSENTISMO INCULPABLES',
+            data: [                
+                    { name: 'Dias Caidos Totales', y: {{aus_total.tasa_ausentismo|safe}},sliced: true,  selected: true  },           
+                    { name: 'Dias Trab Totales', y: {{aus_total.porc_dias_trab_tot|safe}} },                           
+            ]
+        }]
+    });
+
+    Highcharts.chart('ausentismo_acc', {
+        
+        series: [{
+            name: 'AUSENTISMO ACCIDENTES',
+            data: [                
+                    { name: 'Dias Caidos Totales', y: {{aus_total.tasa_ausentismo|safe}},sliced: true,  selected: true  },           
+                    { name: 'Dias Trab Totales', y: {{aus_total.porc_dias_trab_tot|safe}} },                           
+            ]
+        }]
+    });
+
+
+
+});
 
 
 </script>

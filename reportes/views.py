@@ -14,10 +14,10 @@ from django.shortcuts import render, redirect, get_object_or_404,render_to_respo
 from django.views.generic import TemplateView,ListView,CreateView,UpdateView,FormView,DetailView
 from django.db.models import DateTimeField, ExpressionWrapper, F,DecimalField,IntegerField
 import json
-from decimal import *
+from decimal import Decimal
 from django.db.models import Q,Sum,Count,FloatField,Func
 from django.db.models.functions import Coalesce
-
+import decimal
 ################################################################
 
 class ReporteResumenPeriodo(VariablesMixin,TemplateView):
@@ -54,7 +54,7 @@ class ReporteResumenPeriodo(VariablesMixin,TemplateView):
             if empresa:
                 ausentismos= ausentismos.filter(empleado__empresa=empresa)            
             if empleado:
-                ausentismos= ausentismos.filter(empleado__apellido_y_nombre__icontains=empleado)
+                ausentismos= ausentismos.filter(empleado=empleado)
 
             if int(tipo_ausentismo) > 0: 
                 ausentismos = ausentismos.filter(tipo_ausentismo=int(tipo_ausentismo))
@@ -76,30 +76,17 @@ class ReporteResumenPeriodo(VariablesMixin,TemplateView):
         tasa_ausentismo = 0
         aus_total = None
         dias_laborables = int(relativedelta(fhasta,fdesde).days)       
-
+        porc_dias_trab_tot = 100
         if ausentismos:
             
-            empleados_tot = ausentismos.values('empleado').distinct().count()
+            # empleados_tot = ausentismos.values('empleado').distinct().count()
+            empleados_tot = 77
             dias_caidos_tot = ausentismos.aggregate(dias_caidos=Sum(Coalesce('aus_diascaidos', 0)+Coalesce('art_diascaidos', 0)))['dias_caidos'] or 0
             dias_trab_tot = (dias_laborables * empleados_tot)-dias_caidos_tot
-            tasa_ausentismo = Decimal(dias_caidos_tot) / Decimal(dias_trab_tot)                 
+            tasa_ausentismo = (Decimal(dias_caidos_tot) / Decimal(dias_trab_tot))*100 
+            tasa_ausentismo = Decimal(tasa_ausentismo).quantize(Decimal("0.01"), decimal.ROUND_HALF_UP)                        
+            porc_dias_trab_tot = 100 - tasa_ausentismo
  
-                
-
-        #     ventas = cpbs.filter(cpb_tipo__compra_venta='V').annotate(pendiente=Sum(F('saldo')*F('cpb_tipo__signo_ctacte'),output_field=DecimalField()),saldado=Sum((F('importe_total')-F('saldo'))*F('cpb_tipo__signo_ctacte'),output_field=DecimalField())).order_by(F('m'))
-        #     compras = cpbs.filter(cpb_tipo__compra_venta='C').annotate(pendiente=Sum(F('saldo')*F('cpb_tipo__signo_ctacte'),output_field=DecimalField()),saldado=Sum((F('importe_total')-F('saldo'))*F('cpb_tipo__signo_ctacte'),output_field=DecimalField())).order_by(F('m'))
-
-        #     for v in ventas:
-        #         ventas_deuda.append(v['pendiente'])
-        #         ventas_pagos.append(v['saldado'])
-
-        #     for c in compras:
-        #         compras_deuda.append(c['pendiente'])
-        #         compras_pagos.append(c['saldado'])
-            
-
-
-
         #     cpb_detalles = cpb_comprobante_detalle.objects.filter(cpb_comprobante__in=comprobantes)
         #     productos_vendidos = cpb_detalles.filter(cpb_comprobante__cpb_tipo__compra_venta='V')
         #     productos_vendidos_total = productos_vendidos.aggregate(sum=Sum(F('importe_total')*F('cpb_comprobante__cpb_tipo__signo_ctacte'), output_field=DecimalField()))['sum'] or 0 
@@ -121,8 +108,8 @@ class ReporteResumenPeriodo(VariablesMixin,TemplateView):
         #     context['ranking_proveedores'] = ranking_proveedores
 
         # context['meses']= json.dumps(meses,cls=DecimalEncoder)       
-        datos = {'dias_caidos_tot':dias_caidos_tot,'empleados_tot':empleados_tot,'dias_trab_tot':dias_trab_tot,'tasa_ausentismo':tasa_ausentismo,'dias_laborables':dias_laborables}
-        context['aus_total']=  json.dumps(datos,cls=DecimalEncoder)
+        datos = {'dias_caidos_tot':dias_caidos_tot,'empleados_tot':empleados_tot,'dias_trab_tot':dias_trab_tot,'tasa_ausentismo':tasa_ausentismo,'dias_laborables':dias_laborables,'porc_dias_trab_tot':porc_dias_trab_tot}
+        context['aus_total']=  datos
         context['dias_laborables']=  dias_laborables
         # context['ventas_pagos']=  json.dumps(ventas_pagos,cls=DecimalEncoder)
         # context['compras_deuda']= json.dumps(compras_deuda,cls=DecimalEncoder)
