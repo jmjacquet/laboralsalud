@@ -123,7 +123,19 @@ class ausentismo(models.Model):
 				hasta = self.art_fcronhasta.strftime('%d/%m/%Y')
 		return '%s hasta %s' % (desde,hasta)
 
-	
+	@property
+	def get_fcrondesde(self):
+		if self.tipo_ausentismo==1:
+			return self.aus_fcrondesde
+		else:
+			return self.art_fcrondesde
+				
+	@property
+	def get_fcronhasta(self):
+		if self.tipo_ausentismo==1:
+			return self.aus_fcronhasta		
+		else:
+			return self.art_fcronhasta		
 
 
 

@@ -15,7 +15,7 @@ class ConsultaPeriodo(forms.Form):
 	fhasta =  forms.DateField(label='Fecha Hasta',widget=forms.DateInput(attrs={'class': 'form-control datepicker'}),required = True,initial=finMes())    	
 	empresa = forms.ModelChoiceField(label='Empresa',queryset=ent_empresa.objects.filter(baja=False),empty_label='Todas',required=False)
 	empleado = EmpleadoModelChoiceField(label='Empleado',queryset=ent_empleado.objects.filter(baja=False),empty_label='Todos',required=False)
-	tipo_ausentismo = forms.ChoiceField(label='Estado',choices=TIPO_AUSENCIA_,required=False,initial=0)	
+	tipo_ausentismo = forms.ChoiceField(label='Tipo Ausentismo',choices=TIPO_AUSENCIA_,required=False,initial=0)	
 	def __init__(self, *args, **kwargs):		
 		request = kwargs.pop('request', None) 
 		super(ConsultaPeriodo, self).__init__(*args, **kwargs)						

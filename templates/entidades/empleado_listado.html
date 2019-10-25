@@ -69,9 +69,9 @@
                 <td title="{{ a.apellido_y_nombre}}">{{ a.apellido_y_nombre|default_if_none:''|truncatechars:60 }}</td>
                 <td>{{ a.nro_doc|default_if_none:'' }}</td>
                 <td>{{ a.fecha_nac|date:'d/m/Y' }}</td>
-                <td>{{ a.get_edad|default_if_none:'' }}</td>
+                <td>{{ a.get_edad|default_if_none:'' }} años</td>
                 <td title="{{ a.empresa}}">{{ a.empresa|default_if_none:''|truncatechars:60 }}</td>
-                <td>{{ a.get_antiguedad_empr|default_if_none:'' }}</td>
+                <td>{{ a.get_antiguedad_empr|default_if_none:'' }} años</td>
                 <td title="{{ a.art}}">{{ a.art|default_if_none:''|truncatechars:60 }}</td>
                 <td>{{ a.email|default_if_none:'' }}</td>
                 <td title="{{ a.domicilio}}">{{ a.domicilio|default_if_none:''|truncatechars:60 }}</td>

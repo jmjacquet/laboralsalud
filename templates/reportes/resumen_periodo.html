@@ -256,7 +256,9 @@ jQuery(document).ready(function($) {
   });
     {% if aus_total %}
     Highcharts.chart('ausentismo_tot', {
-        
+        legend: {
+            labelFormat:'<b>{name}</b>: {percentage:.2f}%',
+        },
         series: [{
             name: 'AUSENTISMO TOTAL',
             data: [                
@@ -268,14 +270,16 @@ jQuery(document).ready(function($) {
      {% endif %}
     {% if aus_inc %}
     Highcharts.chart('ausentismo_inc', {
-        
+        legend: {
+            labelFormat:'<b>{name}</b>: {percentage:.2f}%',
+        },
         series: [{
             type: 'pie',
             name: 'Días Caídos/Trabajados',
             size: '90%',
             innerSize: '60%',
             data: [                
-                    { name: 'Dias Caídos Totales', y: {{aus_inc.tasa_ausentismo|safe}} },           
+                    { name: 'Dias Caídos Totales', y: {{aus_inc.tasa_ausentismo|safe}},sliced: true,  selected: true },           
                     { name: 'Dias Trabajados Totales', y: {{aus_inc.porc_dias_trab_tot|safe}} },                           
             ]            
         }, {
@@ -292,7 +296,9 @@ jQuery(document).ready(function($) {
      {% endif %}
     {% if aus_acc %}
     Highcharts.chart('ausentismo_acc', {
-        
+        legend: {
+            labelFormat:'<b>{name}</b>: {percentage:.2f}%',
+        },
         series: [{
             name: 'AUSENTISMO ACCIDENTES',
             data: [                

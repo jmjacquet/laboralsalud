@@ -17,6 +17,9 @@ class ent_cargo(models.Model):
     def __unicode__(self):
         return u'%s' % self.cargo
 
+    def get_cargo(self):
+		return unicode(self.cargo)
+		
 class ent_especialidad(models.Model):
     id = models.AutoField(primary_key=True,db_index=True)    
     especialidad =  models.CharField(max_length=200)
@@ -58,7 +61,7 @@ class ent_medico_prof(models.Model):
 		entidad=u'%s' % self.apellido_y_nombre.upper()
 		if self.nro_doc:
 			entidad = entidad + u' - %s' % (self.nro_doc)		
-		return entidad.upper()		
+		return unicode(entidad.upper())		
 
 class ent_empresa(models.Model):
 	razon_social = models.CharField(u'Razón Social',max_length=200,blank=True, null=True)	
@@ -96,7 +99,7 @@ class ent_empresa(models.Model):
 		ordering = ['razon_social','cuit']
 
 	def __unicode__(self):
-	    return u'%s' % (self.razon_social)
+	    return u'%s' % unicode(self.razon_social)
 	
 class ent_art(models.Model):    
 	codigo = models.CharField(u'Código',max_length=50,blank=True, null=True)   
@@ -115,7 +118,7 @@ class ent_art(models.Model):
 	    db_table = 'ent_art'
 
 	def __unicode__(self):
-	    return u'%s' % (self.nombre)
+	    return u'%s' % unicode(self.nombre)
 	
 #Tabla de la Base de Configuracion
 class ent_empleado(models.Model):	
@@ -178,14 +181,13 @@ class ent_empleado(models.Model):
 
 	@property
 	def get_antiguedad_trab(self):
+		hasta = date.today()			
 		try:
 			if self.trab_fingreso:
 				if self.trab_fbaja:
 					hasta = self.trab_fbaja
-				else:
-					hasta = date.today()		
-					antig = relativedelta(hasta, self.trab_fingreso).years
-					return antig
+				antig = relativedelta(hasta, self.trab_fingreso).years
+				return antig
 			else:
 				return 0
 		except:
@@ -193,14 +195,13 @@ class ent_empleado(models.Model):
 
 	@property
 	def get_antiguedad_empr(self):
+		hasta = date.today()				
 		try:
 			if self.empr_fingreso:
 				if self.trab_fbaja:
 					hasta = self.trab_fbaja
-				else:
-					hasta = date.today()		
-					antig = relativedelta(hasta, self.empr_fingreso).years
-					return antig
+				antig = relativedelta(hasta, self.empr_fingreso).years
+				return antig
 			else:
 				return 0
 		except:

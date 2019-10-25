@@ -408,12 +408,7 @@ class EmpresaView(VariablesMixin,ListView):
     def dispatch(self, *args, **kwargs): 
         # if not tiene_permiso(self.request,'ent_clientes'):
         #     return redirect(reverse('principal'))
-        return super(EmpresaView, self).dispatch(*args, **kwargs)
-
-    def get_context_data(self, **kwargs):
-        context = super(EmpresaView, self).get_context_data(**kwargs)    
-        context['empresas'] = ent_empresa.objects.filter(baja=False,pk__in=empresas_habilitadas(self.request))  
-        return context
+        return super(EmpresaView, self).dispatch(*args, **kwargs)    
 
     def post(self, *args, **kwargs):
         return self.get(*args, **kwargs)
@@ -548,6 +543,8 @@ class EmpleadoCreateView(VariablesMixin,AjaxCreateView):
         initial = super(EmpleadoCreateView, self).get_initial()               
         initial['legajo'] = '{0:0{width}}'.format((ultimoNroId(ent_empleado)+1),width=4)
         initial['request'] = self.request        
+        initial['empresa'] = empresa_actual(self.request)       
+        initial['art'] = empresa_actual(self.request).art  
         initial['tipo_form'] = 'ALTA'  
         return initial    
 

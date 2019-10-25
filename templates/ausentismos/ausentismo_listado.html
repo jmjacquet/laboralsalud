@@ -22,15 +22,17 @@
             <thead >
                 <tr>
                     <th class="no-sort text-center" data-priority="1">#</th>
-                    <th class="imprimir" data-priority="2">Fecha</th>
+                    <th class="imprimir" data-priority="2">F.Carga</th>
                     <th class="imprimir" data-priority="2">Documento</th>
                     <th class="imprimir" data-priority="3">Apellido y Nombre</th>
                     <th class="imprimir" data-priority="4">ART</th>
                     <th class="imprimir" data-priority="5">Empresa</th>
                     <th class="imprimir" data-priority="6">Tipo Ausentismo</th>
                     <th class="imprimir" data-priority="7">Días Caídos</th>
-                    <th class="imprimir" data-priority="7">Patología</th>
-                    <th class="imprimir" data-priority="8">Diagnóstico</th>
+                    <th class="imprimir" data-priority="8">F.Desde</th>
+                    <th class="imprimir" data-priority="9">F.Hasta</th>
+                    <th class="imprimir" data-priority="10">Patología</th>
+                    <th class="imprimir" data-priority="11">Diagnóstico</th>
                 </tr>
             </thead>
             <tbody>
@@ -53,20 +55,20 @@
                             <li><a href="#" 
                                     onClick="alerta= alertify.dialog('confirm').set({'labels':{ok:'Aceptar', cancel:'Cancelar'},'message': '¿DESEA DAR DE BAJA/REACTIVAR EL REGISTRO ACTUAL?',transition:'fade','onok': function(){ window.location.href = '{% url 'ausentismo_baja_alta' id=a.pk  %}'; },'oncancel': function(){ return true;} }); alerta.setting('modal', true); alerta.setHeader('BAJA/REACTIVAR'); alerta.show(); return true;" ><i class="icon-dislike"></i><i class="icon-like"></i>Baja/Reactivar</a>
                                 </li>     
-                            
-                            
                           </ul>                                      
                         </div>
                     </td>              
-                    <td title="Usuario Creación: {{a.usuario_carga}} | Última Modificación: {{a.fecha_modif|date:'d/m/Y H:i'}}">{{ a.fecha_creacion|date:'d/m/Y' }}</td>
+                    <td title="Usuario Creación: {{a.usuario_carga|default_if_none:''}} | Última Modificación: {{a.fecha_modif|date:'d/m/Y H:i'}}">{{ a.fecha_creacion|date:'d/m/Y' }}</td>
                     <td>{{ a.empleado.nro_doc|default_if_none:'' }}</td>
-                    <td title="{{ a.empleado.apellido_y_nombre}}">{{ a.empleado.apellido_y_nombre|default_if_none:''|truncatechars:60 }}</td>
-                    <td title="{{ a.empleado.art}}">{{ a.empleado.art|default_if_none:''|truncatechars:60 }}</td>
-                    <td title="{{ a.empleado.empresa}}">{{ a.empleado.empresa|default_if_none:''|truncatechars:60 }}</td>
+                    <td title="{{ a.empleado.apellido_y_nombre|default_if_none:''}}">{{ a.empleado.apellido_y_nombre|default_if_none:''|truncatechars:60 }}</td>
+                    <td title="{{ a.empleado.art|default_if_none:''}}">{{ a.empleado.art|default_if_none:''|truncatechars:60 }}</td>
+                    <td title="{{ a.empleado.empresa|default_if_none:''}}">{{ a.empleado.empresa|default_if_none:''|truncatechars:60 }}</td>
                     <td>{{ a.get_tipo_ausentismo_display|default_if_none:'' }}</td>               
-                    <td title="{{ a.get_fechas}}">{{ a.get_dias_caidos|default_if_none:'' }}</td>               
-                    <td title="{{ a.aus_grupop}}">{{ a.aus_grupop|default_if_none:''|truncatechars:60 }}</td>               
-                    <td title="{{ a.aus_diagn}}">{{ a.aus_diagn|default_if_none:''|truncatechars:60 }}</td>               
+                    <td>{{ a.get_dias_caidos|default_if_none:'' }}</td>               
+                    <td>{{ a.get_fcrondesde|date:'d/m/Y' }}</td>               
+                    <td>{{ a.get_fcronhasta|date:'d/m/Y' }}</td>               
+                    <td title="{{ a.aus_grupop|default_if_none:''}}">{{ a.aus_grupop|default_if_none:''|truncatechars:60 }}</td>               
+                    <td title="{{ a.aus_diagn|default_if_none:''}}">{{ a.aus_diagn|default_if_none:''|truncatechars:60 }}</td>               
                 </tr>
                 {% endfor %}
             </tbody>
@@ -76,7 +78,9 @@
                     <th></th> 
                     <th></th>
                     <th></th> 
+                    <th></th>
                     <th></th> 
+                    <th></th>  
                     <th></th>                                
                     <th></th>
                     <th></th>
@@ -222,7 +226,7 @@ var tabla = $('#ausentismos').DataTable({
             },
             initComplete: function () {
                // this.api().columns().every( function () {[0, 1, 9]
-                this.api().columns([4,5,6,8,9]).every( function () {
+                this.api().columns([4,5,6,10,11]).every( function () {
                     var column = this;
                     var select = $('<select class="form-control"><option value="">Todos</option></select>')
                         .appendTo( $(column.footer()).empty() )
@@ -244,7 +248,41 @@ var tabla = $('#ausentismos').DataTable({
                 $("#ausentismos").show();
                   this.fnAdjustColumnSizing();
                 $("#cargando").hide();
-            }
+            },
+            footerCallback: function ( row, data, start, end, display ) {
+            var api = this.api(), data;
+            var floatVal = function (i) {
+                if (typeof i === "number") {
+                    return i;
+                } else if (typeof i === "string") {
+                    i = i.replace(/\$/g, "");
+                    i = i.replace(/\,/g ,"");                    
+                    i = i.replace(/\./g, "");                    
+                    var result = parseFloat(i)/100;
+                    
+                    if (isNaN(result)) {
+                        try {
+                            var result = $jq(i).text();
+                            result = parseFloat(result);
+                            if (isNaN(result)) { result = 0 };
+                            return result * 1;
+                        } catch (error) {
+                            return 0;
+                        }
+                    } else {
+                        return result * 1;
+                    }
+                } else {
+                    alert("Unhandled type for totals [" + (typeof i) + "]");
+                    return 0
+                }
+            };
+                        
+            
+            pageTotal = api.column(7, { page: 'current'} ).data().reduce( function (a, b) {return parseFloat(a) + parseFloat(b);}, 0 );            
+            $( api.column(7).footer() ).html(pageTotal.toLocaleString(undefined,{minimumFractionDigits:0}));
+          
+        }
         });
 
 

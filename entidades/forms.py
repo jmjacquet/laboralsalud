@@ -77,6 +77,8 @@ class EmpresaForm(forms.ModelForm):
 			base_widget=TextInput,data='<i class="fa fa-search" aria-hidden="true"></i>',tooltip=u"Buscar datos y validar CUIT en AFIP"))				
 	cod_postal = forms.IntegerField(label='CP',required = False)			
 	observaciones = forms.CharField(label='Observaciones / Datos adicionales',widget=forms.Textarea(attrs={'class':'form-control2', 'rows': 5}),required = False)	
+	razon_social = forms.CharField(required=True)
+	codigo = forms.CharField(required=True)
 	# tipo_form = forms.CharField(widget = forms.HiddenInput(), required = False)	
 	class Meta:
 			model = ent_empresa
@@ -86,6 +88,9 @@ class EmpresaForm(forms.ModelForm):
 		request = kwargs.pop('request', None)
 		super(EmpresaForm, self).__init__(*args, **kwargs)		
 
+class TrabajoModelChoiceField(forms.ModelChoiceField):
+    def label_from_instance(self, obj):		
+		return obj.get_cargo()
 
 class EmpleadoForm(forms.ModelForm):		
 	apellido_y_nombre = forms.CharField(widget=forms.TextInput(attrs={'autofocus': 'autofocus'}),required=True)
@@ -109,8 +114,8 @@ class EmpleadoForm(forms.ModelForm):
 	trab_tareas_dif = forms.ChoiceField(label=u'¿Tareas Diferentes?',choices=SINO,required=True,initial='N')
 	trab_preocupac = forms.ChoiceField(label='¿Preocupacional?',choices=SINO,required=True,initial='N')
 	empresa = forms.ModelChoiceField(label='Empresa',queryset=ent_empresa.objects.filter(baja=False),required=True)
-	
-	# tipo_form = forms.CharField(widget = forms.HiddenInput(), required = False)	
+	trab_cargo = TrabajoModelChoiceField(label=u'Puesto de Trabajo',queryset=ent_cargo.objects.filter(baja=False),required=False,)
+					
 	class Meta:
 			model = ent_empleado
 			exclude = ['id','fecha_creacion','fecha_modif','usuario_carga']

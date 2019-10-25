@@ -84,6 +84,7 @@ class ReporteResumenPeriodo(VariablesMixin,TemplateView):
         aus_acc = None
         dias_laborables = int(relativedelta(fhasta,fdesde).days)+1       
         porc_dias_trab_tot = 100
+
         if ausentismos:
             
             #AUSENTISMO TOTAL            
@@ -94,49 +95,46 @@ class ReporteResumenPeriodo(VariablesMixin,TemplateView):
             dias_trab_tot = (dias_laborables * empleados_tot)-dias_caidos_tot
             tasa_ausentismo = calcular_tasa_ausentismo(dias_caidos_tot,dias_laborables,empleados_tot)        
             porc_dias_trab_tot = 100 - tasa_ausentismo        
+            
             aus_total = {'dias_caidos_tot':dias_caidos_tot,'empleados_tot':empleados_tot,'dias_trab_tot':dias_trab_tot,'tasa_ausentismo':tasa_ausentismo,
             'dias_laborables':dias_laborables,'porc_dias_trab_tot':porc_dias_trab_tot}
 
             #AUSENTISMO INCULPABLE
-            ausentismos = ausentismos.filter(tipo_ausentismo=1)
-            if ausentismos:
-                empleados_tot = ausentismos.values('empleado').distinct().count()
+            ausentismos_inc = ausentismos.filter(tipo_ausentismo=1)
+            if ausentismos_inc:
+                empleados_tot = ausentismos_inc.values('empleado').distinct().count()
                 # empleados_tot = 77
-                dias_caidos_tot = ausentismos.aggregate(dias_caidos=Sum(Coalesce('aus_diascaidos', 0)+Coalesce('art_diascaidos', 0)))['dias_caidos'] or 0
+                dias_caidos_tot = ausentismos_inc.aggregate(dias_caidos=Sum(Coalesce('aus_diascaidos', 0)+Coalesce('art_diascaidos', 0)))['dias_caidos'] or 0
                 # dias_caidos_tot = 67            
                 dias_trab_tot = (dias_laborables * empleados_tot)-dias_caidos_tot
 
-                tasa_ausentismo = calcular_tasa_ausentismo(dias_caidos_tot,dias_laborables,empleados_tot)                      
+                tasa_ausentismo = calcular_tasa_ausentismo(dias_caidos_tot,dias_laborables,empleados_tot)                                      
                 porc_agudos = Decimal(74.6).quantize(Decimal("0.01"), decimal.ROUND_HALF_UP)
                 porc_cronicos = Decimal(25).quantize(Decimal("0.01"), decimal.ROUND_HALF_UP)
                 porc_dias_trab_tot = 100 - tasa_ausentismo        
+
                 aus_inc = {'dias_caidos_tot':dias_caidos_tot,'empleados_tot':empleados_tot,'dias_trab_tot':dias_trab_tot,'tasa_ausentismo':tasa_ausentismo,
                 'dias_laborables':dias_laborables,'porc_dias_trab_tot':porc_dias_trab_tot,'porc_agudos':porc_agudos,'porc_cronicos':porc_cronicos}
 
             #AUSENTISMO ACCIDENTES
-            ausentismos = ausentismos.filter(tipo_ausentismo=2)
-            if ausentismos:
-                empleados_tot = ausentismos.values('empleado').distinct().count()
+            ausentismos_acc = ausentismos.filter(tipo_ausentismo=2)
+            if ausentismos_acc:
+                empleados_tot = ausentismos_acc.values('empleado').distinct().count()
                 # empleados_tot = 77
-                dias_caidos_tot = ausentismos.aggregate(dias_caidos=Sum(Coalesce('aus_diascaidos', 0)+Coalesce('art_diascaidos', 0)))['dias_caidos'] or 0
+                dias_caidos_tot = ausentismos_acc.aggregate(dias_caidos=Sum(Coalesce('aus_diascaidos', 0)+Coalesce('art_diascaidos', 0)))['dias_caidos'] or 0
                 # dias_caidos_tot = 67            
                 dias_trab_tot = (dias_laborables * empleados_tot)-dias_caidos_tot
-
                 tasa_ausentismo = calcular_tasa_ausentismo(dias_caidos_tot,dias_laborables,empleados_tot)                       
                 porc_dias_trab_tot = 100 - tasa_ausentismo        
+                
                 aus_acc = {'dias_caidos_tot':dias_caidos_tot,'empleados_tot':empleados_tot,'dias_trab_tot':dias_trab_tot,'tasa_ausentismo':tasa_ausentismo,
                 'dias_laborables':dias_laborables,'porc_dias_trab_tot':porc_dias_trab_tot}
 
-            
-                    
         context['aus_total']=  aus_total
         context['aus_inc']=  aus_inc
         context['aus_acc']=  aus_acc
         context['dias_laborables']=  dias_laborables
-        # context['ventas_pagos']=  json.dumps(ventas_pagos,cls=DecimalEncoder)
-        # context['compras_deuda']= json.dumps(compras_deuda,cls=DecimalEncoder)
-        # context['compras_pagos']= json.dumps(compras_pagos,cls=DecimalEncoder)
-
+        
         return context
 
     def post(self, *args, **kwargs):
