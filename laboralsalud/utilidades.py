@@ -17,7 +17,7 @@ TIPO_ENTIDAD = (
 TIPO_AUSENCIA = (    
     (1, 'Inculpable'),
     (2, 'Accidente'),
-    (3, 'Enfermedad'),
+    (3, 'Enfermedad Profesional'),
 )
 
 TIPO_AUSENCIA_ = (    
