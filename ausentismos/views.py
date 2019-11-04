@@ -218,6 +218,7 @@ class AusentismoCreateView(VariablesMixin,CreateView):
     def get_initial(self):    
         initial = super(AusentismoCreateView, self).get_initial()               
         initial['request'] = self.request        
+        initial['tipo_form'] = 'ALTA'
         return initial    
 
     def form_invalid(self, form):
@@ -255,6 +256,7 @@ class AusentismoEditView(VariablesMixin,UpdateView):
 
     def get_initial(self):    
         initial = super(AusentismoEditView, self).get_initial()                      
+        initial['tipo_form'] = 'EDICION'
         return initial  
 
     def get_success_url(self):        

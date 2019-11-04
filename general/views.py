@@ -126,7 +126,7 @@ def buscarDatosEntidad(request):
             'email':e.email,'telefono':e.telefono,'celular':e.celular,'art':e.get_art(),'empresa':e.get_empresa(),
             'empr_fingreso':e.empr_fingreso,'trab_cargo':e.get_cargo(),'trab_fingreso':e.trab_fingreso,'trab_fbaja':e.trab_fbaja,
             'trab_armas':e.trab_armas,'trab_tareas_dif':e.trab_tareas_dif,'trab_preocupac':e.trab_preocupac,'trab_preocup_fecha':e.trab_preocup_fecha,
-            'edad':e.get_edad,'antig_empresa':e.get_antiguedad_empr,'antig_trabajo':e.get_antiguedad_trab
+            'edad':e.get_edad,'antig_empresa':e.get_antiguedad_empr,'antig_trabajo':e.get_antiguedad_trab,'id_empresa':e.empresa.pk
         }
    # try:
    #    id = request.GET['id']
@@ -144,6 +144,15 @@ def recargar_empleados(request):
     context={}
     lista = []
     empleados = ent_empleado.objects.filter(empresa__pk__in=empresas_habilitadas(request),baja=False).order_by('apellido_y_nombre')    
+    for e in empleados:
+        lista.append({'id':e.pk,'nombre':e.get_empleado()})
+    context["empleados"]=lista
+    return HttpResponse(json.dumps(context))
+
+def recargar_empleados_empresa(request,id):
+    context={}
+    lista = []
+    empleados = ent_empleado.objects.filter(empresa__pk=id,baja=False).order_by('apellido_y_nombre')    
     for e in empleados:
         lista.append({'id':e.pk,'nombre':e.get_empleado()})
     context["empleados"]=lista

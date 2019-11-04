@@ -33,6 +33,8 @@ class AusentismoForm(forms.ModelForm):
 	aus_diagn = forms.ModelChoiceField(label=u'Diagnóstico',queryset=aus_diagnostico.objects.filter(baja=False),required=False)
 	aus_medico = MedicoModelChoiceField(label=u'Médico Tratante',queryset=ent_medico_prof.objects.filter(baja=False),required=False)
 	art_medico = MedicoModelChoiceField(label=u'Médico ART',queryset=ent_medico_prof.objects.filter(baja=False),required=False)
+	empresa = forms.ModelChoiceField(label='Empresa',queryset=ent_empresa.objects.filter(baja=False),required=True)
+	tipo_form = forms.CharField(widget = forms.HiddenInput(), required = False)	
 	class Meta:
 			model = ausentismo
 			exclude = ['id','fecha_creacion','fecha_modif','usuario_carga']
@@ -41,6 +43,7 @@ class AusentismoForm(forms.ModelForm):
 		request = kwargs.pop('request', None)
 		super(AusentismoForm, self).__init__(*args, **kwargs)		
 		self.fields['empleado'].queryset = ent_empleado.objects.filter(baja=False,empresa__pk__in=empresas_habilitadas(request))
+		self.fields['empresa'].queryset = ent_empresa.objects.filter(baja=False,pk__in=empresas_habilitadas(request))				
 
 	def clean(self):		
 		super(forms.ModelForm,self).clean()	
@@ -55,7 +58,6 @@ class AusentismoForm(forms.ModelForm):
 		aus_diagn = self.cleaned_data.get('aus_diagn')	
 		if not aus_diagn:
 				self.add_error("aus_diagn",u'¡Debe cargar un Diagnóstico!')
-
 
 		tipo_ausentismo = self.cleaned_data.get('tipo_ausentismo')	
 		
