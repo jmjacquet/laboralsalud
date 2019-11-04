@@ -33,6 +33,12 @@ class VariablesMixin(object):
             context['empresa'] = empresa_actual(self.request)   
         except:
             context['empresa'] = None    
+
+        context['esAdmin'] = (self.request.user.userprofile.id_usuario.tipoUsr == 0)     
+        try:
+            context['esAdmin'] = (self.request.user.userprofile.id_usuario.tipoUsr == 0)                        
+        except:
+            context['esAdmin'] = False 
    
         context['empresas'] = ent_empresa.objects.filter(baja=False)
         # context['sitio_mobile'] = mobile(self.request)
@@ -57,6 +63,11 @@ def getVariablesMixin(request):
         context['empresa'] = empresa_actual(request)   
     except:
         context['empresa'] = None    
+
+    try:
+        context['esAdmin'] = (request.user.userprofile.id_usuario.tipoUsr == 0)                        
+    except:
+        context['esAdmin'] = False 
 
     context['empresas'] = ent_empresa.objects.filter(baja=False)
     # context['sitio_mobile'] = mobile(self.request)

@@ -37,12 +37,10 @@ def login(request):
         empresa = request.POST['empresa']
         user =  authenticate(usuario=usuario, clave=clave)        
         if user is not None:
-          if user.is_active:
-            
+          if user.is_active:            
             django_login(request, user)
             request.session["empresa"] = request.POST['empresa']            
             ROOT_URL = reverse('principal')              
-
             return HttpResponseRedirect(ROOT_URL)
           else:
           ## invalid login

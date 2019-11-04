@@ -248,8 +248,13 @@ def empresa_actual(request):
 #Incluye la empresa del usuario + la empresa 1 universal
 def empresas_habilitadas(request):    
     e = empresa_actual(request)    
-    sucursales = list(ent_empresa.objects.filter(casa_central=e).values_list('id', flat=True))    
-    lista = [int(e.id)] + sucursales        
+    sucursales = list(ent_empresa.objects.filter(casa_central=e,baja=False).values_list('id', flat=True))    
+    usu = usuario_actual(request)
+    #Si es Admin puedo ver todas las empresas
+    if usu.tipoUsr == 0:
+        lista = list(ent_empresa.objects.filter(baja=False).values_list('id', flat=True))    
+    else:
+        lista = [int(e.id)] + sucursales        
     return lista
 
 import json

@@ -61,7 +61,7 @@
       </ul>
 
       <div class="navbar-header navbar-right">
-        <span class="titulo_empresa">{{empresa}}</span>
+        <span class="titulo_empresa">{% if esAdmin %}ADMINISTRADOR{% else %}{{empresa}} {% endif %}</span>
       </div>
     </div><!-- /.navbar-collapse -->
 
