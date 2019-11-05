@@ -100,14 +100,14 @@ $.fn.datepicker.dates['es'] = {
     today: "Hoy"
   };
   
-   $('.datepicker').datepicker({
+   $('.dateinput').datepicker({
           format: "dd/mm/yyyy",
           language: "es",
           autoclose: true,
           todayHighlight: true
     });
 
-    $('.datepicker').each(function(){
+    $('.dateinput').each(function(){
         $(this).datepicker();
     });
 });

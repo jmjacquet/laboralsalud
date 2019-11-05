@@ -519,7 +519,7 @@ class EmpleadoView(VariablesMixin,ListView):
             estado = form.cleaned_data['estado']
             art = form.cleaned_data['art']
 
-            empleados = ent_empleado.objects.filter(empresa__pk__in=empresas_habilitadas(self.request))              
+            empleados = ent_empleado.objects.filter(empresa__pk__in=empresas_habilitadas(self.request)).select_related('empresa','trab_cargo','art')              
           
             if int(estado) == 0:  
                 empleados = empleados.filter(baja=False)
@@ -644,27 +644,32 @@ def simple_upload(request):
         file_data = csv_file.read().decode("utf8", "ignore")
 
         lines = file_data.split("\n")
-        
+        cant = len(lines)
         try:
-            for line in lines:                      
+            for index,line in enumerate(lines):                      
                 campos = line.split(";")
                 dni = campos[0]                
-                legajo = campos[1]                
-                nombre = campos[2]+' '+campos[3]                
-                fecha_nac = datetime.datetime.strptime(campos[4], "%d/%m/%Y").date()                
-                art = campos[5]                
-                art = ent_art.objects.get(nombre=art.strip())         
-                empresa = campos[6]                
-                empresa = ent_empresa.objects.get(razon_social=empresa.strip())
-                puesto = campos[7]                
-                puesto = ent_cargo.objects.get(cargo=puesto.strip())
                 try:
-                   #ent_cargo.objects.update_or_create(cargo=cargo)                                          
-                   ent_empleado.objects.update_or_create(nro_doc=dni,legajo=legajo,apellido_y_nombre=nombre,fecha_nac=fecha_nac,art=art,empresa=empresa,trab_cargo=puesto)                                          
-                except Exception as e:
-                    print e                    
-                pass
+                    empl = ent_empleado.objects.get(nro_doc=dni.strip())                     
+                except:                    
+                    legajo = campos[1]                
+                    nombre = campos[2]+' '+campos[3]                
+                    fecha_nac = datetime.datetime.strptime(campos[4], "%d/%m/%Y").date()                
+                    art = campos[5]                
+                    art = ent_art.objects.get(nombre=art.strip())         
+                    empresa = campos[6]                
+                    empresa = ent_empresa.objects.get(razon_social=empresa.strip())
+                    puesto = campos[7]                
+                    puesto = ent_cargo.objects.get(cargo=puesto.strip())                    
+                    try:
+                       ent_empleado.objects.update_or_create(nro_doc=dni,legajo=legajo,apellido_y_nombre=nombre,fecha_nac=fecha_nac,art=art,empresa=empresa,trab_cargo=puesto)                                          
+                       print index
+                    except Exception as e:
+                        print e
+                        print nombre                    
+                    
         except Exception as e:
             print e
+            print nombre
 
     return render(request, 'entidades/import.html')

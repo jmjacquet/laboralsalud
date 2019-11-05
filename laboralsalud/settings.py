@@ -41,6 +41,8 @@ INSTALLED_APPS = (
     'reportes',    
     'fm',
     'modal',
+    'debug_toolbar',
+
 )
 
 MIDDLEWARE_CLASSES = (
@@ -52,6 +54,8 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.security.SecurityMiddleware',
+
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 )
 
 ROOT_URLCONF = 'laboralsalud.urls'
@@ -152,3 +156,12 @@ MESSAGE_TAGS = {message_constants.DEBUG: 'debug',
 
 CRISPY_TEMPLATE_PACK = 'bootstrap3'           
 
+INTERNAL_IPS = [
+    # ...
+    '127.0.0.1',
+    # ...
+]
+
+DEBUG_TOOLBAR_CONFIG = {
+    'SHOW_TOOLBAR_CALLBACK': lambda x: True
+}

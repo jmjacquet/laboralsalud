@@ -60,7 +60,7 @@ class AusentismoView(VariablesMixin,ListView):
                 ausentismos = ausentismos.filter(tipo_ausentismo=int(tipo_ausentismo))            
                 
         context['form'] = form
-        context['ausentismos'] = ausentismos
+        context['ausentismos'] = ausentismos.select_related('empleado','empleado__art','empleado__empresa','aus_grupop','aus_diagn')
         return context
 
     def post(self, *args, **kwargs):
@@ -321,3 +321,76 @@ class DiagnosticoEditView(VariablesMixin,AjaxUpdateView):
         return initial            
 
 
+
+import csv, io
+   
+
+def ausencias_importar(request):
+    data = {}    
+   
+    # if request.method == 'POST':  
+    #     csv_file = request.FILES["archivo"]
+    #     #tabla = request.POST['username']     
+    #     if not csv_file.name.endswith('.csv'):
+    #         messages.error(request,'File is not CSV type')
+    #         return HttpResponseRedirect(reverse("simple_upload"))
+    #     #if file is too large, return
+    #     if csv_file.multiple_chunks():
+    #         messages.error(request,"Uploaded file is too big (%.2f MB)." % (csv_file.size/(1000*1000),))
+    #         return HttpResponseRedirect(reverse("simple_upload"))
+
+    #     file_data = csv_file.read().decode("utf8", "ignore")
+
+    #     lines = file_data.split("\n")
+    #     cant = len(lines)
+    #     try:
+    #         for index,line in enumerate(lines):                      
+    #             campos = line.split(";")
+    #             legajo = campos[0].strip()                
+    #             dni = campos[1].strip()                
+    #             empleado = ent_empleado.objects.get(nro_doc=dni)            
+    #             fecha_creacion = datetime.datetime.strptime(campos[2], "%d/%m/%Y").date()                
+    #             tipoa = campos[3].strip()       
+    #             #TIPO_AUSENCIA
+    #             acontrol = campos[4].strip() == 'Si'
+    #             fecha_control = datetime.datetime.strptime(campos[5], "%d/%m/%Y").date()                
+    #             certificado = campos[6].strip() == 'Si'
+    #             fecha_certif = datetime.datetime.strptime(campos[7], "%d/%m/%Y").date()                
+    #             fecha_entrcertif = datetime.datetime.strptime(campos[8], "%d/%m/%Y").date()                
+    #             aus_cron_desde = datetime.datetime.strptime(campos[9], "%d/%m/%Y").date()                
+    #             aus_cron_hasta = datetime.datetime.strptime(campos[10], "%d/%m/%Y").date()                
+    #             aus_diascaidos = campos[11].strip()
+    #             aus_diasjustif = campos[12].strip()
+    #             aus_freintegro = datetime.datetime.strptime(campos[13], "%d/%m/%Y").date()                
+    #             aus_falta = datetime.datetime.strptime(campos[14], "%d/%m/%Y").date()                
+    #             aus_tipo_alta = campos[15].strip()
+    #             aus_frevision = datetime.datetime.strptime(campos[16], "%d/%m/%Y").date()                
+
+    #             aus_medico = campos[17].strip().upper()
+    #             if aus_medico=='':
+    #                 aus_medico=None
+    #             else:
+    #                 aus_medico = ent_medico_prof.objects.get_or_create(apellido_y_nombre=aus_medico)                    
+
+    #             art = ent_art.objects.get(nombre=art.strip())         
+    #             empresa = campos[6]                
+    #             empresa = ent_empresa.objects.get(razon_social=empresa.strip())
+    #             puesto = campos[7]                
+    #             puesto = ent_cargo.objects.get(cargo=puesto.strip())
+                
+    #             try:
+    #                #ent_cargo.objects.update_or_create(cargo=cargo)                                                             
+    #                try:
+    #                    empl = ent_empresa.objects.get(nro_doc=dni.strip())
+    #                except: 
+    #                    ent_empleado.objects.update_or_create(nro_doc=dni,legajo=legajo,apellido_y_nombre=nombre,fecha_nac=fecha_nac,art=art,empresa=empresa,trab_cargo=puesto)                                          
+    #                    print index
+    #             except Exception as e:
+    #                 print e
+    #                 print nombre                    
+    #             pass
+    #     except Exception as e:
+    #         print e
+    #         print nombre
+
+    return render(request, 'entidades/import.html')
