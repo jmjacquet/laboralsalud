@@ -625,14 +625,46 @@ def empleado_baja_alta(request,id):
 
 
 import csv, io
+   
 
 def simple_upload(request):
-    if request.method == 'POST':        
-        cargos = request.FILES['cargos']
-        data_set = cargos.read()
+    data = {}    
+   
+    if request.method == 'POST':  
+        csv_file = request.FILES["cargos"]
+        #tabla = request.POST['username']     
+        if not csv_file.name.endswith('.csv'):
+            messages.error(request,'File is not CSV type')
+            return HttpResponseRedirect(reverse("simple_upload"))
+        #if file is too large, return
+        if csv_file.multiple_chunks():
+            messages.error(request,"Uploaded file is too big (%.2f MB)." % (csv_file.size/(1000*1000),))
+            return HttpResponseRedirect(reverse("simple_upload"))
 
-        io_string = io.StringIO(data_set)        
-        for column in csv.reader(io_string, delimiter=',', quotechar="|"):
-           ent_cargo.objects.update_or_create(cargo=column[0],)
+        file_data = csv_file.read().decode("utf8", "ignore")
 
-    return render(request, 'entidades/import.html')    
+        lines = file_data.split("\n")
+        
+        try:
+            for line in lines:                      
+                campos = line.split(";")
+                dni = campos[0]                
+                legajo = campos[1]                
+                nombre = campos[2]+' '+campos[3]                
+                fecha_nac = datetime.datetime.strptime(campos[4], "%d/%m/%Y").date()                
+                art = campos[5]                
+                art = ent_art.objects.get(nombre=art.strip())         
+                empresa = campos[6]                
+                empresa = ent_empresa.objects.get(razon_social=empresa.strip())
+                puesto = campos[7]                
+                puesto = ent_cargo.objects.get(cargo=puesto.strip())
+                try:
+                   #ent_cargo.objects.update_or_create(cargo=cargo)                                          
+                   ent_empleado.objects.update_or_create(nro_doc=dni,legajo=legajo,apellido_y_nombre=nombre,fecha_nac=fecha_nac,art=art,empresa=empresa,trab_cargo=puesto)                                          
+                except Exception as e:
+                    print e                    
+                pass
+        except Exception as e:
+            print e
+
+    return render(request, 'entidades/import.html')
