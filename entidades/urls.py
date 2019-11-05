@@ -38,4 +38,6 @@ urlpatterns = [
     url(r'^empleado/editar/(?P<id>\d+)/$', EmpleadoEditView.as_view(), name="empleado_editar"),    
     url(r'^empleado/detalles/(?P<id>\d+)/$', EmpleadoVerView.as_view(), name="empleado_detalles"),    
     url(r'^empleado/baja_alta/(?P<id>\d+)/$', empleado_baja_alta, name='empleado_baja_alta'),
+
+    url(r'^simple_upload/$', simple_upload,name="simple_upload"),
 ]

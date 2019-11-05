@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% load static from staticfiles %}
+{% load i18n l10n %}
+{% load humanize %}
+
+{% block breadcrumbs %}              
+        <div class="breadcrumbs">
+           IMPORTAR <small> carga e impresión</small>
+        </div>
+{% endblock breadcrumbs %}
+
+{% block principal %}                            
+<br>
+   
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <input type="file" name="cargos">
+    <button type="submit">Subir</button>
+  </form>
+{% endblock principal %}
+
+
+
+
+

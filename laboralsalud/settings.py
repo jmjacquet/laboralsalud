@@ -41,6 +41,7 @@ INSTALLED_APPS = (
     'reportes',    
     'fm',
     'modal',
+    'import_export',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -152,4 +153,4 @@ MESSAGE_TAGS = {message_constants.DEBUG: 'debug',
 
 CRISPY_TEMPLATE_PACK = 'bootstrap3'           
 
-     
+IMPORT_EXPORT_USE_TRANSACTIONS = True     

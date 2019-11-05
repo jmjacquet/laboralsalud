@@ -622,3 +622,17 @@ def empleado_baja_alta(request,id):
     ent.save()       
     messages.success(request, u'¡Los datos se guardaron con éxito!')
     return HttpResponseRedirect(reverse("empleado_listado"))   
+
+
+import csv, io
+
+def simple_upload(request):
+    if request.method == 'POST':        
+        cargos = request.FILES['cargos']
+        data_set = cargos.read()
+
+        io_string = io.StringIO(data_set)        
+        for column in csv.reader(io_string, delimiter=',', quotechar="|"):
+           ent_cargo.objects.update_or_create(cargo=column[0],)
+
+    return render(request, 'entidades/import.html')    
