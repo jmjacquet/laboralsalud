@@ -125,16 +125,30 @@ textarea.form-control{height:auto}
 .radio input[type="radio"], .radio-inline input[type="radio"], .checkbox input[type="checkbox"], .checkbox-inline input[type="checkbox"]{float:left;margin-left:0px;margin:4px 0 0;}
 .checkbox > label, .form-horizontal .checkbox > label{padding-left:5px;}
 
-.barra_busqueda{display:inline-block;float:left;vertical-align:middle;margin-bottom:5px;font-size:11px;padding:5px;}
+.barra_busqueda{vertical-align:middle;margin-bottom:5px;font-size:11px;padding:5px;}
 .barra_busqueda .control-label{text-align:right;margin-bottom:5px;padding-top:0px;font-size:10px;}
 .barra_busqueda [class*='col-']{padding-right:1px;padding-left:1px;}
 .barra_busqueda .form-group{margin-left:3px;margin-right:3px;}
 .barra_busqueda .form-control{display:block;height:25px;padding:4px 4px;font-size:11px;line-height:1.42857143;color:#666;background-color:#fff;background-image:none;border:1px solid #ccc;border-radius:0px;-webkit-box-shadow:inset 0 1px 1px rgba(0, 0, 0, 0.075);box-shadow:inset 0 1px 1px rgba(0, 0, 0, 0.075);-webkit-transition:border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;-o-transition:border-color ease-in-out .15s, box-shadow ease-in-out .15s;transition:border-color ease-in-out .15s, box-shadow ease-in-out .15s;}
 .barra_busqueda label{font-size:10px;font-weight:400;padding-right:5px;margin-bottom:5px;}
-.barra_busqueda button{margin-top:20px;line-height:1.42857143;margin-left:5px;}
+.barra_busqueda button{margin-top:20px;line-height:1.42857143;margin-left:5px; background-color: #417690; color: #fff}
 
+.barra_busqueda .panel-heading {
+    padding: 5px 5px;
+    border-bottom: 1px solid transparent;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+    background-color: #417690;
+    color: #fff
+}
 
+.barra_busqueda .panel-body {
+    padding: 5px;
+}
 
+.boton_busqueda{
+    background-color: #417690; 
+}
 
 .tiles .tile{display:block;letter-spacing:0.04em;float:left;height:80px;width:80px !important;cursor:pointer;text-decoration:none;color:#ffffff;position:relative;font-weight:300;font-size:10px;letter-spacing:0.02em;line-height:10px;overflow:hidden;border:4px solid transparent;margin:0 10px 10px 0;}
 .tiles .tile .tile-body{height:100%;vertical-align:top;padding:10px;overflow:hidden;position:relative;font-weight:400;font-size:11px;color:#000000;color:#ffffff;margin-bottom:5px;}
@@ -654,4 +668,11 @@ div.breadcrumbs a:focus, div.breadcrumbs a:hover {
 
 .table-hover > tbody > tr > td.danger:hover, .table-hover > tbody > tr > th.danger:hover, .table-hover > tbody > tr.danger:hover > td, .table-hover > tbody > tr:hover > .danger, .table-hover > tbody > tr.danger:hover > th {
     background-color: #ffcac5;
+}
+
+.panel-heading {
+    padding: 10px 5px;
+    border-bottom: 1px solid transparent;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
 }

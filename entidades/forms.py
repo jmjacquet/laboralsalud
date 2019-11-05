@@ -149,3 +149,14 @@ class EmpleadoForm(forms.ModelForm):
 				self.add_error("trab_fbaja",u'¡Verifique las Fechas!')
 						
 		return self.cleaned_data
+
+
+
+class ConsultaEmpleados(forms.Form):               		
+	empresa = forms.ModelChoiceField(label='Empresa',queryset=ent_empresa.objects.filter(baja=False),empty_label='Todas',required=False)
+	estado = forms.ChoiceField(label='Estado',choices=ESTADO_,required=False,initial=0)	
+	art = forms.ModelChoiceField(label='ART',queryset=ent_art.objects.filter(baja=False),empty_label='Todas',required=False)
+	def __init__(self, *args, **kwargs):		
+		request = kwargs.pop('request', None) 
+		super(ConsultaEmpleados, self).__init__(*args, **kwargs)					
+		self.fields['empresa'].queryset = ent_empresa.objects.filter(baja=False,pk__in=empresas_habilitadas(request))

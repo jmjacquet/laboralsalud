@@ -2,10 +2,13 @@
 {% load static from staticfiles %}
 {% load i18n l10n %}
 {% load humanize %}
+{% load bootstrap3 %}
 
 {% block breadcrumbs %}              
         <div class="breadcrumbs">
             Listado de Empleados <small> carga e impresión</small>
+        
+        <button tittle="Búsqueda Avanzada" data-toggle="collapse" aria-expanded="true"  class="btn btn-xs btn-circle pull-right boton_busqueda" data-target="#barra_busqueda" aria-controls="barra_busqueda"><i class="glyphicon glyphicon-search"></i></button>
         </div>
 {% endblock breadcrumbs %}
 {% block cargando %}            
@@ -16,7 +19,25 @@
 {% endblock cargando %}
 {% block principal %}                            
 <br>    
-     <a class="btn btn-xs btn-primary fm-create" style="float:left;margin-right:20px;" href="{% url 'empleado_nuevo' %}" data-fm-head="AGREGAR EMPLEADO" data-fm-callback="reload">Nuevo Empleado</a>
+    <div class="collapse barra_busqueda" id="barra_busqueda">
+          <div class="panel panel-primary">
+              <div class="panel-heading"> PARÁMETROS DE BÚSQUEDA</div> 
+              <div class="panel-body">
+                      <div class="col-md-12">
+                       <form class="form" accept-charset="UTF-8" role="form" action="" method="post">
+                        {% csrf_token %}                                                                                                               
+                          <div class="col-sm-3">{% bootstrap_field form.empresa  %}</div>                                                              
+                          <div class="col-sm-3">{% bootstrap_field form.art  %}</div>  
+                          <div class="col-sm-1">{% bootstrap_field form.estado  %}</div>                                            
+                          <div class="col-sm-1"><button class="btn btn-xs text-center" type="submit">Buscar</button></div>                      
+                        </form>             
+                      </div>
+              </div>  
+          </div>                  
+        </div>
+
+
+    <a class="btn btn-xs btn-primary fm-create" style="float:left;margin-right:20px;" href="{% url 'empleado_nuevo' %}" data-fm-head="AGREGAR EMPLEADO" data-fm-callback="reload">Nuevo Empleado</a>
     <table width="100%" id="empleado" style="display:none;" class="table table-striped compact table-hover table-no-bordered tabla_nueva nowrap">         
         <thead >
             <tr>

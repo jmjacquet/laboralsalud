@@ -15,6 +15,145 @@ from laboralsalud.utilidades import ultimoNroId,usuario_actual
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from fm.views import AjaxCreateView,AjaxUpdateView,AjaxDeleteView
+from django.db.models import Q,Sum,Count,FloatField,Func
+
+
+############ AUSENTISMOS ############################
+
+class AusentismoView(VariablesMixin,ListView):
+    model = ausentismo
+    template_name = 'ausentismos/ausentismo_listado.html'
+    context_object_name = 'ausentismos'
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs): 
+        # if not tiene_permiso(self.request,'ent_clientes'):
+        #     return redirect(reverse('principal'))
+        return super(AusentismoView, self).dispatch(*args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super(AusentismoView, self).get_context_data(**kwargs)
+
+        form = ConsultaAusentismos(self.request.POST or None,request=self.request)   
+        ausentismos = ausentismo.objects.filter(baja=False,empleado__empresa__pk__in=empresas_habilitadas(self.request))[:20]
+        if form.is_valid():                                                        
+            fdesde = form.cleaned_data['fdesde']   
+            fhasta = form.cleaned_data['fhasta']                                                 
+            empresa = form.cleaned_data['empresa']                           
+            empleado= form.cleaned_data['empleado']                           
+            tipo_ausentismo = form.cleaned_data['tipo_ausentismo']     
+            estado = form.cleaned_data['estado']
+          
+            ausentismos = ausentismo.objects.filter(empleado__empresa__pk__in=empresas_habilitadas(self.request))
+
+            if int(estado) == 0:  
+                ausentismos = ausentismos.filter(baja=False)
+            if fdesde:                
+                ausentismos = ausentismos.filter(Q(aus_fcrondesde__gte=fdesde,tipo_ausentismo=1)|Q(art_fcrondesde__gte=fdesde,tipo_ausentismo__gte=2))                         
+            if fhasta:                
+                ausentismos = ausentismos.filter(Q(aus_fcronhasta__lte=fhasta,tipo_ausentismo=1)|Q(art_fcronhasta__lte=fhasta,tipo_ausentismo__gte=2))                                
+            if empresa:
+                ausentismos= ausentismos.filter(empleado__empresa=empresa)            
+            if empleado:
+                ausentismos= ausentismos.filter(empleado__apellido_y_nombre__icontains=empleado)
+            if int(tipo_ausentismo) > 0: 
+                ausentismos = ausentismos.filter(tipo_ausentismo=int(tipo_ausentismo))            
+                
+        context['form'] = form
+        context['ausentismos'] = ausentismos
+        return context
+
+    def post(self, *args, **kwargs):
+        return self.get(*args, **kwargs)
+
+class AusentismoCreateView(VariablesMixin,CreateView):
+    form_class = AusentismoForm
+    template_name = 'ausentismos/ausentismo_form.html'
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs): 
+        # if not tiene_permiso(self.request,'ent_vendedores_abm'):
+        #     return redirect(reverse('principal'))
+        return super(AusentismoCreateView, self).dispatch(*args, **kwargs)
+
+    def form_valid(self, form):                
+        #form.instance.empresa = empresa_actual(self.request)
+        form.instance.usuario = usuario_actual(self.request)        
+        return super(AusentismoCreateView, self).form_valid(form)
+
+    def get_form_kwargs(self):
+        kwargs = super(AusentismoCreateView, self).get_form_kwargs()
+        kwargs['request'] = self.request
+        return kwargs  
+
+    def get_initial(self):    
+        initial = super(AusentismoCreateView, self).get_initial()               
+        initial['request'] = self.request        
+        initial['tipo_form'] = 'ALTA'
+        return initial    
+
+    def form_invalid(self, form):
+        return super(AusentismoCreateView, self).form_invalid(form)
+
+    def get_success_url(self):
+        messages.success(self.request, u'Los datos se guardaron con éxito!')
+        return reverse('ausentismo_listado')
+
+    
+class AusentismoEditView(VariablesMixin,UpdateView):
+    form_class = AusentismoForm
+    model = ausentismo
+    pk_url_kwarg = 'id'
+    template_name = 'ausentismos/ausentismo_form.html'
+    
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs): 
+        # if not tiene_permiso(self.request,'ent_clientes_abm'):
+        #     return redirect(reverse('principal'))
+        return super(AusentismoEditView, self).dispatch(*args, **kwargs)
+
+    def form_valid(self, form):        
+        messages.success(self.request, u'Los datos se guardaron con éxito!')
+        return super(AusentismoEditView, self).form_valid(form)
+
+    def form_invalid(self, form):
+        return super(AusentismoEditView, self).form_invalid(form)
+
+    def get_form_kwargs(self):
+        kwargs = super(AusentismoEditView, self).get_form_kwargs()
+        kwargs['request'] = self.request
+        return kwargs  
+
+    def get_initial(self):    
+        initial = super(AusentismoEditView, self).get_initial()                      
+        initial['tipo_form'] = 'EDICION'
+        return initial  
+
+    def get_success_url(self):        
+        return reverse('ausentismo_listado')          
+
+
+class AusentismoVerView(VariablesMixin,DetailView):
+    model = ausentismo
+    pk_url_kwarg = 'id'
+    context_object_name = 'a'
+    template_name = 'ausentismos/ausentismo_detalle.html'
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs): 
+        return super(AusentismoVerView, self).dispatch(*args, **kwargs)        
+
+
+# @login_required 
+def ausentismo_baja_alta(request,id):
+    aus = ausentismo.objects.get(pk=id)     
+    aus.baja = not aus.baja
+    aus.save()       
+    messages.success(request, u'¡Los datos se guardaron con éxito!')
+    return HttpResponseRedirect(reverse("ausentismo_listado"))     
+
+
 
 ############ PATOLOGIAS ############################
 
@@ -182,134 +321,3 @@ class DiagnosticoEditView(VariablesMixin,AjaxUpdateView):
         return initial            
 
 
-############ AUSENTISMOS ############################
-
-class AusentismoView(VariablesMixin,ListView):
-    model = ausentismo
-    template_name = 'ausentismos/ausentismo_listado.html'
-    context_object_name = 'ausentismos'
-
-    @method_decorator(login_required)
-    def dispatch(self, *args, **kwargs): 
-        # if not tiene_permiso(self.request,'ent_clientes'):
-        #     return redirect(reverse('principal'))
-        return super(AusentismoView, self).dispatch(*args, **kwargs)
-
-    def get_context_data(self, **kwargs):
-        context = super(AusentismoView, self).get_context_data(**kwargs)
-
-        form = ConsultaAusentismos(self.request.POST or None,request=self.request)   
-        ausentismos = None            
-        if form.is_valid():                                                        
-            fdesde = form.cleaned_data['fdesde']   
-            fhasta = form.cleaned_data['fhasta']                                                 
-            empresa = form.cleaned_data['empresa']                           
-            empleado= form.cleaned_data['empleado']                           
-            tipo_ausentismo = form.cleaned_data['tipo_ausentismo']     
-
-            ausentismos = ausentismo.objects.filter(baja=False)                      
-          
-            if fdesde:                
-                ausentismos = ausentismos.filter(fecha_creacion__gte=fdesde)                         
-            if fhasta:                
-                ausentismos = ausentismos.filter(fecha_creacion__lte=fhasta)                         
-            if empresa:
-                ausentismos= ausentismos.filter(empleado__empresa=empresa)            
-            if empleado:
-                ausentismos= ausentismos.filter(empleado__apellido_y_nombre__icontains=empleado)
-            if int(tipo_ausentismo) > 0: 
-                ausentismos = ausentismos.filter(tipo_ausentismo=int(tipo_ausentismo))
-                
-        context['form'] = form
-        context['ausentismos'] = ausentismos
-        return context
-
-    def post(self, *args, **kwargs):
-        return self.get(*args, **kwargs)
-
-class AusentismoCreateView(VariablesMixin,CreateView):
-    form_class = AusentismoForm
-    template_name = 'ausentismos/ausentismo_form.html'
-
-    @method_decorator(login_required)
-    def dispatch(self, *args, **kwargs): 
-        # if not tiene_permiso(self.request,'ent_vendedores_abm'):
-        #     return redirect(reverse('principal'))
-        return super(AusentismoCreateView, self).dispatch(*args, **kwargs)
-
-    def form_valid(self, form):                
-        #form.instance.empresa = empresa_actual(self.request)
-        form.instance.usuario = usuario_actual(self.request)        
-        return super(AusentismoCreateView, self).form_valid(form)
-
-    def get_form_kwargs(self):
-        kwargs = super(AusentismoCreateView, self).get_form_kwargs()
-        kwargs['request'] = self.request
-        return kwargs  
-
-    def get_initial(self):    
-        initial = super(AusentismoCreateView, self).get_initial()               
-        initial['request'] = self.request        
-        initial['tipo_form'] = 'ALTA'
-        return initial    
-
-    def form_invalid(self, form):
-        return super(AusentismoCreateView, self).form_invalid(form)
-
-    def get_success_url(self):
-        messages.success(self.request, u'Los datos se guardaron con éxito!')
-        return reverse('ausentismo_listado')
-
-    
-class AusentismoEditView(VariablesMixin,UpdateView):
-    form_class = AusentismoForm
-    model = ausentismo
-    pk_url_kwarg = 'id'
-    template_name = 'ausentismos/ausentismo_form.html'
-    
-
-    @method_decorator(login_required)
-    def dispatch(self, *args, **kwargs): 
-        # if not tiene_permiso(self.request,'ent_clientes_abm'):
-        #     return redirect(reverse('principal'))
-        return super(AusentismoEditView, self).dispatch(*args, **kwargs)
-
-    def form_valid(self, form):        
-        messages.success(self.request, u'Los datos se guardaron con éxito!')
-        return super(AusentismoEditView, self).form_valid(form)
-
-    def form_invalid(self, form):
-        return super(AusentismoEditView, self).form_invalid(form)
-
-    def get_form_kwargs(self):
-        kwargs = super(AusentismoEditView, self).get_form_kwargs()
-        kwargs['request'] = self.request
-        return kwargs  
-
-    def get_initial(self):    
-        initial = super(AusentismoEditView, self).get_initial()                      
-        initial['tipo_form'] = 'EDICION'
-        return initial  
-
-    def get_success_url(self):        
-        return reverse('ausentismo_listado')          
-
-
-class AusentismoVerView(VariablesMixin,DetailView):
-    model = ausentismo
-    pk_url_kwarg = 'id'
-    context_object_name = 'a'
-    template_name = 'ausentismos/ausentismo_detalle.html'
-
-    @method_decorator(login_required)
-    def dispatch(self, *args, **kwargs): 
-        return super(AusentismoVerView, self).dispatch(*args, **kwargs)        
-
-
-# @login_required 
-def ausentismo_baja_alta(request,id):
-    aus = ausentismo.objects.get(pk=id)     
-    aus.baja = not aus.baja
-    aus.save()       
-    messages.success(request, u'¡Los datos se guardaron con éxito!')
-    return HttpResponseRedirect(reverse("ausentismo_listado"))     

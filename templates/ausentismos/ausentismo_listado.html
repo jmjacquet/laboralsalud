@@ -7,6 +7,7 @@
 {% block breadcrumbs %}              
         <div class="breadcrumbs">
             Listado Ausentismos <small> carga e impresión</small>            
+            <button tittle="Búsqueda Avanzada" data-toggle="collapse" aria-expanded="true"  class="btn btn-xs btn-circle pull-right boton_busqueda" data-target="#barra_busqueda" aria-controls="barra_busqueda"><i class="glyphicon glyphicon-search"></i></button>
         </div>
 {% endblock breadcrumbs %}
 {% block cargando %}            
@@ -17,26 +18,29 @@
 {% endblock cargando %}
 {% block principal %}                            
 <br>
-        <div class="panel panel-primary">
-          <div class="panel-heading" title="Haga click para ver/ocultar sus opciones de búsqueda">
-            <h3 class="panel-title clickable">Criterios de Búsqueda</h3>
-            <span class="pull-right clickable"><i class="glyphicon glyphicon-chevron-up"></i></span>
-          </div>
-          <div class="panel-body"><div class="row collapse" id="barra_busqueda">
-              <form class="form" accept-charset="UTF-8" role="form" action="" method="post">
-                {% csrf_token %} 
-                <div class="barra_busqueda  col-xs-12">                                                                                       
-                  <div class="col-sm-1">{% bootstrap_field form.fdesde  %}</div>                                
-                  <div class="col-sm-1">{% bootstrap_field form.fhasta  %}</div>                                    
-                  <div class="col-sm-3">{% bootstrap_field form.empresa  %}</div>                                    
-                  <div class="col-sm-3">{% bootstrap_field form.tipo_ausentismo  %}</div>                            
-                  <div class="col-sm-3">{% bootstrap_field form.empleado  %}</div>                                            
-                  <div class="col-sm-1"><button class="btn btn-sm btn-primary text-center" type="submit">Buscar</button></div>
-                </div>     
-                </form>                
-          </div>
-        </div>          
-          
+      <div class="collapse barra_busqueda" id="barra_busqueda">
+          <div class="panel panel-primary">
+              <div class="panel-heading"> PARÁMETROS DE BÚSQUEDA</div> 
+              <div class="panel-body">
+                      <div class="col-md-12">
+                       <form class="form" accept-charset="UTF-8" role="form" action="" method="post">
+                        {% csrf_token %}                                                                                     
+                          <div class="col-sm-1">{% bootstrap_field form.fdesde  %}</div>                                
+                          <div class="col-sm-1">{% bootstrap_field form.fhasta  %}</div>                                    
+                          <div class="col-sm-3">{% bootstrap_field form.empresa  %}</div>                                    
+                          <div class="col-sm-2">{% bootstrap_field form.tipo_ausentismo  %}</div>                            
+                          <div class="col-sm-3">{% bootstrap_field form.empleado  %}</div>                                            
+                          <div class="col-sm-1">{% bootstrap_field form.estado  %}</div>      
+                          <div class="col-sm-1"><button class="btn btn-xs text-center" type="submit">Buscar</button></div>                
+                        </form>             
+                      </div>
+              </div>  
+          </div>                  
+        </div>
+       
+              
+       
+     
         <a class="btn btn-xs btn-primary" style="float:left;margin-right:20px;" href="{% url 'ausentismo_nuevo' %}" >Cargar Ausentismo</a>
         <table width="100%" id="ausentismos" style="display:none;" class="table table-striped compact table-hover table-no-bordered tabla_nueva nowrap">         
             <thead >
@@ -121,6 +125,27 @@ $(document).ready(function() {
    
 moment.locale('es');
 $.fn.dataTable.moment('DD/MM/YYYY'); 
+
+$.fn.datepicker.dates['es'] = {
+    days: ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"],
+    daysShort: ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb", "Dom"],
+    daysMin: ["Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa", "Do"],
+    months: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"],
+    monthsShort: ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"],
+    today: "Hoy"
+  };
+  
+ $('.datepicker').datepicker({
+        format: "dd/mm/yyyy",
+        language: "es",
+        autoclose: true,
+        todayHighlight: true
+  });
+
+  $('.datepicker').each(function(){
+      $(this).datepicker();
+  });
+
 var tabla = $('#ausentismos').DataTable({
             "language": {
                 "decimal": ",",

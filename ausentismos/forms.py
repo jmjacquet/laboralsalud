@@ -132,6 +132,8 @@ class ConsultaAusentismos(forms.Form):
 	empresa = forms.ModelChoiceField(label='Empresa',queryset=ent_empresa.objects.filter(baja=False),empty_label='Todas',required=False)
 	empleado = forms.CharField(required=False,label='Empleado')	
 	tipo_ausentismo = forms.ChoiceField(label='Tipo Ausentismo',choices=TIPO_AUSENCIA_,required=False,initial=0)	
+	estado = forms.ChoiceField(label='Estado',choices=ESTADO_,required=False,initial=0)
 	def __init__(self, *args, **kwargs):		
 		request = kwargs.pop('request', None) 
 		super(ConsultaAusentismos, self).__init__(*args, **kwargs)			
+		self.fields['empresa'].queryset = ent_empresa.objects.filter(baja=False,pk__in=empresas_habilitadas(request))

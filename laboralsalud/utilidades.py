@@ -42,6 +42,17 @@ SINO = (
     ('N', u'N'),
 )
 
+ESTADO_ = (
+ (0,'ACTIVOS'), 
+ (1,'TODOS'), 
+)
+
+ESTADO_TURNO = (
+ (0,'PENDIENTE'), 
+ (1,'ATENDIDO'), 
+ (2,'NO ASISTIÓ'), 
+)
+
 CATEG_FISCAL = (
 (1, 'IVA Responsable Inscripto'),          
 (2, 'Responsable No Inscripto'),          

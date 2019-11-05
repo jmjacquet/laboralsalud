@@ -6,12 +6,15 @@ from laboralsalud.utilidades import URL_API
 from django.core.serializers.json import DjangoJSONEncoder
 import json
 import urllib
-from django.views.generic import TemplateView
 from ausentismos.models import aus_patologia,aus_diagnostico,ausentismo
 from entidades.models import ent_empleado,ent_empresa,ent_medico_prof
 from laboralsalud.utilidades import hoy,usuario_actual,empresa_actual
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
+from django.views.generic import TemplateView,ListView,CreateView,UpdateView,FormView,DetailView
+from fm.views import AjaxCreateView,AjaxUpdateView,AjaxDeleteView
+from .forms import TurnosForm
+from .models import turnos
 
 class VariablesMixin(object):
     def get_context_data(self, **kwargs):
@@ -188,3 +191,102 @@ def recargar_patologias(request):
         lista.append({'id':e.pk,'nombre':e.get_patologia()})
     context["patologias"]=lista
     return HttpResponse(json.dumps(context))        
+
+
+
+############ TURNOS ############################
+           
+class TurnosView(VariablesMixin,ListView):
+    model = turnos
+    template_name = 'turnos/turnos_listado.html'
+    context_object_name = 'turnos'
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs): 
+        # if not tiene_permiso(self.request,'ent_clientes'):
+        #     return redirect(reverse('principal'))
+        return super(TurnosView, self).dispatch(*args, **kwargs)    
+
+    def post(self, *args, **kwargs):
+        return self.get(*args, **kwargs)
+    
+
+class TurnosCreateView(VariablesMixin,AjaxCreateView):
+    form_class = TurnosForm
+    template_name = 'fm/general/form_turnos.html'
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs): 
+        # if not tiene_permiso(self.request,'ent_vendedores_abm'):
+        #     return redirect(reverse('principal'))
+        return super(TurnosCreateView, self).dispatch(*args, **kwargs)
+
+    def form_valid(self, form):                
+        #form.instance.empresa = empresa_actual(self.request)
+        # form.instance.usuario = usuario_actual(self.request)
+        messages.success(self.request, u'Los datos se guardaron con éxito!')
+        return super(TurnosCreateView, self).form_valid(form)
+
+    def get_form_kwargs(self):
+        kwargs = super(TurnosCreateView, self).get_form_kwargs()
+        kwargs['request'] = self.request
+        return kwargs  
+
+    def get_initial(self):    
+        initial = super(TurnosCreateView, self).get_initial()                       
+        initial['request'] = self.request        
+        return initial    
+
+    def form_invalid(self, form):
+        return super(TurnosCreateView, self).form_invalid(form)
+
+
+class TurnosEditView(VariablesMixin,AjaxUpdateView):
+    form_class = TurnosForm
+    model = turnos
+    pk_url_kwarg = 'id'
+    template_name = 'fm/general/form_turnos.html'
+    
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs): 
+        # if not tiene_permiso(self.request,'ent_clientes_abm'):
+        #     return redirect(reverse('principal'))
+        return super(TurnosEditView, self).dispatch(*args, **kwargs)
+
+    def form_valid(self, form):        
+        messages.success(self.request, u'Los datos se guardaron con éxito!')
+        return super(TurnosEditView, self).form_valid(form)
+
+    def form_invalid(self, form):
+        return super(TurnosEditView, self).form_invalid(form)
+
+    def get_form_kwargs(self):
+        kwargs = super(TurnosEditView, self).get_form_kwargs()
+        kwargs['request'] = self.request
+        return kwargs  
+
+    def get_initial(self):    
+        initial = super(EmpresaEditView, self).get_initial()                      
+        initial['tipo_form'] = 'EDICION'  
+        return initial            
+
+
+# class EmpresaVerView(VariablesMixin,DetailView):
+#     model = ent_empresa
+#     pk_url_kwarg = 'id'
+#     context_object_name = 'empresa'
+#     template_name = 'entidades/empresa_detalle.html'
+
+#     @method_decorator(login_required)
+#     def dispatch(self, *args, **kwargs): 
+#         return super(EmpresaVerView, self).dispatch(*args, **kwargs)        
+
+
+# @login_required 
+# def empresa_baja_alta(request,id):
+#     ent = ent_empresa.objects.get(pk=id)     
+#     ent.baja = not ent.baja
+#     ent.save()       
+#     messages.success(request, u'¡Los datos se guardaron con éxito!')
+#     return HttpResponseRedirect(reverse("empresa_listado"))            

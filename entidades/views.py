@@ -8,7 +8,7 @@ from django.views.generic import TemplateView,ListView,CreateView,UpdateView,For
 from django.conf import settings
 from general.views import VariablesMixin
 from fm.views import AjaxCreateView,AjaxUpdateView,AjaxDeleteView
-from .forms import ARTForm,CargoForm,EspecialidadForm,MedProfForm,EmpresaForm,EmpleadoForm
+from .forms import ARTForm,CargoForm,EspecialidadForm,MedProfForm,EmpresaForm,EmpleadoForm,ConsultaEmpleados
 from django.contrib import messages
 from laboralsalud.utilidades import ultimoNroId,usuario_actual,empresa_actual,empresas_habilitadas
 from django.contrib.auth.decorators import login_required
@@ -512,7 +512,28 @@ class EmpleadoView(VariablesMixin,ListView):
 
     def get_context_data(self, **kwargs):
         context = super(EmpleadoView, self).get_context_data(**kwargs)
-        context['empleados'] = ent_empleado.objects.filter(empresa__pk__in=empresas_habilitadas(self.request))
+        form = ConsultaEmpleados(self.request.POST or None,request=self.request)   
+        empleados = None            
+        if form.is_valid():                                                        
+            empresa = form.cleaned_data['empresa']                                       
+            estado = form.cleaned_data['estado']
+            art = form.cleaned_data['art']
+
+            empleados = ent_empleado.objects.filter(empresa__pk__in=empresas_habilitadas(self.request))              
+          
+            if int(estado) == 0:  
+                empleados = empleados.filter(baja=False)
+            if empresa:
+                empleados= empleados.filter(empresa=empresa)                        
+            if art:
+                empleados= empleados.filter(art=art) 
+                
+        context['form'] = form
+
+        context['empleados'] = empleados
+
+
+
         return context
     def post(self, *args, **kwargs):
         return self.get(*args, **kwargs)

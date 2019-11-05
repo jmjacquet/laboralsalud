@@ -11,4 +11,8 @@ urlpatterns = [
     url(r'^recargar_medicos/$', recargar_medicos, name='recargar_medicos'),
     url(r'^recargar_diagnosticos/$', recargar_diagnosticos, name='recargar_diagnosticos'),
     url(r'^recargar_patologias/$', recargar_patologias, name='recargar_patologias'),
+
+    url(r'^turnos/$', TurnosView.as_view(),name="turnos_listado"),
+    url(r'^turnos/nuevo/$', TurnosCreateView.as_view(), name="turnos_nuevo"),
+    url(r'^turnos/editar/(?P<id>\d+)/$', TurnosEditView.as_view(), name="turnos_editar"),    
 ]

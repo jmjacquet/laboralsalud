@@ -35,7 +35,7 @@
 		            <tbody>
 		                {% for a in ausentismo %}
 		                <tr>    
-		                    <td title="Usuario Creación: {{a.usuario_carga|default_if_none:''}} | Última Modificación: {{a.fecha_modif|date:'d/m/Y H:i'}}">{{ a.fecha_creacion|date:'d/m/Y' }}</td>
+		                    <td title="Usuario Creación: {{a.usuario_carga|default_if_none:''}} | Última Modificación: {{a.fecha_modif|date:'d/m/Y'}}">{{ a.fecha_creacion|date:'d/m/Y' }}</td>
 		                    <td>{{ a.empleado.nro_doc|default_if_none:'' }}</td>
 		                    <td title="{{ a.empleado.apellido_y_nombre|default_if_none:''}}">{{ a.empleado.apellido_y_nombre|default_if_none:''|truncatechars:60 }}</td>
 		                    <td title="{{ a.empleado.art|default_if_none:''}}">{{ a.empleado.art|default_if_none:''|truncatechars:60 }}</td>
