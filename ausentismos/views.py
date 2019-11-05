@@ -9,7 +9,7 @@ from django.conf import settings
 from general.views import VariablesMixin
 # from fm.views import AjaxCreateView,AjaxUpdateView,AjaxDeleteView
 from django.utils.decorators import method_decorator
-from .forms import AusentismoForm,PatologiaForm,DiagnosticoForm
+from .forms import AusentismoForm,PatologiaForm,DiagnosticoForm,ConsultaAusentismos
 from django.contrib import messages
 from laboralsalud.utilidades import ultimoNroId,usuario_actual
 from django.contrib.auth.decorators import login_required
@@ -187,13 +187,45 @@ class DiagnosticoEditView(VariablesMixin,AjaxUpdateView):
 class AusentismoView(VariablesMixin,ListView):
     model = ausentismo
     template_name = 'ausentismos/ausentismo_listado.html'
-    context_object_name = 'ausentismo'
+    context_object_name = 'ausentismos'
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs): 
         # if not tiene_permiso(self.request,'ent_clientes'):
         #     return redirect(reverse('principal'))
         return super(AusentismoView, self).dispatch(*args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super(AusentismoView, self).get_context_data(**kwargs)
+
+        form = ConsultaAusentismos(self.request.POST or None,request=self.request)   
+        ausentismos = None            
+        if form.is_valid():                                                        
+            fdesde = form.cleaned_data['fdesde']   
+            fhasta = form.cleaned_data['fhasta']                                                 
+            empresa = form.cleaned_data['empresa']                           
+            empleado= form.cleaned_data['empleado']                           
+            tipo_ausentismo = form.cleaned_data['tipo_ausentismo']     
+
+            ausentismos = ausentismo.objects.filter(baja=False)                      
+          
+            if fdesde:                
+                ausentismos = ausentismos.filter(fecha_creacion__gte=fdesde)                         
+            if fhasta:                
+                ausentismos = ausentismos.filter(fecha_creacion__lte=fhasta)                         
+            if empresa:
+                ausentismos= ausentismos.filter(empleado__empresa=empresa)            
+            if empleado:
+                ausentismos= ausentismos.filter(empleado__apellido_y_nombre__icontains=empleado)
+            if int(tipo_ausentismo) > 0: 
+                ausentismos = ausentismos.filter(tipo_ausentismo=int(tipo_ausentismo))
+                
+        context['form'] = form
+        context['ausentismos'] = ausentismos
+        return context
+
+    def post(self, *args, **kwargs):
+        return self.get(*args, **kwargs)
 
 class AusentismoCreateView(VariablesMixin,CreateView):
     form_class = AusentismoForm

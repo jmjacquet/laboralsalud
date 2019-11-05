@@ -85,13 +85,13 @@ class ausentismo(models.Model):
 	recalificac_art = models.TextField(u'Recalificación ART',blank=True, null=True)       
 
 	baja = models.BooleanField(default=False)
-	fecha_creacion = models.DateTimeField(auto_now_add = True)
-	fecha_modif = models.DateTimeField(auto_now = True)			
+	fecha_creacion = models.DateField(auto_now_add = True)
+	fecha_modif = models.DateField(auto_now = True)			
 	usuario_carga = models.ForeignKey('usuarios.UsuUsuario',db_column='usuario_carga',blank=True, null=True,related_name='aus_usuario_carga',on_delete=models.SET_NULL)
 
 	class Meta:
 		db_table = 'ausentismo'
-		ordering = ['empleado']
+		ordering = ['-fecha_creacion','empleado__empresa']
 
 	def __unicode__(self):
 	    return u'%s' % (self.empleado)

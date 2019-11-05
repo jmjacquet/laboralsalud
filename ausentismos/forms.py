@@ -123,3 +123,15 @@ class DiagnosticoForm(forms.ModelForm):
 	def __init__(self, *args, **kwargs):
 		request = kwargs.pop('request', None)
 		super(DiagnosticoForm, self).__init__(*args, **kwargs)			
+
+
+
+class ConsultaAusentismos(forms.Form):               	
+	fdesde =  forms.DateField(label='Fecha Desde',widget=forms.DateInput(attrs={'class': 'form-control datepicker'}),required = True,initial=inicioMes())
+	fhasta =  forms.DateField(label='Fecha Hasta',widget=forms.DateInput(attrs={'class': 'form-control datepicker'}),required = True,initial=finMes())    	
+	empresa = forms.ModelChoiceField(label='Empresa',queryset=ent_empresa.objects.filter(baja=False),empty_label='Todas',required=False)
+	empleado = forms.CharField(required=False,label='Empleado')	
+	tipo_ausentismo = forms.ChoiceField(label='Tipo Ausentismo',choices=TIPO_AUSENCIA_,required=False,initial=0)	
+	def __init__(self, *args, **kwargs):		
+		request = kwargs.pop('request', None) 
+		super(ConsultaAusentismos, self).__init__(*args, **kwargs)			

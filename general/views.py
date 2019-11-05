@@ -7,7 +7,7 @@ from django.core.serializers.json import DjangoJSONEncoder
 import json
 import urllib
 from django.views.generic import TemplateView
-from ausentismos.models import aus_patologia,aus_diagnostico
+from ausentismos.models import aus_patologia,aus_diagnostico,ausentismo
 from entidades.models import ent_empleado,ent_empresa,ent_medico_prof
 from laboralsalud.utilidades import hoy,usuario_actual,empresa_actual
 from django.contrib.auth.decorators import login_required
@@ -75,7 +75,7 @@ def getVariablesMixin(request):
     return context
     
 class PrincipalView(VariablesMixin,TemplateView):
-    template_name = 'base.html'
+    template_name = 'index.html'
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
@@ -83,6 +83,10 @@ class PrincipalView(VariablesMixin,TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(PrincipalView, self).get_context_data(**kwargs)              
+
+        context['ausentismo'] = ausentismo.objects.filter(baja=False)[:20]
+
+
         # vars_sistema = settings
         return context
 
