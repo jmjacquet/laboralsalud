@@ -82,7 +82,7 @@ class ReporteResumenPeriodo(VariablesMixin,TemplateView):
         aus_total = None
         aus_inc = None
         aus_acc = None
-        dias_laborables = int(relativedelta(fhasta,fdesde).days)+1       
+        dias_laborables = int((fhasta-fdesde).days+1)   
         porc_dias_trab_tot = 100
 
         if ausentismos:
@@ -110,15 +110,15 @@ class ReporteResumenPeriodo(VariablesMixin,TemplateView):
 
                 tasa_ausentismo = calcular_tasa_ausentismo(dias_caidos_tot,dias_laborables,empleados_tot)                                      
                 
-                dias_caidos = ausentismos.annotate(dias_caidos=Sum(Coalesce('aus_diascaidos', 0)+Coalesce('art_diascaidos', 0)))
-                print dias_caidos
+                agudos = ausentismos_inc.filter(Q(aus_diascaidos__lte=30)|Q(art_diascaidos__lte=30)).aggregate(dias_caidos=Sum(Coalesce('aus_diascaidos', 0)+Coalesce('art_diascaidos', 0)))['dias_caidos'] or 0
+                graves = ausentismos_inc.filter(Q(aus_diascaidos__gt=30)|Q(art_diascaidos__gt=30)).aggregate(dias_caidos=Sum(Coalesce('aus_diascaidos', 0)+Coalesce('art_diascaidos', 0)))['dias_caidos'] or 0
                 
-                agudos = dias_caidos.filter(dias_caidos__lte=30).aggregate(dias_caidos=Sum(Coalesce('aus_diascaidos', 0)+Coalesce('art_diascaidos', 0)))['dias_caidos'] or 0
-                graves = dias_caidos.filter(dias_caidos__gt=30).aggregate(dias_caidos=Sum(Coalesce('aus_diascaidos', 0)+Coalesce('art_diascaidos', 0)))['dias_caidos'] or 0             
-                print agudos
-                print graves
-                porc_agudos = Decimal(74.6).quantize(Decimal("0.01"), decimal.ROUND_HALF_UP)
-                porc_cronicos = Decimal(25).quantize(Decimal("0.01"), decimal.ROUND_HALF_UP)
+                
+                porc_agudos = (Decimal(agudos) / Decimal(dias_caidos_tot))*100 
+                porc_cronicos = (Decimal(graves) / Decimal(dias_caidos_tot))*100 
+
+                porc_agudos = Decimal(porc_agudos).quantize(Decimal("0.01"), decimal.ROUND_HALF_UP)
+                porc_cronicos = Decimal(porc_cronicos).quantize(Decimal("0.01"), decimal.ROUND_HALF_UP)
                 porc_dias_trab_tot = 100 - tasa_ausentismo        
 
                 aus_inc = {'dias_caidos_tot':dias_caidos_tot,'empleados_tot':empleados_tot,'dias_trab_tot':dias_trab_tot,'tasa_ausentismo':tasa_ausentismo,

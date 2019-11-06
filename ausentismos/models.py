@@ -91,7 +91,7 @@ class ausentismo(models.Model):
 
 	class Meta:
 		db_table = 'ausentismo'
-		ordering = ['-fecha_creacion','empleado__empresa']
+		ordering = ['-fecha_creacion','empleado__empresa','-aus_fcrondesde','-aus_fcronhasta','-art_fcrondesde','-art_fcronhasta']
 
 	def __unicode__(self):
 	    return u'%s' % (self.empleado)
