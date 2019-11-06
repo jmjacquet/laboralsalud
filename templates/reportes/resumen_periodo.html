@@ -9,7 +9,7 @@
 {% endblock extra_js %}
 {% block breadcrumbs %}              
         <div class="breadcrumbs">
-            Reporte Índices
+            Reporte Indicadores
         </div>
 {% endblock breadcrumbs %}
 
@@ -43,7 +43,7 @@
   </div>
                                                      
   <div class="row">  
-      <div class="col-sm-4">
+      <div class="col-sm-6">
           <div class="panel panel-primary">
             <div class="panel-heading text-center">AUSENTISMO TOTAL</div>
             <div class="panel-body">
@@ -82,7 +82,8 @@
           </div>
           
       </div>                                                                        
-      <div class="col-sm-4">
+      {% if aus_inc %}
+      <div class="col-sm-6">
           <div class="panel panel-primary">
             <div class="panel-heading text-center">AUSENTISMO INCULPABLE</div>
             <div class="panel-body">
@@ -126,8 +127,10 @@
             </div>
           </div>
           
-      </div>                     
-      <div class="col-sm-4">
+      </div>
+      {% endif %}                     
+      {% if aus_acc %}
+      <div class="col-sm-6">
           <div class="panel panel-primary">
             <div class="panel-heading text-center">AUSENTISMO ART</div>
             <div class="panel-body">
@@ -165,7 +168,41 @@
             </div>
           </div>
           
-      </div>                     
+      </div>
+      <div class="col-sm-6">
+          <div class="panel panel-primary">
+            <div class="panel-heading text-center">DENUNCIA Y TIPO DE ACCIDENTE</div>
+            <div class="panel-body">
+              <div class="row">
+                <div class="col-sm-12">
+                  <table class="table table-striped table-hover table-condensed table-no-bordered">
+                    <tbody>                      
+                      <tr>
+                        <td class="titulo">Denunciados</td><td class="dato">{{aus_acc.acc_denunciados|default_if_none:0}}%</td>                
+                        <td class="titulo">In Itínere</td><td class="dato">{{aus_acc.acc_itinere|default_if_none:0}}%</td>                
+                      </tr>
+                      <tr>
+                        <td class="titulo">Sin Denunciar</td><td class="dato">{{aus_acc.acc_sin_denunciar|default_if_none:0}}%</td>                
+                        <td class="titulo">En Función Laboral</td><td class="dato">{{aus_acc.acc_trabajo|default_if_none:0}}%</td>                
+                      </tr>
+                      
+                    </tbody>
+                  </table>
+                </div>
+               </div>
+               <div class="row">
+                <div class="col-sm-12">
+                     <div class="chart" style="padding: 0px; position: relative;"> 
+                                <div id="ausentismo_acc2" style="width: 100%; height: 100%; margin: 0 auto"></div>
+                      </div>    
+                </div>  
+              </div>
+                
+            </div>
+          </div>
+          
+      </div>
+      {% endif %}                     
   </div>
            
 </div>
@@ -317,6 +354,30 @@ jQuery(document).ready(function($) {
                     { name: 'Dias Trabajados Totales', y: {{aus_acc.porc_dias_trab_tot|safe}} },                           
             ]
         }]
+    });
+    Highcharts.chart('ausentismo_acc2', {
+        legend: {
+            labelFormat:'<b>{name}</b>: {percentage:.2f}%',
+        },
+        series: [{
+            type: 'pie',
+            name: 'Denuncias',
+            size: '90%',
+            innerSize: '60%',
+            data: [                
+                    { name: 'Denunciados', y: {{aus_acc.acc_denunciados|safe}},sliced: true,  selected: true },           
+                    { name: 'Sin Denunciar', y: {{aus_acc.acc_sin_denunciar|safe}} },                           
+            ]            
+        }, {
+            type: 'pie',
+            name: 'Tipo Accidente',
+            size: '40%',
+            innerSize: '50%',
+            data: [{ name: 'In Itínere',color:'#2ec363', y: {{aus_acc.acc_itinere|safe}}  },           
+                    { name: 'En Función Laboral',color:'#DF5353', y: {{aus_acc.acc_trabajo|safe}} },  
+            ]
+        }]
+
     });
     {% endif %}
 

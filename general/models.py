@@ -24,6 +24,7 @@ class turnos(models.Model):
 	usuario_carga = models.ForeignKey('usuarios.UsuUsuario',db_column='usuario_carga',blank=True, null=True,related_name='turno_usuario_carga',on_delete=models.SET_NULL)
 	class Meta:
 	    db_table = 'turnos'
+	    ordering = ['-fecha',]
 
 	def __unicode__(self):
 		return u'%s - %s' % (self.fecha.strftime('%d/%m/%Y'),self.empleado)

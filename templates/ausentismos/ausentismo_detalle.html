@@ -8,30 +8,30 @@
           <table class="table table-striped table-hover table-condensed table-no-bordered">
             <tbody>
               <tr>
-                <td  class="titulo">Apellido y Nombre:</td><td colspan="3" id="apellido_y_nombre" class="dato">{{empleados.apellido_y_nombre|default_if_none:''}}</td>
+                <td  class="titulo">Apellido y Nombre:</td><td colspan="3" id="apellido_y_nombre" class="dato">{{a.empleado.apellido_y_nombre|default_if_none:''}}</td>
               </tr>
               <tr>
-                <td class="titulo">Documento:</td><td id="nro_doc" class="dato">{{empleados.nro_doc|default_if_none:''}}</td>
-                <td class="titulo">Nº Legajo:</td><td id="legajo" class="dato">{{empleados.legajo|default_if_none:''}}</td>
+                <td class="titulo">Documento:</td><td id="nro_doc" class="dato">{{a.empleado.nro_doc|default_if_none:''}}</td>
+                <td class="titulo">Nº Legajo:</td><td id="legajo" class="dato">{{a.empleado.legajo|default_if_none:''}}</td>
               </tr>
               <tr>
-                <td class="titulo">Fecha Nacimiento:</td><td id="fecha_nac" class="dato">{{empleados.fecha_nac|date:'d/m/Y'}}</td>
-                <td class="titulo">Edad:</td><td id="edad" class="dato">{{empleados.get_edad|default_if_none:0}} años</td>
+                <td class="titulo">Fecha Nacimiento:</td><td id="fecha_nac" class="dato">{{a.empleado.fecha_nac|date:'d/m/Y'}}</td>
+                <td class="titulo">Edad:</td><td id="edad" class="dato">{{a.empleado.get_edad|default_if_none:0}} años</td>
               </tr>
               <tr>
-                <td class="titulo">Teléfono/Celular:</td><td id="telcel" class="dato">{{empleados.telefono|default_if_none:''}} / {{empleados.celular|default_if_none:''}}</td>
-                <td class="titulo">E-mail:</td><td id="email" class="dato">{{empleados.email|default_if_none:''}}</td>
+                <td class="titulo">Teléfono/Celular:</td><td id="telcel" class="dato">{{a.empleado.telefono|default_if_none:''}} / {{a.empleado.celular|default_if_none:''}}</td>
+                <td class="titulo">E-mail:</td><td id="email" class="dato">{{a.empleado.email|default_if_none:''}}</td>
               </tr>
               <tr>
-                <td class="titulo">Dirección:</td><td id="domicilio" class="dato">{{empleados.domicilio|default_if_none:''}}</td>
-                <td class="titulo">C.P.:</td><td id="cod_postal" class="dato">{{empleados.cod_postal|default_if_none:''}}</td>
+                <td class="titulo">Dirección:</td><td id="domicilio" class="dato">{{a.empleado.domicilio|default_if_none:''}}</td>
+                <td class="titulo">C.P.:</td><td id="cod_postal" class="dato">{{a.empleado.cod_postal|default_if_none:''}}</td>
               </tr>
               <tr>
-                <td class="titulo">Localidad:</td><td id="localidad" class="dato">{{empleados.localidad|default_if_none:''}}</td>
-                <td class="titulo">Provincia:</td><td id="provincia" class="dato">{{empleados.get_provincia_display|default_if_none:''}}</td>
+                <td class="titulo">Localidad:</td><td id="localidad" class="dato">{{a.empleado.localidad|default_if_none:''}}</td>
+                <td class="titulo">Provincia:</td><td id="provincia" class="dato">{{a.empleado.get_provincia_display|default_if_none:''}}</td>
               </tr>
               <tr>
-                <td class="titulo">ART:</td><td colspan="3" id="art" class="dato">{{empleados.art|default_if_none:''}}</td>
+                <td class="titulo">ART:</td><td colspan="3" id="art" class="dato">{{a.empleado.art|default_if_none:''}}</td>
               </tr>
             </tbody>
           </table>
@@ -43,32 +43,32 @@
           <table class="table table-striped table-hover table-condensed table-no-bordered">
             <tbody>
               <tr>
-                <td  class="titulo">Empresa:</td><td colspan="3" id="empresa" class="dato">{{empleados.empresa|default_if_none:''}}</td>
+                <td  class="titulo">Empresa:</td><td colspan="3" id="empresa" class="dato">{{a.empleado.empresa|default_if_none:''}}</td>
               </tr>
               <tr>
-                <td class="titulo">Fecha Ingreso Empresa:</td><td id="empr_fingreso" class="dato">{{empleados.empr_fingreso|date:'d/m/Y'}}</td>
-                <td class="titulo">Antigüedad Laboral:</td><td id="antig_empresa" class="dato">{{empleados.get_antiguedad_empr|default_if_none:0}} años</td>
+                <td class="titulo">Fecha Ingreso Empresa:</td><td id="empr_fingreso" class="dato">{{a.empleado.empr_fingreso|date:'d/m/Y'}}</td>
+                <td class="titulo">Antigüedad Laboral:</td><td id="antig_empresa" class="dato">{{a.empleado.get_antiguedad_empr|default_if_none:0}} años</td>
               </tr>
               <tr>
-                <td  class="titulo">Puesto/Cargo:</td><td colspan="3" id="trab_cargo" class="dato">{{empleados.trab_cargo|default_if_none:''}}</td>
+                <td  class="titulo">Puesto/Cargo:</td><td colspan="3" id="trab_cargo" class="dato">{{ema.empleadopleados.trab_cargo|default_if_none:''}}</td>
               </tr>
               <tr>
-                <td class="titulo">Fecha Ingreso Puesto:</td><td id="trab_fingreso" class="dato">{{empleados.trab_fingreso|date:'d/m/Y'}}</td>
-                <td class="titulo">Antigüedad Puesto:</td><td id="antig_trabajo" class="dato">{{empleados.get_antiguedad_trab|default_if_none:0}} años</td>
+                <td class="titulo">Fecha Ingreso Puesto:</td><td id="trab_fingreso" class="dato">{{a.empleado.trab_fingreso|date:'d/m/Y'}}</td>
+                <td class="titulo">Antigüedad Puesto:</td><td id="antig_trabajo" class="dato">{{a.empleado.get_antiguedad_trab|default_if_none:0}} años</td>
               </tr>
               <tr>
-                <td class="titulo">Fecha Cese de Actividad:</td><td <td colspan="3" id="trab_fbaja" class="dato">{{empleados.trab_fbaja|date:'d/m/Y'}}</td>
+                <td class="titulo">Fecha Cese de Actividad:</td><td <td colspan="3" id="trab_fbaja" class="dato">{{a.empleado.trab_fbaja|date:'d/m/Y'}}</td>
               </tr>
               <tr>
-                <td class="titulo">¿Portación de Armas?</td><td id="trab_armas" class="dato">{{empleados.trab_armas|default_if_none:'N'}}</td>
-                <td class="titulo">¿Tareas Diferentes?</td><td id="trab_tareas_dif" class="dato">{{empleados.trab_tareas_dif|default_if_none:'N'}}</td>
+                <td class="titulo">¿Portación de Armas?</td><td id="trab_armas" class="dato">{{a.empleado.trab_armas|default_if_none:'N'}}</td>
+                <td class="titulo">¿Tareas Diferentes?</td><td id="trab_tareas_dif" class="dato">{{a.empleado.trab_tareas_dif|default_if_none:'N'}}</td>
               </tr>
               <tr>
-                <td class="titulo">¿Preocupacional?</td><td id="trab_preocupac" class="dato">{{empleados.trab_preocupac|default_if_none:'N'}}</td>
-                <td class="titulo">Fecha Preocupacional:</td><td id="trab_preocup_fecha" class="dato">{{empleados.trab_preocup_fecha|date:'d/m/Y'}}</td>
+                <td class="titulo">¿Preocupacional?</td><td id="trab_preocupac" class="dato">{{a.empleado.trab_preocupac|default_if_none:'N'}}</td>
+                <td class="titulo">Fecha Preocupacional:</td><td id="trab_preocup_fecha" class="dato">{{a.empleado.trab_preocup_fecha|date:'d/m/Y'}}</td>
               </tr>
               <tr>
-                <td class="titulo">Conclusión Preocupacional</td><td colspan="3" class="dato">{{empleados.trab_preocup_conclus|default_if_none:''}}</td>
+                <td class="titulo">Conclusión Preocupacional</td><td colspan="3" class="dato">{{a.empleado.trab_preocup_conclus|default_if_none:''}}</td>
               </tr>
             </tbody>
           </table>

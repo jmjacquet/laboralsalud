@@ -134,9 +134,18 @@ class ReporteResumenPeriodo(VariablesMixin,TemplateView):
                 dias_trab_tot = (dias_laborables * empleados_tot)-dias_caidos_tot
                 tasa_ausentismo = calcular_tasa_ausentismo(dias_caidos_tot,dias_laborables,empleados_tot)                       
                 porc_dias_trab_tot = 100 - tasa_ausentismo        
+
+                tot_accidentes = ausentismos_acc.count()
+                
+                acc_denunciados = (Decimal(ausentismos_acc.exclude(Q(art_ndenuncia__isnull=True)|Q(art_ndenuncia__exact='')).count()) / Decimal(tot_accidentes))*100 
+                acc_sin_denunciar = (Decimal(ausentismos_acc.filter(Q(art_ndenuncia__isnull=True)|Q(art_ndenuncia__exact='')).count()) / Decimal(tot_accidentes))*100 
+                acc_itinere = (Decimal(ausentismos_acc.filter(art_tipo_accidente=2).count()) / Decimal(tot_accidentes))*100 
+                acc_trabajo = (Decimal(ausentismos_acc.filter(art_tipo_accidente=1).count()) / Decimal(tot_accidentes))*100 
                 
                 aus_acc = {'dias_caidos_tot':dias_caidos_tot,'empleados_tot':empleados_tot,'dias_trab_tot':dias_trab_tot,'tasa_ausentismo':tasa_ausentismo,
-                'dias_laborables':dias_laborables,'porc_dias_trab_tot':porc_dias_trab_tot}
+                'dias_laborables':dias_laborables,'porc_dias_trab_tot':porc_dias_trab_tot,'tot_accidentes':tot_accidentes,'acc_denunciados':acc_denunciados,
+                'acc_sin_denunciar':acc_sin_denunciar,'acc_itinere':acc_itinere,'acc_trabajo':acc_trabajo}
+                
 
         context['aus_total']=  aus_total
         context['aus_inc']=  aus_inc

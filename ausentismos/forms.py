@@ -33,7 +33,7 @@ class AusentismoForm(forms.ModelForm):
 	aus_diagn = forms.ModelChoiceField(label=u'Diagnóstico',queryset=aus_diagnostico.objects.filter(baja=False),required=False)
 	aus_medico = MedicoModelChoiceField(label=u'Médico Tratante',queryset=ent_medico_prof.objects.filter(baja=False),required=False)
 	art_medico = MedicoModelChoiceField(label=u'Médico ART',queryset=ent_medico_prof.objects.filter(baja=False),required=False)
-	empresa = forms.ModelChoiceField(label='Empresa',queryset=ent_empresa.objects.filter(baja=False),required=True)
+	empresa = forms.ModelChoiceField(label='Empresa',queryset=ent_empresa.objects.filter(baja=False),required=False)
 	tipo_form = forms.CharField(widget = forms.HiddenInput(), required = False)	
 	class Meta:
 			model = ausentismo

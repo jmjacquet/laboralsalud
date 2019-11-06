@@ -35,7 +35,11 @@ class AusentismoView(VariablesMixin,ListView):
         context = super(AusentismoView, self).get_context_data(**kwargs)
 
         form = ConsultaAusentismos(self.request.POST or None,request=self.request)   
-        ausentismos = ausentismo.objects.filter(baja=False,empleado__empresa__pk__in=empresas_habilitadas(self.request))[:20]
+        fdesde=inicioMes()
+        fhasta=finMes()
+        ausentismos = ausentismo.objects.filter(baja=False,empleado__empresa__pk__in=empresas_habilitadas(self.request))
+        ausentismos = ausentismos.filter(Q(aus_fcrondesde__gte=fdesde,tipo_ausentismo=1)|Q(art_fcrondesde__gte=fdesde,tipo_ausentismo__gte=2))
+        ausentismos = ausentismos.filter(Q(aus_fcronhasta__lte=fhasta,tipo_ausentismo=1)|Q(art_fcronhasta__lte=fhasta,tipo_ausentismo__gte=2))                                
         if form.is_valid():                                                        
             fdesde = form.cleaned_data['fdesde']   
             fhasta = form.cleaned_data['fhasta']                                                 
@@ -118,6 +122,7 @@ class AusentismoEditView(VariablesMixin,UpdateView):
         return super(AusentismoEditView, self).form_valid(form)
 
     def form_invalid(self, form):
+        # print form.errors
         return super(AusentismoEditView, self).form_invalid(form)
 
     def get_form_kwargs(self):

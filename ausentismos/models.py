@@ -13,6 +13,7 @@ class aus_patologia(models.Model):
     baja = models.BooleanField(default=False)
     class Meta:
         db_table = 'aus_patologia'
+        ordering = ['patologia',]
     
     def __unicode__(self):
         return u'%s' % (self.patologia)         
@@ -30,6 +31,7 @@ class aus_diagnostico(models.Model):
     baja = models.BooleanField(default=False)
     class Meta:
         db_table = 'aus_diagnostico'
+        ordering = ['diagnostico',]
     
     def __unicode__(self):
         return u'%s' % (self.diagnostico)  

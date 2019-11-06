@@ -41,7 +41,7 @@ INSTALLED_APPS = (
     'reportes',    
     'fm',
     'modal',
-    'debug_toolbar',
+    # 'debug_toolbar',
 
 )
 
@@ -55,7 +55,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.security.SecurityMiddleware',
 
-    'debug_toolbar.middleware.DebugToolbarMiddleware',
+    # 'debug_toolbar.middleware.DebugToolbarMiddleware',
 )
 
 ROOT_URLCONF = 'laboralsalud.urls'

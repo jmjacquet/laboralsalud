@@ -13,6 +13,7 @@ class ent_cargo(models.Model):
     baja = models.BooleanField(default=False)
     class Meta:
         db_table = 'ent_cargo'
+        ordering = ['cargo',]
     
     def __unicode__(self):
         return u'%s' % self.cargo
@@ -26,6 +27,7 @@ class ent_especialidad(models.Model):
     baja = models.BooleanField(default=False)
     class Meta:
         db_table = 'ent_especialidad'
+        ordering = ['especialidad',]
     
     def __unicode__(self):
         return u'%s' % self.especialidad 
@@ -116,6 +118,7 @@ class ent_art(models.Model):
 	usuario_carga = models.ForeignKey('usuarios.UsuUsuario',db_column='usuario_carga',blank=True, null=True,related_name='art_usuario_carga',on_delete=models.SET_NULL)
 	class Meta:
 	    db_table = 'ent_art'
+	    ordering = ['nombre',]
 
 	def __unicode__(self):
 	    return u'%s' % unicode(self.nombre)
@@ -162,7 +165,7 @@ class ent_empleado(models.Model):
 
 	class Meta:
 		db_table = 'ent_empleado'
-		ordering = ['apellido_y_nombre']
+		ordering = ['apellido_y_nombre','empresa','nro_doc']
 
 	def __unicode__(self):
 	    return u'%s' % (self.apellido_y_nombre)
