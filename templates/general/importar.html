@@ -5,7 +5,7 @@
 
 {% block breadcrumbs %}              
         <div class="breadcrumbs">
-           IMPORTAR
+           IMPORTAR <small> carga e impresión</small>
         </div>
 {% endblock breadcrumbs %}
 
@@ -14,7 +14,7 @@
    
 <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
-    <input type="file" name="cargos">
+    <input type="file" name="archivo">
     <button type="submit">Subir</button>
   </form>
 {% endblock principal %}

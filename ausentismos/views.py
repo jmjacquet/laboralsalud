@@ -55,7 +55,7 @@ class AusentismoView(VariablesMixin,ListView):
             if empresa:
                 ausentismos= ausentismos.filter(empleado__empresa=empresa)            
             if empleado:
-                ausentismos= ausentismos.filter(empleado__apellido_y_nombre__icontains=empleado)
+                ausentismos= ausentismos.filter(Q(empleado__apellido_y_nombre__icontains=empleado)|Q(empleado__nro_doc__icontains=empleado))
             if int(tipo_ausentismo) > 0: 
                 ausentismos = ausentismos.filter(tipo_ausentismo=int(tipo_ausentismo))            
                 
@@ -324,73 +324,133 @@ class DiagnosticoEditView(VariablesMixin,AjaxUpdateView):
 
 import csv, io
    
-
+import datetime
 def ausencias_importar(request):
     data = {}    
    
-    # if request.method == 'POST':  
-    #     csv_file = request.FILES["archivo"]
-    #     #tabla = request.POST['username']     
-    #     if not csv_file.name.endswith('.csv'):
-    #         messages.error(request,'File is not CSV type')
-    #         return HttpResponseRedirect(reverse("simple_upload"))
-    #     #if file is too large, return
-    #     if csv_file.multiple_chunks():
-    #         messages.error(request,"Uploaded file is too big (%.2f MB)." % (csv_file.size/(1000*1000),))
-    #         return HttpResponseRedirect(reverse("simple_upload"))
+    if request.method == 'POST':  
+        csv_file = request.FILES["archivo"]
+        #tabla = request.POST['username']     
+        if not csv_file.name.endswith('.csv'):
+            messages.error(request,'File is not CSV type')
+            return HttpResponseRedirect(reverse("ausencias_importar"))
+        #if file is too large, return
+        if csv_file.multiple_chunks():
+            messages.error(request,"Uploaded file is too big (%.2f MB)." % (csv_file.size/(1000*1000),))
+            return HttpResponseRedirect(reverse("ausencias_importar"))
 
-    #     file_data = csv_file.read().decode("utf8", "ignore")
+        file_data = csv_file.read().decode("utf8", "ignore")
 
-    #     lines = file_data.split("\n")
-    #     cant = len(lines)
-    #     try:
-    #         for index,line in enumerate(lines):                      
-    #             campos = line.split(";")
-    #             legajo = campos[0].strip()                
-    #             dni = campos[1].strip()                
-    #             empleado = ent_empleado.objects.get(nro_doc=dni)            
-    #             fecha_creacion = datetime.datetime.strptime(campos[2], "%d/%m/%Y").date()                
-    #             tipoa = campos[3].strip()       
-    #             #TIPO_AUSENCIA
-    #             acontrol = campos[4].strip() == 'Si'
-    #             fecha_control = datetime.datetime.strptime(campos[5], "%d/%m/%Y").date()                
-    #             certificado = campos[6].strip() == 'Si'
-    #             fecha_certif = datetime.datetime.strptime(campos[7], "%d/%m/%Y").date()                
-    #             fecha_entrcertif = datetime.datetime.strptime(campos[8], "%d/%m/%Y").date()                
-    #             aus_cron_desde = datetime.datetime.strptime(campos[9], "%d/%m/%Y").date()                
-    #             aus_cron_hasta = datetime.datetime.strptime(campos[10], "%d/%m/%Y").date()                
-    #             aus_diascaidos = campos[11].strip()
-    #             aus_diasjustif = campos[12].strip()
-    #             aus_freintegro = datetime.datetime.strptime(campos[13], "%d/%m/%Y").date()                
-    #             aus_falta = datetime.datetime.strptime(campos[14], "%d/%m/%Y").date()                
-    #             aus_tipo_alta = campos[15].strip()
-    #             aus_frevision = datetime.datetime.strptime(campos[16], "%d/%m/%Y").date()                
+        lines = file_data.split("\n")
+        cant = len(lines)
+        
+        for index,line in enumerate(lines):                      
+            campos = line.split(";")
+            legajo = campos[0].strip()                
+            dni = campos[1].strip()                
+            empleado = ent_empleado.objects.get(nro_doc=dni)
 
-    #             aus_medico = campos[17].strip().upper()
-    #             if aus_medico=='':
-    #                 aus_medico=None
-    #             else:
-    #                 aus_medico = ent_medico_prof.objects.get_or_create(apellido_y_nombre=aus_medico)                    
+            if campos[2]=='':
+                fecha_creacion = None
+            else:
+                fecha_creacion = datetime.datetime.strptime(campos[2], "%d/%m/%Y").date()                
+            
+            tipoa = campos[3].strip()                       
+            if tipoa=='':
+                tipoa = None
+            else:
+                ta=dict(TIPO_AUSENCIA)        
+                tipoa = [k for k, v in ta.items() if v == tipoa][0]
 
-    #             art = ent_art.objects.get(nombre=art.strip())         
-    #             empresa = campos[6]                
-    #             empresa = ent_empresa.objects.get(razon_social=empresa.strip())
-    #             puesto = campos[7]                
-    #             puesto = ent_cargo.objects.get(cargo=puesto.strip())
-                
-    #             try:
-    #                #ent_cargo.objects.update_or_create(cargo=cargo)                                                             
-    #                try:
-    #                    empl = ent_empresa.objects.get(nro_doc=dni.strip())
-    #                except: 
-    #                    ent_empleado.objects.update_or_create(nro_doc=dni,legajo=legajo,apellido_y_nombre=nombre,fecha_nac=fecha_nac,art=art,empresa=empresa,trab_cargo=puesto)                                          
-    #                    print index
-    #             except Exception as e:
-    #                 print e
-    #                 print nombre                    
-    #             pass
-    #     except Exception as e:
-    #         print e
-    #         print nombre
+            if (campos[4].strip() == 'Si'): 
+                aus_control = 'S' 
+            else: 
+                aus_control = 'N'
+             
+            if campos[5]=='':
+                aus_fcontrol = None
+            else:
+                aus_fcontrol = datetime.datetime.strptime(campos[5], "%d/%m/%Y").date()                
+            if (campos[6].strip() == 'Si'): 
+                aus_certificado = 'S' 
+            else: 
+                aus_certificado = 'N'
 
-    return render(request, 'entidades/import.html')
+            if campos[7]=='':
+                aus_fcertif = None
+            else:
+                aus_fcertif = datetime.datetime.strptime(campos[7], "%d/%m/%Y").date()                
+            if campos[8]=='':
+                aus_fentrega_certif = None
+            else:
+                aus_fentrega_certif = datetime.datetime.strptime(campos[8], "%d/%m/%Y").date()                
+            
+            if campos[9]=='':
+                aus_fcrondesde = None
+            else:
+                aus_fcrondesde = datetime.datetime.strptime(campos[9], "%d/%m/%Y").date()                
+            if campos[10]=='':
+                aus_fcronhasta = None
+            else:
+                aus_fcronhasta = datetime.datetime.strptime(campos[10], "%d/%m/%Y").date()                
+            aus_diascaidos = campos[11].strip()
+            if campos[11]=='':
+                aus_diascaidos = None
+            aus_diasjustif = campos[12].strip()
+            if campos[12]=='':
+                aus_diasjustif = None
+            if campos[13]=='':
+                aus_freintegro = None
+            else:
+                aus_freintegro = datetime.datetime.strptime(campos[13], "%d/%m/%Y").date()                
+            
+            if campos[14]=='':
+                aus_falta = None
+            else:
+                aus_falta = datetime.datetime.strptime(campos[14], "%d/%m/%Y").date()                
+            
+            austa = campos[15].strip()
+            if austa=='':
+                aus_tipo_alta = None
+            else:
+                aus_tipo_alta=dict(TIPO_ALTA)        
+                aus_tipo_alta = [k for k, v in aus_tipo_alta.items() if v == austa][0]
+
+            if campos[16]=='':
+                aus_frevision = None
+            else:
+                aus_frevision = datetime.datetime.strptime(campos[16], "%d/%m/%Y").date()                
+
+            aus_medico = campos[17].strip().upper()
+            if aus_medico=='':
+                aus_medico=None
+            else:
+                aus_medico = ent_medico_prof.objects.get_or_create(apellido_y_nombre=aus_medico)[0]                           
+
+            aus_grupop = campos[18].strip().upper()
+            if aus_grupop=='':
+                aus_grupop=None
+            else:
+                aus_grupop = aus_patologia.objects.get_or_create(patologia=aus_grupop)[0]       
+
+            aus_diagn = campos[19].strip().upper()
+            if aus_diagn=='':
+                aus_diagn=None
+            else:
+                aus_diagn = aus_diagnostico.objects.get_or_create(diagnostico=aus_diagn)[0]              
+
+                   
+            observaciones = campos[20].strip()                
+            descr_altaparc = campos[21].strip()                
+            
+            try:
+               ausentismo.objects.update_or_create(empleado=empleado,tipo_ausentismo=tipoa,aus_control=aus_control,aus_fcontrol=aus_fcontrol,aus_certificado=aus_certificado,
+                aus_fcertif=aus_fcertif,aus_fentrega_certif=aus_fentrega_certif,aus_fcrondesde=aus_fcrondesde,aus_fcronhasta=aus_fcronhasta,aus_diascaidos=aus_diascaidos,
+                aus_diasjustif=aus_diasjustif,aus_freintegro=aus_freintegro,aus_falta=aus_falta,aus_tipo_alta=aus_tipo_alta,aus_frevision=aus_frevision,aus_medico=aus_medico,
+                aus_grupop=aus_grupop,aus_diagn=aus_diagn,observaciones=observaciones,descr_altaparc=descr_altaparc)                                          
+               print index
+            except Exception as e:
+                print e
+                print dni                            
+
+    return render(request, 'general/importar.html')

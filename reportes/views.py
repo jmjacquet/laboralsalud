@@ -59,7 +59,7 @@ class ReporteResumenPeriodo(VariablesMixin,TemplateView):
             if empresa:
                 ausentismos= ausentismos.filter(empleado__empresa=empresa)            
             if empleado:
-                ausentismos= ausentismos.filter(empleado=empleado)
+                ausentismos= ausentismos.filter(Q(empleado__apellido_y_nombre__icontains=empleado)|Q(empleado__nro_doc__icontains=empleado))
 
             if int(tipo_ausentismo) > 0: 
                 ausentismos = ausentismos.filter(tipo_ausentismo=int(tipo_ausentismo))
@@ -109,6 +109,14 @@ class ReporteResumenPeriodo(VariablesMixin,TemplateView):
                 dias_trab_tot = (dias_laborables * empleados_tot)-dias_caidos_tot
 
                 tasa_ausentismo = calcular_tasa_ausentismo(dias_caidos_tot,dias_laborables,empleados_tot)                                      
+                
+                dias_caidos = ausentismos.annotate(dias_caidos=Sum(Coalesce('aus_diascaidos', 0)+Coalesce('art_diascaidos', 0)))
+                print dias_caidos
+                
+                agudos = dias_caidos.filter(dias_caidos__lte=30).aggregate(dias_caidos=Sum(Coalesce('aus_diascaidos', 0)+Coalesce('art_diascaidos', 0)))['dias_caidos'] or 0
+                graves = dias_caidos.filter(dias_caidos__gt=30).aggregate(dias_caidos=Sum(Coalesce('aus_diascaidos', 0)+Coalesce('art_diascaidos', 0)))['dias_caidos'] or 0             
+                print agudos
+                print graves
                 porc_agudos = Decimal(74.6).quantize(Decimal("0.01"), decimal.ROUND_HALF_UP)
                 porc_cronicos = Decimal(25).quantize(Decimal("0.01"), decimal.ROUND_HALF_UP)
                 porc_dias_trab_tot = 100 - tasa_ausentismo        

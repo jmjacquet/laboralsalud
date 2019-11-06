@@ -8,7 +8,7 @@ import json
 import urllib
 from ausentismos.models import aus_patologia,aus_diagnostico,ausentismo
 from entidades.models import ent_empleado,ent_empresa,ent_medico_prof
-from laboralsalud.utilidades import hoy,usuario_actual,empresa_actual
+from laboralsalud.utilidades import hoy,usuario_actual,empresa_actual,TIPO_AUSENCIA
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.views.generic import TemplateView,ListView,CreateView,UpdateView,FormView,DetailView
@@ -88,8 +88,8 @@ class PrincipalView(VariablesMixin,TemplateView):
         context = super(PrincipalView, self).get_context_data(**kwargs)              
 
         context['ausentismo'] = ausentismo.objects.filter(baja=False)[:20]
-
-
+       
+       
         # vars_sistema = settings
         return context
 
@@ -120,9 +120,7 @@ def buscarDatosAPICUIT(request):
    return HttpResponse( json.dumps(d), content_type='application/json' ) 
 
 
-
 from django.forms.models import model_to_dict
-
 
 def buscarDatosEntidad(request):                     
    lista= {}

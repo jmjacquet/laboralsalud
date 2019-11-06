@@ -20,4 +20,5 @@ urlpatterns = [
     url(r'^diagnostico/editar/(?P<id>\d+)/$', DiagnosticoEditView.as_view(), name="diagnostico_editar"),    
     # url(r'^diagnostico/detalles/(?P<id>\d+)/$', ARTVerView.as_view(), name="patologia_detalles"),    
     # url(r'^diagnostico/baja_alta/(?P<id>\d+)/$', art_baja_alta, name='patologia_baja_alta'),
+     url(r'^ausencias_importar/$', ausencias_importar,name="ausencias_importar"),
 ]
