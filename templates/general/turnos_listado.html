@@ -1,0 +1,236 @@
+{% extends "base.html" %}
+{% load static from staticfiles %}
+{% load i18n l10n %}
+{% load humanize %}
+
+{% block breadcrumbs %}              
+        <div class="breadcrumbs">
+            Listado de Turnos <small> carga e impresión</small>
+        </div>
+{% endblock breadcrumbs %}
+{% block cargando %}            
+  <div id="cargando" class="cargando" >
+    <span class="cargando-txt">CARGANDO...</span>
+    <img class="cargando-img" src="{% static 'img/loading-bars.svg' %}">
+  </div>
+{% endblock cargando %}
+{% block principal %}                            
+<br>   
+     <a class="btn btn-xs btn-primary fm-create" style="float:left;margin-right:20px;" href="{% url 'turnos_nuevo' %}" data-fm-head="AGREGAR TURNO" data-fm-callback="reload">Nuevo Turno</a>
+    <table width="100%" id="turnos" style="display:none;" class="table table-striped compact table-hover table-no-bordered tabla_nueva nowrap">         
+        <thead >
+            <tr>
+                <th>#</th>
+                <th class="imprimir">Fecha</th>
+                <th class="imprimir">Empleado</th>
+                <th class="imprimir">Empresa</th>
+                <th class="imprimir">Estado</th>
+                <th class="imprimir">Detalle</th>
+                <th class="imprimir">Observaciones</th>
+                <th class="imprimir">F.Carga</th>           
+                <th class="imprimir">Usuario</th>                                           
+            </tr>
+        </thead>
+        <tbody>
+            {% for t in turnos %}
+            <tr
+             {% if a.baja %}
+                class='danger'
+             {% endif %}>
+                
+                <td><div class="btn-group">
+                      <button type="button" title="{{ t.pk|safe}}" class="btn btn-xs color_barra" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="icon-settings"> </i> <span class="caret"></span>
+                      </button>
+                      <ul class="dropdown-menu">
+                        <li><a href="{% url 'turnos_detalles' id=t.pk %}" class="modal-detail" data-modal-head="DETALLE TURNOS" data-fm-callback="reload">
+                        <i class=" icon-screen-desktop"></i> Detalle</a></li>
+                        
+                        <li><a href="{% url 'turno_editar' id=a.pk %}"  class="fm-update " title="Editar" data-fm-callback="reload" data-fm-head="EDITAR TURNO"data-fm-target="#object-{{ a.pk }}"><i class="icon-note"></i> Editar</a></li>
+
+                        <li><a href="#" 
+                                onClick="alerta= alertify.dialog('confirm').set({'labels':{ok:'Aceptar', cancel:'Cancelar'},'message': '¿DESEA DAR DE BAJA/REACTIVAR EL REGISTRO ACTUAL?',transition:'fade','onok': function(){ window.location.href = '{% url 'turno_baja_alta' id=a.pk  %}'; },'oncancel': function(){ return true;} }); alerta.setting('modal', true); alerta.setHeader('BAJA/REACTIVAR'); alerta.show(); return true;" ><i class="icon-dislike"></i><i class="icon-like"></i>Baja/Reactivar</a>
+                            </li>     
+                        
+                        
+                      </ul>                                      
+                    </div>
+                </td>              
+                
+                <td>{{ a.fecha|date:'d/m/Y' }}</td>
+                <td title="{{ t.empleado|default_if_none:''}}">{{ t.empleado|default_if_none:''|truncatechars:60 }}</td>
+                <td title="{{ t.empresa|default_if_none:''}}">{{ t.empresa|default_if_none:''|truncatechars:60 }}</td>
+                <td>{{ t.get_estado_display|default_if_none:'' }}</td>
+                <td title="{{ t.detalle|default_if_none:''}}">{{ t.detalle|default_if_none:''|truncatechars:60 }}</td>
+                <td title="{{ t.observaciones|default_if_none:''}}">{{ t.observaciones|default_if_none:''|truncatechars:60 }}</td>
+                <td>{{ t.fecha_creacion|date:'d/m/Y' }}</td>
+                <td>{{ t.usuario_carga|default_if_none:'' }}</td>                                
+            </tr>
+            {% endfor %}
+        </tbody>
+        <tfoot>
+            <tr>
+                <th></th> 
+                <th></th> 
+                <th></th>                                
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>                                                                
+            </tr>
+        </tfoot>
+        
+    </table>                   
+
+{% endblock principal %}
+
+{% block scripts_js %}     
+<script type="text/javascript">
+
+$(document).ready(function() { 
+   
+moment.locale('es');
+$.fn.dataTable.moment('DD/MM/YYYY'); 
+var tabla = $('#turnos').DataTable({
+            "language": {
+                "decimal": ",",
+                "thousands": ".",                 
+                "sProcessing": "Procesando...",
+                "sLengthMenu": "Mostrar _MENU_ registros",
+                "sZeroRecords": "No se encontraron resultados",
+                "sEmptyTable": "No hay registros en esta tabla",
+                "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                "sInfoPostFix": "",
+                "sSearch": "Buscar:",
+                "sUrl": "",
+                "sInfoThousands": ",",
+                "sLoadingRecords": "Cargando...",
+                "oPaginate": {
+                    "sFirst": "Primero",
+                    "sLast": "Ãšltimo",
+                    "sNext": "Siguiente",
+                    "sPrevious": "Anterior"
+                },
+                "oAria": {
+                    "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                    "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                },
+                "decimal": ",",
+                "thousands": ".",                
+            },                      
+           
+         "columnDefs": [ {
+                  "targets"  : 'no-sort',
+                  "orderable": false,
+                }],          
+           "paging":   true,
+           "lengthMenu": [[20, 50, -1], [20, 50, "Todos"]],
+           "autoWidth": false,
+           "order": [],
+           "colReorder": true,
+           "searching": true,
+            fixedHeader: {
+              header: true,
+              footer: false
+              },
+            responsive: true,
+            dom: 'Bfrtlip',
+            buttons: [
+                {
+                    extend:    'colvis',
+                    text:      '<i class="fa fa-list"></i>',
+                    titleAttr: 'Ver/Ocultar',
+                    className: 'btnToolbar',                    
+                },
+                {
+                    extend:    'copyHtml5',
+                    text:      '<i class="fa fa-files-o"></i>',
+                    titleAttr: 'Copiar',
+                    exportOptions: { columns: ':visible' },
+                    className: 'btnToolbar',                    
+                },
+                {
+                    extend:    'excel',
+                    text:      '<i class="fa fa-file-excel-o"></i>',
+                    titleAttr: 'Excel',
+                    filename: 'TURNOS',                    
+                    exportOptions: {  modifier: {
+                                        page: 'current'
+                                    }, 
+                                      columns: '.imprimir',
+                                      format: {
+                                      body: function(data, row, column, node) {
+                                        var floatVal = function (i) {
+                                            if (typeof i === "number") {
+                                                return i;
+                                            } else if (typeof i === "string") {
+                                                i = i.replace(/\$/g, "");
+                    i = i.replace(/\,/g ,"");                    
+                    i = i.replace(/\./g, "");
+                                                var result = parseFloat(i)/100;
+                                                // console.log(result);
+                                                if (isNaN(result)) {
+                                                    try {
+                                                        var result = $jq(i).text();
+                                                        result = parseFloat(result);
+                                                        if (isNaN(result)) { result = 0 };
+                                                        return result * 1;
+                                                    } catch (error) {
+                                                        return 0;
+                                                    }
+                                                } else {
+                                                    return result * 1;
+                                                }
+                                            } else {
+                                                alert("Unhandled type for totals [" + (typeof i) + "]");
+                                                return 0
+                                            }
+                                        };
+                                          data = $('<p>' + data + '</p>').text();
+                                          return (node.className=='importe') ? floatVal(data)  : data;
+                                      }
+                                    }},
+                    className: 'btnToolbar',     
+                },
+               
+                {
+                    extend:    'pdfHtml5',
+                    text:      '<i class="fa fa-file-pdf-o"></i>',
+                    titleAttr: 'PDF',footer: true,
+                    exportOptions: { columns: '.imprimir'},
+                    orientation: 'landscape',
+                    className: 'btnToolbar',                    
+                },
+                {
+                    extend: 'print',
+                    text:      '<i class="fa fa-print"></i>',
+                    titleAttr: 'Imprimir',
+                    exportOptions: { columns: '.imprimir' },
+                    className: 'btnToolbar',                    
+                },
+            ],
+            PreDrawCallback:function(){
+            $("#cargando").show();
+            },
+            initComplete: function () {
+               // this.api().columns().every( function () {[0, 1, 9]
+
+                $("#turnos").show();
+                  this.fnAdjustColumnSizing();
+                $("#cargando").hide();
+            }
+        });
+
+
+
+
+});
+</script> 
+{% endblock scripts_js %}
+
+
+

@@ -2,7 +2,7 @@
 from django import forms
 from django.forms import ModelForm
 from django.forms.widgets import TextInput,NumberInput,Select
-from .models import ent_art,ent_cargo,ent_especialidad,ent_medico_prof,ent_empresa,ent_empleado
+from .models import ent_art,ent_cargo,ent_especialidad,ent_medico_prof,ent_empresa,ent_empleado,turnos
 from datetime import datetime, timedelta,date
 from laboralsalud.utilidades import *
 
@@ -17,7 +17,7 @@ class TurnosForm(forms.ModelForm):
 	observaciones = forms.CharField(label='Observaciones / Datos adicionales',widget=forms.Textarea(attrs={'class':'form-control2', 'rows': 5}),required = False)	
 	tipo_form = forms.CharField(widget = forms.HiddenInput(), required = False)	
 	class Meta:
-			model = ent_medico_prof
+			model = turnos
 			exclude = ['id','fecha_creacion','fecha_modif','usuario_carga']
 
 	def __init__(self, *args, **kwargs):
@@ -42,3 +42,16 @@ class TurnosForm(forms.ModelForm):
 	# 			#because we didn't get a match
 	# 				pass
 	# 	return self.cleaned_data
+
+
+
+class ConsultaTurnos(forms.Form):               	
+	fdesde =  forms.DateField(label='Fecha Desde',widget=forms.DateInput(attrs={'class': 'form-control datepicker'}),required = True,initial=inicioMes())
+	fhasta =  forms.DateField(label='Fecha Hasta',widget=forms.DateInput(attrs={'class': 'form-control datepicker'}),required = True,initial=finMes())    	
+	empresa = forms.ModelChoiceField(label='Empresa',queryset=ent_empresa.objects.filter(baja=False),empty_label='Todas',required=False)
+	empleado = forms.CharField(required=False,label='Empleado')	
+	estado = forms.ChoiceField(label='Estado',choices=ESTADO_TURNO,required=False,initial=0)
+	def __init__(self, *args, **kwargs):		
+		request = kwargs.pop('request', None) 
+		super(ConsultaTurnos, self).__init__(*args, **kwargs)			
+		self.fields['empresa'].queryset = ent_empresa.objects.filter(baja=False,pk__in=empresas_habilitadas(request))

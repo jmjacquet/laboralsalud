@@ -8,12 +8,12 @@ import json
 import urllib
 from ausentismos.models import aus_patologia,aus_diagnostico,ausentismo
 from entidades.models import ent_empleado,ent_empresa,ent_medico_prof
-from laboralsalud.utilidades import hoy,usuario_actual,empresa_actual,TIPO_AUSENCIA
+from laboralsalud.utilidades import hoy,usuario_actual,empresa_actual,TIPO_AUSENCIA,empresas_habilitadas
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.views.generic import TemplateView,ListView,CreateView,UpdateView,FormView,DetailView
 from fm.views import AjaxCreateView,AjaxUpdateView,AjaxDeleteView
-from .forms import TurnosForm
+from .forms import TurnosForm,ConsultaTurnos
 from .models import turnos
 
 class VariablesMixin(object):
@@ -196,7 +196,7 @@ def recargar_patologias(request):
            
 class TurnosView(VariablesMixin,ListView):
     model = turnos
-    template_name = 'turnos/turnos_listado.html'
+    template_name = 'general/turnos_listado.html'
     context_object_name = 'turnos'
 
     @method_decorator(login_required)
@@ -205,6 +205,35 @@ class TurnosView(VariablesMixin,ListView):
         #     return redirect(reverse('principal'))
         return super(TurnosView, self).dispatch(*args, **kwargs)    
 
+    def get_context_data(self, **kwargs):
+        context = super(TurnosView, self).get_context_data(**kwargs)
+        form = ConsultaTurnos(self.request.POST or None,request=self.request)   
+        listado = turnos.objects.filter(empresa__pk__in=empresas_habilitadas(self.request))[:20]          
+        if form.is_valid():                                                        
+            fdesde = form.cleaned_data['fdesde']   
+            fhasta = form.cleaned_data['fhasta']                                                 
+            empresa = form.cleaned_data['empresa']                           
+            empleado= form.cleaned_data['empleado']                           
+            estado = form.cleaned_data['estado']
+
+            listado = turnos.objects.filter(empresa__pk__in=empresas_habilitadas(self.request),estado=estado)
+           
+            if fdesde:                
+                listado = listado.filter(fecha__gte=fdesde)                         
+            if fhasta:                
+                listado = listado.filter(fecha__gte=fhasta)                         
+            if empresa:
+                listado= listado.filter(empresa=empresa)            
+            if empleado:
+                listado= listado.filter(Q(empleado__apellido_y_nombre__icontains=empleado)|Q(empleado__nro_doc__icontains=empleado))
+                
+        context['form'] = form
+
+        context['turnos'] = listado
+
+
+
+        return context
     def post(self, *args, **kwargs):
         return self.get(*args, **kwargs)
     
@@ -265,7 +294,7 @@ class TurnosEditView(VariablesMixin,AjaxUpdateView):
         return kwargs  
 
     def get_initial(self):    
-        initial = super(EmpresaEditView, self).get_initial()                      
+        initial = super(TurnosEditView, self).get_initial()                      
         initial['tipo_form'] = 'EDICION'  
         return initial            
 
@@ -281,10 +310,10 @@ class TurnosEditView(VariablesMixin,AjaxUpdateView):
 #         return super(EmpresaVerView, self).dispatch(*args, **kwargs)        
 
 
-# @login_required 
-# def empresa_baja_alta(request,id):
-#     ent = ent_empresa.objects.get(pk=id)     
-#     ent.baja = not ent.baja
-#     ent.save()       
-#     messages.success(request, u'¡Los datos se guardaron con éxito!')
-#     return HttpResponseRedirect(reverse("empresa_listado"))            
+@login_required 
+def turno_baja_alta(request,id):
+    ent = turnos.objects.get(pk=id)     
+    ent.baja = not ent.baja
+    ent.save()       
+    messages.success(request, u'¡Los datos se guardaron con éxito!')
+    return HttpResponseRedirect(reverse("turnos_listado"))            
