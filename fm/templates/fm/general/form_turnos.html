@@ -9,9 +9,16 @@
         {{ form.media }}
         <div class="col-xs-12">
 	         	<div class="row">										
-					<div class="col-sm-3">{% bootstrap_field form.codigo %}</div>																		  
-					<div class="col-sm-9">{% bootstrap_field form.nombre %}</div>																		  
+					<div class="col-sm-3">{% bootstrap_field form.fecha %}</div>																		  
+					<div class="col-sm-9">{% bootstrap_field form.empleado %}</div>																		  					
 			  	</div>								
+			  	<div class="row">										
+					<div class="col-sm-6">{% bootstrap_field form.detalle %}</div>																		  
+					<div class="col-sm-6">{% bootstrap_field form.estado %}</div>																		  					
+			  	</div>
+			  	<div class="row">										
+					<div class="col-sm-12">{% bootstrap_field form.observaciones %}</div>																		  
+			  	</div>									
 		</div>
     </form>
 </div>
