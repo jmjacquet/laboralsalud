@@ -6,13 +6,19 @@ from .models import ent_art,ent_cargo,ent_especialidad,ent_medico_prof,ent_empre
 from datetime import datetime, timedelta,date
 from laboralsalud.utilidades import *
 
+
+class LoginForm(forms.Form):
+	usuario = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','text-transform': 'uppercase','autofocus':'autofocus'}),required = True)
+	password = forms.CharField(widget=forms.PasswordInput(),required=True)
+	empresa = forms.ModelChoiceField(label='Empresa',queryset=ent_empresa.objects.filter(baja=False),empty_label='Administrador',required=False)
+
 class EmpleadoModelChoiceField(forms.ModelChoiceField):
     def label_from_instance(self, obj):		
 		return obj.get_empleado()
 
 class TurnosForm(forms.ModelForm):		
 	empresa = forms.ModelChoiceField(label='Empresa',queryset=ent_empresa.objects.filter(baja=False),empty_label='Todas',required=False)
-	empleado = EmpleadoModelChoiceField(label='',queryset=ent_empleado.objects.filter(baja=False),empty_label='---',required = False)	
+	empleado = EmpleadoModelChoiceField(label='Empleado',queryset=ent_empleado.objects.filter(baja=False),empty_label='---',required = False)	
 	
 	observaciones = forms.CharField(label='Observaciones / Datos adicionales',widget=forms.Textarea(attrs={'class':'form-control2', 'rows': 5}),required = False)	
 	tipo_form = forms.CharField(widget = forms.HiddenInput(), required = False)	

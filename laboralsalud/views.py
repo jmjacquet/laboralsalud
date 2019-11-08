@@ -8,7 +8,8 @@ from entidades.models import ent_empresa
 from usuarios.models import UserProfile
 from django.db.models import Q
 from django.template.defaulttags import register
-
+from .utilidades import usuario_actual
+from general.forms import LoginForm
 LOGIN_URL = '/login/'
 ROOT_URL = '/'
 
@@ -23,25 +24,27 @@ def login(request):
     if request.user.is_authenticated():
       return HttpResponseRedirect(ROOT_URL)
        
-    try:
-        empresas = ent_empresa.objects.filter(baja=False)
-    except ent_empresa.DoesNotExist:
-        empresas = None
- 
+    form = LoginForm(request.POST or None) 
     # if empresa.mantenimiento == 1:
     #     return render_to_response('mantenimiento.html', {'dirMuni':MUNI_DIR,'sitio':sitio},context_instance=RequestContext(request))
     
-    if request.method == 'POST':               
-        usuario = request.POST['username']        
-        clave = request.POST['password']
-        empresa = request.POST['empresa']
+    if form.is_valid():                
+        usuario = form.cleaned_data['usuario']        
+        clave = form.cleaned_data['password']
+        empresa = form.cleaned_data['empresa']
         user =  authenticate(usuario=usuario, clave=clave)        
         if user is not None:
           if user.is_active:            
-            django_login(request, user)
-            request.session["empresa"] = request.POST['empresa']            
-            ROOT_URL = reverse('principal')              
-            return HttpResponseRedirect(ROOT_URL)
+            django_login(request, user)            
+            usr=usuario_actual(request)
+            if (usr.tipoUsr > 0)and(not empresa):
+              error = u"Usuario/Contraseña/Empresa incorrectos."            
+              django_logout(request)
+            else:
+              if empresa:
+                request.session["empresa"] = empresa.pk       
+              ROOT_URL = reverse('principal')              
+              return HttpResponseRedirect(ROOT_URL)
           else:
           ## invalid login
            error = u"Usuario/Contraseña incorrectos."
@@ -54,7 +57,7 @@ def login(request):
    
     template = 'login.html'      
             
-    return render(request,template,{'msj':messages,'empresas':empresas})
+    return render(request,template,{'msj':messages,'form':form})
 
 def logout(request):
     request.session.clear()
