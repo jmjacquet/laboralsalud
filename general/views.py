@@ -15,6 +15,7 @@ from django.views.generic import TemplateView,ListView,CreateView,UpdateView,For
 from fm.views import AjaxCreateView,AjaxUpdateView,AjaxDeleteView
 from .forms import TurnosForm,ConsultaTurnos
 from .models import turnos
+from django.contrib import messages
 
 class VariablesMixin(object):
     def get_context_data(self, **kwargs):
@@ -88,7 +89,7 @@ class PrincipalView(VariablesMixin,TemplateView):
         context = super(PrincipalView, self).get_context_data(**kwargs)              
 
         context['ausentismo'] = ausentismo.objects.filter(baja=False)[:20]
-       
+        context['turnos'] = turnos.objects.filter(empresa__pk__in=empresas_habilitadas(self.request))[:20] 
        
         # vars_sistema = settings
         return context
@@ -267,6 +268,11 @@ class TurnosCreateView(VariablesMixin,AjaxCreateView):
     def form_invalid(self, form):
         return super(TurnosCreateView, self).form_invalid(form)
 
+    def get_success_url(self):
+        messages.success(self.request, u'Los datos se guardaron con éxito!')
+        return reverse('turnos_listado')
+
+
 
 class TurnosEditView(VariablesMixin,AjaxUpdateView):
     form_class = TurnosForm
@@ -297,6 +303,10 @@ class TurnosEditView(VariablesMixin,AjaxUpdateView):
         initial = super(TurnosEditView, self).get_initial()                      
         initial['tipo_form'] = 'EDICION'  
         return initial            
+
+    def get_success_url(self):
+        messages.success(self.request, u'Los datos se guardaron con éxito!')
+        return reverse('turnos_listado')
 
 
 # class EmpresaVerView(VariablesMixin,DetailView):

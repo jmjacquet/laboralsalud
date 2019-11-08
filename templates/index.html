@@ -8,7 +8,7 @@
 
 {% block principal %}	
 <br>
-<div class="col-sm-8">     
+<div class="col-sm-8 cerca">     
   <div class="panel panel-primary ">
       <div class="panel-heading">
                       <i class="icon-pie"></i>Últimos 20 Ausentismos
@@ -16,13 +16,12 @@
       <div class="panel-body">
               <div id="container" style="width: 100%; height: 100%; margin: 0 auto">
                 <div class="table-responsive">
-                    <table width="100%" id="ausentismos" class="table table-striped table-hover table-no-bordered tabla_nueva nowrap">         
+                    <table width="100%" id="ausentismos" class="table table-striped table-hover table-no-bordered tabla_nueva text-nowrap">         
 		            <thead >
 		                <tr>
 		                    <th class="imprimir" data-priority="2">F.Carga</th>
 		                    <th class="imprimir" data-priority="2">Documento</th>
 		                    <th class="imprimir" width="150" data-priority="3">Apellido y Nombre</th>
-		                    <th class="imprimir" width="100" data-priority="4">ART</th>
 		                    <th class="imprimir" width="100" data-priority="5">Empresa</th>
 		                    <th class="imprimir" data-priority="6">Tipo Ausentismo</th>
 		                    <th class="imprimir" data-priority="7">Días Caídos</th>
@@ -37,8 +36,7 @@
 		                <tr>    
 		                    <td title="Usuario Creación: {{a.usuario_carga|default_if_none:''}} | Última Modificación: {{a.fecha_modif|date:'d/m/Y'}}">{{ a.fecha_creacion|date:'d/m/Y' }}</td>
 		                    <td>{{ a.empleado.nro_doc|default_if_none:'' }}</td>
-		                    <td title="{{ a.empleado.apellido_y_nombre|default_if_none:''}}">{{ a.empleado.apellido_y_nombre|default_if_none:''|truncatechars:60 }}</td>
-		                    <td title="{{ a.empleado.art|default_if_none:''}}">{{ a.empleado.art|default_if_none:''|truncatechars:60 }}</td>
+		                    <td title="{{ a.empleado.apellido_y_nombre|default_if_none:''}}"><a href="{% url 'empleado_detalles' id=a.empleado.id %}"  class="modal-detail" data-modal-head="DETALLE EMPLEADO {{a.empleado.legajo}}" data-fm-callback="reload"><strong>{{ a.empleado.apellido_y_nombre|default_if_none:''|truncatechars:60 }}</strong></a></td>
 		                    <td title="{{ a.empleado.empresa|default_if_none:''}}">{{ a.empleado.empresa|default_if_none:''|truncatechars:60 }}</td>
 		                    <td>{{ a.get_tipo_ausentismo_display|default_if_none:'' }}</td>               
 		                    <td>{{ a.get_dias_caidos|default_if_none:'' }}</td>               
@@ -48,29 +46,51 @@
 		                    <td title="{{ a.aus_diagn|default_if_none:''}}">{{ a.aus_diagn|default_if_none:''|truncatechars:60 }}</td>               
 		                </tr>
 		                {% endfor %}
-		            </tbody>
-		            <tfoot>
-		                <tr>
-		                    <th></th> 
-		                    <th></th> 
-		                    <th></th>
-		                    <th></th> 
-		                    <th></th>
-		                    <th></th> 
-		                    <th></th>  
-		                    <th></th>                                
-		                    <th></th>
-		                    <th></th>
-		                    <th></th>
-		                    <th></th>
-		                </tr>
-		            </tfoot>
+		            </tbody>		            
 		            
 		        </table> 
                 </div>
             </div>
       </div>  
   </div> 
-</div>   
+</div>
+<div class="col-sm-4 cerca">     
+  <div class="panel panel-primary ">
+      <div class="panel-heading">
+                      <i class="icon-pie"></i>Últimos 20 Turnos
+      </div> 
+      <div class="panel-body">
+              <div id="container" style="width: 100%; height: 100%; margin: 0 auto">
+                <div class="table-responsive">
+                    <table width="100%" id="ausentismos" class="table table-striped table-hover table-no-bordered tabla_nueva text-nowrap">         
+		            <thead >
+		                <tr>
+		                    <th class="imprimir">Fecha</th>
+			                <th class="imprimir">Empleado</th>
+			                <th class="imprimir">Empresa</th>
+			                <th class="imprimir">Estado</th>
+			                <th class="imprimir">F.Carga</th>           
+			                <th class="imprimir">Usuario</th>         
+		                </tr>
+		            </thead>
+		            <tbody>
+		                {% for t in turnos %}
+		                <tr>    
+		                    <td title="{{ t.observaciones|default_if_none:''}}">{{ t.fecha|date:'d/m/Y' }}</td>
+			                <td title="{{ t.empleado|default_if_none:''}}"><a href="{% url 'empleado_detalles' id=t.empleado.id %}"  class="modal-detail" data-modal-head="DETALLE EMPLEADO {{t.empleado.legajo}}" data-fm-callback="reload"><strong>{{ t.empleado|default_if_none:''|truncatechars:60 }}</strong></a></td>
+			                <td title="{{ t.empresa|default_if_none:''}}">{{ t.empresa|default_if_none:''|truncatechars:60 }}</td>
+			                <td>{{ t.get_estado_display|default_if_none:'' }}</td>
+			                <td>{{ t.fecha_creacion|date:'d/m/Y' }}</td>
+			                <td>{{ t.usuario_carga|default_if_none:'' }}</td>                    
+		                </tr>
+		                {% endfor %}
+		            </tbody>		            
+		            
+		        </table> 
+                </div>
+            </div>
+      </div>  
+  </div> 
+</div>    
 
 {% endblock principal %}

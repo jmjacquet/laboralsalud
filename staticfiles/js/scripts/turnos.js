@@ -1,0 +1,34 @@
+$(document).ready(function() {  
+
+
+$("input[type=number]").click(function(){
+            this.select()
+          });
+
+$("#id_empleado").chosen({
+      no_results_text: "Empleado inexistente...",
+      placeholder_text_single:"Seleccione un Empleado",
+      allow_single_deselect: true,
+  });
+
+$.fn.datepicker.dates['es'] = {
+    days: ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"],
+    daysShort: ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb", "Dom"],
+    daysMin: ["Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa", "Do"],
+    months: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"],
+    monthsShort: ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"],
+    today: "Hoy"
+  };
+  
+   $('.datepicker').datepicker({
+          format: "dd/mm/yyyy",
+          language: "es",
+          autoclose: true,
+          todayHighlight: true
+    });
+
+    $('.datepicker').each(function(){
+        $(this).datepicker();
+    });
+
+});

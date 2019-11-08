@@ -42,14 +42,12 @@
                       <button type="button" title="{{ t.pk|safe}}" class="btn btn-xs color_barra" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i class="icon-settings"> </i> <span class="caret"></span>
                       </button>
-                      <ul class="dropdown-menu">
-                        <li><a href="{% url 'turnos_detalles' id=t.pk %}" class="modal-detail" data-modal-head="DETALLE TURNOS" data-fm-callback="reload">
-                        <i class=" icon-screen-desktop"></i> Detalle</a></li>
+                      <ul class="dropdown-menu">                        
                         
-                        <li><a href="{% url 'turno_editar' id=a.pk %}"  class="fm-update " title="Editar" data-fm-callback="reload" data-fm-head="EDITAR TURNO"data-fm-target="#object-{{ a.pk }}"><i class="icon-note"></i> Editar</a></li>
+                        <li><a href="{% url 'turnos_editar' id=t.pk %}"  class="fm-update " title="Editar" data-fm-callback="reload" data-fm-head="EDITAR TURNO"data-fm-target="#object-{{ t.pk }}"><i class="icon-note"></i> Editar</a></li>
 
                         <li><a href="#" 
-                                onClick="alerta= alertify.dialog('confirm').set({'labels':{ok:'Aceptar', cancel:'Cancelar'},'message': '¿DESEA DAR DE BAJA/REACTIVAR EL REGISTRO ACTUAL?',transition:'fade','onok': function(){ window.location.href = '{% url 'turno_baja_alta' id=a.pk  %}'; },'oncancel': function(){ return true;} }); alerta.setting('modal', true); alerta.setHeader('BAJA/REACTIVAR'); alerta.show(); return true;" ><i class="icon-dislike"></i><i class="icon-like"></i>Baja/Reactivar</a>
+                                onClick="alerta= alertify.dialog('confirm').set({'labels':{ok:'Aceptar', cancel:'Cancelar'},'message': '¿DESEA DAR DE BAJA/REACTIVAR EL REGISTRO ACTUAL?',transition:'fade','onok': function(){ window.location.href = '{% url 'turnos_baja_alta' id=t.pk  %}'; },'oncancel': function(){ return true;} }); alerta.setting('modal', true); alerta.setHeader('BAJA/REACTIVAR'); alerta.show(); return true;" ><i class="icon-dislike"></i><i class="icon-like"></i>Baja/Reactivar</a>
                             </li>     
                         
                         
@@ -57,8 +55,8 @@
                     </div>
                 </td>              
                 
-                <td>{{ a.fecha|date:'d/m/Y' }}</td>
-                <td title="{{ t.empleado|default_if_none:''}}">{{ t.empleado|default_if_none:''|truncatechars:60 }}</td>
+                <td>{{ t.fecha|date:'d/m/Y' }}</td>
+                <td title="{{ t.empleado.apellido_y_nombre|default_if_none:''}}"><a href="{% url 'empleado_detalles' id=t.empleado.id %}"  class="modal-detail" data-modal-head="DETALLE EMPLEADO {{t.empleado.legajo}}" data-fm-callback="reload"><strong>{{ t.empleado.apellido_y_nombre|default_if_none:''|truncatechars:60 }}</strong></a></td>
                 <td title="{{ t.empresa|default_if_none:''}}">{{ t.empresa|default_if_none:''|truncatechars:60 }}</td>
                 <td>{{ t.get_estado_display|default_if_none:'' }}</td>
                 <td title="{{ t.detalle|default_if_none:''}}">{{ t.detalle|default_if_none:''|truncatechars:60 }}</td>
