@@ -1,15 +1,6 @@
 $(document).ready(function() {  
 
 
-$("input[type=number]").click(function(){
-            this.select()
-          });
-
-$("#id_empleado").chosen({
-      no_results_text: "Empleado inexistente...",
-      placeholder_text_single:"Seleccione un Empleado",
-      allow_single_deselect: true,
-  });
 
 $.fn.datepicker.dates['es'] = {
     days: ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"],

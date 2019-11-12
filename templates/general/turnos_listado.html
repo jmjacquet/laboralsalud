@@ -3,6 +3,9 @@
 {% load i18n l10n %}
 {% load humanize %}
 
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/calendar.css'%}?{% now "Ymd"%}" type="text/css" >  
+{% endblock %}
 
 {% block breadcrumbs %}              
         <div class="breadcrumbs">
@@ -57,7 +60,8 @@
                     </div>
                 </td>              
                 
-                <td>{{ t.fecha|date:'d/m/Y' }}</td>
+                <td><a href="{% url 'turnos_detalles' id=t.pk %}" class="modal-detail" data-modal-head="DETALLE TURNO">
+                            <i class=" icon-screen-desktop"></i> {{ t.fecha|date:'d/m/Y' }}</a></td>
                 <td title="{{ t.empleado.apellido_y_nombre|default_if_none:''}}"><a href="{% url 'empleado_detalles' id=t.empleado.id %}"  class="modal-detail" data-modal-head="DETALLE EMPLEADO {{t.empleado.legajo}}" data-fm-callback="reload"><strong>{{ t.empleado.apellido_y_nombre|default_if_none:''|truncatechars:60 }}</strong></a></td>
                 <td title="{{ t.empresa|default_if_none:''}}">{{ t.empresa|default_if_none:''|truncatechars:60 }}</td>
                 <td>{{ t.get_estado_display|default_if_none:'' }}</td>

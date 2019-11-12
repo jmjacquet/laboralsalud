@@ -16,6 +16,7 @@ from fm.views import AjaxCreateView,AjaxUpdateView,AjaxDeleteView
 from .forms import TurnosForm,ConsultaTurnos
 from .models import turnos
 from django.contrib import messages
+import locale
 
 class VariablesMixin(object):
     def get_context_data(self, **kwargs):
@@ -195,6 +196,7 @@ def recargar_patologias(request):
 
 ############ TURNOS ############################
 from .calendario import Calendar
+from django.utils.safestring import mark_safe
 
 class TurnosView(VariablesMixin,ListView):
     model = turnos
@@ -230,7 +232,8 @@ class TurnosView(VariablesMixin,ListView):
                 listado= listado.filter(Q(empleado__apellido_y_nombre__icontains=empleado)|Q(empleado__nro_doc__icontains=empleado))
                 
         context['form'] = form
-        d = get_date(self.request.GET.get('day', None))
+        d = hoy()
+        
         cal = Calendar(d.year, d.month)
         # Call the formatmonth method, which returns our calendar as a table
         html_cal = cal.formatmonth(withyear=True)
@@ -256,7 +259,7 @@ class TurnosCreateView(VariablesMixin,AjaxCreateView):
 
     def form_valid(self, form):                
         #form.instance.empresa = empresa_actual(self.request)
-        # form.instance.usuario = usuario_actual(self.request)
+        form.instance.usuario_carga = usuario_actual(self.request)
         messages.success(self.request, u'Los datos se guardaron con éxito!')
         return super(TurnosCreateView, self).form_valid(form)
 
@@ -268,6 +271,7 @@ class TurnosCreateView(VariablesMixin,AjaxCreateView):
     def get_initial(self):    
         initial = super(TurnosCreateView, self).get_initial()                       
         initial['request'] = self.request        
+        initial['estado'] = 0
         return initial    
 
     def form_invalid(self, form):
@@ -314,16 +318,15 @@ class TurnosEditView(VariablesMixin,AjaxUpdateView):
         return reverse('turnos_listado')
 
 
-# class EmpresaVerView(VariablesMixin,DetailView):
-#     model = ent_empresa
-#     pk_url_kwarg = 'id'
-#     context_object_name = 'empresa'
-#     template_name = 'entidades/empresa_detalle.html'
+class TurnosVerView(VariablesMixin,DetailView):
+    model = turnos
+    pk_url_kwarg = 'id'
+    context_object_name = 't'
+    template_name = 'general/turnos_detalle.html'
 
-#     @method_decorator(login_required)
-#     def dispatch(self, *args, **kwargs): 
-#         return super(EmpresaVerView, self).dispatch(*args, **kwargs)        
-
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs): 
+        return super(TurnosVerView, self).dispatch(*args, **kwargs)   
 
 @login_required 
 def turno_baja_alta(request,id):
@@ -333,10 +336,3 @@ def turno_baja_alta(request,id):
     messages.success(request, u'¡Los datos se guardaron con éxito!')
     return HttpResponseRedirect(reverse("turnos_listado"))            
 
-
-def calendar(request, year, month):
-  t = turnos.objects.order_by('my_date').filter(
-    fecha__year=year, fecha__month=month
-  )
-  cal = WorkoutCalendar(t).formatmonth(year, month)
-  return render_to_response('my_template.html', {'calendar': mark_safe(cal),})
