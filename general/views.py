@@ -194,7 +194,8 @@ def recargar_patologias(request):
 
 
 ############ TURNOS ############################
-           
+from .calendario import Calendar
+
 class TurnosView(VariablesMixin,ListView):
     model = turnos
     template_name = 'general/turnos_listado.html'
@@ -229,7 +230,11 @@ class TurnosView(VariablesMixin,ListView):
                 listado= listado.filter(Q(empleado__apellido_y_nombre__icontains=empleado)|Q(empleado__nro_doc__icontains=empleado))
                 
         context['form'] = form
-
+        d = get_date(self.request.GET.get('day', None))
+        cal = Calendar(d.year, d.month)
+        # Call the formatmonth method, which returns our calendar as a table
+        html_cal = cal.formatmonth(withyear=True)
+        context['calendario'] = mark_safe(html_cal)        
         context['turnos'] = listado
 
 
@@ -327,3 +332,11 @@ def turno_baja_alta(request,id):
     ent.save()       
     messages.success(request, u'¡Los datos se guardaron con éxito!')
     return HttpResponseRedirect(reverse("turnos_listado"))            
+
+
+def calendar(request, year, month):
+  t = turnos.objects.order_by('my_date').filter(
+    fecha__year=year, fecha__month=month
+  )
+  cal = WorkoutCalendar(t).formatmonth(year, month)
+  return render_to_response('my_template.html', {'calendar': mark_safe(cal),})

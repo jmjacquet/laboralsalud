@@ -3,6 +3,7 @@
 {% load i18n l10n %}
 {% load humanize %}
 
+
 {% block breadcrumbs %}              
         <div class="breadcrumbs">
             Listado de Turnos <small> carga e impresión</small>
@@ -16,7 +17,8 @@
 {% endblock cargando %}
 {% block principal %}                            
 <br>   
-     <a class="btn btn-xs btn-primary fm-create" style="float:left;margin-right:20px;" href="{% url 'turnos_nuevo' %}" data-fm-head="AGREGAR TURNO" data-fm-callback="reload">Nuevo Turno</a>
+<div class="col-sm-7">     
+    <a class="btn btn-xs btn-primary fm-create" style="float:left;margin-right:20px;" href="{% url 'turnos_nuevo' %}" data-fm-head="AGREGAR TURNO" data-fm-callback="reload">Nuevo Turno</a>
     <table width="100%" id="turnos" style="display:none;" class="table table-striped compact table-hover table-no-bordered tabla_nueva nowrap">         
         <thead >
             <tr>
@@ -80,7 +82,11 @@
             </tr>
         </tfoot>
         
-    </table>                   
+    </table> 
+</div>
+<div class="col-sm-5">   
+{{ calendario }}
+</div>                  
 
 {% endblock principal %}
 
