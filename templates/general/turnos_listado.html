@@ -22,10 +22,11 @@
 <br>   
 <div class="col-sm-7">     
     <a class="btn btn-xs btn-primary fm-create" style="float:left;margin-right:20px;" href="{% url 'turnos_nuevo' %}" data-fm-head="AGREGAR TURNO" data-fm-callback="reload">Nuevo Turno</a>
-    <table width="100%" id="turnos" style="display:none;" class="table table-striped compact table-hover table-no-bordered tabla_nueva nowrap">         
+    <table width="100%" id="turnos" style="display:none;" class="table table-striped compact table-hover table-no-bordered tabla_nueva text-nowrap">         
         <thead >
             <tr>
                 <th>#</th>
+                <th>Nº</th>
                 <th class="imprimir">Fecha</th>
                 <th class="imprimir">Empleado</th>
                 <th class="imprimir">Empresa</th>
@@ -61,7 +62,8 @@
                 </td>              
                 
                 <td><a href="{% url 'turnos_detalles' id=t.pk %}" class="modal-detail" data-modal-head="DETALLE TURNO">
-                            <i class=" icon-screen-desktop"></i> {{ t.fecha|date:'d/m/Y' }}</a></td>
+                            {{ t.get_turno }}</a></td>
+                <td>{{ t.fecha|date:'d/m/Y' }}</td>
                 <td title="{{ t.empleado.apellido_y_nombre|default_if_none:''}}"><a href="{% url 'empleado_detalles' id=t.empleado.id %}"  class="modal-detail" data-modal-head="DETALLE EMPLEADO {{t.empleado.legajo}}" data-fm-callback="reload"><strong>{{ t.empleado.apellido_y_nombre|default_if_none:''|truncatechars:60 }}</strong></a></td>
                 <td title="{{ t.empresa|default_if_none:''}}">{{ t.empresa|default_if_none:''|truncatechars:60 }}</td>
                 <td>{{ t.get_estado_display|default_if_none:'' }}</td>
@@ -74,6 +76,7 @@
         </tbody>
         <tfoot>
             <tr>
+                <th></th> 
                 <th></th> 
                 <th></th> 
                 <th></th>                                

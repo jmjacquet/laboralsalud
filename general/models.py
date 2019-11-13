@@ -30,5 +30,9 @@ class turnos(models.Model):
 		return u'%s - %s' % (self.fecha.strftime('%d/%m/%Y'),self.empleado)
 
 
+	def get_turno(self):
+		return u'{0:0{width}}'.format(self.pk,width=4)
+
+
 
 
