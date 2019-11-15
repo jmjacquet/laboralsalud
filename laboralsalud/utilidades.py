@@ -5,7 +5,7 @@ import calendar
 TIPO_USR = (
     (0, u'Administrador'),
     (1, u'Médico/Profesional'),
-    (2, u'Encargado'),
+    (2, u'RRHH/Empresa'),
 )
 
 TIPO_ENTIDAD = (    
@@ -33,7 +33,7 @@ TIPO_ALTA = (
 )
 
 TIPO_ACCIDENTE = (    
-    (1, 'En Puesto de Trabajo'),
+    (1, u'En Ocasión de Trabajo'),
     (2, u'In Itínere'),    
 )
 
