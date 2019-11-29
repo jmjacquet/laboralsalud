@@ -50,18 +50,27 @@ class AusentismoView(VariablesMixin,ListView):
           
             ausentismos = ausentismo.objects.filter(empleado__empresa__pk__in=empresas_habilitadas(self.request))
 
-            if int(estado) == 0:  
-                ausentismos = ausentismos.filter(baja=False)
-            if fdesde:                
-                ausentismos = ausentismos.filter(Q(aus_fcrondesde__gte=fdesde,tipo_ausentismo=1)|Q(art_fcrondesde__gte=fdesde,tipo_ausentismo__gte=2))                         
-            if fhasta:                
-                ausentismos = ausentismos.filter(Q(aus_fcronhasta__lte=fhasta,tipo_ausentismo=1)|Q(art_fcronhasta__lte=fhasta,tipo_ausentismo__gte=2))                                
+            if int(estado) == 1:  
+                ausentismos = ausentismos.filter(Q(aus_fcronhasta__gte=hoy(),tipo_ausentismo=1)|Q(art_fcronhasta__gte=hoy(),tipo_ausentismo__gte=2))
+            elif int(estado) == 2:  
+                ausentismos = ausentismos.filter(Q(aus_fcronhasta__lt=hoy(),tipo_ausentismo=1)|Q(art_fcronhasta__lt=hoy(),tipo_ausentismo__gte=2))
+            elif int(estado) == 0: 
+                if fdesde:                
+                    ausentismos = ausentismos.filter(Q(aus_fcrondesde__gte=fdesde,tipo_ausentismo=1)|Q(art_fcrondesde__gte=fdesde,tipo_ausentismo__gte=2))                         
+                if fhasta:                
+                    ausentismos = ausentismos.filter(Q(aus_fcronhasta__lte=fhasta,tipo_ausentismo=1)|Q(art_fcronhasta__lte=fhasta,tipo_ausentismo__gte=2))                                
             if empresa:
                 ausentismos= ausentismos.filter(empleado__empresa=empresa)            
             if empleado:
                 ausentismos= ausentismos.filter(Q(empleado__apellido_y_nombre__icontains=empleado)|Q(empleado__nro_doc__icontains=empleado))
+            
             if int(tipo_ausentismo) > 0: 
-                ausentismos = ausentismos.filter(tipo_ausentismo=int(tipo_ausentismo))            
+                if int(tipo_ausentismo)==11:
+                    ausentismos = ausentismos.filter(Q(aus_diascaidos__lte=30)|Q(art_diascaidos__lte=30))
+                elif int(tipo_ausentismo)==12:
+                    ausentismos = ausentismos.filter(Q(aus_diascaidos__gt=30)|Q(art_diascaidos__gt=30))                    
+                else:
+                    ausentismos = ausentismos.filter(tipo_ausentismo=int(tipo_ausentismo))            
                 
         context['form'] = form
         context['ausentismos'] = ausentismos.select_related('empleado','empleado__art','empleado__empresa','aus_grupop','aus_diagn')

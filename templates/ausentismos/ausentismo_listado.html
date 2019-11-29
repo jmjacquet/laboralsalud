@@ -29,7 +29,7 @@
                           <div class="col-sm-1">{% bootstrap_field form.fhasta  %}</div>                                    
                           <div class="col-sm-3">{% bootstrap_field form.empresa  %}</div>                                    
                           <div class="col-sm-2">{% bootstrap_field form.tipo_ausentismo  %}</div>                            
-                          <div class="col-sm-3">{% bootstrap_field form.empleado  %}</div>                                            
+                          <div class="col-sm-2">{% bootstrap_field form.empleado  %}</div>                                            
                           <div class="col-sm-1">{% bootstrap_field form.estado  %}</div>      
                           <div class="col-sm-1"><button class="btn btn-xs text-center" type="submit">Buscar</button></div>                
                         </form>             
@@ -49,7 +49,7 @@
                     <th class="imprimir" data-priority="2">F.Carga</th>
                     <th class="imprimir" data-priority="2">Documento</th>
                     <th class="imprimir" data-priority="3">Apellido y Nombre</th>
-                    <th class="imprimir" data-priority="4">ART</th>
+                    <th class="imprimir" data-priority="4">F.Control</th>
                     <th class="imprimir" data-priority="5">Empresa</th>
                     <th class="imprimir" data-priority="6">Tipo Ausentismo</th>
                     <th class="imprimir" data-priority="7">Días Caídos</th>
@@ -85,7 +85,7 @@
                     <td title="Usuario Creación: {{a.usuario_carga|default_if_none:''}} | Última Modificación: {{a.fecha_modif|date:'d/m/Y'}}">{{ a.fecha_creacion|date:'d/m/Y' }}</td>
                     <td>{{ a.empleado.nro_doc|default_if_none:'' }}</td>
                     <td title="{{ a.empleado.apellido_y_nombre|default_if_none:''}}"><a href="{% url 'empleado_detalles' id=a.empleado.id %}"  class="modal-detail" data-modal-head="DETALLE EMPLEADO {{a.empleado.legajo}}" data-fm-callback="reload"><strong>{{ a.empleado.apellido_y_nombre|default_if_none:''|truncatechars:60 }}</strong></a></td>
-                    <td title="{{ a.empleado.art|default_if_none:''}}">{{ a.empleado.art|default_if_none:''|truncatechars:60 }}</td>
+                    <td>{{ a.get_fcontrol|date:'d/m/Y' }}</td>
                     <td title="{{ a.empleado.empresa|default_if_none:''}}">{{ a.empleado.empresa|default_if_none:''|truncatechars:60 }}</td>
                     <td>{{ a.get_tipo_ausentismo_display|default_if_none:'' }}</td>               
                     <td>{{ a.get_dias_caidos|default_if_none:'' }}</td>               
@@ -271,7 +271,7 @@ var tabla = $('#ausentismos').DataTable({
             },
             initComplete: function () {
                // this.api().columns().every( function () {[0, 1, 9]
-                this.api().columns([4,5,6,10,11]).every( function () {
+                this.api().columns([5,6,10,11]).every( function () {
                     var column = this;
                     var select = $('<select class="form-control"><option value="">Todos</option></select>')
                         .appendTo( $(column.footer()).empty() )

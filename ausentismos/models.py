@@ -139,6 +139,13 @@ class ausentismo(models.Model):
 		else:
 			return self.art_fcronhasta		
 
+	@property
+	def get_fcontrol(self):
+		if self.tipo_ausentismo==1:
+			return self.aus_fcontrol		
+		else:
+			return self.art_fcontrol					
+
 
 
 

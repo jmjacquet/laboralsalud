@@ -77,8 +77,7 @@
                         
                         <li><a href="{% url 'empleado_editar' id=a.pk %}"  class="fm-update " title="Editar" data-fm-callback="reload" data-fm-head="EDITAR EMPLEADO"data-fm-target="#object-{{ a.pk }}"><i class="icon-note"></i> Editar</a></li>
 
-                        <li><a href="#" 
-                                onClick="alerta= alertify.dialog('confirm').set({'labels':{ok:'Aceptar', cancel:'Cancelar'},'message': '¿DESEA DAR DE BAJA/REACTIVAR EL REGISTRO ACTUAL?',transition:'fade','onok': function(){ window.location.href = '{% url 'empleado_baja_alta' id=a.pk  %}'; },'oncancel': function(){ return true;} }); alerta.setting('modal', true); alerta.setHeader('BAJA/REACTIVAR'); alerta.show(); return true;" ><i class="icon-dislike"></i><i class="icon-like"></i>Baja/Reactivar</a>
+                        <li><a href="#" id="alta_baja"><i class="icon-dislike"></i><i class="icon-like"></i>Baja/Reactivar</a>
                             </li>     
                         
                         
@@ -283,7 +282,41 @@ var tabla = $('#empleado').DataTable({
             }
         });
 
-
+$("#alta_baja").click(function(e){
+       onClick="alerta= alertify.dialog('confirm').set({'labels':{ok:'Aceptar', cancel:'Cancelar'},'message': '¿DESEA DAR DE BAJA/REACTIVAR EL REGISTRO ACTUAL?',transition:'fade','onok': function(){ window.location.href = '{% url 'empleado_baja_alta' id=a.pk  %}'; },'oncancel': function(){ return true;} }); alerta.setting('modal', true); alerta.setHeader('BAJA/REACTIVAR'); alerta.show(); return true;" 
+      var id = {{a.pk|safe}} ;
+      alertify.prompt( 
+            'Baja', 'Disponible para transferir <b>$ {{disp_transf}}</b>. <br><br>Ingrese el Monto a transferir (sin puntos):' , monto
+               , 
+               function(evt, value) {
+                  var fecha = value;
+                  $.ajax({                    
+                    data: {monto: monto},
+                    url: '/entidades/empleado/baja_alta/'+,
+                    type: 'get',
+                    dataType: 'json',
+                    success: function(data) {
+                      console.log(data);
+                             if (data=='S')
+                              {                                  
+                                  //alertify.alert('Ayudas Existentes','El beneficiario posee ayudas por un total de $ '+ayudas+' en la sesión actual.');                                  
+                                  $(location).attr('href','/cargas_sociales/');
+                              }else 
+                              {
+                                alertify.alert('Transferir Gastos','No se pudo registrar la transferencia <br> (verifique el saldo disponible para Gastos)');
+                              };
+                                                     
+                    },
+                    error : function(message) {           
+                         alertify.error('No se pudo registrar la transferencia.');
+                         console.log(message);
+                      }
+                    });                 
+                }
+               , 
+               function() { 
+                 }).set('type', 'date').set('labels', {ok:'Aceptar', cancel:'Cancelar'});
+     });
 
 
 });

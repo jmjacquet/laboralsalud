@@ -23,6 +23,8 @@ TIPO_AUSENCIA = (
 TIPO_AUSENCIA_ = (    
     (0, 'Todas'),
     (1, 'Inculpable'),
+    (11, 'Inculpable Agudos (<=30 días)'),
+    (12, u'Inculpable Crónicos (>30 días)'),    
     (2, 'Accidente'),
     (3, 'Enfermedad'),
 )
@@ -45,6 +47,12 @@ SINO = (
 ESTADO_ = (
  (0,'ACTIVOS'), 
  (1,'TODOS'), 
+)
+
+TIPO_VIGENCIA = (
+ (0,'TODOS'), 
+ (1,'VIGENTES'), 
+ (2,'NO VIGENTES'), 
 )
 
 ESTADO_TURNO = (

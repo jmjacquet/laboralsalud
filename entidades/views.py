@@ -513,13 +513,14 @@ class EmpleadoView(VariablesMixin,ListView):
     def get_context_data(self, **kwargs):
         context = super(EmpleadoView, self).get_context_data(**kwargs)
         form = ConsultaEmpleados(self.request.POST or None,request=self.request)   
-        empleados = None            
+        empleados = ent_empleado.objects.filter(empresa__pk__in=empresas_habilitadas(self.request)).select_related('empresa','trab_cargo','art')[:1000]         
         if form.is_valid():                                                        
             empresa = form.cleaned_data['empresa']                                       
             estado = form.cleaned_data['estado']
             art = form.cleaned_data['art']
+            empleados = ent_empleado.objects.filter(empresa__pk__in=empresas_habilitadas(self.request)).select_related('empresa','trab_cargo','art')
 
-            empleados = ent_empleado.objects.filter(empresa__pk__in=empresas_habilitadas(self.request)).select_related('empresa','trab_cargo','art')              
+                          
           
             if int(estado) == 0:  
                 empleados = empleados.filter(baja=False)
@@ -619,6 +620,10 @@ class EmpleadoVerView(VariablesMixin,DetailView):
 def empleado_baja_alta(request,id):
     ent = ent_empleado.objects.get(pk=id)     
     ent.baja = not ent.baja
+    if ent.baja:
+        ent.trab_fbaja=hoy()
+    else:
+        ent.trab_fbaja=None
     ent.save()       
     messages.success(request, u'¡Los datos se guardaron con éxito!')
     return HttpResponseRedirect(reverse("empleado_listado"))   
