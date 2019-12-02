@@ -63,3 +63,8 @@ class ConsultaTurnos(forms.Form):
 		request = kwargs.pop('request', None) 
 		super(ConsultaTurnos, self).__init__(*args, **kwargs)			
 		self.fields['empresa'].queryset = ent_empresa.objects.filter(baja=False,pk__in=empresas_habilitadas(request))
+
+
+class ConsultaFechasInicio(forms.Form):               	
+	fecha =  forms.DateField(label='',widget=forms.DateInput(attrs={'class': 'form-control datepicker'}),required = True,initial=hoy())	
+	

@@ -127,7 +127,7 @@ class DiagnosticoForm(forms.ModelForm):
 
 
 class ConsultaAusentismos(forms.Form):               	
-	fdesde =  forms.DateField(label='Fecha Desde',widget=forms.DateInput(attrs={'class': 'form-control datepicker'}),required = False,initial=inicioMes())
+	fdesde =  forms.DateField(label='Fecha Desde',widget=forms.DateInput(attrs={'class': 'form-control datepicker'}),required = False,initial=hoy())
 	fhasta =  forms.DateField(label='Fecha Hasta',widget=forms.DateInput(attrs={'class': 'form-control datepicker'}),required = False,initial=finMes())    	
 	empresa = forms.ModelChoiceField(label='Empresa',queryset=ent_empresa.objects.filter(baja=False),empty_label='Todas',required=False)
 	empleado = forms.CharField(required=False,label='Empleado')	

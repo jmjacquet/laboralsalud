@@ -35,7 +35,7 @@ class AusentismoView(VariablesMixin,ListView):
         context = super(AusentismoView, self).get_context_data(**kwargs)
 
         form = ConsultaAusentismos(self.request.POST or None,request=self.request)   
-        fdesde=inicioMes()
+        fdesde=hoy()
         fhasta=finMes()
         ausentismos = ausentismo.objects.filter(baja=False,empleado__empresa__pk__in=empresas_habilitadas(self.request))
         ausentismos = ausentismos.filter(Q(aus_fcrondesde__gte=fdesde,tipo_ausentismo=1)|Q(art_fcrondesde__gte=fdesde,tipo_ausentismo__gte=2))
@@ -73,7 +73,7 @@ class AusentismoView(VariablesMixin,ListView):
                     ausentismos = ausentismos.filter(tipo_ausentismo=int(tipo_ausentismo))            
                 
         context['form'] = form
-        context['ausentismos'] = ausentismos.select_related('empleado','empleado__art','empleado__empresa','aus_grupop','aus_diagn')
+        context['ausentismos'] = ausentismos.select_related('empleado','empleado__empresa','aus_grupop','aus_diagn')
         return context
 
     def post(self, *args, **kwargs):

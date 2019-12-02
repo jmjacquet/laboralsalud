@@ -1,7 +1,5 @@
-$(document).ready(function() {  
-
-
-
+$(document).ready(function() {
+    
 $.fn.datepicker.dates['es'] = {
     days: ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"],
     daysShort: ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb", "Dom"],
@@ -21,5 +19,6 @@ $.fn.datepicker.dates['es'] = {
     $('.datepicker').each(function(){
         $(this).datepicker();
     });
-
+    
+  
 });

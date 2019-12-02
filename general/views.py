@@ -13,7 +13,7 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.views.generic import TemplateView,ListView,CreateView,UpdateView,FormView,DetailView
 from fm.views import AjaxCreateView,AjaxUpdateView,AjaxDeleteView
-from .forms import TurnosForm,ConsultaTurnos
+from .forms import TurnosForm,ConsultaTurnos,ConsultaFechasInicio
 from .models import turnos
 from django.contrib import messages
 import locale
@@ -88,12 +88,25 @@ class PrincipalView(VariablesMixin,TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(PrincipalView, self).get_context_data(**kwargs)              
-
-        context['ausentismo'] = ausentismo.objects.filter(baja=False)[:20]
-        context['turnos'] = turnos.objects.filter(empresa__pk__in=empresas_habilitadas(self.request))[:20] 
+        form = ConsultaFechasInicio(self.request.POST or None)  
+        fecha=hoy()        
+        if form.is_valid():
+            fecha = form.cleaned_data['fecha']
+        if not fecha:
+            fecha=hoy()
+        ausentismos = ausentismo.objects.filter(baja=False,fecha_creacion=fecha)
+        fechas_control = ausentismo.objects.filter(baja=False,aus_fcontrol=fecha)
+        prox_turnos = turnos.objects.filter(empresa__pk__in=empresas_habilitadas(self.request),fecha__gte=fecha)
+        context['form'] = form
+        context['ausentismo'] = ausentismos.select_related('empleado','empleado__empresa','aus_grupop','aus_diagn')
+        context['turnos'] = prox_turnos.select_related('empleado','empleado__empresa','usuario_carga')
+        context['fechas_control'] = fechas_control.select_related('empleado','empleado__empresa','aus_grupop','aus_diagn')
        
         # vars_sistema = settings
         return context
+
+    def post(self, *args, **kwargs):
+        return self.get(*args, **kwargs)
 
 def buscarDatosAPICUIT(request):      
    try:                            
