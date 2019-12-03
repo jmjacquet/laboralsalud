@@ -99,7 +99,7 @@ class PrincipalView(VariablesMixin,TemplateView):
         prox_turnos = turnos.objects.filter(empresa__pk__in=empresas_habilitadas(self.request),fecha__gte=fecha)
         context['form'] = form
         context['ausentismo'] = ausentismos.select_related('empleado','empleado__empresa','aus_grupop','aus_diagn')
-        context['turnos'] = prox_turnos.select_related('empleado','empleado__empresa','usuario_carga')
+        context['turnos'] = prox_turnos.order_by('fecha','estado').select_related('empleado','empleado__empresa','usuario_carga')
         context['fechas_control'] = fechas_control.select_related('empleado','empleado__empresa','aus_grupop','aus_diagn')
        
         # vars_sistema = settings
