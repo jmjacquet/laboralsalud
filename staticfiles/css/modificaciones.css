@@ -520,6 +520,11 @@ textarea.form-control{height:auto}
     background-color: transparent;
 }
 
+.navbar-default .navbar-nav > li > a:hover {
+    color: #fff;    
+    background-color: #2c5c73;
+}
+
 .navbar-default .navbar-brand:hover, .navbar-default .navbar-brand:focus {
     color: #fff;
     background-color: transparent;
@@ -726,3 +731,6 @@ div.breadcrumbs a:focus, div.breadcrumbs a:hover {
     border-bottom:none;
 }
 
+.dropdown:hover .dropdown-menu {
+  display: block;
+}

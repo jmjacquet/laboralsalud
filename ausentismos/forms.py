@@ -16,11 +16,9 @@ class MedicoModelChoiceField(forms.ModelChoiceField):
 		return obj.get_medico()
 
 class AusentismoForm(forms.ModelForm):
-	empleado = EmpleadoModelChoiceField(label='',queryset=ent_empleado.objects.filter(baja=False),empty_label='---',required = False)	
-	# apellido_y_nombre = forms.CharField(label='',widget=forms.TextInput(attrs={ 'class':'form-control','readonly': 'readonly'}),required = False)				
-	# nro_doc = forms.IntegerField(label='',widget=forms.TextInput(attrs={ 'class':'form-control','readonly': 'readonly'}),required = False)
-	# legajo = forms.IntegerField(label='',widget=forms.TextInput(attrs={ 'class':'form-control','readonly': 'readonly'}),required = False)
+	empleado = EmpleadoModelChoiceField(label='',queryset=ent_empleado.objects.filter(baja=False),empty_label='---',required = False)		
 	tipo_ausentismo = forms.ChoiceField(label='',choices=TIPO_AUSENCIA,required=False,initial=1)
+	tipo_control = forms.ChoiceField(label='',choices=TIPO_CONTROL,required=False,initial='C')
 	aus_control = forms.ChoiceField(label=u'¿Asistió a Control?',choices=SINO,required=False,initial='N')
 	aus_certificado = forms.ChoiceField(label=u'¿Presenta Certificado?',choices=SINO,required=False,initial='N')
 	observaciones = forms.CharField(label='Observaciones',widget=forms.Textarea(attrs={'class':'form-control2', 'rows': 2}),required = False)	

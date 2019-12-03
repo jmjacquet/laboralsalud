@@ -18,8 +18,17 @@
     <!-- Group the nav links, forms, drop-down menus and other elements for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav ">
-        <li class="active"><a href="{% url 'principal' %}">Inicio</a></li>
-        <li><a href="{% url 'ausentismo_listado' %}">Ausentismos</a></li>
+        <li class="active"><a href="{% url 'principal' %}">Inicio</a></li>        
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Gestión Empleados<b class="caret"></b></a>
+          <ul class="dropdown-menu">
+            <li><a href="{% url 'empleado_listado' %}">Empleados</a></li>
+            <li class="divider"></li>
+            <li><a href="{% url 'ausentismo_listado' %}">Ausentismos</a></li>
+            <li class="divider"></li>
+            <li><a href="{% url 'turnos_listado' %}">Gestión Turnos</a></li>
+          </ul>
+        </li>
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">Indicadores <b class="caret"></b></a>
           <ul class="dropdown-menu">
@@ -31,8 +40,7 @@
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">Configuración <b class="caret"></b></a>
           <ul class="dropdown-menu">
-            <li><a href="{% url 'empleado_listado' %}">Empleados</a></li>
-            <li class="divider"></li>
+            
             <li><a href="{% url 'art_listado' %}">ARTs</a></li>
             <li><a href="{% url 'empresa_listado' %}">Empresas</a></li>
             <li><a href="{% url 'medico_prof_listado' %}">Médicos/Profesionales</a></li>
@@ -41,9 +49,9 @@
             <li><a href="{% url 'diagnostico_listado' %}">Diagnósticos</a></li>
             <li class="divider"></li>
             <li><a href="{% url 'cargo_listado' %}">Cargos/Puestos de Trabajo</a></li>
-            <li><a href="{% url 'especialidad_listado' %}">Especialidades</a></li>
+            <li><a href="{% url 'especialidad_listado' %}">Especialidades</a></li>            
             <li class="divider"></li>
-            <li><a href="{% url 'turnos_listado' %}">Gestión Turnos</a></li>
+            <li><a href="#">Configuración General</a></li>
           </ul>
         </li>
       </ul>
@@ -53,8 +61,7 @@
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown"> {{usuario}}  <i class="icon-user"></i> <b class="caret"></b></a>
           <ul class="dropdown-menu">
-            <li><a href="{% url 'usuarios' %}">Configurar Usuarios</a></li>
-            <li><a href="#">Configuración General</a></li>
+            <li><a href="{% url 'usuarios' %}">Configurar Usuarios</a></li>            
             <li><a id="cambiar_passwd" href="#">Cambiar Contraseña</a></li>   
             <li class="divider"></li>
             <li><a href="{% url 'logout' %}">Salir</a></li>

@@ -20,6 +20,17 @@ TIPO_AUSENCIA = (
     (3, 'Enfermedad Profesional'),
 )
 
+TIPO_CONTROL = (    
+    ('C', 'Consultorio'),
+    ('D', 'Domicilio'),    
+)
+
+TIPO_CONTROL_ = (    
+    ('T', 'Todos'),
+    ('C', 'Consultorio'),
+    ('D', 'Domicilio'),    
+)
+
 TIPO_AUSENCIA_ = (    
     (0, 'Todas'),
     (1, 'Inculpable'),

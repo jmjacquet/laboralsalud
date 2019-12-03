@@ -23,7 +23,7 @@ from .views import login,logout,volverHome
 import debug_toolbar
 
 urlpatterns = [
-    url('__debug__/', include(debug_toolbar.urls)),
+    # url('__debug__/', include(debug_toolbar.urls)),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^entidades/', include('entidades.urls')),
     url(r'^ausentismos/', include('ausentismos.urls')),

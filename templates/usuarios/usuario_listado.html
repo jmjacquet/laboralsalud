@@ -27,7 +27,6 @@
                 <th class="imprimir">Usuario</th>
                 <th class="imprimir">Tipo</th>
                 <th class="imprimir">Documento</th>                
-                <th class="imprimir">Grupo</th>                
                 <th class="imprimir">EMail</th>
                 <th class="imprimir">Último Logueo</th>
             </tr>
@@ -53,7 +52,6 @@
                 <td>{{ usu.usuario|default_if_none:'' }}</td>                                
                 <td>{{ usu.get_tipoUsr_display|default_if_none:'' }}</td>
                 <td>{{ usu.nro_doc|default_if_none:'' }}</td>
-                <td>{{ usu.grupo|default_if_none:'' }}</td>
                 <td>{{ usu.email|default_if_none:'' }}</td>                                               
                 <td>{{ usu.get_ultimo_logueo|date:'d/m/Y H:i'}}hs.</td> 
             </tr>
@@ -66,7 +64,6 @@
                 <th></th>                                
                 <th></th>
                 <th></th>
-                <th></th>                
                 <th></th>
                 <th></th>
             </tr>

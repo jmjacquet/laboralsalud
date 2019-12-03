@@ -7,6 +7,7 @@ from datetime import datetime,date
 from django.conf import settings
 import os 
 from laboralsalud.utilidades import TIPO_USR
+from entidades.models import ent_empresa
 
 class UsuCategPermisos(models.Model):
     id = models.AutoField(db_column='ID',primary_key=True) # Field name made lowercase.
@@ -29,13 +30,6 @@ class UsuPermiso(models.Model):
     def __unicode__(self):
         return u'{0}'.format(self.permiso)
 
-class UsuGrupo(models.Model):
-    id_grupo = models.IntegerField(db_column='ID_GRUPO', primary_key=True) # Field name made lowercase.
-    grupo = models.CharField(db_column='GRUPO', max_length=50, blank=True) # Field name made lowercase.
-    class Meta:        
-        db_table = 'usu_grupo'
-    def __unicode__(self):
-        return self.grupo
         
 class UsuUsuario(models.Model):
     id_usuario = models.AutoField(db_column='ID_USUARIO', primary_key=True,unique=True) # Field name made lowercase.    
@@ -46,8 +40,8 @@ class UsuUsuario(models.Model):
     nro_doc = models.CharField(u'Número',max_length=50,blank=True, null=True)               
     email = models.CharField('E-Mail',db_column='EMAIL', max_length=100, blank=True) # Field name made lowercase.
     permisos = models.ManyToManyField(UsuPermiso)    
-    baja = models.BooleanField(default=False)
-    grupo = models.ForeignKey(UsuGrupo, db_column='GRUPO', blank=True, null=True,on_delete=models.SET_NULL) # Field name made lowercase.
+    baja = models.BooleanField(default=False)    
+    empresas = models.ManyToManyField(ent_empresa)
     class Meta:
         db_table = 'usu_usuario'
 

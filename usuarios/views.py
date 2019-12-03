@@ -87,7 +87,7 @@ class UsuarioList(VariablesMixin,ListView):
 
     def get_context_data(self, **kwargs):
         context = super(UsuarioList, self).get_context_data(**kwargs)        
-        context['usuarios'] = UsuUsuario.objects.all().order_by('nombre').select_related('grupo')           
+        context['usuarios'] = UsuUsuario.objects.all().order_by('nombre')      
         return context
 
 @login_required

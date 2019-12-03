@@ -46,7 +46,7 @@ class aus_diagnostico(models.Model):
 class ausentismo(models.Model):	
 	empleado = models.ForeignKey(ent_empleado,verbose_name='Empleado',db_column='empleado',blank=True, null=True,related_name='aus_empleado',on_delete=models.SET_NULL)
 	tipo_ausentismo = models.IntegerField('Ausentismo',choices=TIPO_AUSENCIA, blank=True, null=True)
-
+	tipo_control = models.CharField('Tipo Control',choices=TIPO_CONTROL, max_length=1,blank=True, null=True)
 	aus_control = models.CharField(u'¿Asistió a Control?',max_length=1,default='N')
 	aus_fcontrol = models.DateField(u'Fecha Control',blank=True, null=True)
 	aus_certificado = models.CharField(u'¿Presenta Certificado?',max_length=1,default='N')

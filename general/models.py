@@ -13,7 +13,8 @@ import datetime
 class turnos(models.Model):
 	id = models.AutoField(primary_key=True,db_index=True)    
 	empresa = models.ForeignKey(ent_empresa,verbose_name='Empresa',db_column='empresa',blank=True, null=True,related_name='turno_empresa',on_delete=models.SET_NULL)
-	fecha = models.DateTimeField(u'Fecha Turno',blank=True, null=True)
+	fecha = models.DateField(u'Fecha Turno',blank=True, null=True)
+	hora = models.DateField(u'Hora Turno',blank=True, null=True)
 	empleado = models.ForeignKey(ent_empleado,verbose_name='Empleado',db_column='empleado',blank=True, null=True,related_name='turno_empleado',on_delete=models.SET_NULL)
 	detalle = models.CharField(u'Detalle',max_length=100,blank=True, null=True)
 	estado = models.IntegerField('Estado',choices=ESTADO_TURNO, blank=True, null=True)
