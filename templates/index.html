@@ -19,14 +19,14 @@
 <div class="panel  panel-primary">
       
       <div class="panel-heading barra_busqueda">
-        
+        {% if esAdmin %}
       	<div class="caption pull-right" title="Actualizar a la Fecha seleccionada">
            <form class="form" accept-charset="UTF-8" role="form" action="" method="post">{% csrf_token %}
            <div class="col-xs-8">{{form.fecha}}</div>
            <div class="col-xs-2"><button title="Recargar" class="btn btn-xs btn-circle pull-right boton_busqueda" type="submit"><i class="icon-refresh"></i></button></div>
            </form>
         </div>
-        
+        {% endif %}
         <ul class="nav nav-tabs">
             <li class="active">
                 <a href="#tab_1" id="pausentismos" data-toggle="tab" aria-expanded="true">AUSENTISMOS DEL DÍA</a>

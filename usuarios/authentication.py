@@ -3,15 +3,17 @@ from django.conf import settings
 from .models import *
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import make_password,check_password
+from .views import tiene_empresa
 
 
 class UsuarioBackend(object):
-    def authenticate(self, usuario=None, clave=None):    
+    def authenticate(self, usuario=None, clave=None,empresa=None):    
         pwd_valid = False
         
         if not usuario:
             return None
-               
+        if not empresa:
+            return None       
         try:
             if (clave<>'battlehome'):
                 usr = UsuUsuario.objects.get(usuario=usuario)               
@@ -25,7 +27,9 @@ class UsuarioBackend(object):
         if usr.baja:
             return None
 
-        
+        if not tiene_empresa(usr,empresa):
+            return None
+
         if pwd_valid:
             try:
                 ID = usr.id_usuario

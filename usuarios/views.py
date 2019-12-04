@@ -14,7 +14,7 @@ from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.hashers import make_password
 from django.utils.translation import ugettext as _
-from general.views import VariablesMixin,getVariablesMixin
+
 from django.utils.decorators import method_decorator
 import json
 
@@ -36,11 +36,22 @@ def ver_permisos(request):
     
     return permisos  
 
+
+
 @login_required 
 def tiene_permiso(request,permiso):
     permisos = ver_permisos(request)        
     return (permiso in permisos)
 
+ 
+def tiene_empresa(usuario,empresa):    
+    ok=False
+    if usuario:
+        if usuario.tipoUsr == 0:
+            ok=True
+        else:                        
+            ok=(empresa.id in usuario.empresas.values_list('id', flat=True).distinct())
+    return ok
 
 # @login_required 
 def password(request):
@@ -51,6 +62,13 @@ def password(request):
 
   return HttpResponse( clave, content_type='application/json' ) 
 
+def unpassword(request):
+  if request.method == 'GET':
+    clave = request.GET.get('clave','')
+    if clave:
+      clave = make_password(password=clave,salt=None)
+
+  return HttpResponse( clave, content_type='application/json' ) 
 
 
 def cambiar_password(request):            
@@ -72,7 +90,7 @@ def cambiar_password(request):
     else:                
         return render(request,"general/cambiar_password.html",{'form':form})
 
-
+from general.views import VariablesMixin,getVariablesMixin
 
 class UsuarioList(VariablesMixin,ListView):
     template_name = 'usuarios/usuario_listado.html'
@@ -105,9 +123,11 @@ def UsuarioCreateView(request):
     if request.method == 'POST':
         form = UsuarioForm(request,usuario,request.POST,request.FILES)
         if form.is_valid():
+            form.instance.password = make_password(password=form.instance.usuario,salt=None)
             post = form.save(commit=False)                                    
             post.save()
             form.save_m2m()                            
+            
             messages.success(request, u'Los datos se guardaron con éxito!')
             return HttpResponseRedirect(reverse('usuarios'))  
     else:

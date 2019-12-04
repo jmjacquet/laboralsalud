@@ -32,25 +32,20 @@ def login(request):
         usuario = form.cleaned_data['usuario']        
         clave = form.cleaned_data['password']
         empresa = form.cleaned_data['empresa']
-        user =  authenticate(usuario=usuario, clave=clave)        
+        user =  authenticate(usuario=usuario, clave=clave,empresa=empresa)        
         if user is not None:
-          if user.is_active:            
+          if user.is_active:                        
             django_login(request, user)            
-            usr=usuario_actual(request)
-            if (usr.tipoUsr > 0)and(not empresa):
-              error = u"Usuario/Contraseña/Empresa incorrectos."            
-              django_logout(request)
-            else:
-              if empresa:
-                request.session["empresa"] = empresa.pk       
-              ROOT_URL = reverse('principal')              
-              return HttpResponseRedirect(ROOT_URL)
+            if empresa:
+              request.session["empresa"] = empresa.pk       
+            ROOT_URL = reverse('principal')              
+            return HttpResponseRedirect(ROOT_URL)
           else:
           ## invalid login
-           error = u"Usuario/Contraseña incorrectos."
+           error = u"Usuario/Contraseña/Empresa incorrectos."
         else:
           ## invalid login
-           error = u"Usuario/Contraseña incorrectos."
+           error = u"Usuario/Contraseña/Empresa incorrectos."
           #return direct_to_template(request, 'invalid_login.html')
     if error:
       messages.add_message(request, messages.ERROR,u'%s' % (error))    

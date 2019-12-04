@@ -13,8 +13,10 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.views.generic import TemplateView,ListView,CreateView,UpdateView,FormView,DetailView
 from fm.views import AjaxCreateView,AjaxUpdateView,AjaxDeleteView
+
 from .forms import TurnosForm,ConsultaTurnos,ConsultaFechasInicio
 from .models import turnos
+from usuarios.views import ver_permisos
 from django.contrib import messages
 import locale
 
@@ -38,15 +40,22 @@ class VariablesMixin(object):
             context['empresa'] = empresa_actual(self.request)   
         except:
             context['empresa'] = None    
-
-        context['esAdmin'] = (self.request.user.userprofile.id_usuario.tipoUsr == 0)     
+                
         try:
-            context['esAdmin'] = (self.request.user.userprofile.id_usuario.tipoUsr == 0)                        
+            context['esAdmin'] = (self.request.user.userprofile.id_usuario.tipoUsr == 0)     
         except:
-            context['esAdmin'] = False 
+            context['esAdmin'] = False             
    
+        
+        permisos_grupo = ver_permisos(request)
+        context['permisos_grupo'] = permisos_grupo        
+        context['permisos_empelados'] = ('aus_pantalla' in permisos_grupo)or('empl_pantalla' in permisos_grupo)or('turnos_pantalla' in permisos_grupo)
+        context['permisos_indicadores'] = ('indic_pantalla' in permisos_grupo)or('indic_anual_pantalla' in permisos_grupo)
+        context['permisos_configuracion'] = ('art_pantalla' in permisos_grupo)or('emp_pantalla' in permisos_grupo)or('med_pantalla' in permisos_grupo)or('med_pantalla' in permisos_grupo)\
+                                            or('pat_pantalla' in permisos_grupo)or('diag_pantalla' in permisos_grupo)or('ptrab_pantalla' in permisos_grupo)or('esp_pantalla' in permisos_grupo)
+
         context['empresas'] = ent_empresa.objects.filter(baja=False)
-        # context['sitio_mobile'] = mobile(self.request)
+        context['sitio_mobile'] = mobile(self.request)
         context['hoy'] =  hoy()
         # context['EMAIL_CONTACTO'] = EMAIL_CONTACTO                        
         return context
@@ -74,8 +83,15 @@ def getVariablesMixin(request):
     except:
         context['esAdmin'] = False 
 
+    permisos_grupo = ver_permisos(request)
+    context['permisos_grupo'] = permisos_grupo        
+    context['permisos_empelados'] = ('aus_pantalla' in permisos_grupo)or('empl_pantalla' in permisos_grupo)or('turnos_pantalla' in permisos_grupo)
+    context['permisos_indicadores'] = ('indic_pantalla' in permisos_grupo)or('indic_anual_pantalla' in permisos_grupo)
+    context['permisos_configuracion'] = ('art_pantalla' in permisos_grupo)or('emp_pantalla' in permisos_grupo)or('med_pantalla' in permisos_grupo)or('med_pantalla' in permisos_grupo)\
+                                        or('pat_pantalla' in permisos_grupo)or('diag_pantalla' in permisos_grupo)or('ptrab_pantalla' in permisos_grupo)or('esp_pantalla' in permisos_grupo)
+
     context['empresas'] = ent_empresa.objects.filter(baja=False)
-    # context['sitio_mobile'] = mobile(self.request)
+    context['sitio_mobile'] = mobile(self.request)
     context['hoy'] =  hoy()
     return context
     

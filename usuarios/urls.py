@@ -10,6 +10,7 @@ from django.views.generic import RedirectView,TemplateView
 urlpatterns = [
 	
   url(r'^password/$', password,name="password"),
+  url(r'^unpassword/$', unpassword,name="unpassword"),
   url(r'^cambiar_password/$', cambiar_password, name='cambiar_password'),
   # url(r'^usuarios_conectados/$', get_usuarios_conectados, name='usuarios_conectados'),
   

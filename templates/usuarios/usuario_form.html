@@ -31,40 +31,46 @@
             
 		    <form role="form" class="form abm form-horizontal " method="POST" action="" id="form-alta" enctype="multipart/form-data">
 		     {% csrf_token %}         				        		       
-		         <div class="row">
-			         <div class="col-xs-12">
 				        <div class="row ">							       	
-						    <div class="col-xs-12">
-						       	  <div class="row">										       											       		
-								       			<fieldset>
-									       		<legend>DATOS GENERALES</legend>
-											       <div class="col-sm-12">
-									                <div class="row cerca">
-												       	<div class="col-sm-3">{% bootstrap_field form.nombre %}</div>
-														<div class="col-sm-3">{% bootstrap_field form.usuario %}</div>	
-														<div class="col-sm-3">{% bootstrap_field form.tipoUsr %}</div>
+						    <div class="col-sm-8">
+						       	<div class="row">										       											       		
+					       			<fieldset>
+						       		<legend>DATOS GENERALES</legend>
+								       <div class="col-sm-12">
+						                <div class="row cerca">
+									       	<div class="col-sm-4">{% bootstrap_field form.nombre %}</div>
+											<div class="col-sm-2">{% bootstrap_field form.usuario %}</div>	
+											<div class="col-sm-3">{% bootstrap_field form.email %}</div>
+											<div class="col-sm-3">{% bootstrap_field form.tipoUsr %}</div>
 
-												     </div>
-									               </div>                                       						         
-									       		</fieldset>											       	
-							      </div>									   
-			                      								       
-						         <div class="row">
+									     </div>
+						               </div>                                       						         
+						       		</fieldset>											       	
+							    </div>									   
+						        <div class="row">
 					          		<fieldset>
-							       		<legend>PERMISOS DE USUARIO</legend>								
+						       		<legend>PERMISOS DE USUARIO</legend>								
 
-							                <div class="row botonera">										                
-						                	<label for="checkall"><input type="checkbox" id="checkall" title="Seleccionar Todas"/><strong> SELECCIONAR TODOS/NINGUNO</strong></label>
-
-							                </div>
-							                <div class="row cerca">
-					                                {{form.permisos}}
-				                            </div>                                                  
-					                    </div>
-					                </fieldset>		
-
-							     
+						                <div class="row botonera">										                
+					                	<label for="checkall">
+					                		<input type="checkbox" id="checkall" title="Seleccionar Todas"/><strong> SELECCIONAR TODOS/NINGUNO</strong></label>
+						                </div>
+						                <div class="row cerca">
+				                                {{form.permisos}}
+			                            </div>                                                  
+					                </fieldset>		 
 				              	</div>  
+				              </div> 
+				              <div class="col-sm-4">
+						       	<div class="row">										       											       		
+					       			<fieldset>
+						       		<legend>EMPRESAS RELACIONADAS</legend> 
+						       		<div class="row cerca">
+				                                {{form.empresas}}
+			                        </div> 
+			                    	</fieldset>
+			                    </div>
+			                  </div>
 						</div>
 
 				{% if form.non_field_errors  %}
