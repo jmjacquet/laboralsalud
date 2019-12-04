@@ -29,14 +29,15 @@
         
         <ul class="nav nav-tabs">
             <li class="active">
-                <a href="#tab_1" id="pausentismos" data-toggle="tab" aria-expanded="true">  AUSENTISMOS</a>
+                <a href="#tab_1" id="pausentismos" data-toggle="tab" aria-expanded="true">AUSENTISMOS DEL DÍA</a>
             </li>
             <li class="">
-                <a href="#tab_2" id="pturnos" data-toggle="tab" aria-expanded="false"> TURNOS PROGRAMADOS </a>
-            </li>
+                <a href="#tab_2" id="pfcontrol" data-toggle="tab" aria-expanded="false"> CONTROLES PROGRAMADOS</a>
+            </li>  
             <li class="">
-                <a href="#tab_3" id="pfcontrol" data-toggle="tab" aria-expanded="false"> CONTROLES PROGRAMADOS</a>
-            </li>                                                                     
+                <a href="#tab_3" id="pturnos" data-toggle="tab" aria-expanded="false"> TURNOS PROGRAMADOS </a>
+            </li>
+                                                                               
              
         </ul>
     </div>
@@ -48,16 +49,17 @@
 		            {% include 'general/ini_ausentismos.html' %}
 		        </div>
 		    </div>
-		    <div class="tab-pane" id="tab_2">
-		        <div id="pturnos" style="padding: 0px; position: relative;"> 
-		            {% include 'general/ini_turnos.html' %}
-		        </div>
-		    </div>
-        <div class="tab-pane" id="tab_3">
+        <div class="tab-pane" id="tab_2">
             <div id="pfcontrol" style="padding: 0px; position: relative;"> 
                 {% include 'general/ini_fcontrol.html' %}
             </div>
         </div>
+		    <div class="tab-pane" id="tab_3">
+		        <div id="pturnos" style="padding: 0px; position: relative;"> 
+		            {% include 'general/ini_turnos.html' %}
+		        </div>
+		    </div>
+        
 		</div>            
 	</div>
 
