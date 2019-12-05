@@ -16,6 +16,7 @@ urlpatterns = [
     url(r'^turnos/nuevo/$', TurnosCreateView.as_view(), name="turnos_nuevo"),
     url(r'^turnos/editar/(?P<id>\d+)/$', TurnosEditView.as_view(), name="turnos_editar"),    
     url(r'^turnos/baja_alta/(?P<id>\d+)/$', turno_baja_alta, name='turnos_baja_alta'),
+    url(r'^turnos/estado/(?P<id>\d+)/(?P<estado>\d+)$', turno_estado, name='turnos_estado'),
     url(r'^turnos/detalles/(?P<id>\d+)/$', TurnosVerView.as_view(), name="turnos_detalles"),    
     
 ]

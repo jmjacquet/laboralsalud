@@ -27,8 +27,8 @@ class AusentismoView(VariablesMixin,ListView):
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs): 
-        # if not tiene_permiso(self.request,'ent_clientes'):
-        #     return redirect(reverse('principal'))
+        if not tiene_permiso(self.request,'aus_pantalla'):
+            return redirect(reverse('principal'))
         return super(AusentismoView, self).dispatch(*args, **kwargs)
 
     def get_context_data(self, **kwargs):
@@ -85,8 +85,8 @@ class AusentismoCreateView(VariablesMixin,CreateView):
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs): 
-        # if not tiene_permiso(self.request,'ent_vendedores_abm'):
-        #     return redirect(reverse('principal'))
+        if not tiene_permiso(self.request,'aus_abm'):
+            return redirect(reverse('principal'))
         return super(AusentismoCreateView, self).dispatch(*args, **kwargs)
 
     def form_valid(self, form):                
@@ -122,8 +122,8 @@ class AusentismoEditView(VariablesMixin,UpdateView):
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs): 
-        # if not tiene_permiso(self.request,'ent_clientes_abm'):
-        #     return redirect(reverse('principal'))
+        if not tiene_permiso(self.request,'aus_abm'):
+            return redirect(reverse('principal'))
         return super(AusentismoEditView, self).dispatch(*args, **kwargs)
 
     def form_valid(self, form):        
@@ -159,8 +159,10 @@ class AusentismoVerView(VariablesMixin,DetailView):
         return super(AusentismoVerView, self).dispatch(*args, **kwargs)        
 
 
-# @login_required 
+@login_required 
 def ausentismo_baja_alta(request,id):
+    if not tiene_permiso(request,'aus_abm'):
+            return redirect(reverse('principal'))
     aus = ausentismo.objects.get(pk=id)     
     aus.baja = not aus.baja
     aus.save()       
@@ -178,8 +180,8 @@ class PatologiaView(VariablesMixin,ListView):
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs): 
-        # if not tiene_permiso(self.request,'ent_clientes'):
-        #     return redirect(reverse('principal'))
+        if not tiene_permiso(self.request,'pat_pantalla'):
+            return redirect(reverse('principal'))
         return super(PatologiaView, self).dispatch(*args, **kwargs)
     
 
@@ -189,8 +191,8 @@ class PatologiaCreateView(VariablesMixin,AjaxCreateView):
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs): 
-        # if not tiene_permiso(self.request,'ent_vendedores_abm'):
-        #     return redirect(reverse('principal'))
+        if not tiene_permiso(self.request,'pat_pantalla'):
+            return redirect(reverse('principal'))
         return super(PatologiaCreateView, self).dispatch(*args, **kwargs)
 
     def form_valid(self, form):                        
@@ -219,10 +221,10 @@ class PatologiaEditView(VariablesMixin,AjaxUpdateView):
     template_name = 'fm/entidades/form_patologia.html'
     
 
-    # @method_decorator(login_required)
+    @method_decorator(login_required)
     def dispatch(self, *args, **kwargs): 
-        # if not tiene_permiso(self.request,'ent_clientes_abm'):
-        #     return redirect(reverse('principal'))
+        if not tiene_permiso(self.request,'pat_pantalla'):
+            return redirect(reverse('principal'))
         return super(PatologiaEditView, self).dispatch(*args, **kwargs)
 
     def form_valid(self, form):        
@@ -271,8 +273,8 @@ class DiagnosticoView(VariablesMixin,ListView):
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs): 
-        # if not tiene_permiso(self.request,'ent_clientes'):
-        #     return redirect(reverse('principal'))
+        if not tiene_permiso(self.request,'diag_pantalla'):
+            return redirect(reverse('principal'))
         return super(DiagnosticoView, self).dispatch(*args, **kwargs)
     
 
@@ -282,8 +284,8 @@ class DiagnosticoCreateView(VariablesMixin,AjaxCreateView):
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs): 
-        # if not tiene_permiso(self.request,'ent_vendedores_abm'):
-        #     return redirect(reverse('principal'))
+        if not tiene_permiso(self.request,'diag_pantalla'):
+            return redirect(reverse('principal'))
         return super(DiagnosticoCreateView, self).dispatch(*args, **kwargs)
 
     def form_valid(self, form):                        
@@ -312,10 +314,10 @@ class DiagnosticoEditView(VariablesMixin,AjaxUpdateView):
     template_name = 'fm/entidades/form_diagnostico.html'
     
 
-    # @method_decorator(login_required)
+    @method_decorator(login_required)
     def dispatch(self, *args, **kwargs): 
-        # if not tiene_permiso(self.request,'ent_clientes_abm'):
-        #     return redirect(reverse('principal'))
+        if not tiene_permiso(self.request,'diag_pantalla'):
+            return redirect(reverse('principal'))
         return super(DiagnosticoEditView, self).dispatch(*args, **kwargs)
 
     def form_valid(self, form):        

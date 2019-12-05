@@ -44,7 +44,7 @@ class aus_diagnostico(models.Model):
 
 #Tabla de la Base de Configuracion
 class ausentismo(models.Model):	
-	empleado = models.ForeignKey(ent_empleado,verbose_name='Empleado',db_column='empleado',blank=True, null=True,related_name='aus_empleado',on_delete=models.SET_NULL)
+	empleado = models.ForeignKey('entidades.ent_empleado',verbose_name='Empleado',db_column='empleado',blank=True, null=True,related_name='aus_empleado',on_delete=models.SET_NULL)
 	tipo_ausentismo = models.IntegerField('Ausentismo',choices=TIPO_AUSENCIA, blank=True, null=True)
 	tipo_control = models.CharField('Tipo Control',choices=TIPO_CONTROL, max_length=1,blank=True, null=True)
 	aus_control = models.CharField(u'¿Asistió a Control?',max_length=1,default='N')
@@ -61,7 +61,7 @@ class ausentismo(models.Model):
 	aus_falta = models.DateField(u'Fecha Alta',blank=True, null=True)
 	aus_tipo_alta = models.IntegerField('Tipo Alta',choices=TIPO_ALTA, blank=True, null=True)
 	aus_frevision = models.DateField(u'Fecha Próx.Control',blank=True, null=True)
-	aus_medico = models.ForeignKey(ent_medico_prof,verbose_name=u'Médico Tratante',db_column='aus_medico',blank=True, null=True,related_name='aus_medico',on_delete=models.SET_NULL)
+	aus_medico = models.ForeignKey('entidades.ent_medico_prof',verbose_name=u'Médico Tratante',db_column='aus_medico',blank=True, null=True,related_name='aus_medico',on_delete=models.SET_NULL)
 	aus_grupop = models.ForeignKey(aus_patologia,verbose_name=u'Grupo Patológico',db_column='aus_grupop',blank=True, null=True,related_name='aus_grupop',on_delete=models.SET_NULL)
 	aus_diagn = models.ForeignKey(aus_diagnostico,verbose_name=u'Diagnóstico',db_column='aus_diagn',blank=True, null=True,related_name='aus_diagn',on_delete=models.SET_NULL)
 
@@ -77,7 +77,7 @@ class ausentismo(models.Model):
 	art_falta = models.DateField(u'Fecha Alta',blank=True, null=True)
 	art_tipo_alta = models.IntegerField('Tipo Alta',choices=TIPO_ALTA, blank=True, null=True)
 	art_frevision = models.DateField(u'Fecha Próx.Control',blank=True, null=True)
-	art_medico = models.ForeignKey(ent_medico_prof,verbose_name=u'Médico ART',db_column='art_medico',blank=True, null=True,related_name='art_medico',on_delete=models.SET_NULL)
+	art_medico = models.ForeignKey('entidades.ent_medico_prof',verbose_name=u'Médico ART',db_column='art_medico',blank=True, null=True,related_name='art_medico',on_delete=models.SET_NULL)
 
 	observaciones = models.TextField('Observaciones',blank=True, null=True)       
 	descr_altaparc = models.TextField(u'Descr.Alta Parcial',blank=True, null=True)       

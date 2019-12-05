@@ -2,13 +2,10 @@
 from __future__ import unicode_literals
 from django.shortcuts import *
 from django.shortcuts import render
-from laboralsalud.utilidades import URL_API
 from django.core.serializers.json import DjangoJSONEncoder
 import json
 import urllib
-from ausentismos.models import aus_patologia,aus_diagnostico,ausentismo
-from entidades.models import ent_empleado,ent_empresa,ent_medico_prof
-from laboralsalud.utilidades import hoy,usuario_actual,empresa_actual,TIPO_AUSENCIA,empresas_habilitadas
+
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.views.generic import TemplateView,ListView,CreateView,UpdateView,FormView,DetailView
@@ -16,12 +13,15 @@ from fm.views import AjaxCreateView,AjaxUpdateView,AjaxDeleteView
 
 from .forms import TurnosForm,ConsultaTurnos,ConsultaFechasInicio
 from .models import turnos
-from usuarios.views import ver_permisos
+from ausentismos.models import aus_patologia,aus_diagnostico,ausentismo
+from entidades.models import ent_empleado,ent_empresa,ent_medico_prof
+from laboralsalud.utilidades import hoy,usuario_actual,empresa_actual,TIPO_AUSENCIA,empresas_habilitadas,URL_API,mobile
 from django.contrib import messages
 import locale
 
 class VariablesMixin(object):
     def get_context_data(self, **kwargs):
+        from usuarios.views import ver_permisos
         context = super(VariablesMixin, self).get_context_data(**kwargs)
         # context['ENTIDAD_ID'] = settings.ENTIDAD_ID
         # context['ENTIDAD_DIR'] = settings.ENTIDAD_DIR
@@ -47,13 +47,13 @@ class VariablesMixin(object):
             context['esAdmin'] = False             
    
         
-        permisos_grupo = ver_permisos(request)
+        permisos_grupo = ver_permisos(self.request)
         context['permisos_grupo'] = permisos_grupo        
         context['permisos_empelados'] = ('aus_pantalla' in permisos_grupo)or('empl_pantalla' in permisos_grupo)or('turnos_pantalla' in permisos_grupo)
         context['permisos_indicadores'] = ('indic_pantalla' in permisos_grupo)or('indic_anual_pantalla' in permisos_grupo)
-        context['permisos_configuracion'] = ('art_pantalla' in permisos_grupo)or('emp_pantalla' in permisos_grupo)or('med_pantalla' in permisos_grupo)or('med_pantalla' in permisos_grupo)\
+        context['permisos_configuracion'] = ('art_pantalla' in permisos_grupo)or('emp_pantalla' in permisos_grupo)or('med_pantalla' in permisos_grupo)\
                                             or('pat_pantalla' in permisos_grupo)or('diag_pantalla' in permisos_grupo)or('ptrab_pantalla' in permisos_grupo)or('esp_pantalla' in permisos_grupo)
-
+        
         context['empresas'] = ent_empresa.objects.filter(baja=False)
         context['sitio_mobile'] = mobile(self.request)
         context['hoy'] =  hoy()
@@ -61,6 +61,7 @@ class VariablesMixin(object):
         return context
 
 def getVariablesMixin(request):
+    from usuarios.views import ver_permisos
     context = {}     
     usr= request.user     
     try:
@@ -150,7 +151,6 @@ def buscarDatosAPICUIT(request):
     d= []
    return HttpResponse( json.dumps(d), content_type='application/json' ) 
 
-
 from django.forms.models import model_to_dict
 
 def buscarDatosEntidad(request):                     
@@ -226,6 +226,7 @@ def recargar_patologias(request):
 ############ TURNOS ############################
 from .calendario import Calendar
 from django.utils.safestring import mark_safe
+from usuarios.views import tiene_permiso
 
 class TurnosView(VariablesMixin,ListView):
     model = turnos
@@ -234,8 +235,8 @@ class TurnosView(VariablesMixin,ListView):
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs): 
-        # if not tiene_permiso(self.request,'ent_clientes'):
-        #     return redirect(reverse('principal'))
+        if not tiene_permiso(self.request,'turnos_pantalla'):
+            return redirect(reverse('principal'))
         return super(TurnosView, self).dispatch(*args, **kwargs)    
 
     def get_context_data(self, **kwargs):
@@ -282,8 +283,8 @@ class TurnosCreateView(VariablesMixin,AjaxCreateView):
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs): 
-        # if not tiene_permiso(self.request,'ent_vendedores_abm'):
-        #     return redirect(reverse('principal'))
+        if not tiene_permiso(self.request,'turnos_pantalla'):
+            return redirect(reverse('principal'))
         return super(TurnosCreateView, self).dispatch(*args, **kwargs)
 
     def form_valid(self, form):                
@@ -321,8 +322,8 @@ class TurnosEditView(VariablesMixin,AjaxUpdateView):
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs): 
-        # if not tiene_permiso(self.request,'ent_clientes_abm'):
-        #     return redirect(reverse('principal'))
+        if not tiene_permiso(self.request,'turnos_pantalla'):
+            return redirect(reverse('principal'))
         return super(TurnosEditView, self).dispatch(*args, **kwargs)
 
     def form_valid(self, form):        
@@ -359,9 +360,20 @@ class TurnosVerView(VariablesMixin,DetailView):
 
 @login_required 
 def turno_baja_alta(request,id):
+    if not tiene_permiso(request,'turnos_pantalla'):
+            return redirect(reverse('principal'))
     ent = turnos.objects.get(pk=id)     
     ent.baja = not ent.baja
     ent.save()       
     messages.success(request, u'¡Los datos se guardaron con éxito!')
     return HttpResponseRedirect(reverse("turnos_listado"))            
 
+@login_required 
+def turno_estado(request,id,estado):
+    if not tiene_permiso(request,'turnos_pantalla'):
+            return redirect(reverse('principal'))
+    ent = turnos.objects.get(pk=id)     
+    ent.estado = estado
+    ent.save()       
+    messages.success(request, u'¡Los datos se guardaron con éxito!')
+    return HttpResponseRedirect(reverse("turnos_listado"))  

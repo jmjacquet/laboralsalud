@@ -22,8 +22,8 @@ class ARTView(VariablesMixin,ListView):
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs): 
-        # if not tiene_permiso(self.request,'ent_clientes'):
-        #     return redirect(reverse('principal'))
+        if not tiene_permiso(self.request,'art_pantalla'):
+            return redirect(reverse('principal'))
         return super(ARTView, self).dispatch(*args, **kwargs)
     
 
@@ -33,8 +33,8 @@ class ARTCreateView(VariablesMixin,AjaxCreateView):
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs): 
-        # if not tiene_permiso(self.request,'ent_vendedores_abm'):
-        #     return redirect(reverse('principal'))
+        if not tiene_permiso(self.request,'art_pantalla'):
+            return redirect(reverse('principal'))
         return super(ARTCreateView, self).dispatch(*args, **kwargs)
 
     def form_valid(self, form):                
@@ -65,10 +65,10 @@ class ARTEditView(VariablesMixin,AjaxUpdateView):
     template_name = 'fm/entidades/form_art.html'
     
 
-    # @method_decorator(login_required)
+    @method_decorator(login_required)
     def dispatch(self, *args, **kwargs): 
-        # if not tiene_permiso(self.request,'ent_clientes_abm'):
-        #     return redirect(reverse('principal'))
+        if not tiene_permiso(self.request,'art_pantalla'):
+            return redirect(reverse('principal'))
         return super(ARTEditView, self).dispatch(*args, **kwargs)
 
     def form_valid(self, form):        
@@ -101,6 +101,8 @@ class ARTVerView(VariablesMixin,DetailView):
 
 @login_required 
 def art_baja_alta(request,id):
+    if not tiene_permiso(request,'art_pantalla'):
+            return redirect(reverse('principal'))
     art = ent_art.objects.get(pk=id)     
     art.baja = not art.baja
     art.save()       
@@ -117,8 +119,8 @@ class CargoView(VariablesMixin,ListView):
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs): 
-        # if not tiene_permiso(self.request,'ent_clientes'):
-        #     return redirect(reverse('principal'))
+        if not tiene_permiso(self.request,'ptrab_pantalla'):
+            return redirect(reverse('principal'))
         return super(CargoView, self).dispatch(*args, **kwargs)
     
 
@@ -128,8 +130,8 @@ class CargoCreateView(VariablesMixin,AjaxCreateView):
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs): 
-        # if not tiene_permiso(self.request,'ent_vendedores_abm'):
-        #     return redirect(reverse('principal'))
+        if not tiene_permiso(self.request,'ptrab_pantalla'):
+            return redirect(reverse('principal'))
         return super(CargoCreateView, self).dispatch(*args, **kwargs)
 
     def form_valid(self, form):                
@@ -162,8 +164,8 @@ class CargoEditView(VariablesMixin,AjaxUpdateView):
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs): 
-        # if not tiene_permiso(self.request,'ent_clientes_abm'):
-        #     return redirect(reverse('principal'))
+        if not tiene_permiso(self.request,'ptrab_pantalla'):
+            return redirect(reverse('principal'))
         return super(CargoEditView, self).dispatch(*args, **kwargs)
 
     def form_valid(self, form):        
@@ -196,6 +198,8 @@ class CargoVerView(VariablesMixin,DetailView):
 
 @login_required 
 def cargo_baja_alta(request,id):
+    if not tiene_permiso(request,'ptrab_pantalla'):
+            return redirect(reverse('principal'))
     ent = ent_cargo.objects.get(pk=id)     
     ent.baja = not ent.baja
     ent.save()       
@@ -212,8 +216,8 @@ class EspecialidadView(VariablesMixin,ListView):
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs): 
-        # if not tiene_permiso(self.request,'ent_clientes'):
-            # return redirect(reverse('principal'))
+        if not tiene_permiso(self.request,'esp_pantalla'):
+            return redirect(reverse('principal'))
         return super(EspecialidadView, self).dispatch(*args, **kwargs)
     
 
@@ -223,8 +227,8 @@ class EspecialidadCreateView(VariablesMixin,AjaxCreateView):
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs): 
-        # if not tiene_permiso(self.request,'ent_vendedores_abm'):
-        #     return redirect(reverse('principal'))
+        if not tiene_permiso(self.request,'esp_pantalla'):
+            return redirect(reverse('principal'))
         return super(EspecialidadCreateView, self).dispatch(*args, **kwargs)
 
     def form_valid(self, form):                
@@ -257,8 +261,8 @@ class EspecialidadEditView(VariablesMixin,AjaxUpdateView):
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs): 
-        # if not tiene_permiso(self.request,'ent_clientes_abm'):
-        #     return redirect(reverse('principal'))
+        if not tiene_permiso(self.request,'esp_pantalla'):
+            return redirect(reverse('principal'))
         return super(EspecialidadEditView, self).dispatch(*args, **kwargs)
 
     def form_valid(self, form):        
@@ -291,6 +295,8 @@ class EspecialidadVerView(VariablesMixin,DetailView):
 
 @login_required 
 def especialidad_baja_alta(request,id):
+    if not tiene_permiso(request,'esp_pantalla'):
+            return redirect(reverse('principal'))
     ent = ent_especialidad.objects.get(pk=id)     
     ent.baja = not ent.baja
     ent.save()       
@@ -308,8 +314,8 @@ class MedProfView(VariablesMixin,ListView):
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs): 
-        # if not tiene_permiso(self.request,'ent_clientes'):
-        #     return redirect(reverse('principal'))
+        if not tiene_permiso(self.request,'med_pantalla'):
+            return redirect(reverse('principal'))
         return super(MedProfView, self).dispatch(*args, **kwargs)
     
 
@@ -319,8 +325,8 @@ class MedProfCreateView(VariablesMixin,AjaxCreateView):
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs): 
-        # if not tiene_permiso(self.request,'ent_vendedores_abm'):
-        #     return redirect(reverse('principal'))
+        if not tiene_permiso(self.request,'med_pantalla'):
+            return redirect(reverse('principal'))
         return super(MedProfCreateView, self).dispatch(*args, **kwargs)
 
     def form_valid(self, form):                
@@ -354,8 +360,8 @@ class MedProfEditView(VariablesMixin,AjaxUpdateView):
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs): 
-        # if not tiene_permiso(self.request,'ent_clientes_abm'):
-        #     return redirect(reverse('principal'))
+        if not tiene_permiso(self.request,'med_pantalla'):
+            return redirect(reverse('principal'))
         return super(MedProfEditView, self).dispatch(*args, **kwargs)
 
     def form_valid(self, form):        
@@ -389,6 +395,8 @@ class MedProfVerView(VariablesMixin,DetailView):
 
 @login_required 
 def medico_prof_baja_alta(request,id):
+    if not tiene_permiso(request,'med_pantalla'):
+            return redirect(reverse('principal'))
     ent = ent_medico_prof.objects.get(pk=id)     
     ent.baja = not ent.baja
     ent.save()       
@@ -406,8 +414,8 @@ class EmpresaView(VariablesMixin,ListView):
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs): 
-        # if not tiene_permiso(self.request,'ent_clientes'):
-        #     return redirect(reverse('principal'))
+        if not tiene_permiso(self.request,'emp_pantalla'):
+            return redirect(reverse('principal'))
         return super(EmpresaView, self).dispatch(*args, **kwargs)    
 
     def post(self, *args, **kwargs):
@@ -420,8 +428,8 @@ class EmpresaCreateView(VariablesMixin,AjaxCreateView):
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs): 
-        # if not tiene_permiso(self.request,'ent_vendedores_abm'):
-        #     return redirect(reverse('principal'))
+        if not tiene_permiso(self.request,'emp_pantalla'):
+            return redirect(reverse('principal'))
         return super(EmpresaCreateView, self).dispatch(*args, **kwargs)
 
     def form_valid(self, form):                
@@ -455,8 +463,8 @@ class EmpresaEditView(VariablesMixin,AjaxUpdateView):
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs): 
-        # if not tiene_permiso(self.request,'ent_clientes_abm'):
-        #     return redirect(reverse('principal'))
+        if not tiene_permiso(self.request,'emp_pantalla'):
+            return redirect(reverse('principal'))
         return super(EmpresaEditView, self).dispatch(*args, **kwargs)
 
     def form_valid(self, form):        
@@ -490,6 +498,8 @@ class EmpresaVerView(VariablesMixin,DetailView):
 
 @login_required 
 def empresa_baja_alta(request,id):
+    if not tiene_permiso(request,'emp_pantalla'):
+            return redirect(reverse('principal'))
     ent = ent_empresa.objects.get(pk=id)     
     ent.baja = not ent.baja
     ent.save()       
@@ -506,8 +516,8 @@ class EmpleadoView(VariablesMixin,ListView):
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs): 
-        # if not tiene_permiso(self.request,'ent_clientes'):
-        #     return redirect(reverse('principal'))
+        if not tiene_permiso(self.request,'empl_pantalla'):
+            return redirect(reverse('principal'))
         return super(EmpleadoView, self).dispatch(*args, **kwargs)
 
     def get_context_data(self, **kwargs):
@@ -546,8 +556,8 @@ class EmpleadoCreateView(VariablesMixin,AjaxCreateView):
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs): 
-        # if not tiene_permiso(self.request,'ent_vendedores_abm'):
-        #     return redirect(reverse('principal'))
+        if not tiene_permiso(self.request,'empl_pantalla'):
+            return redirect(reverse('principal'))
         return super(EmpleadoCreateView, self).dispatch(*args, **kwargs)
 
     def form_valid(self, form):                
@@ -583,8 +593,8 @@ class EmpleadoEditView(VariablesMixin,AjaxUpdateView):
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs): 
-        # if not tiene_permiso(self.request,'ent_clientes_abm'):
-        #     return redirect(reverse('principal'))
+        if not tiene_permiso(self.request,'empl_pantalla'):
+            return redirect(reverse('principal'))
         return super(EmpleadoEditView, self).dispatch(*args, **kwargs)
 
     def form_valid(self, form):        
@@ -618,6 +628,8 @@ class EmpleadoVerView(VariablesMixin,DetailView):
 
 @login_required 
 def empleado_baja_alta(request,id):
+    if not tiene_permiso(request,'empl_pantalla'):
+            return redirect(reverse('principal'))
     ent = ent_empleado.objects.get(pk=id)     
     ent.baja = not ent.baja
     if ent.baja:

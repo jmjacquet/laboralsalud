@@ -41,7 +41,7 @@ class UsuUsuario(models.Model):
     email = models.CharField('E-Mail',db_column='EMAIL', max_length=100, blank=True) # Field name made lowercase.
     permisos = models.ManyToManyField(UsuPermiso)    
     baja = models.BooleanField(default=False)    
-    empresas = models.ManyToManyField(ent_empresa)
+    empresas = models.ManyToManyField(to='entidades.ent_empresa')
     class Meta:
         db_table = 'usu_usuario'
 

@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 
 from django.db import models
 from laboralsalud.utilidades import *
-from usuarios.models import *
+# from usuarios.models import *
 import datetime
 from dateutil.relativedelta import relativedelta
 
@@ -45,7 +45,7 @@ class ent_medico_prof(models.Model):
 	email = models.EmailField('Email',blank=True)
 	telefono = models.CharField(u'Teléfono',max_length=50,blank=True, null=True)   
 	celular = models.CharField('Celular',max_length=50,blank=True, null=True)   	
-	especialidad = models.ForeignKey('ent_especialidad',db_column='especialidad',blank=True, null=True,related_name='med_especialidad',on_delete=models.SET_NULL)
+	especialidad = models.ForeignKey(ent_especialidad,db_column='especialidad',blank=True, null=True,related_name='med_especialidad',on_delete=models.SET_NULL)
 	observaciones = models.TextField('Observaciones',blank=True, null=True)       
 	
 	baja = models.BooleanField(default=False)

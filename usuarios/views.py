@@ -33,7 +33,7 @@ def ver_permisos(request):
             permisos = []
     except:
         permisos = []
-    
+        
     return permisos  
 
 
