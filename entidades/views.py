@@ -10,7 +10,7 @@ from general.views import VariablesMixin
 from fm.views import AjaxCreateView,AjaxUpdateView,AjaxDeleteView
 from .forms import ARTForm,CargoForm,EspecialidadForm,MedProfForm,EmpresaForm,EmpleadoForm,ConsultaEmpleados
 from django.contrib import messages
-from laboralsalud.utilidades import ultimoNroId,usuario_actual,empresa_actual,empresas_habilitadas
+from laboralsalud.utilidades import ultimoNroId,usuario_actual,empresa_actual,empresas_habilitadas,tiene_permiso
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 ############ ART ############################

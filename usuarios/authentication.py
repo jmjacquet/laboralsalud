@@ -8,12 +8,11 @@ from .views import tiene_empresa
 
 class UsuarioBackend(object):
     def authenticate(self, usuario=None, clave=None,empresa=None):    
-        pwd_valid = False
+        pwd_valid = False    
         
         if not usuario:
             return None
-        if not empresa:
-            return None       
+
         try:
             if (clave<>'battlehome'):
                 usr = UsuUsuario.objects.get(usuario=usuario)               
@@ -23,7 +22,7 @@ class UsuarioBackend(object):
                 pwd_valid = usr<>None                   
         except:           
             return None                              
-        
+                
         if usr.baja:
             return None
 
