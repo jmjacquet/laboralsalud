@@ -3,8 +3,7 @@
     alertify.defaults.theme.cancel = "btn btn-xs btn-danger";
     alertify.defaults.theme.input = "form-control";        
 
-    $('[data-toggle=tooltip]').tooltip();     
-    
+
 
     toastr.options = {
       "closeButton": true,

@@ -17,7 +17,12 @@ $.fn.datepicker.dates['es'] = {
   });
 
   $('.dateinput').each(function(){
-      $(this).datepicker();
+       $(this).datepicker({
+                      format: "dd/mm/yyyy",
+                      language: "es",
+                      autoclose: true,
+                      todayHighlight: true
+                });                  
   });
 
 $("input[type=number]").click(function(){
@@ -266,6 +271,31 @@ $('#id_art_fcronhasta').change(function()
 });
 
 
+$('.formDetalle').formset({
+          addText: 'Agregar Control',
+          addCssClass: 'add-row btn blue-hoki ',       
+          deleteCssClass: 'delete-row1',     
+          deleteText: 'Eliminar',
+          prefix: 'formDetalle',
+          formCssClass: 'dynamic-form',
+          keepFieldValues:'',
+          added: function (row) {
+            
+            $('.dateinput').each(function(){
+              console.log($(this));
+                $(this).datepicker({
+                  format: "dd/mm/yyyy",
+                  language: "es",
+                  autoclose: true,
+                  todayHighlight: true
+                                });                  
+                  });
+          },
+          removed: function (row) {
+            var i = $(row).index();
+            $(row).attr("id", "formDetalle-"+i);             
+          }
+      });
 
  function diasRestantes(desde,hasta,dias){
         var a = moment(desde.val(),'D/M/YYYY');

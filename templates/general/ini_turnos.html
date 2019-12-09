@@ -7,7 +7,8 @@
     <table width="100%" id="fturnos" class="table table-striped table-hover table-no-bordered tabla_nueva text-nowrap">         
     <thead >
         <tr>
-            <th class="imprimir">Fecha</th>
+            <th class="no-sort text-center" data-priority="1"></th>
+            <th class="imprimir">Fecha/Hora</th>
             <th class="imprimir">Empleado</th>
             <th class="imprimir">Empresa</th>
             <th class="imprimir">Estado</th>
@@ -18,7 +19,11 @@
     <tbody>
         {% for t in turnos %}
         <tr>    
-            <td title="{{ t.observaciones|default_if_none:''}}">{{ t.fecha|date:'d/m/Y' }}</td>
+            <td class="text-center">
+            <a href="{% url 'turnos_detalles' id=t.pk %}" class="modal-detail" data-modal-head="DETALLE TURNO">
+                            {{ t.get_turno }}</a>
+          </td>
+            <td title="{{ t.observaciones|default_if_none:''}}">{{ t.fecha|date:'d/m/Y' }} {{ t.hora|time:"H:i" }}hs</td>
             <td title="{{ t.empleado|default_if_none:''}}"><a href="{% url 'empleado_detalles' id=t.empleado.id %}"  class="modal-detail" data-modal-head="DETALLE EMPLEADO {{t.empleado.legajo}}" data-fm-callback="reload"><strong>{{ t.empleado|default_if_none:''|truncatechars:60 }}</strong></a></td>
             <td title="{{ t.empresa|default_if_none:''}}">{{ t.empresa|default_if_none:''|truncatechars:60 }}</td>
             <td>{{ t.get_estado_display|default_if_none:'' }}</td>
@@ -29,6 +34,7 @@
     </tbody>
     <tfoot>
       <tr>
+          <th></th>
           <th></th>
           <th></th> 
           <th></th>

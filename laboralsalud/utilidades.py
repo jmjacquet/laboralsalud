@@ -284,7 +284,7 @@ def empresas_habilitadas(request):
     if usu.tipoUsr == 0:
         lista = list(ent_empresa.objects.filter(baja=False).values_list('id', flat=True))    
     else:
-        lista = [int(e.id)] + sucursales        
+        lista = [int(e.id)] + sucursales            
     return lista
 
 import json

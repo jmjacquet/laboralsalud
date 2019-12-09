@@ -22,4 +22,11 @@ $.fn.datepicker.dates['es'] = {
         $(this).datepicker();
     });
 
+    
+$("#id_empleado").chosen({
+      no_results_text: "Empleado inexistente...",
+      placeholder_text_single:"Seleccione un Empleado",
+      allow_single_deselect: true,
+  });
+
 });

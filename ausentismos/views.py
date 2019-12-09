@@ -3,21 +3,21 @@ from __future__ import unicode_literals
 from django.shortcuts import render
 from django.template import RequestContext,Context
 from django.shortcuts import *
-from .models import *
 from django.views.generic import TemplateView,ListView,CreateView,UpdateView,FormView,DetailView
 from django.conf import settings
-from general.views import VariablesMixin
-# from fm.views import AjaxCreateView,AjaxUpdateView,AjaxDeleteView
 from django.utils.decorators import method_decorator
-from .forms import AusentismoForm,PatologiaForm,DiagnosticoForm,ConsultaAusentismos
 from django.contrib import messages
 from laboralsalud.utilidades import ultimoNroId,usuario_actual
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from fm.views import AjaxCreateView,AjaxUpdateView,AjaxDeleteView
 from django.db.models import Q,Sum,Count,FloatField,Func
+from django.forms.models import inlineformset_factory,BaseInlineFormSet,formset_factory
 
-
+from .models import *
+from general.views import VariablesMixin
+from usuarios.views import tiene_permiso
+from .forms import AusentismoForm,PatologiaForm,DiagnosticoForm,ConsultaAusentismos,ControlesDetalleForm
 ############ AUSENTISMOS ############################
 
 class AusentismoView(VariablesMixin,ListView):
@@ -79,6 +79,11 @@ class AusentismoView(VariablesMixin,ListView):
     def post(self, *args, **kwargs):
         return self.get(*args, **kwargs)
 
+
+class ControlesDetalleFormSet(BaseInlineFormSet): 
+    pass  
+ControlDetalleFormSet = inlineformset_factory(ausentismo, ausentismo_controles,form=ControlesDetalleForm,formset=ControlesDetalleFormSet, can_delete=True,extra=0,min_num=1,can_order=True)
+
 class AusentismoCreateView(VariablesMixin,CreateView):
     form_class = AusentismoForm
     template_name = 'ausentismos/ausentismo_form.html'
@@ -89,9 +94,30 @@ class AusentismoCreateView(VariablesMixin,CreateView):
             return redirect(reverse('principal'))
         return super(AusentismoCreateView, self).dispatch(*args, **kwargs)
 
-    def form_valid(self, form):                
-        #form.instance.empresa = empresa_actual(self.request)
-        form.instance.usuario = usuario_actual(self.request)        
+    def get(self, request, *args, **kwargs):
+        self.object = None
+        form_class = self.get_form_class()
+        form = self.get_form(form_class)                               
+        controles_detalle = ControlDetalleFormSet(prefix='formDetalle')                
+        return self.render_to_response(self.get_context_data(form=form,controles_detalle = controles_detalle))
+
+    def post(self, request, *args, **kwargs):
+        self.object = None
+        form_class = self.get_form_class()
+        form = self.get_form(form_class)               
+        controles_detalle = ControlDetalleFormSet(self.request.POST,prefix='formDetalle')       
+        if form.is_valid() and controles_detalle.is_valid():
+            return self.form_valid(form, controles_detalle)
+        else:
+            return self.form_invalid(form,controles_detalle)        
+
+    def form_valid(self, form,controles_detalle):                                
+        self.object = form.save(commit=False)                           
+        self.object.usuario = usuario_actual(self.request)             
+        self.object.save()
+        controles_detalle.instance = self.object
+        controles_detalle.ausentismo = self.object.id        
+        controles_detalle.save()   
         return super(AusentismoCreateView, self).form_valid(form)
 
     def get_form_kwargs(self):
@@ -105,8 +131,8 @@ class AusentismoCreateView(VariablesMixin,CreateView):
         initial['tipo_form'] = 'ALTA'
         return initial    
 
-    def form_invalid(self, form):
-        return super(AusentismoCreateView, self).form_invalid(form)
+    def form_invalid(self, form,controles_detalle):                                                       
+        return self.render_to_response(self.get_context_data(form=form,controles_detalle = controles_detalle))
 
     def get_success_url(self):
         messages.success(self.request, u'Los datos se guardaron con éxito!')

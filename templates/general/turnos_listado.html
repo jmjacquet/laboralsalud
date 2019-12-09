@@ -27,23 +27,21 @@
             <tr>
                 <th>#</th>
                 <th class="imprimir">Nº</th>
-                <th class="imprimir">Fecha</th>
+                <th class="imprimir">Fecha/Hora</th>
                 <th class="imprimir">Empleado</th>
                 <th class="imprimir">Empresa</th>
                 <th class="imprimir">Estado</th>
                 <th class="imprimir">Detalle</th>
-                <th class="imprimir">Observaciones</th>
-                <th class="imprimir">F.Carga</th>           
-                <th class="imprimir">Usuario</th>                                           
+                <th class="imprimir">Observaciones</th>                                          
             </tr>
         </thead>
         <tbody>
             {% for t in turnos %}
-            <tr
-             {% if a.baja %}
+            <tr 
+             {% if t.baja %}
                 class='danger'
-             {% elif a.estado == '1' %}class='success'
-             {% elif a.estado == '2' %}class='danger'
+             {% elif t.estado == 1 %}class='success'
+             {% elif t.estado == 2 %}class='danger'
              {% endif %}>
                 
                 <td><div class="btn-group">
@@ -54,17 +52,17 @@
                         
                         <li><a href="{% url 'turnos_editar' id=t.pk %}"  class="fm-update " title="Editar" data-fm-callback="reload" data-fm-head="EDITAR TURNO"data-fm-target="#object-{{ t.pk }}"><i class="icon-note"></i> Editar</a></li>
 
-                        {% if a.estado != '1' %}
+                        {% if t.estado != 1 %}
                         <li><a href="#" 
                                 onClick="alerta= alertify.dialog('confirm').set({'labels':{ok:'Aceptar', cancel:'Cancelar'},'message': '¿DESEA MODIFICAR EL ESTADO DEL TURNO?',transition:'fade','onok': function(){ window.location.href = '{% url 'turnos_estado' id=t.pk estado=1  %}'; },'oncancel': function(){ return true;} }); alerta.setting('modal', true); alerta.setHeader('ASISTENCIA'); alerta.show(); return true;" ><i class="icon-like"></i>Marcar Asistencia</a>
                         </li>
-                        {% endif %}>     
-                        {% if a.estado != '2' %}
+                        {% endif %}     
+                        {% if t.estado != 2 %}
                         <li><a href="#" 
                                 onClick="alerta= alertify.dialog('confirm').set({'labels':{ok:'Aceptar', cancel:'Cancelar'},'message': '¿DESEA MODIFICAR EL ESTADO DEL TURNO?',transition:'fade','onok': function(){ window.location.href = '{% url 'turnos_estado' id=t.pk estado=2  %}'; },'oncancel': function(){ return true;} }); alerta.setting('modal', true); alerta.setHeader('NO ASISTENCIA'); alerta.show(); return true;" ><i class="icon-dislike"></i>Marcar Inasistencia</a>
                         </li>
-                        {% endif %}>
-                        {% if a.estado != '0' %}
+                        {% endif %}
+                        {% if t.estado != 0 %}
                         <li><a href="#" 
                                 onClick="alerta= alertify.dialog('confirm').set({'labels':{ok:'Aceptar', cancel:'Cancelar'},'message': '¿DESEA MODIFICAR EL ESTADO DEL TURNO?',transition:'fade','onok': function(){ window.location.href = '{% url 'turnos_estado' id=t.pk estado=0  %}'; },'oncancel': function(){ return true;} }); alerta.setting('modal', true); alerta.setHeader('DEJAR PENDIENTE'); alerta.show(); return true;" ><i class="icon-minus"></i>Marcar Pendiente</a>
                         </li>
@@ -75,15 +73,13 @@
                 </td>              
                 
                 <td><a href="{% url 'turnos_detalles' id=t.pk %}" class="modal-detail" data-modal-head="DETALLE TURNO">
-                            {{ t.get_turno }}</a></td>
-                <td>{{ t.fecha|date:'d/m/Y' }}</td>
+                            <strong>{{ t.get_turno }}</strong></a></td>
+                <td>{{ t.fecha|date:'d/m/Y' }} {{ t.hora|time:"H:i" }}hs</td>
                 <td title="{{ t.empleado.apellido_y_nombre|default_if_none:''}}"><a href="{% url 'empleado_detalles' id=t.empleado.id %}"  class="modal-detail" data-modal-head="DETALLE EMPLEADO {{t.empleado.legajo}}" data-fm-callback="reload"><strong>{{ t.empleado.apellido_y_nombre|default_if_none:''|truncatechars:60 }}</strong></a></td>
                 <td title="{{ t.empresa|default_if_none:''}}">{{ t.empresa|default_if_none:''|truncatechars:60 }}</td>
                 <td>{{ t.get_estado_display|default_if_none:'' }}</td>
                 <td title="{{ t.detalle|default_if_none:''}}">{{ t.detalle|default_if_none:''|truncatechars:60 }}</td>
                 <td title="{{ t.observaciones|default_if_none:''}}">{{ t.observaciones|default_if_none:''|truncatechars:60 }}</td>
-                <td>{{ t.fecha_creacion|date:'d/m/Y' }}</td>
-                <td>{{ t.usuario_carga|default_if_none:'' }}</td>                                
             </tr>
             {% endfor %}
         </tbody>
@@ -96,9 +92,7 @@
                 <th></th>
                 <th></th>
                 <th></th>
-                <th></th>
-                <th></th>
-                <th></th>                                                                
+                <th></th>                                                             
             </tr>
         </tfoot>
         

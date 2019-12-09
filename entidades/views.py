@@ -10,8 +10,9 @@ from general.views import VariablesMixin
 from fm.views import AjaxCreateView,AjaxUpdateView,AjaxDeleteView
 from .forms import ARTForm,CargoForm,EspecialidadForm,MedProfForm,EmpresaForm,EmpleadoForm,ConsultaEmpleados
 from django.contrib import messages
-from laboralsalud.utilidades import ultimoNroId,usuario_actual,empresa_actual,empresas_habilitadas,tiene_permiso
+from laboralsalud.utilidades import ultimoNroId,usuario_actual,empresa_actual,empresas_habilitadas
 from django.contrib.auth.decorators import login_required
+from usuarios.views import tiene_permiso
 from django.utils.decorators import method_decorator
 ############ ART ############################
 
@@ -575,8 +576,10 @@ class EmpleadoCreateView(VariablesMixin,AjaxCreateView):
         initial = super(EmpleadoCreateView, self).get_initial()               
         initial['legajo'] = '{0:0{width}}'.format((ultimoNroId(ent_empleado)+1),width=4)
         initial['request'] = self.request        
+        empresa = empresa_actual(self.request)
         initial['empresa'] = empresa_actual(self.request)       
-        initial['art'] = empresa_actual(self.request).art  
+        if empresa:
+            initial['art'] = empresa_actual(self.request).art  
         initial['tipo_form'] = 'ALTA'  
         return initial    
 

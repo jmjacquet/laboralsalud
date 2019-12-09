@@ -15,13 +15,35 @@ class MedicoModelChoiceField(forms.ModelChoiceField):
     def label_from_instance(self, obj):		
 		return obj.get_medico()
 
+class PatologiaForm(forms.ModelForm):
+	patologia = forms.CharField(widget=forms.TextInput(attrs={'autofocus': 'autofocus'}),required=True)	
+	codigo = forms.CharField(required=True)	
+	class Meta:
+			model = aus_patologia
+			exclude = ['id','baja']
+
+	def __init__(self, *args, **kwargs):
+		request = kwargs.pop('request', None)
+		super(PatologiaForm, self).__init__(*args, **kwargs)		
+
+class DiagnosticoForm(forms.ModelForm):
+	diagnostico = forms.CharField(widget=forms.TextInput(attrs={'autofocus': 'autofocus'}),required=True)	
+	codigo = forms.CharField(required=True)	
+	class Meta:
+			model = aus_diagnostico
+			exclude = ['id','baja']
+
+	def __init__(self, *args, **kwargs):
+		request = kwargs.pop('request', None)
+		super(DiagnosticoForm, self).__init__(*args, **kwargs)					
+
 class AusentismoForm(forms.ModelForm):
 	empleado = EmpleadoModelChoiceField(label='',queryset=ent_empleado.objects.filter(baja=False),empty_label='---',required = False)		
 	tipo_ausentismo = forms.ChoiceField(label='',choices=TIPO_AUSENCIA,required=False,initial=1)
 	tipo_control = forms.ChoiceField(label='',choices=TIPO_CONTROL,required=False,initial='C')
 	aus_control = forms.ChoiceField(label=u'¿Asistió a Control?',choices=SINO,required=False,initial='N')
 	aus_certificado = forms.ChoiceField(label=u'¿Presenta Certificado?',choices=SINO,required=False,initial='N')
-	observaciones = forms.CharField(label='Observaciones',widget=forms.Textarea(attrs={'class':'form-control2', 'rows': 2}),required = False)	
+	observaciones = forms.CharField(label='Observaciones Generales',widget=forms.Textarea(attrs={'class':'form-control2', 'rows': 2}),required = False)	
 	descr_altaparc = forms.CharField(label=u'Características de Alta con Restricción',widget=forms.Textarea(attrs={'class':'form-control2', 'rows': 2}),required = False)	
 	detalle_acc_art = forms.CharField(label='Detalle Accidente ART',widget=forms.Textarea(attrs={'class':'form-control2', 'rows': 2}),required = False)	
 	estudios_partic = forms.CharField(label=u'Estudios Particulares',widget=forms.Textarea(attrs={'class':'form-control2', 'rows': 2}),required = False)	
@@ -99,28 +121,17 @@ class AusentismoForm(forms.ModelForm):
 
 		return self.cleaned_data
 
-
-class PatologiaForm(forms.ModelForm):
-	patologia = forms.CharField(widget=forms.TextInput(attrs={'autofocus': 'autofocus'}),required=True)	
-	codigo = forms.CharField(required=True)	
+class ControlesDetalleForm(forms.ModelForm):	
+	ausentismo = forms.IntegerField(widget = forms.HiddenInput(), required = False)
+	detalle = forms.CharField(label='Detalle',widget=forms.Textarea(attrs={ 'class':'form-control','rows': 2}),required = False)				
+	fecha = forms.DateField(required = False,widget=forms.DateInput(attrs={'class': 'dateinput'}))	
 	class Meta:
-			model = aus_patologia
-			exclude = ['id','baja']
+			model = ausentismo_controles
+			exclude = ['id','fecha_creacion','fecha_modif','usuario_carga']
 
 	def __init__(self, *args, **kwargs):
 		request = kwargs.pop('request', None)
-		super(PatologiaForm, self).__init__(*args, **kwargs)		
-
-class DiagnosticoForm(forms.ModelForm):
-	diagnostico = forms.CharField(widget=forms.TextInput(attrs={'autofocus': 'autofocus'}),required=True)	
-	codigo = forms.CharField(required=True)	
-	class Meta:
-			model = aus_diagnostico
-			exclude = ['id','baja']
-
-	def __init__(self, *args, **kwargs):
-		request = kwargs.pop('request', None)
-		super(DiagnosticoForm, self).__init__(*args, **kwargs)			
+		super(ControlesDetalleForm, self).__init__(*args, **kwargs)
 
 
 

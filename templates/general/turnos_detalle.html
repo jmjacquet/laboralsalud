@@ -11,7 +11,7 @@
                 <td class="titulo">Empleado:</td><td colspan="3" id="art" class="dato">{{t.empleado|default_if_none:''}}</td>
               </tr>
               <tr>
-                <td class="titulo">Fecha:</td><td id="nro_doc" class="dato">{{t.fecha|date:'d/m/Y'}}</td>
+                <td class="titulo">Fecha/Hora:</td><td id="nro_doc" class="dato">{{t.fecha|date:'d/m/Y'}} {{ t.hora|time:"H:i" }}hs</td>
                 <td class="titulo">Detalle:</td><td id="art" class="dato">{{t.detalle|default_if_none:''}}</td>
               </tr>               
               <tr>

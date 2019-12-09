@@ -147,5 +147,15 @@ class ausentismo(models.Model):
 			return self.art_fcontrol					
 
 
-
+class ausentismo_controles(models.Model):
+	id = models.AutoField(primary_key=True,db_index=True)
+	ausentismo = models.ForeignKey('ausentismo',db_column='ausentismo',related_name='control_ausentismo',blank=True, null=True,on_delete=models.CASCADE)
+	fecha = models.DateField(blank=True, null=True)
+	detalle = models.TextField(max_length=500,blank=True, null=True) # Field name made lowercase.   
+	fecha_creacion = models.DateField(auto_now_add = True)
+	fecha_modif = models.DateField(auto_now = True)			
+	usuario_carga = models.ForeignKey('usuarios.UsuUsuario',db_column='usuario_carga',blank=True, null=True,related_name='control_usuario_carga',on_delete=models.SET_NULL)    
+	class Meta:
+	    db_table = 'ausentismo_controles'
+	    ordering = ['fecha','id']
 

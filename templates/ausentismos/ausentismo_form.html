@@ -8,9 +8,9 @@
 {% block extra_css %}
 	<link rel="stylesheet" href="{% static 'css/abms.css'%}?{% now "Ymd"%}" type="text/css" >
 {% endblock %}
-{% block extra_js %}        
-{% endblock %}
-{% block scripts_js %}   
+
+{% block extra_js %}   
+	<script src="{% static 'js/jquery.formset.js' %}" type="text/javascript"></script>
 	<script src="{% static 'js/scripts/ausentismos.js' %}" type="text/javascript"></script>
 {% endblock %}
 
@@ -263,6 +263,42 @@
 										</fieldset>								
 									</div>							
 						</div>
+					</div>
+					<div class="row cerca">
+					 <div class="col-xs-12">
+						<fieldset>
+							<legend>CONTROLES ADICIONALES REALIZADOS</legend>
+							<div class="row cerca">
+								<div class="col-sm-12">
+									<table id="id_forms_table" width="100%" class="table tabla table-condensed tabla_listado">
+					                    <thead>
+					                          <tr>
+					                              <th style="width: 10%;">Fecha Control</th>					                              
+					                              <th>Detalle</th>						                             
+					                              <th style="width: 10px;" class="remove-sorting"></th>
+					                          </tr>
+					                    </thead>					                    
+	  			                        <tbody class='form-detalles'>       											                    	
+					                    	{{ controles_detalle.management_form }}
+					                    	{{ controles_detalle.non_form_errors  }}
+					                    	{% for form2 in controles_detalle.forms %}					                      								                      	
+					                    	  	{{ form2.non_field_errors }}					                      								                      	
+						                      	<tr class="formDetalle" id="{{ form2.prefix }}">           					                      	
+							                      	<td>{% bootstrap_field form2.fecha show_label=False%}</td>
+							                      	<td>{% bootstrap_field form2.detalle show_label=False%}</td>							                      	
+							                      	<td>{{form2.DELETE}}
+							                      	 <a class="btn btn-danger delete-row1" title="Eliminar">
+							                      			<i class="fa fa-times" aria-hidden="true"></i></a>		 
+							                      	</td>
+							                      	{% for hidden in form2.hidden_fields %} {{ hidden }} {% endfor %}
+							                    </tr>								                    
+					                     	{% endfor %}							                     	
+					                    </tbody>
+					                </table>                 
+								</div>								
+							</div>
+						</fieldset>
+					 </div>
 					</div>
 					<div class="row cerca">
 					 <div class="col-xs-12">

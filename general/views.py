@@ -92,7 +92,7 @@ def getVariablesMixin(request):
                                         or('pat_pantalla' in permisos_grupo)or('diag_pantalla' in permisos_grupo)or('ptrab_pantalla' in permisos_grupo)or('esp_pantalla' in permisos_grupo)
 
     context['empresas'] = ent_empresa.objects.filter(baja=False)
-    context['sitio_mobile'] = mobile(self.request)
+    context['sitio_mobile'] = mobile(request)
     context['hoy'] =  hoy()
     return context
     
@@ -302,6 +302,7 @@ class TurnosCreateView(VariablesMixin,AjaxCreateView):
         initial = super(TurnosCreateView, self).get_initial()                       
         initial['request'] = self.request        
         initial['estado'] = 0
+        initial['tipo_form'] = 'ALTA'
         return initial    
 
     def form_invalid(self, form):
@@ -310,7 +311,6 @@ class TurnosCreateView(VariablesMixin,AjaxCreateView):
     def get_success_url(self):
         messages.success(self.request, u'Los datos se guardaron con éxito!')
         return reverse('turnos_listado')
-
 
 
 class TurnosEditView(VariablesMixin,AjaxUpdateView):
