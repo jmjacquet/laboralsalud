@@ -108,9 +108,13 @@ class PrincipalView(VariablesMixin,TemplateView):
         form = ConsultaFechasInicio(self.request.POST or None)  
         fecha=hoy()        
         if form.is_valid():
-            fecha = form.cleaned_data['fecha']
-        if not fecha:
-            fecha=hoy()
+            fecha1 = form.cleaned_data['fecha1']
+            fecha2 = form.cleaned_data['fecha2']
+        if not fecha1:
+            fecha1=hoy()
+        if not fecha2:
+            fecha2=hoy()            
+            
         ausentismos = ausentismo.objects.filter(baja=False,fecha_creacion=fecha)
         fechas_control = ausentismo.objects.filter(baja=False,aus_fcontrol=fecha)
         prox_turnos = turnos.objects.filter(empresa__pk__in=empresas_habilitadas(self.request),fecha__gte=fecha)

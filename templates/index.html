@@ -16,15 +16,16 @@
 
 {% block principal %}	
 <br>
-<div class="panel  panel-primary">
+<form class="form" accept-charset="UTF-8" role="form" action="" method="post">{% csrf_token %}
+<div class="row cerca"> 
+  <div class="col-sm-7"> 
+    <div class="panel  panel-primary">
       
-      <div class="panel-heading barra_busqueda">
+    <div class="panel-heading barra_busqueda">
         {% if esAdmin %}
-      	<div class="caption pull-right" title="Actualizar a la Fecha seleccionada">
-           <form class="form" accept-charset="UTF-8" role="form" action="" method="post">{% csrf_token %}
-           <div class="col-xs-8">{{form.fecha}}</div>
-           <div class="col-xs-2"><button title="Recargar" class="btn btn-xs btn-circle pull-right boton_busqueda" type="submit"><i class="icon-refresh"></i></button></div>
-           </form>
+        <div class="caption pull-right" title="Actualizar a la Fecha seleccionada">           
+           <div class="col-xs-8">{{form.fecha1}}</div>
+           <div class="col-xs-2"><button title="Recargar" class="btn btn-xs btn-circle pull-right boton_busqueda" type="submit"><i class="icon-refresh"></i></button></div>           
         </div>
         {% endif %}
         <ul class="nav nav-tabs">
@@ -34,36 +35,56 @@
             <li class="">
                 <a href="#tab_2" id="pfcontrol" data-toggle="tab" aria-expanded="false"> CONTROLES PROGRAMADOS</a>
             </li>  
-            <li class="">
-                <a href="#tab_3" id="pturnos" data-toggle="tab" aria-expanded="false"> TURNOS PROGRAMADOS </a>
-            </li>
-                                                                               
-             
         </ul>
     </div>
-	
+  
     <div class="panel-body">
-		<div class="tab-content">            
-		    <div class="tab-pane active" id="tab_1">
-		        <div id="pausentismos" style="padding: 0px; position: relative;"> 
-		            {% include 'general/ini_ausentismos.html' %}
-		        </div>
-		    </div>
-        <div class="tab-pane" id="tab_2">
-            <div id="pfcontrol" style="padding: 0px; position: relative;"> 
-                {% include 'general/ini_fcontrol.html' %}
-            </div>
+      <div class="tab-content">            
+          <div class="tab-pane active" id="tab_1">
+              <div id="pausentismos" style="padding: 0px; position: relative;"> 
+                  {% include 'general/ini_ausentismos.html' %}
+              </div>
+          </div>
+          <div class="tab-pane" id="tab_2">
+              <div id="pfcontrol" style="padding: 0px; position: relative;"> 
+                  {% include 'general/ini_fcontrol.html' %}
+              </div>
+          </div>
+      </div>            
+    </div>
+</div> 
+  </div>
+  <div class="col-sm-5"> 
+    <div class="panel  panel-primary">
+      
+    <div class="panel-heading barra_busqueda">
+        {% if esAdmin %}
+        <div class="caption pull-right" title="Actualizar a la Fecha seleccionada">
+           <div class="col-xs-8">{{form.fecha2}}</div>
+           <div class="col-xs-2"><button title="Recargar" class="btn btn-xs btn-circle pull-right boton_busqueda" type="submit"><i class="icon-refresh"></i></button></div>           
         </div>
-		    <div class="tab-pane" id="tab_3">
-		        <div id="pturnos" style="padding: 0px; position: relative;"> 
-		            {% include 'general/ini_turnos.html' %}
-		        </div>
-		    </div>
-        
-		</div>            
-	</div>
-
-</div>  
+        {% endif %}
+        <ul class="nav nav-tabs">
+            <li class="active">
+                <a href="#tab_21" id="pturnos" data-toggle="tab" aria-expanded="true">TURNOS PROGRAMADOS</a>
+            </li>
+        </ul>
+    </div>
+  
+    <div class="panel-body">
+      <div class="tab-content">                      
+          <div class="tab-pane" id="tab_21">
+              <div id="pturnos" style="padding: 0px; position: relative;"> 
+                  {% include 'general/ini_turnos.html' %}
+              </div>
+          </div>
+      </div>            
+    </div>
+</div> 
+  </div>
+</div>
+</form>
+ 
 
 
 
