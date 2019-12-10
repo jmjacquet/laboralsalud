@@ -106,7 +106,8 @@ class PrincipalView(VariablesMixin,TemplateView):
     def get_context_data(self, **kwargs):
         context = super(PrincipalView, self).get_context_data(**kwargs)              
         form = ConsultaFechasInicio(self.request.POST or None)  
-        fecha=hoy()        
+        fecha1=hoy()        
+        fecha2=hoy()        
         if form.is_valid():
             fecha1 = form.cleaned_data['fecha1']
             fecha2 = form.cleaned_data['fecha2']
@@ -114,10 +115,11 @@ class PrincipalView(VariablesMixin,TemplateView):
             fecha1=hoy()
         if not fecha2:
             fecha2=hoy()            
-            
-        ausentismos = ausentismo.objects.filter(baja=False,fecha_creacion=fecha)
-        fechas_control = ausentismo.objects.filter(baja=False,aus_fcontrol=fecha)
-        prox_turnos = turnos.objects.filter(empresa__pk__in=empresas_habilitadas(self.request),fecha__gte=fecha)
+        print fecha1
+        print fecha2    
+        ausentismos = ausentismo.objects.filter(baja=False,fecha_creacion=fecha1)
+        fechas_control = ausentismo.objects.filter(baja=False,aus_fcontrol=fecha2)
+        prox_turnos = turnos.objects.filter(empresa__pk__in=empresas_habilitadas(self.request),fecha__gte=fecha2)
         context['form'] = form
         context['ausentismo'] = ausentismos.select_related('empleado','empleado__empresa','aus_grupop','aus_diagn')
         context['turnos'] = prox_turnos.order_by('fecha','estado').select_related('empleado','empleado__empresa','usuario_carga')

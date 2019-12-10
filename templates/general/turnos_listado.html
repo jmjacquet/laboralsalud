@@ -4,7 +4,8 @@
 {% load humanize %}
 
 {% block extra_css %}
-    <link rel="stylesheet" href="{% static 'css/calendar.css'%}?{% now "Ymd"%}" type="text/css" >  
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.4.0/fullcalendar.css"/>
+
 {% endblock %}
 
 {% block breadcrumbs %}              
@@ -99,16 +100,20 @@
     </table> 
 </div>
 <div class="col-sm-5">   
-{{ calendario }}
+<div id="calendar"></div>
 </div>                  
 
 {% endblock principal %}
 
 {% block scripts_js %}     
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.4.0/fullcalendar.min.js"></script>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.4.0/locale-all.js"></script>
+
 <script type="text/javascript">
 
-$(document).ready(function() { 
-   
+$(document).ready(function () {
+
 moment.locale('es');
 $.fn.dataTable.moment('DD/MM/YYYY'); 
 var tabla = $('#turnos').DataTable({
@@ -244,8 +249,47 @@ var tabla = $('#turnos').DataTable({
         });
 
 
+     
+         
+$('#calendar').fullCalendar({
+    header:{
+                left: 'prev,next today',
+                center: 'title',
+                right: 'month,agendaWeek'
+            },
+            locale: 'es',
+            defaultView: 'month',
+            editable: false,
+            selectable: true,
+            allDaySlot: false,
+            themeSystem: 'bootstrap3',
+    businessHours: {
+                      // days of week. an array of zero-based day of week integers (0=Sunday)
+                      dow: [ 1, 2, 3, 4,5,6 ], // Monday - Thursday
 
+                      start: '07:00', // a start time (10am in this example)
+                      end: '21:00', // an end time (6pm in this example)
+                    },
+    events: [
+                {% for t in turnos %}
+                    {
+                        title: '{{t.get_turno}}',
+                        description: '{{t.detalle}}',
+                        start: "{{ t.fecha|date:'Y-m-d' }}",
+                        id: "{{t.pk}}",
 
+                    },
+                {% endfor %}
+            ],
+    eventClick: function(info) {
+    info.jsEvent.preventDefault(); // don't let the browser navigate
+
+    if (info.event.url) {
+      window.open(info.event.url);
+    }
+  }
+});
+        
 });
 </script> 
 {% endblock scripts_js %}

@@ -73,3 +73,6 @@
 .chosen-container .chosen-results-scroll-down span,
 .chosen-container .chosen-results-scroll-up span{background-image:url("../img/chosen-sprite@2x.png") !important;background-size:52px 37px !important;background-repeat:no-repeat !important;}
 }
+.chosen-container.chosen-container-single {
+    width: 100% !important; /* or any value that fits your needs */
+}
