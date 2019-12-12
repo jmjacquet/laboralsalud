@@ -115,8 +115,7 @@ class PrincipalView(VariablesMixin,TemplateView):
             fecha1=hoy()
         if not fecha2:
             fecha2=hoy()            
-        print fecha1
-        print fecha2    
+           
         ausentismos = ausentismo.objects.filter(baja=False,fecha_creacion=fecha1)
         fechas_control = ausentismo.objects.filter(baja=False,aus_fcontrol=fecha2)
         prox_turnos = turnos.objects.filter(empresa__pk__in=empresas_habilitadas(self.request),fecha__gte=fecha2)

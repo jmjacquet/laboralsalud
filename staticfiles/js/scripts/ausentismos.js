@@ -9,20 +9,11 @@ $.fn.datepicker.dates['es'] = {
     today: "Hoy"
   };
   
- $('.dateinput').datepicker({
+ $('.datepicker').datepicker({
         format: "dd/mm/yyyy",
         language: "es",
         autoclose: true,
         todayHighlight: true
-  });
-
-  $('.dateinput').each(function(){
-       $(this).datepicker({
-                      format: "dd/mm/yyyy",
-                      language: "es",
-                      autoclose: true,
-                      todayHighlight: true
-                });                  
   });
 
 $("input[type=number]").click(function(){
@@ -280,16 +271,15 @@ $('.formDetalle').formset({
           formCssClass: 'dynamic-form',
           keepFieldValues:'',
           added: function (row) {
-            
-            $('.dateinput').each(function(){
-              console.log($(this));
-                $(this).datepicker({
-                  format: "dd/mm/yyyy",
-                  language: "es",
-                  autoclose: true,
-                  todayHighlight: true
-                                });                  
-                  });
+            $('.datepicker').each(function(){       
+                 $(this).datepicker('destroy');
+                 $(this).datepicker({
+                                format: "dd/mm/yyyy",
+                                language: "es",
+                                autoclose: true,
+                                todayHighlight: true
+                          });                  
+            });
           },
           removed: function (row) {
             var i = $(row).index();

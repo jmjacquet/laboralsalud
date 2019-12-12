@@ -124,7 +124,7 @@ class AusentismoForm(forms.ModelForm):
 class ControlesDetalleForm(forms.ModelForm):	
 	ausentismo = forms.IntegerField(widget = forms.HiddenInput(), required = False)
 	detalle = forms.CharField(label='Detalle',widget=forms.Textarea(attrs={ 'class':'form-control','rows': 2}),required = False)				
-	fecha = forms.DateField(required = False,widget=forms.DateInput(attrs={'class': 'dateinput'}))	
+	fecha = forms.DateField(required = False,widget=forms.DateInput(attrs={'class': 'datepicker'}))	
 	class Meta:
 			model = ausentismo_controles
 			exclude = ['id','fecha_creacion','fecha_modif','usuario_carga']

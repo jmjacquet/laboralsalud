@@ -15,7 +15,7 @@ class Calendar(HTMLCalendar):
 	# filter events by day
 	def formatday(self, day, events):
 		events_per_day = events.filter(fecha__day=day)
-		print events_per_day
+		
 		d = ''
 		for event in events_per_day:
 			d += '<ul style="list-style-type:none"><li> <a title="{}" href="{}" class="modal-detail" data-modal-head="DETALLE TURNO"><span class="label label-info"><i class="icon-user"></i>  {}</span></a></li></ul>'.format(unicode(event.empleado),reverse('turnos_detalles', kwargs={'id':event.pk}),unicode(event.get_turno()))			
