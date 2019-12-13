@@ -734,3 +734,19 @@ div.breadcrumbs a:focus, div.breadcrumbs a:hover {
 .dropdown:hover .dropdown-menu {
   display: block;
 }
+
+
+.popover-title {
+    padding: 8px 14px;
+    margin: 0;
+    font-size: 12px;
+    color: #fff;
+    background-color: #79aec8;
+    border-bottom: 1px solid #ebebeb;
+    border-radius: 5px 5px 0 0;
+}
+
+.popover-content {
+    padding: 5px 10px;
+    font-size: 12px;
+}

@@ -54,6 +54,23 @@ class AusentismoForm(forms.ModelForm):
 	aus_medico = MedicoModelChoiceField(label=u'Médico Tratante',queryset=ent_medico_prof.objects.filter(baja=False),required=False)
 	art_medico = MedicoModelChoiceField(label=u'Médico ART',queryset=ent_medico_prof.objects.filter(baja=False),required=False)
 	empresa = forms.ModelChoiceField(label='Empresa',queryset=ent_empresa.objects.filter(baja=False),required=False)
+	aus_fcontrol = forms.DateField(label='Fecha Control',required = False,widget=forms.DateInput(attrs={'class': 'datepicker'}))
+	aus_fcertif = forms.DateField(label='Fecha Certificado',required = False,widget=forms.DateInput(attrs={'class': 'datepicker'}))
+	aus_fentrega_certif = forms.DateField(label='Fecha Entrega Certif.',required = False,widget=forms.DateInput(attrs={'class': 'datepicker'}))
+	aus_fcrondesde = forms.DateField(label='Fecha Desde',required = False,widget=forms.DateInput(attrs={'class': 'datepicker'}))
+	aus_fcronhasta = forms.DateField(label='Fecha Hasta',required = False,widget=forms.DateInput(attrs={'class': 'datepicker'}))
+	aus_freintegro = forms.DateField(label='Fecha Reintegro',required = False,widget=forms.DateInput(attrs={'class': 'datepicker'}))
+	aus_falta = forms.DateField(label='Fecha Alta',required = False,widget=forms.DateInput(attrs={'class': 'datepicker'}))
+	aus_frevision = forms.DateField(label=u'F.Prox.Revisión',required = False,widget=forms.DateInput(attrs={'class': 'datepicker'}))
+	art_fcontrol = forms.DateField(label='Fecha Control',required = False,widget=forms.DateInput(attrs={'class': 'datepicker'}))
+	art_faccidente = forms.DateField(label='Fecha Accidente',required = False,widget=forms.DateInput(attrs={'class': 'datepicker'}))
+	art_fdenuncia = forms.DateField(label='Fecha Denuncia',required = False,widget=forms.DateInput(attrs={'class': 'datepicker'}))
+
+	art_fcrondesde = forms.DateField(label='Fecha Desde',required = False,widget=forms.DateInput(attrs={'class': 'datepicker'}))
+	art_fcronhasta = forms.DateField(label='Fecha Hasta',required = False,widget=forms.DateInput(attrs={'class': 'datepicker'}))
+	art_freintegro = forms.DateField(label='Fecha Reintegro',required = False,widget=forms.DateInput(attrs={'class': 'datepicker'}))
+	art_falta = forms.DateField(label='Fecha Alta',required = False,widget=forms.DateInput(attrs={'class': 'datepicker'}))
+	art_frevision = forms.DateField(label=u'F.Próx.Revisión',required = False,widget=forms.DateInput(attrs={'class': 'datepicker'}))
 	tipo_form = forms.CharField(widget = forms.HiddenInput(), required = False)	
 	class Meta:
 			model = ausentismo
@@ -67,10 +84,12 @@ class AusentismoForm(forms.ModelForm):
 
 	def clean(self):		
 		super(forms.ModelForm,self).clean()	
+		tipo_form = self.cleaned_data.get('tipo_form')
 		
 		empleado = self.cleaned_data.get('empleado')	
-		if not empleado:
-				self.add_error("empleado",u'¡Debe cargar un Empleado!')
+		if tipo_form=='ALTA':
+			if not empleado:
+					self.add_error("empleado",u'¡Debe cargar un Empleado!')
 
 		aus_grupop = self.cleaned_data.get('aus_grupop')	
 		if not aus_grupop:

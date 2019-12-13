@@ -72,6 +72,13 @@ ESTADO_TURNO = (
  (2,'NO ASISTIÓ'), 
 )
 
+ESTADO_TURNO_ = (
+ (0,'PENDIENTE'), 
+ (1,'ATENDIDO'), 
+ (2,'NO ASISTIÓ'), 
+ (3,'TODOS'), 
+)
+
 CATEG_FISCAL = (
 (1, 'IVA Responsable Inscripto'),          
 (2, 'Responsable No Inscripto'),          

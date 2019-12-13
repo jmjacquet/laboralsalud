@@ -10,6 +10,7 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.views.generic import TemplateView,ListView,CreateView,UpdateView,FormView,DetailView
 from fm.views import AjaxCreateView,AjaxUpdateView,AjaxDeleteView
+from django.db.models import Q,Sum,Count,FloatField,Func
 
 from .forms import TurnosForm,ConsultaTurnos,ConsultaFechasInicio
 from .models import turnos
@@ -105,6 +106,7 @@ class PrincipalView(VariablesMixin,TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(PrincipalView, self).get_context_data(**kwargs)              
+        
         form = ConsultaFechasInicio(self.request.POST or None)  
         fecha1=hoy()        
         fecha2=hoy()        
@@ -116,9 +118,10 @@ class PrincipalView(VariablesMixin,TemplateView):
         if not fecha2:
             fecha2=hoy()            
            
-        ausentismos = ausentismo.objects.filter(baja=False,fecha_creacion=fecha1)
-        fechas_control = ausentismo.objects.filter(baja=False,aus_fcontrol=fecha2)
+        ausentismos = ausentismo.objects.filter(baja=False).filter(Q(aus_fcronhasta__gte=fecha1,tipo_ausentismo=1)|Q(art_fcronhasta__gte=fecha1,tipo_ausentismo__gte=2))
+        fechas_control = ausentismo.objects.filter(baja=False).filter(Q(aus_frevision__gte=fecha1,tipo_ausentismo=1)|Q(art_frevision__gte=fecha1,tipo_ausentismo__gte=2))
         prox_turnos = turnos.objects.filter(empresa__pk__in=empresas_habilitadas(self.request),fecha__gte=fecha2)
+        
         context['form'] = form
         context['ausentismo'] = ausentismos.select_related('empleado','empleado__empresa','aus_grupop','aus_diagn')
         context['turnos'] = prox_turnos.order_by('fecha','estado').select_related('empleado','empleado__empresa','usuario_carga')
@@ -255,24 +258,21 @@ class TurnosView(VariablesMixin,ListView):
             empleado= form.cleaned_data['empleado']                           
             estado = form.cleaned_data['estado']
 
-            listado = turnos.objects.filter(empresa__pk__in=empresas_habilitadas(self.request),estado=estado)
+            listado = turnos.objects.filter(empresa__pk__in=empresas_habilitadas(self.request))
            
             if fdesde:                
                 listado = listado.filter(fecha__gte=fdesde)                         
             if fhasta:                
-                listado = listado.filter(fecha__gte=fhasta)                         
+                listado = listado.filter(fecha__lte=fhasta)                         
             if empresa:
                 listado= listado.filter(empresa=empresa)            
             if empleado:
                 listado= listado.filter(Q(empleado__apellido_y_nombre__icontains=empleado)|Q(empleado__nro_doc__icontains=empleado))
+
+            if int(estado)<3:
+                listado= listado.filter(estado=estado)            
                 
-        context['form'] = form
-        d = hoy()
-        
-        cal = Calendar(d.year, d.month)
-        # Call the formatmonth method, which returns our calendar as a table
-        html_cal = cal.formatmonth(withyear=True)
-        context['calendario'] = mark_safe(html_cal)        
+        context['form'] = form        
         context['turnos'] = listado
 
 
@@ -364,12 +364,10 @@ class TurnosVerView(VariablesMixin,DetailView):
         return super(TurnosVerView, self).dispatch(*args, **kwargs)   
 
 @login_required 
-def turno_baja_alta(request,id):
+def turno_eliminar(request,id):
     if not tiene_permiso(request,'turnos_pantalla'):
             return redirect(reverse('principal'))
-    ent = turnos.objects.get(pk=id)     
-    ent.baja = not ent.baja
-    ent.save()       
+    ent = turnos.objects.get(pk=id).delete()    
     messages.success(request, u'¡Los datos se guardaron con éxito!')
     return HttpResponseRedirect(reverse("turnos_listado"))            
 

@@ -16,7 +16,7 @@
 
 {% block breadcrumbs %}
 	<div class="breadcrumbs">
-		CARGA DE AUSENTISMOS
+		{% if form.tipo_form.value == 'ALTA' %}CARGA DE AUSENTISMOS{% else %}EDICIÓN AUSENTISMO{% endif %}		
 	</div>
 {% endblock breadcrumbs %}
 {% block cargando %}            
@@ -32,6 +32,7 @@
 				{% csrf_token %}
 				
 				<div class="col-xs-12">
+					
 					<div class="row cerca">
 					  {% if form.tipo_form.value == 'ALTA' %}
 					  <div class="col-xs-12 col-sm-6">
@@ -40,19 +41,22 @@
 							<div class="col-xs-12">{% bootstrap_field form.empresa show_label=False  %}</div>							
 						</fieldset>						
 					  </div>
-					   {% endif %}		
+					  {% endif %}		
 					  <div class="col-xs-12 col-sm-6">
 						<fieldset>
 							<legend>EMPLEADO</legend>
 							<div class="col-sm-11 col-xs-12">{% bootstrap_field form.empleado show_label=False  %}</div>
-							{% if not sitio_mobile %}
-								<div class="col-sm-1 hidden-xs">						                  
-					                  		<a id="nuevoEmpleado" href="{% url 'empleado_nuevo' %}" data-fm-head="AGREGAR EMPLEADO" class="recargarDatos fm-create" type="button" data-toggle="tooltip" data-fm-callback="recargarE" data-placement="top" title="Agregar Empleado"><i class="icon-users"></i></a>
-				                </div>        				
-						    {% endif %}		
+							{% if form.tipo_form.value == 'ALTA' %}
+								{% if not sitio_mobile  %}
+									<div class="col-sm-1 hidden-xs">						                  
+						                  		<a id="nuevoEmpleado" href="{% url 'empleado_nuevo' %}" data-fm-head="AGREGAR EMPLEADO" class="recargarDatos fm-create" type="button" data-toggle="tooltip" data-fm-callback="recargarE" data-placement="top" title="Agregar Empleado"><i class="icon-users"></i></a>
+					                </div>        				
+							    {% endif %}		
+						    {% endif %}
 						</fieldset>						
 					  </div>
 					</div>
+					 
 					
 					<div class="row cerca">
 						<div class="col-xs-12 col-sm-6">
@@ -264,6 +268,7 @@
 									</div>							
 						</div>
 					</div>
+					{% if form.tipo_form.value == 'EDICION' %}
 					<div class="row cerca">
 					 <div class="col-xs-12">
 						<fieldset>
@@ -300,6 +305,7 @@
 						</fieldset>
 					 </div>
 					</div>
+					{% endif %}	
 					<div class="row cerca">
 					 <div class="col-xs-12">
 						<fieldset>

@@ -39,11 +39,7 @@ $("input[type=number]").click(function(){
 
 
 
-$("#id_empleado").chosen({
-      no_results_text: "Empleado inexistente...",
-      placeholder_text_single:"Seleccione un Empleado",
-      allow_single_deselect: true,
-  });
+
 
 $("#id_aus_grupop").chosen({
       no_results_text: "Patología inexistente...",
@@ -273,12 +269,7 @@ $('.formDetalle').formset({
           added: function (row) {
             $('.datepicker').each(function(){       
                  $(this).datepicker('destroy');
-                 $(this).datepicker({
-                                format: "dd/mm/yyyy",
-                                language: "es",
-                                autoclose: true,
-                                todayHighlight: true
-                          });                  
+                            
             });
           },
           removed: function (row) {
@@ -299,8 +290,14 @@ $('#cargando').hide();
 if ($('#id_tipo_form').val()=='EDICION'){  
   $("#id_empleado").trigger("change");
 } else {
-  if ($("#id_empleado").val()=='')
+  $("#id_empleado").chosen({
+      no_results_text: "Empleado inexistente...",
+      placeholder_text_single:"Seleccione un Empleado",
+      allow_single_deselect: true,
+  });
+  if ($("#id_empleado").val()==''){
   $("#id_empresa").trigger("change");
+}
 };
 $("#id_tipo_ausentismo").trigger("change");
 

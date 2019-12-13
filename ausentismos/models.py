@@ -56,8 +56,8 @@ class ausentismo(models.Model):
 	aus_fcrondesde = models.DateField(u'Cronológica Desde',blank=True, null=True)
 	aus_fcronhasta = models.DateField(u'Cronológica Hasta',blank=True, null=True)
 	aus_diascaidos = models.IntegerField(u'Días Caídos',blank=True, null=True)
-	aus_diasjustif = models.IntegerField(u'Días Justif.',blank=True, null=True)
-	aus_freintegro = models.DateField(u'Reintegro',blank=True, null=True)
+	aus_diasjustif = models.IntegerField(u'Días Justificados',blank=True, null=True)
+	aus_freintegro = models.DateField(u'F.Reintegro',blank=True, null=True)
 	aus_falta = models.DateField(u'Fecha Alta',blank=True, null=True)
 	aus_tipo_alta = models.IntegerField('Tipo Alta',choices=TIPO_ALTA, blank=True, null=True)
 	aus_frevision = models.DateField(u'Fecha Próx.Control',blank=True, null=True)
@@ -142,9 +142,9 @@ class ausentismo(models.Model):
 	@property
 	def get_fcontrol(self):
 		if self.tipo_ausentismo==1:
-			return self.aus_fcontrol		
+			return self.aus_frevision		
 		else:
-			return self.art_fcontrol					
+			return self.art_frevision					
 
 
 class ausentismo_controles(models.Model):

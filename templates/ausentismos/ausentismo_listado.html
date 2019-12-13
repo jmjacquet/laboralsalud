@@ -29,34 +29,31 @@
                           <div class="col-sm-1">{% bootstrap_field form.fhasta  %}</div>                                    
                           <div class="col-sm-3">{% bootstrap_field form.empresa  %}</div>                                    
                           <div class="col-sm-2">{% bootstrap_field form.tipo_ausentismo  %}</div>                            
-                          <div class="col-sm-2">{% bootstrap_field form.empleado  %}</div>                                            
+                          <div class="col-sm-2">{% bootstrap_field form.empleado  %}</div>
                           <div class="col-sm-1">{% bootstrap_field form.estado  %}</div>      
-                          <div class="col-sm-1"><button class="btn btn-xs text-center" type="submit">Buscar</button></div>                
+                          <div class="col-sm-1"><button class="btn btn-xs text-center" type="submit">Buscar</button></div>          
                         </form>             
                       </div>
               </div>  
           </div>                  
         </div>
-       
-              
-       
      
         <a class="btn btn-xs btn-primary" style="float:left;margin-right:20px;" href="{% url 'ausentismo_nuevo' %}" >Cargar Ausentismo</a>
         <table width="100%" id="ausentismos" style="display:none;" class="table table-striped compact table-hover table-no-bordered tabla_nueva text-nowrap">         
             <thead >
                 <tr>
                     <th class="no-sort text-center" data-priority="1">#</th>
-                    <th class="imprimir" data-priority="2">F.Carga</th>
-                    <th class="imprimir" data-priority="2">Documento</th>
-                    <th class="imprimir" data-priority="3">Apellido y Nombre</th>
-                    <th class="imprimir" data-priority="4">F.Control</th>
-                    <th class="imprimir" data-priority="5">Empresa</th>
-                    <th class="imprimir" data-priority="6">Tipo Ausentismo</th>
-                    <th class="imprimir" data-priority="7">Días Caídos</th>
-                    <th class="imprimir" data-priority="8">F.Desde</th>
-                    <th class="imprimir" data-priority="9">F.Hasta</th>
+                    <th class="imprimir" data-priority="2">F.Desde</th>
+                    <th class="imprimir" data-priority="3">F.Hasta</th>
+                    <th class="imprimir" data-priority="4">Días Caídos</th>                    
+                    <th class="imprimir" data-priority="5">Documento</th>
+                    <th class="imprimir" data-priority="6">Apellido y Nombre</th>
+                    <th class="imprimir" data-priority="7">F.Control</th>
+                    <th class="imprimir" data-priority="8">Empresa</th>
+                    <th class="imprimir" data-priority="9">Tipo Ausentismo</th>                    
                     <th class="imprimir" data-priority="10">Patología</th>
                     <th class="imprimir" data-priority="11">Diagnóstico</th>
+                    <th class="imprimir" data-priority="12">F.Carga</th>
                 </tr>
             </thead>
             <tbody>
@@ -66,33 +63,34 @@
                     class='danger'
                  {% endif %}>
                     
-                    <td><div class="btn-group">
+                    <td>
+                        <div class="btn-group">
                           <button type="button" title="{{ a.pk|safe}}" class="btn btn-xs color_barra" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <i class="icon-settings"> </i> <span class="caret"></span>
                           </button>
                           <ul class="dropdown-menu">
                             <li><a href="{% url 'ausentismo_detalles' id=a.pk %}" class="modal-detail" data-modal-head="DETALLE AUSENTISMO">
-                            <i class=" icon-screen-desktop"></i> Detalle</a></li>
-                            
-                            <li><a href="{% url 'ausentismo_editar' id=a.pk %}"  title="Editar"><i class="icon-note"></i> Editar</a></li>
-
+                            <i class=" icon-screen-desktop"></i> Detalle</a></li>                            
+                            <li>
+                                <a href="{% url 'ausentismo_editar' id=a.pk %}"  title="Editar"><i class="icon-note"></i> Editar</a>
+                            </li>
                             <li><a href="#" 
                                     onClick="alerta= alertify.dialog('confirm').set({'labels':{ok:'Aceptar', cancel:'Cancelar'},'message': '¿DESEA DAR DE BAJA/REACTIVAR EL REGISTRO ACTUAL?',transition:'fade','onok': function(){ window.location.href = '{% url 'ausentismo_baja_alta' id=a.pk  %}'; },'oncancel': function(){ return true;} }); alerta.setting('modal', true); alerta.setHeader('BAJA/REACTIVAR'); alerta.show(); return true;" ><i class="icon-dislike"></i><i class="icon-like"></i>Baja/Reactivar</a>
-                                </li>     
+                            </li>     
                           </ul>                                      
                         </div>
                     </td>              
-                    <td title="Usuario Creación: {{a.usuario_carga|default_if_none:''}} | Última Modificación: {{a.fecha_modif|date:'d/m/Y'}}">{{ a.fecha_creacion|date:'d/m/Y' }}</td>
+                    <td>{{ a.get_fcrondesde|date:'d/m/Y' }}</td>               
+                    <td>{{ a.get_fcronhasta|date:'d/m/Y' }}</td>
+                    <td>{{ a.get_dias_caidos|default_if_none:'' }}</td>                    
                     <td>{{ a.empleado.nro_doc|default_if_none:'' }}</td>
                     <td title="{{ a.empleado.apellido_y_nombre|default_if_none:''}}"><a href="{% url 'empleado_detalles' id=a.empleado.id %}"  class="modal-detail" data-modal-head="DETALLE EMPLEADO {{a.empleado.legajo}}" data-fm-callback="reload"><strong>{{ a.empleado.apellido_y_nombre|default_if_none:''|truncatechars:60 }}</strong></a></td>
                     <td>{{ a.get_fcontrol|date:'d/m/Y' }}</td>
                     <td title="{{ a.empleado.empresa|default_if_none:''}}">{{ a.empleado.empresa|default_if_none:''|truncatechars:60 }}</td>
                     <td>{{ a.get_tipo_ausentismo_display|default_if_none:'' }}</td>               
-                    <td>{{ a.get_dias_caidos|default_if_none:'' }}</td>               
-                    <td>{{ a.get_fcrondesde|date:'d/m/Y' }}</td>               
-                    <td>{{ a.get_fcronhasta|date:'d/m/Y' }}</td>               
-                    <td title="{{ a.aus_grupop|default_if_none:''}}">{{ a.aus_grupop|default_if_none:''|truncatechars:60 }}</td>               
-                    <td title="{{ a.aus_diagn|default_if_none:''}}">{{ a.aus_diagn|default_if_none:''|truncatechars:60 }}</td>               
+                    <td title="{{ a.aus_grupop|default_if_none:''}}">{{ a.aus_grupop|default_if_none:''|truncatechars:60 }}</td>
+                    <td title="{{ a.aus_diagn|default_if_none:''}}">{{ a.aus_diagn|default_if_none:''|truncatechars:60 }}</td>
+                    <td title="Usuario Creación: {{a.usuario_carga|default_if_none:''}} | Última Modificación: {{a.fecha_modif|date:'d/m/Y'}}">{{ a.fecha_creacion|date:'d/m/Y' }}</td>               
                 </tr>
                 {% endfor %}
             </tbody>
@@ -271,7 +269,7 @@ var tabla = $('#ausentismos').DataTable({
             },
             initComplete: function () {
                // this.api().columns().every( function () {[0, 1, 9]
-                this.api().columns([5,6,10,11]).every( function () {
+                this.api().columns([7,8,9,10]).every( function () {
                     var column = this;
                     var select = $('<select class="form-control"><option value="">Todos</option></select>')
                         .appendTo( $(column.footer()).empty() )
@@ -324,8 +322,8 @@ var tabla = $('#ausentismos').DataTable({
             };
                         
             
-            pageTotal = api.column(7, { page: 'current'} ).data().reduce( function (a, b) {return parseFloat(a) + parseFloat(b);}, 0 );            
-            $( api.column(7).footer() ).html(pageTotal.toLocaleString(undefined,{minimumFractionDigits:0}));
+            pageTotal = api.column(3, { page: 'current'} ).data().reduce( function (a, b) {return parseFloat(a) + parseFloat(b);}, 0 );            
+            $( api.column(3).footer() ).html(pageTotal.toLocaleString(undefined,{minimumFractionDigits:0}));
           
         }
         });

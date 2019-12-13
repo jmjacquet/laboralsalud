@@ -2,6 +2,7 @@
 {% load static from staticfiles %}
 {% load i18n l10n %}
 {% load humanize %}
+{% load bootstrap3 %}
 
 {% block extra_css %}
      
@@ -12,6 +13,7 @@
 {% block breadcrumbs %}              
         <div class="breadcrumbs">
             Listado de Turnos <small> carga e impresión</small>
+        <button tittle="Búsqueda Avanzada" data-toggle="collapse" aria-expanded="true"  class="btn btn-xs btn-circle pull-right boton_busqueda" data-target="#barra_busqueda" aria-controls="barra_busqueda"><i class="glyphicon glyphicon-search"></i></button>
         </div>
 {% endblock breadcrumbs %}
 {% block cargando %}            
@@ -21,7 +23,25 @@
   </div>
 {% endblock cargando %}
 {% block principal %}                            
-<br>   
+<br>
+<div class="collapse barra_busqueda" id="barra_busqueda">
+          <div class="panel panel-primary">
+              <div class="panel-heading"> PARÁMETROS DE BÚSQUEDA</div> 
+              <div class="panel-body">
+                      <div class="col-md-12">
+                       <form class="form" accept-charset="UTF-8" role="form" action="" method="post">
+                        {% csrf_token %}                                                                                     
+                          <div class="col-sm-1">{% bootstrap_field form.fdesde  %}</div>                                
+                          <div class="col-sm-1">{% bootstrap_field form.fhasta  %}</div>                                    
+                          <div class="col-sm-3">{% bootstrap_field form.empresa  %}</div>                          
+                          <div class="col-sm-2">{% bootstrap_field form.empleado  %}</div>
+                          <div class="col-sm-1">{% bootstrap_field form.estado  %}</div>      
+                          <div class="col-sm-1"><button class="btn btn-xs text-center" type="submit">Buscar</button></div>                
+                        </form>             
+                      </div>
+              </div>  
+          </div>                  
+        </div>   
 <div class="col-sm-7">     
     <a class="btn btn-xs btn-primary fm-create" style="float:left;margin-right:20px;" href="{% url 'turnos_nuevo' %}" data-fm-head="AGREGAR TURNO" data-fm-callback="reload">Nuevo Turno</a>
     <table width="100%" id="turnos" style="display:none;" class="table table-striped compact table-hover table-no-bordered tabla_nueva text-nowrap">         
@@ -53,7 +73,11 @@
                       <ul class="dropdown-menu">                        
                         
                         <li><a href="{% url 'turnos_editar' id=t.pk %}"  class="fm-update " title="Editar" data-fm-callback="reload" data-fm-head="EDITAR TURNO"data-fm-target="#object-{{ t.pk }}"><i class="icon-note"></i> Editar</a></li>
+                        <li><a href="#" 
+                                    onClick="alerta= alertify.dialog('confirm').set({'labels':{ok:'Aceptar', cancel:'Cancelar'},'message': '¿DESEA ELIMINAR EL REGISTRO ACTUAL?',transition:'fade','onok': function(){ window.location.href = '{% url 'turnos_eliminar' id=t.pk  %}'; },'oncancel': function(){ return true;} }); alerta.setting('modal', true); alerta.setHeader('ELIMINAR'); alerta.show(); return true;" ><i class="glyphicon glyphicon-trash"></i>Eliminar</a>
+                                </li>
 
+                        <li class="divider"></li>
                         {% if t.estado != 1 %}
                         <li><a href="#" 
                                 onClick="alerta= alertify.dialog('confirm').set({'labels':{ok:'Aceptar', cancel:'Cancelar'},'message': '¿DESEA MODIFICAR EL ESTADO DEL TURNO?',transition:'fade','onok': function(){ window.location.href = '{% url 'turnos_estado' id=t.pk estado=1  %}'; },'oncancel': function(){ return true;} }); alerta.setting('modal', true); alerta.setHeader('ASISTENCIA'); alerta.show(); return true;" ><i class="icon-like"></i>Marcar Asistencia</a>
@@ -309,7 +333,10 @@ $('#calendar').fullCalendar({
         element.popover({
             title: event.title +' - '+event.otro,
             placement: 'right',
-            content: 'Empelado: ' + event.name + ' Detalle: ' + event.description,
+            trigger: "click",
+            container:'body',
+            html: true,
+            content: 'Empelado: <b>' + event.name + '</b><br>Detalle: <b>' + event.description+'</b>',
         });
     }
 

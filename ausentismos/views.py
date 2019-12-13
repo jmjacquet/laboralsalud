@@ -33,8 +33,13 @@ class AusentismoView(VariablesMixin,ListView):
 
     def get_context_data(self, **kwargs):
         context = super(AusentismoView, self).get_context_data(**kwargs)
-
-        form = ConsultaAusentismos(self.request.POST or None,request=self.request)   
+        busq = None        
+        if self.request.POST:
+            busq = self.request.POST
+        else:
+            if 'ausentismos' in self.request.session:
+                busq = self.request.session["ausentismos"]
+        form = ConsultaAusentismos(busq,request=self.request)   
         fdesde=hoy()
         fhasta=finMes()
         ausentismos = ausentismo.objects.filter(baja=False,empleado__empresa__pk__in=empresas_habilitadas(self.request))
@@ -71,7 +76,9 @@ class AusentismoView(VariablesMixin,ListView):
                     ausentismos = ausentismos.filter(Q(aus_diascaidos__gt=30)|Q(art_diascaidos__gt=30))                    
                 else:
                     ausentismos = ausentismos.filter(tipo_ausentismo=int(tipo_ausentismo))            
-                
+            self.request.session["ausentismos"] = self.request.POST
+        else:
+            self.request.session["ausentismos"] = None        
         context['form'] = form
         context['ausentismos'] = ausentismos.select_related('empleado','empleado__empresa','aus_grupop','aus_diagn')
         return context
@@ -98,26 +105,21 @@ class AusentismoCreateView(VariablesMixin,CreateView):
         self.object = None
         form_class = self.get_form_class()
         form = self.get_form(form_class)                               
-        controles_detalle = ControlDetalleFormSet(prefix='formDetalle')                
-        return self.render_to_response(self.get_context_data(form=form,controles_detalle = controles_detalle))
+        return self.render_to_response(self.get_context_data(form=form))
 
     def post(self, request, *args, **kwargs):
         self.object = None
         form_class = self.get_form_class()
-        form = self.get_form(form_class)               
-        controles_detalle = ControlDetalleFormSet(self.request.POST,prefix='formDetalle')       
-        if form.is_valid() and controles_detalle.is_valid():
-            return self.form_valid(form, controles_detalle)
+        form = self.get_form(form_class)                       
+        if form.is_valid():
+            return self.form_valid(form)
         else:
-            return self.form_invalid(form,controles_detalle)        
+            return self.form_invalid(form)        
 
-    def form_valid(self, form,controles_detalle):                                
+    def form_valid(self, form):                                
         self.object = form.save(commit=False)                           
         self.object.usuario = usuario_actual(self.request)             
-        self.object.save()
-        controles_detalle.instance = self.object
-        controles_detalle.ausentismo = self.object.id        
-        controles_detalle.save()   
+        self.object.save()      
         return super(AusentismoCreateView, self).form_valid(form)
 
     def get_form_kwargs(self):
@@ -131,8 +133,8 @@ class AusentismoCreateView(VariablesMixin,CreateView):
         initial['tipo_form'] = 'ALTA'
         return initial    
 
-    def form_invalid(self, form,controles_detalle):                                                       
-        return self.render_to_response(self.get_context_data(form=form,controles_detalle = controles_detalle))
+    def form_invalid(self, form):                                                       
+        return self.render_to_response(self.get_context_data(form=form))
 
     def get_success_url(self):
         messages.success(self.request, u'Los datos se guardaron con éxito!')
@@ -145,20 +147,41 @@ class AusentismoEditView(VariablesMixin,UpdateView):
     pk_url_kwarg = 'id'
     template_name = 'ausentismos/ausentismo_form.html'
     
-
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs): 
         if not tiene_permiso(self.request,'aus_abm'):
             return redirect(reverse('principal'))
         return super(AusentismoEditView, self).dispatch(*args, **kwargs)
 
-    def form_valid(self, form):        
-        messages.success(self.request, u'Los datos se guardaron con éxito!')
-        return super(AusentismoEditView, self).form_valid(form)
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        form_class = self.get_form_class()
+        form = self.get_form(form_class)                               
+        controles_detalle = ControlDetalleFormSet(prefix='formDetalle')                
+        form.fields['empleado'].widget.attrs['disabled'] = True    
+        return self.render_to_response(self.get_context_data(form=form,controles_detalle = controles_detalle))
 
-    def form_invalid(self, form):
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()        
+        form_class = self.get_form_class()
+        form = self.get_form(form_class)                       
+        controles_detalle = ControlDetalleFormSet(self.request.POST,prefix='formDetalle')       
+        if form.is_valid() and controles_detalle.is_valid():
+            return self.form_valid(form, controles_detalle)
+        else:
+            return self.form_invalid(form,controles_detalle)  
+
+    def form_valid(self, form,controles_detalle):                                
+        self.object = form.save(commit=False)                           
+        self.object.save()
+        controles_detalle.instance = self.object
+        controles_detalle.ausentismo = self.object.id        
+        controles_detalle.save()   
+        return super(AusentismoEditView, self).form_valid(form)                
+
+    def form_invalid(self, form,controles_detalle):
         # print form.errors
-        return super(AusentismoEditView, self).form_invalid(form)
+        return self.render_to_response(self.get_context_data(form=form,controles_detalle = controles_detalle))        
 
     def get_form_kwargs(self):
         kwargs = super(AusentismoEditView, self).get_form_kwargs()
@@ -167,10 +190,12 @@ class AusentismoEditView(VariablesMixin,UpdateView):
 
     def get_initial(self):    
         initial = super(AusentismoEditView, self).get_initial()                      
+        initial['request'] = self.request  
         initial['tipo_form'] = 'EDICION'
         return initial  
 
-    def get_success_url(self):        
+    def get_success_url(self): 
+        messages.success(self.request, u'Los datos se guardaron con éxito!')       
         return reverse('ausentismo_listado')          
 
 
@@ -194,7 +219,6 @@ def ausentismo_baja_alta(request,id):
     aus.save()       
     messages.success(request, u'¡Los datos se guardaron con éxito!')
     return HttpResponseRedirect(reverse("ausentismo_listado"))     
-
 
 
 ############ PATOLOGIAS ############################
