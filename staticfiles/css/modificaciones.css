@@ -671,9 +671,7 @@ div.breadcrumbs a:focus, div.breadcrumbs a:hover {
     color: #c4dce8;
 }
 
-.dato{
-    font-weight: bold;
-}
+
 
 .table-hover > tbody > tr > td.danger:hover, .table-hover > tbody > tr > th.danger:hover, .table-hover > tbody > tr.danger:hover > td, .table-hover > tbody > tr:hover > .danger, .table-hover > tbody > tr.danger:hover > th {
     background-color: #ffcac5;
@@ -749,4 +747,19 @@ div.breadcrumbs a:focus, div.breadcrumbs a:hover {
 .popover-content {
     padding: 5px 10px;
     font-size: 12px;
+}
+
+.titulo{
+    text-align: right;
+}
+
+.dato{
+    font-weight: bold;
+    text-align: left;
+}
+
+.tabla_detalle {
+    width: 100%;
+    max-width: 100%;
+    margin-bottom: 0px;
 }

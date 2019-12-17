@@ -210,6 +210,13 @@ class AusentismoVerView(VariablesMixin,DetailView):
     def dispatch(self, *args, **kwargs): 
         return super(AusentismoVerView, self).dispatch(*args, **kwargs)        
 
+    def get_context_data(self, **kwargs):
+        context = super(AusentismoVerView, self).get_context_data(**kwargs)
+        a = self.get_object()
+        print a
+        context['controles'] = ausentismo_controles.objects.filter(ausentismo=a)
+        return context
+
 
 @login_required 
 def ausentismo_baja_alta(request,id):

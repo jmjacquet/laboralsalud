@@ -5,7 +5,7 @@
       <div class="col-xs-12 cerca">
         <fieldset>
           <legend>DATOS EMPLEADO</legend>
-          <table class="table table-striped table-hover table-condensed table-no-bordered">
+          <table class="table table-striped table-hover table-condensed table-no-bordered tabla_detalle">
             <tbody>
               <tr>
                 <td  class="titulo">Apellido y Nombre:</td><td colspan="3" id="apellido_y_nombre" class="dato">{{a.empleado.apellido_y_nombre|default_if_none:''}}</td>
@@ -19,114 +19,128 @@
                 <td class="titulo">Edad:</td><td id="edad" class="dato">{{a.empleado.get_edad|default_if_none:0}} años</td>
               </tr>
               <tr>
-                <td  class="titulo">Empresa:</td><td colspan="3" id="empresa" class="dato">COLOME SA</td>
+                <td  class="titulo">Empresa:</td><td colspan="3" id="empresa" class="dato">{{a.empleado.empresa|default_if_none:''}}</td>
               </tr>
               <tr>
-                <td class="titulo">Fecha Ingreso Empresa:</td><td id="empr_fingreso" class="dato">99/99/9999</td>
-                <td class="titulo">Antigüedad Laboral:</td><td id="antig_empresa" class="dato">99 años</td>
+                <td class="titulo">Fecha Ingreso Empresa:</td><td id="empr_fingreso" class="dato">{{a.empleado.empr_fingreso|date:'d/m/Y'}}</td>
+                <td class="titulo">Antigüedad Laboral:</td><td id="antig_empresa" class="dato">{{a.empleado.get_antiguedad_empr|default_if_none:0}} años</td>
               </tr>
               <tr>
-                <td  class="titulo">Puesto/Cargo:</td><td colspan="3" id="trab_cargo" class="dato">MEDICO GENERAL</td>
+                <td  class="titulo">Puesto/Cargo:</td><td colspan="3" id="trab_cargo" class="dato">{{a.empleado.trab_cargo|default_if_none:''}}</td>
               </tr>
             </tbody>
           </table>
         </fieldset>
-      </div>
-      <div class="col-xs-12 cerca">
         <fieldset>
-          <legend>DATOS AUSENTISMO - {{a.get_tipo_ausentismo_display|upper}} ( {{a.get_tipo_control_display|upper}} )</legend>
-          <table class="table table-striped table-hover table-condensed table-no-bordered">
-           <tbody> 
-              {% if a.tipo_ausentismo == 1 %}                
-                      <tr>
-                        <td class="titulo">¿Asistió a Control?:</td><td id="empr_fingreso" class="dato">{{a.aus_control|default_if_none:'N'}}</td>
-                        <td class="titulo">Fecha Control:</td><td id="antig_empresa" class="dato">{{a.aus_fcontrol|date:'d/m/Y'}}</td>
-                        <td class="titulo" colspan="2"></td><td class="titulo" colspan="2"></td>                
-                      </tr>
-                      <tr>
-                        <td class="titulo">¿Presenta Certificado?:</td><td id="empr_fingreso" class="dato">{{a.aus_certificado|default_if_none:'N'}}</td>      
-                        <td class="titulo">Fecha Certificado:</td><td id="antig_empresa" class="dato">{{a.aus_fcertif|date:'d/m/Y'}}</td>                    
-                        <td class="titulo">Fecha Entrega Certif.:</td><td id="antig_empresa" class="dato">{{a.aus_fentrega_certif|date:'d/m/Y'}}</td>
-                        <td class="titulo"></td><td class="titulo"></td>    
-                      </tr>
-                      <tr>
-                        <td class="titulo">Fecha Desde:</td><td id="antig_empresa" class="dato">{{a.aus_fcrondesde|date:'d/m/Y'}}</td>                    
-                        <td class="titulo">Fecha Hasta:</td><td id="antig_empresa" class="dato">{{a.aus_fcronhasta|date:'d/m/Y'}}</td>
-                        <td class="titulo">Días Caídos:</td><td id="antig_empresa" class="dato">{{a.aus_diascaidos|default_if_none:'0'}} días</td>
-                        <td class="titulo">Días Justificados:</td><td id="antig_empresa" class="dato">{{a.aus_diasjustif|default_if_none:'0'}} días</td>
-                      </tr>                 
-                      <tr>
-                        <td class="titulo">Fecha Reintegro:</td><td id="antig_empresa" class="dato">{{a.aus_freintegro|date:'d/m/Y'}}</td>                    
-                        <td class="titulo">Fecha Alta:</td><td id="antig_empresa" class="dato">{{a.aus_falta|date:'d/m/Y'}}</td>
-                        <td class="titulo">Tipo Alta:</td><td id="antig_empresa" class="dato">{{a.aus_tipo_alta|default_if_none:''}}</td>
-                        <td class="titulo"></td><td class="titulo"></td>    
-                      </tr>
-                      <tr>
-                        <td class="titulo">Próxima Revisión:</td><td id="antig_empresa" class="dato">{{a.aus_frevision|date:'d/m/Y'}}</td>
-                        <td class="titulo">Médico Tratante:</td><td class="titulo" colspan="5">{{a.aus_medico|default_if_none:''}}</td> 
-                      </tr>
-              {% else %}
-                     <tr>
-                        <td class="titulo">Tipo Accidente/Enfermedad</td><td id="empr_fingreso" colspan="3" class="dato">{{a.get_art_tipo_accidente_display|default_if_none:'N'}}</td>
-                        <td class="titulo">Nº Denuncia:</td><td id="antig_empresa" class="dato">{{a.art_ndenuncia|default_if_none:''}}</td>                        
-                        <td class="titulo">Fecha Denuncia:</td><td id="antig_empresa" class="dato">{{a.art_fdenuncia|date:'d/m/Y'}}</td>                        
-                      </tr>
-                      <tr>
-                        <td class="titulo">Fecha Desde:</td><td id="antig_empresa" class="dato">{{a.art_fcrondesde|date:'d/m/Y'}}</td>                    
-                        <td class="titulo">Fecha Hasta:</td><td id="antig_empresa" class="dato">{{a.art_fcronhasta|date:'d/m/Y'}}</td>
-                        <td class="titulo">Días Caídos:</td><td id="antig_empresa" class="dato">{{a.art_diascaidos|default_if_none:'0'}} días</td>
-                        <td class="titulo">Fecha Reintegro:</td><td id="antig_empresa" class="dato">{{a.art_freintegro|date:'d/m/Y'}}</td> 
-                      </tr>     
-                      <tr>
-                        <td class="titulo">Fecha Control:</td><td id="antig_empresa" class="dato">{{a.art_fcontrol|date:'d/m/Y'}}</td>                        
-                        <td class="titulo">Fecha Accidente:</td><td id="antig_empresa" class="dato">{{a.aus_fcertif|date:'d/m/Y'}}</td>                    
-                         <td class="titulo">Fecha Alta:</td><td id="antig_empresa" class="dato">{{a.art_falta|date:'d/m/Y'}}</td>
-                        <td class="titulo">Tipo Alta:</td><td id="antig_empresa" class="dato">{{a.art_tipo_alta|default_if_none:''}}</td>
-                      </tr>
-                      <tr>
-                        <td class="titulo">Próxima Revisión:</td><td id="antig_empresa" class="dato">{{a.art_frevision|date:'d/m/Y'}}</td>
-                        <td class="titulo">Médico Tratante:</td><td class="titulo" colspan="5">{{a.art_medico|default_if_none:''}}</td> 
-                      </tr>
-              {% endif %}
-              <tr>
-                <td class="titulo">Grupo Patológico:</td><td colspan="3" class="dato">{{a.aus_grupop|date:'d/m/Y'}}</td>
-                <td class="titulo">Diagnóstico:</td><td class="titulo" colspan="3">{{a.aus_diagn|default_if_none:''}}</td> 
-              </tr>
-           </tbody>
-          </table>
-        </fieldset>
-      </div>
-      <div class="col-xs-12">
-        <fieldset>                      
-          <table class="table table-striped table-hover table-condensed table-no-bordered">
-            <tbody>
-              <tr>
-                <td class="titulo">Factores de Riesgo a lo que está Expuesto</td><td class="dato">{{empleados.trab_factores_riesgo|default_if_none:''}}</td>
-              </tr>
-              <tr>
-                <td class="titulo">Descripción Tareas Diferentes</td><td class="dato">{{empleados.trab_tareas_dif_det|default_if_none:''}}</td>
-              </tr>
-              <tr>
-                <td class="titulo">Trabajos Anteriores</td><td class="dato">{{empleados.trab_anteriores|default_if_none:''}}</td>
-              </tr>
-              <tr>
-                <td class="titulo">Antecedentes Patológicos</td><td class="dato">{{empleados.trab_antecedentes|default_if_none:''}}</td>
-              </tr>
-              <tr>
-                <td class="titulo">Accidentes ART</td><td class="dato">{{empleados.trab_accidentes|default_if_none:''}}</td>
-              </tr>
-              <tr>
-                <td class="titulo">Vacunas</td><td class="dato">{{empleados.trab_vacunas|default_if_none:''}}</td>
-              </tr>
-            </tbody>
-          </table>
-        </fieldset>
-      </div>            
-</div> 
-</div>                                 
+              <legend>DATOS AUSENTISMO - {{a.get_tipo_ausentismo_display|upper}} ( {{a.get_tipo_control_display|upper}} )</legend>
+              <table class="table table-striped table-hover table-condensed table-no-bordered tabla_detalle">
+               <tbody> 
+                  {% if a.tipo_ausentismo == 1 %}                
+                          <tr>
+                            <td class="titulo">¿Asistió a Control?:</td><td id="empr_fingreso" class="dato">{{a.aus_control|default_if_none:'N'}}</td>
+                            <td class="titulo">Fecha Control:</td><td id="antig_empresa" class="dato">{{a.aus_fcontrol|date:'d/m/Y'}}</td>
+                            <td class="titulo" colspan="2"></td><td class="titulo" colspan="2"></td>                
+                          </tr>
+                          <tr>
+                            <td class="titulo">¿Presenta Certificado?:</td><td id="empr_fingreso" class="dato">{{a.aus_certificado|default_if_none:'N'}}</td>      
+                            <td class="titulo">Fecha Certificado:</td><td id="antig_empresa" class="dato">{{a.aus_fcertif|date:'d/m/Y'}}</td>                    
+                            <td class="titulo">Fecha Entrega Certif.:</td><td id="antig_empresa" class="dato">{{a.aus_fentrega_certif|date:'d/m/Y'}}</td>
+                            <td class="titulo"></td><td class="titulo"></td>    
+                          </tr>
+                          <tr>
+                            <td class="titulo">Fecha Desde:</td><td id="antig_empresa" class="dato">{{a.aus_fcrondesde|date:'d/m/Y'}}</td>                    
+                            <td class="titulo">Fecha Hasta:</td><td id="antig_empresa" class="dato">{{a.aus_fcronhasta|date:'d/m/Y'}}</td>
+                            <td class="titulo">Días Caídos:</td><td id="antig_empresa" class="dato">{{a.aus_diascaidos|default_if_none:'0'}} días</td>
+                            <td class="titulo">Días Justificados:</td><td id="antig_empresa" class="dato">{{a.aus_diasjustif|default_if_none:'0'}} días</td>
+                          </tr>                 
+                          <tr>
+                            <td class="titulo">Fecha Reintegro:</td><td id="antig_empresa" class="dato">{{a.aus_freintegro|date:'d/m/Y'}}</td>                    
+                            <td class="titulo">Fecha Alta:</td><td id="antig_empresa" class="dato">{{a.aus_falta|date:'d/m/Y'}}</td>
+                            <td class="titulo">Tipo Alta:</td><td id="antig_empresa" class="dato">{{a.aus_tipo_alta|default_if_none:''}}</td>
+                            <td class="titulo"></td><td class="titulo"></td>    
+                          </tr>
+                          <tr>
+                            <td class="titulo">Próxima Revisión:</td><td id="antig_empresa" class="dato">{{a.aus_frevision|date:'d/m/Y'}}</td>
+                            <td class="titulo">Médico Tratante:</td><td class="dato" colspan="5">{{a.aus_medico|default_if_none:''}}</td> 
+                          </tr>
+                  {% else %}
+                         <tr>
+                            <td class="titulo">Tipo Accidente/Enfermedad</td><td id="empr_fingreso" colspan="3" class="dato">{{a.get_art_tipo_accidente_display|default_if_none:'N'}}</td>
+                            <td class="titulo">Nº Denuncia:</td><td id="antig_empresa" class="dato">{{a.art_ndenuncia|default_if_none:''}}</td>                        
+                            <td class="titulo">Fecha Denuncia:</td><td id="antig_empresa" class="dato">{{a.art_fdenuncia|date:'d/m/Y'}}</td>                        
+                          </tr>
+                          <tr>
+                            <td class="titulo">Fecha Desde:</td><td id="antig_empresa" class="dato">{{a.art_fcrondesde|date:'d/m/Y'}}</td>                    
+                            <td class="titulo">Fecha Hasta:</td><td id="antig_empresa" class="dato">{{a.art_fcronhasta|date:'d/m/Y'}}</td>
+                            <td class="titulo">Días Caídos:</td><td id="antig_empresa" class="dato">{{a.art_diascaidos|default_if_none:'0'}} días</td>
+                            <td class="titulo">Fecha Reintegro:</td><td id="antig_empresa" class="dato">{{a.art_freintegro|date:'d/m/Y'}}</td> 
+                          </tr>     
+                          <tr>
+                            <td class="titulo">Fecha Control:</td><td id="antig_empresa" class="dato">{{a.art_fcontrol|date:'d/m/Y'}}</td>                        
+                            <td class="titulo">Fecha Accidente:</td><td id="antig_empresa" class="dato">{{a.aus_fcertif|date:'d/m/Y'}}</td>                    
+                             <td class="titulo">Fecha Alta:</td><td id="antig_empresa" class="dato">{{a.art_falta|date:'d/m/Y'}}</td>
+                            <td class="titulo">Tipo Alta:</td><td id="antig_empresa" class="dato">{{a.art_tipo_alta|default_if_none:''}}</td>
+                          </tr>
+                          <tr>
+                            <td class="titulo">Próxima Revisión:</td><td id="antig_empresa" class="dato">{{a.art_frevision|date:'d/m/Y'}}</td>
+                            <td class="titulo">Médico Tratante:</td><td class="dato" colspan="5">{{a.art_medico|default_if_none:''}}</td> 
+                          </tr>
+                  {% endif %}
+                  <tr>
+                    <td class="titulo">Grupo Patológico:</td><td colspan="3" class="dato">{{a.aus_grupop|date:'d/m/Y'}}</td>
+                    <td class="titulo">Diagnóstico:</td><td class="dato" colspan="3">{{a.aus_diagn|default_if_none:''}}</td> 
+                  </tr>
+               </tbody>
+              </table>
+            </fieldset>
+            <fieldset>                      
+                <legend>OTRAS OBSERVACIONES/CONTROLES</legend>
+                <table class="table table-striped table-hover table-condensed table-no-bordered tabla_detalle">
+                  <tbody>
+                    {% if a.observaciones %}
+                    <tr>
+                      <td class="titulo">Observaciones:</td><td colspan="3" class="dato">{{a.observaciones|default_if_none:''}}</td>
+                    </tr>
+                    {% endif %}
+                    {% if a.descr_altaparc %}
+                    <tr>
+                      <td class="titulo">Descr.Alta Parcial:</td><td colspan="3" class="dato">{{a.descr_altaparc|default_if_none:''}}</td>
+                    </tr>
+                    {% endif %}
+                    {% if a.detalle_acc_art %}
+                    <tr>
+                      <td class="titulo">Detalle Acc.ART:</td><td colspan="3" class="dato">{{a.detalle_acc_art|default_if_none:''}}</td>
+                    </tr>
+                    {% endif %}
+                    {% if a.estudios_partic %}
+                    <tr>
+                      <td class="titulo">Estudios Particulares:</td><td colspan="3" class="dato">{{a.estudios_partic|default_if_none:''}}</td>
+                    </tr>
+                    {% endif %}
+                    {% if a.estudios_art %}
+                    <tr>
+                      <td class="titulo">Estudios ART:</td><td colspan="3" class="dato">{{a.estudios_art|default_if_none:''}}</td>
+                    </tr>
+                    {% endif %}
+                    {% if a.recalificac_art %}
+                    <tr>
+                      <td class="titulo">Recalificación ART:</td><td colspan="3" class="dato">{{a.recalificac_art|default_if_none:''}}</td>
+                    </tr>
+                    {% endif %}
+                    {% for c in controles %}                    
+                    <tr>
+                      <td class="titulo">Fecha Control:</td><td class="dato">{{c.fecha|date:'d/m/Y'}}</td>
+                      <td class="titulo">Detalle:</td><td class="dato">{{c.detalle|default_if_none:''}}</td>
+                    </tr>
+                    {% endfor %}
+                    
+                  </tbody>
+                </table>
+              </fieldset>
 
-          
-       
+      </div>
+</div>                              
+  
 {% endblock main %}        
 
                                

@@ -5,7 +5,7 @@
       <div class="col-xs-12">
         <fieldset>
           <legend>DATOS EMPLEADO</legend>
-          <table class="table table-striped table-hover table-condensed table-no-bordered">
+          <table class="table table-striped table-hover table-condensed table-no-bordered tabla_detalle">
             <tbody>
               <tr>
                 <td  class="titulo">Apellido y Nombre:</td><td colspan="3" id="apellido_y_nombre" class="dato">{{empleados.apellido_y_nombre|default_if_none:''}}</td>
@@ -40,7 +40,7 @@
       <div class="col-xs-12">
         <fieldset>
           <legend>DATOS LABORALES</legend>
-          <table class="table table-striped table-hover table-condensed table-no-bordered">
+          <table class="table table-striped table-hover table-condensed table-no-bordered tabla_detalle">
             <tbody>
               <tr>
                 <td  class="titulo">Empresa:</td><td colspan="3" id="empresa" class="dato">{{empleados.empresa|default_if_none:''}}</td>
@@ -76,26 +76,38 @@
       </div>
       <div class="col-xs-12">
         <fieldset>                      
-          <table class="table table-striped table-hover table-condensed table-no-bordered">
+          <table class="table table-striped table-hover table-condensed table-no-bordered tabla_detalle">
             <tbody>
+               {% if empleados.trab_factores_riesgo %}
               <tr>
                 <td class="titulo">Factores de Riesgo a lo que está Expuesto</td><td class="dato">{{empleados.trab_factores_riesgo|default_if_none:''}}</td>
               </tr>
+               {% endif %}
+               {% if empleados.trab_tareas_dif_det %}
               <tr>
                 <td class="titulo">Descripción Tareas Diferentes</td><td class="dato">{{empleados.trab_tareas_dif_det|default_if_none:''}}</td>
               </tr>
+              {% endif %}
+               {% if empleados.trab_anteriores %}
               <tr>
                 <td class="titulo">Trabajos Anteriores</td><td class="dato">{{empleados.trab_anteriores|default_if_none:''}}</td>
               </tr>
+               {% endif %}
+               {% if empleados.trab_antecedentes %}
               <tr>
                 <td class="titulo">Antecedentes Patológicos</td><td class="dato">{{empleados.trab_antecedentes|default_if_none:''}}</td>
               </tr>
+               {% endif %}
+               {% if empleados.trab_accidentes %}
               <tr>
                 <td class="titulo">Accidentes ART</td><td class="dato">{{empleados.trab_accidentes|default_if_none:''}}</td>
               </tr>
+               {% endif %}
+               {% if empleados.trab_vacunas %}
               <tr>
                 <td class="titulo">Vacunas</td><td class="dato">{{empleados.trab_vacunas|default_if_none:''}}</td>
               </tr>
+               {% endif %}
             </tbody>
           </table>
         </fieldset>

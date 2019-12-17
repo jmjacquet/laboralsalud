@@ -55,6 +55,8 @@ class VariablesMixin(object):
         context['permisos_configuracion'] = ('art_pantalla' in permisos_grupo)or('emp_pantalla' in permisos_grupo)or('med_pantalla' in permisos_grupo)\
                                             or('pat_pantalla' in permisos_grupo)or('diag_pantalla' in permisos_grupo)or('ptrab_pantalla' in permisos_grupo)or('esp_pantalla' in permisos_grupo)
         
+        context['inicio_ausentismos'] = ('inicio_ausentismos' in permisos_grupo)or('inicio_controles' in permisos_grupo)
+        context['inicio_turnos'] = ('inicio_turnos' in permisos_grupo)
         context['empresas'] = ent_empresa.objects.filter(baja=False)
         context['sitio_mobile'] = mobile(self.request)
         context['hoy'] =  hoy()
@@ -91,6 +93,8 @@ def getVariablesMixin(request):
     context['permisos_indicadores'] = ('indic_pantalla' in permisos_grupo)or('indic_anual_pantalla' in permisos_grupo)
     context['permisos_configuracion'] = ('art_pantalla' in permisos_grupo)or('emp_pantalla' in permisos_grupo)or('med_pantalla' in permisos_grupo)or('med_pantalla' in permisos_grupo)\
                                         or('pat_pantalla' in permisos_grupo)or('diag_pantalla' in permisos_grupo)or('ptrab_pantalla' in permisos_grupo)or('esp_pantalla' in permisos_grupo)
+    context['inicio_ausentismos'] = ('inicio_ausentismos' in permisos_grupo)or('inicio_controles' in permisos_grupo)
+    context['inicio_turnos'] = ('inicio_turnos' in permisos_grupo)                                        
 
     context['empresas'] = ent_empresa.objects.filter(baja=False)
     context['sitio_mobile'] = mobile(request)
@@ -124,7 +128,7 @@ class PrincipalView(VariablesMixin,TemplateView):
         
         context['form'] = form
         context['ausentismo'] = ausentismos.select_related('empleado','empleado__empresa','aus_grupop','aus_diagn')
-        context['turnos'] = prox_turnos.order_by('fecha','estado').select_related('empleado','empleado__empresa','usuario_carga')
+        context['turnos'] = prox_turnos.select_related('empleado','empleado__empresa','usuario_carga')
         context['fechas_control'] = fechas_control.select_related('empleado','empleado__empresa','aus_grupop','aus_diagn')
        
         # vars_sistema = settings
