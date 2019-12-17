@@ -2,7 +2,7 @@
 from .settings import *
 
 
-DEBUG = False
+DEBUG = True
 # DEBUG = False
 
 DB_USER = "jumaja"
