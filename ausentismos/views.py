@@ -13,6 +13,7 @@ from django.utils.decorators import method_decorator
 from fm.views import AjaxCreateView,AjaxUpdateView,AjaxDeleteView
 from django.db.models import Q,Sum,Count,FloatField,Func
 from django.forms.models import inlineformset_factory,BaseInlineFormSet,formset_factory
+from django.utils.functional import curry 
 
 from .models import *
 from general.views import VariablesMixin
@@ -39,7 +40,7 @@ class AusentismoView(VariablesMixin,ListView):
         else:
             if 'ausentismos' in self.request.session:
                 busq = self.request.session["ausentismos"]
-        form = ConsultaAusentismos(busq,request=self.request)   
+        form = ConsultaAusentismos(busq or None,request=self.request)   
         fdesde=hoy()
         fhasta=finMes()
         ausentismos = ausentismo.objects.filter(baja=False,empleado__empresa__pk__in=empresas_habilitadas(self.request))
@@ -89,7 +90,7 @@ class AusentismoView(VariablesMixin,ListView):
 
 class ControlesDetalleFormSet(BaseInlineFormSet): 
     pass  
-ControlDetalleFormSet = inlineformset_factory(ausentismo, ausentismo_controles,form=ControlesDetalleForm,formset=ControlesDetalleFormSet, can_delete=True,extra=0,min_num=1,can_order=True)
+ControlDetalleFormSet = inlineformset_factory(ausentismo, ausentismo_controles,form=ControlesDetalleForm,formset=ControlesDetalleFormSet, can_delete=True,extra=0,min_num=1)
 
 class AusentismoCreateView(VariablesMixin,CreateView):
     form_class = AusentismoForm
@@ -157,27 +158,27 @@ class AusentismoEditView(VariablesMixin,UpdateView):
         self.object = self.get_object()
         form_class = self.get_form_class()
         form = self.get_form(form_class)                               
-        controles_detalle = ControlDetalleFormSet(prefix='formDetalle')                
-        form.fields['empleado'].widget.attrs['disabled'] = True    
+        form.fields['empleado'].widget.attrs['disabled'] = True                    
+        controles_detalle = ControlDetalleFormSet(instance=self.object,prefix='formDetalle')                                
         return self.render_to_response(self.get_context_data(form=form,controles_detalle = controles_detalle))
 
     def post(self, request, *args, **kwargs):
-        self.object = self.get_object()        
+        self.object = self.get_object()
         form_class = self.get_form_class()
-        form = self.get_form(form_class)                       
-        controles_detalle = ControlDetalleFormSet(self.request.POST,prefix='formDetalle')       
+        form = self.get_form(form_class)       
+        controles_detalle = ControlDetalleFormSet(self.request.POST,instance=self.object,prefix='formDetalle')       
         if form.is_valid() and controles_detalle.is_valid():
             return self.form_valid(form, controles_detalle)
         else:
+            print '%s error '%(form.errors)
             return self.form_invalid(form,controles_detalle)  
 
     def form_valid(self, form,controles_detalle):                                
-        self.object = form.save(commit=False)                           
         self.object.save()
         controles_detalle.instance = self.object
         controles_detalle.ausentismo = self.object.id        
         controles_detalle.save()   
-        return super(AusentismoEditView, self).form_valid(form)                
+        return HttpResponseRedirect(reverse('ausentismo_listado'))
 
     def form_invalid(self, form,controles_detalle):
         # print form.errors

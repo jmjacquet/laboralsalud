@@ -38,7 +38,7 @@ class DiagnosticoForm(forms.ModelForm):
 		super(DiagnosticoForm, self).__init__(*args, **kwargs)					
 
 class AusentismoForm(forms.ModelForm):
-	empleado = EmpleadoModelChoiceField(label='',queryset=ent_empleado.objects.filter(baja=False),empty_label='---',required = False)		
+	empleado = EmpleadoModelChoiceField(label='',queryset=ent_empleado.objects.filter(baja=False),empty_label='---',required = True)		
 	tipo_ausentismo = forms.ChoiceField(label='',choices=TIPO_AUSENCIA,required=False,initial=1)
 	tipo_control = forms.ChoiceField(label='',choices=TIPO_CONTROL,required=False,initial='C')
 	aus_control = forms.ChoiceField(label=u'¿Asistió a Control?',choices=SINO,required=False,initial='N')
@@ -81,16 +81,12 @@ class AusentismoForm(forms.ModelForm):
 		super(AusentismoForm, self).__init__(*args, **kwargs)		
 		self.fields['empleado'].queryset = ent_empleado.objects.filter(baja=False,empresa__pk__in=empresas_habilitadas(request))
 		self.fields['empresa'].queryset = ent_empresa.objects.filter(baja=False,pk__in=empresas_habilitadas(request))				
-
+	  
+	
 	def clean(self):		
 		super(forms.ModelForm,self).clean()	
 		tipo_form = self.cleaned_data.get('tipo_form')
-		
-		empleado = self.cleaned_data.get('empleado')	
-		if tipo_form=='ALTA':
-			if not empleado:
-					self.add_error("empleado",u'¡Debe cargar un Empleado!')
-
+		empleado = self.cleaned_data.get('empleado')
 		aus_grupop = self.cleaned_data.get('aus_grupop')	
 		if not aus_grupop:
 				self.add_error("aus_grupop",u'¡Debe cargar un Grupo Patológico!')
