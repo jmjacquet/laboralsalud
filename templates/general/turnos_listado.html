@@ -34,17 +34,17 @@
                         {% csrf_token %}                                                                                     
                           <div class="col-sm-1">{% bootstrap_field form.fdesde  %}</div>                                
                           <div class="col-sm-1">{% bootstrap_field form.fhasta  %}</div>                                    
-                          <div class="col-sm-3">{% bootstrap_field form.empresa  %}</div>                          
-                          <div class="col-sm-2">{% bootstrap_field form.empleado  %}</div>
-                          <div class="col-sm-1">{% bootstrap_field form.estado  %}</div>      
+                          <div class="col-sm-3">{% bootstrap_field form.qempresa  %}</div>                          
+                          <div class="col-sm-2">{% bootstrap_field form.qempleado  %}</div>
+                          <div class="col-sm-1">{% bootstrap_field form.qestado  %}</div>      
                           <div class="col-sm-1"><button class="btn btn-xs text-center" type="submit">Buscar</button></div>                
                         </form>             
                       </div>
               </div>  
           </div>                  
         </div>   
-<div class="col-sm-7">     
-    <a class="btn btn-xs btn-primary modal-create" style="float:left;margin-right:20px;" href="{% url 'turnos_nuevo' %}" data-fm-head="AGREGAR TURNO" data-fm-callback="reload">Nuevo Turno</a>
+<div class="col-sm-7 cerca">     
+    <a class="btn btn-xs btn-primary modal-create" style="float:left;margin-right:20px;" href="{% url 'turnos_nuevo' %}" data-modal-head="AGREGAR TURNO" data-modal-callback="reload">Nuevo Turno</a>
     <table width="100%" id="turnos" style="display:none;" class="table table-striped compact table-hover table-no-bordered tabla_nueva text-nowrap">         
         <thead >
             <tr>

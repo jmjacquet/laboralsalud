@@ -219,12 +219,10 @@ class AusentismoVerView(VariablesMixin,DetailView):
 
 
 @login_required 
-def ausentismo_baja_alta(request,id):
+def ausentismo_eliminar(request,id):
     if not tiene_permiso(request,'aus_abm'):
             return redirect(reverse('principal'))
-    aus = ausentismo.objects.get(pk=id)     
-    aus.baja = not aus.baja
-    aus.save()       
+    aus = ausentismo.objects.get(pk=id).delete()         
     messages.success(request, u'¡Los datos se guardaron con éxito!')
     return HttpResponseRedirect(reverse("ausentismo_listado"))     
 
@@ -300,26 +298,16 @@ class PatologiaEditView(VariablesMixin,AjaxUpdateView):
     def get_initial(self):    
         initial = super(PatologiaEditView, self).get_initial()                      
         return initial            
+    
 
 
-# class PatologiaVerView(VariablesMixin,DetailView):
-#     model = ent_art
-#     pk_url_kwarg = 'id'
-#     context_object_name = 'art'
-#     template_name = 'entidades/art_detalle.html'
-
-#     @method_decorator(login_required)
-#     def dispatch(self, *args, **kwargs): 
-#         return super(ARTVerView, self).dispatch(*args, **kwargs)        
-
-
-# @login_required 
-# def art_baja_alta(request,id):
-#     art = ent_art.objects.get(pk=id)     
-#     art.baja = not art.baja
-#     art.save()       
-#     messages.success(request, u'¡Los datos se guardaron con éxito!')
-#     return HttpResponseRedirect(reverse("art_listado")) 
+@login_required 
+def patologia_baja_alta(request,id):
+    patologia = aus_patologia.objects.get(pk=id)     
+    patologia.baja = not patologia.baja
+    patologia.save()       
+    messages.success(request, u'¡Los datos se guardaron con éxito!')
+    return HttpResponseRedirect(reverse("pat_pantalla")) 
 
 
 ############ DIAGNOSTICOS ############################
@@ -394,6 +382,13 @@ class DiagnosticoEditView(VariablesMixin,AjaxUpdateView):
         initial = super(DiagnosticoEditView, self).get_initial()                      
         return initial            
 
+@login_required 
+def diagnostico_baja_alta(request,id):
+    diagnostico = diagnostico_baja_alta.objects.get(pk=id)     
+    diagnostico.baja = not diagnostico.baja
+    diagnostico.save()       
+    messages.success(request, u'¡Los datos se guardaron con éxito!')
+    return HttpResponseRedirect(reverse("diag_pantalla")) 
 
 
 import csv, io

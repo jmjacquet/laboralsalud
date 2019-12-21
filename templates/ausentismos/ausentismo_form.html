@@ -273,7 +273,7 @@
 						<fieldset>
 							<legend>OBSERVACIONES/ESTUDIOS/DETALLES</legend>
 								<div class="row cerca">
-									<div class="col-sm-6">
+									<div class="col-sm-{% if not sitio_mobile %}5{% else %}6{% endif %}">
 										{{form.aus_grupop|as_crispy_field}}
 									</div>
 									{% if not sitio_mobile %}
@@ -286,7 +286,7 @@
 											</div>
 						                </div>        	    				
 								    {% endif %}		
-									<div class="col-sm-6">
+									<div class="col-sm-{% if not sitio_mobile %}5{% else %}6{% endif %}">
 										{{form.aus_diagn|as_crispy_field}}
 									</div>
 									{% if not sitio_mobile %}

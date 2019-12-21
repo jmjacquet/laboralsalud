@@ -11,18 +11,30 @@ $.fn.datepicker.dates['es'] = {
     today: "Hoy"
   };
   
-   $('.datepicker').datepicker({
+   $('#id_fecha').datepicker({
           format: "dd/mm/yyyy",
           language: "es",
           autoclose: true,
-          todayHighlight: true
+          todayHighlight: true,
+          daysOfWeekDisabled : [0,6],
     });
 
-    $('.datepicker').each(function(){
-        $(this).datepicker();
+
+$("#id_empleado").chosen({
+        no_results_text: "Empleado inexistente...",
+        placeholder_text_single:"Seleccione un Empleado",
+        allow_single_deselect: true,
     });
 
-    
+$('#id_hora').timepicker({
+   className: "form-control",
+   timeFormat:'H:i',
+   minTime : '08:00',
+   maxTime : '21:00',
+   forceRoundTime: true,
+   useSelect: true,
+});
+
 $("#id_empresa").change(function(){
     var id =  $("#id_empresa").val();
     if (id =='') {id=0;};
@@ -34,9 +46,8 @@ $("#id_empresa").change(function(){
         $.each(c["empleados"], function (idx, item) {
             jQuery("<option/>").text(item['nombre']).attr("value", item['id']).appendTo("#id_empleado");
         })
-        // $('#id_empleado').trigger("chosen:updated");  
-        // $('#id_empleado').val(ide).trigger('chosen:updated');
-        console.log($("#id_empleado"));
+        $('#id_empleado').trigger("chosen:updated");  
+        $('#id_empleado').val(ide).trigger('chosen:updated');        
                     
     });      
     $('#cargando').hide();

@@ -23,6 +23,7 @@ class TurnosForm(forms.ModelForm):
 	hora =  forms.TimeField(label='Hora',widget=forms.TimeInput(attrs={'class': 'form-control'}),required = True)
 	observaciones = forms.CharField(label='Observaciones / Datos adicionales',widget=forms.Textarea(attrs={'class':'form-control2', 'rows': 5}),required = False)	
 	tipo_form = forms.CharField(widget = forms.HiddenInput(), required = False)	
+	estado = forms.ChoiceField(label='Estado',choices=ESTADO_TURNO,required=True,initial=0)
 	class Meta:
 			model = turnos
 			exclude = ['id','fecha_creacion','fecha_modif','usuario_carga']
@@ -57,13 +58,13 @@ class TurnosForm(forms.ModelForm):
 class ConsultaTurnos(forms.Form):               	
 	fdesde =  forms.DateField(label='Fecha Desde',widget=forms.DateInput(attrs={'class': 'form-control datepicker'}),required = True,initial=inicioMes())
 	fhasta =  forms.DateField(label='Fecha Hasta',widget=forms.DateInput(attrs={'class': 'form-control datepicker'}),required = True,initial=finMes())    	
-	empresa = forms.ModelChoiceField(label='Empresa',queryset=ent_empresa.objects.filter(baja=False),empty_label='Todas',required=False)
-	empleado = forms.CharField(required=False,label='Empleado')	
-	estado = forms.ChoiceField(label='Estado',choices=ESTADO_TURNO_,required=False,initial=3)
+	qempresa = forms.ModelChoiceField(label='Empresa',queryset=ent_empresa.objects.filter(baja=False),empty_label='Todas',required=False)
+	qempleado = forms.CharField(required=False,label='Empleado')	
+	qestado = forms.ChoiceField(label='Estado',choices=ESTADO_TURNO_,required=False,initial=3)
 	def __init__(self, *args, **kwargs):		
 		request = kwargs.pop('request', None) 
 		super(ConsultaTurnos, self).__init__(*args, **kwargs)			
-		self.fields['empresa'].queryset = ent_empresa.objects.filter(baja=False,pk__in=empresas_habilitadas(request))
+		self.fields['qempresa'].queryset = ent_empresa.objects.filter(baja=False,pk__in=empresas_habilitadas(request))
 
 
 class ConsultaFechasInicio(forms.Form):               	

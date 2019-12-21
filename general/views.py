@@ -258,9 +258,9 @@ class TurnosView(VariablesMixin,ListView):
         if form.is_valid():                                                        
             fdesde = form.cleaned_data['fdesde']   
             fhasta = form.cleaned_data['fhasta']                                                 
-            empresa = form.cleaned_data['empresa']                           
-            empleado= form.cleaned_data['empleado']                           
-            estado = form.cleaned_data['estado']
+            empresa = form.cleaned_data['qempresa']                           
+            empleado= form.cleaned_data['qempleado']                           
+            estado = form.cleaned_data['qestado']
 
             listado = turnos.objects.filter(empresa__pk__in=empresas_habilitadas(self.request))
            
