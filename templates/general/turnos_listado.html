@@ -104,7 +104,7 @@
                 <td><a href="{% url 'turnos_detalles' id=t.pk %}" class="modal-detail" title="Ver Detalle" data-modal-head="DETALLE TURNO">
                             <strong>{{ t.get_turno }}</strong></a></td>
                 <td>{{ t.fecha|date:'d/m/Y' }} {{ t.hora|time:"H:i" }}hs</td>
-                <td title="{{ t.empleado.apellido_y_nombre|default_if_none:''}}"><a href="{% url 'empleado_detalles' id=t.empleado.id %}"  class="modal-detail" data-modal-head="DETALLE EMPLEADO {{t.empleado.legajo}}" data-fm-callback="reload"><strong>{{ t.empleado.apellido_y_nombre|default_if_none:''|truncatechars:60 }}</strong></a></td>
+                <td title="{{ t.empleado.apellido_y_nombre|default_if_none:''}}"><a href="{% url 'empleado_detalles' id=t.empleado.id %}"  class="modal-detail" data-modal-head="DETALLE EMPLEADO {{t.empleado.legajo}}" data-modal-callback="reload"><strong>{{ t.empleado.apellido_y_nombre|default_if_none:''|truncatechars:60 }}</strong></a></td>
                 <td title="{{ t.empresa|default_if_none:''}}">{{ t.empresa|default_if_none:''|truncatechars:60 }}</td>
                 <td>{{ t.get_estado_display|default_if_none:'' }}</td>
                 <td title="{{ t.detalle|default_if_none:''}}">{{ t.detalle|default_if_none:''|truncatechars:60 }}</td>
