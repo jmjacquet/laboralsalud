@@ -29,7 +29,7 @@
             var modal_body = $(global_options.modal_body_selector);
             var modal_buttons = $(global_options.modal_buttons_selector);
 
-            ar default_callbacks = {
+            var default_callbacks = {
                 "reload": function() {
                     window.location.reload();
                 },
