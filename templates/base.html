@@ -73,7 +73,7 @@
 
 <script src="{% static 'js/less-1.3.3.min.js' %}" type="text/javascript"></script>  
 <script src="{% static 'modal/js/modal.js' %}"></script>
-<script src="{% static 'fm/js/fm.js' %}" type="text/javascript"></script>
+{# <script src="{% static 'fm/js/fm.js' %}" type="text/javascript"></script> #}
 <script src="{% static 'js/jquery-migrate.min.js' %}" type="text/javascript"></script>        
 <script src="{% static 'js/html5shiv.js' %}" type="text/javascript"></script>                
 <script src="{% static 'js/sorttable.js' %}" type="text/javascript"></script>
@@ -81,9 +81,7 @@
 <script src="{% static 'js/jquery.uniform.min.js' %}" type="text/javascript" ></script>               
 <script src="{% static 'js/chosen.jquery.js' %}" type="text/javascript"></script>
 
-      
 <script src="{% static 'bootstrap-datepicker/js/bootstrap-datepicker.js' %}" type="text/javascript"></script>        
-
 <script src="{% static 'DataTables/moment.min.js' %}" type="text/javascript"></script>        
 <script src="{% static 'js/jquery.waypoints.min.js' %}" type="text/javascript"></script>        
 
@@ -98,16 +96,13 @@
   <script src="{% static 'DataTables/FixedHeader-3.1.3/js/dataTables.fixedHeader.min.js' %}" type="text/javascript"></script>    
 {% endblock %}
 
-  
 {% block content %}{% endblock %} 
-<div id="popup" class="modal fade " role="dialog"  data-backdrop="static"  data-keyboard="false"></div>        
-{% include "fm/modal.html" %}     
-{% include "modal/modal.html" %} 
+{% include "modal/modal.html" %}     
+ 
 <script type="text/javascript">
     
-    $(function() {
-        
-        $.fm({debug: false});
+    $(function() {        
+        // $.fm({debug: false});
         $.modal({debug: false});
         {% if messages %}
           {% for message in messages %}                                                
@@ -117,13 +112,12 @@
 
         $('[data-toggle=tooltip]').tooltip();     
     
-
     });
 
 </script>
 {% block scripts_js %}
 {% endblock %}
-
+<div id="popup" class="modal fade " role="dialog"  data-backdrop="static"  data-keyboard="false"></div>     
 
         
 

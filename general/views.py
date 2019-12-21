@@ -288,7 +288,7 @@ class TurnosView(VariablesMixin,ListView):
 
 class TurnosCreateView(VariablesMixin,AjaxCreateView):
     form_class = TurnosForm
-    template_name = 'fm/general/form_turnos.html'
+    template_name = 'modal/general/form_turnos.html'
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs): 
@@ -309,8 +309,7 @@ class TurnosCreateView(VariablesMixin,AjaxCreateView):
 
     def get_initial(self):    
         initial = super(TurnosCreateView, self).get_initial()                       
-        initial['request'] = self.request        
-        initial['estado'] = 0
+        initial['request'] = self.request                
         initial['tipo_form'] = 'ALTA'
         return initial    
 
@@ -326,7 +325,7 @@ class TurnosEditView(VariablesMixin,AjaxUpdateView):
     form_class = TurnosForm
     model = turnos
     pk_url_kwarg = 'id'
-    template_name = 'fm/general/form_turnos.html'
+    template_name = 'modal/general/form_turnos.html'
     
 
     @method_decorator(login_required)

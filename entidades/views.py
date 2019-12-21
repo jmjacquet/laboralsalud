@@ -30,7 +30,7 @@ class ARTView(VariablesMixin,ListView):
 
 class ARTCreateView(VariablesMixin,AjaxCreateView):
     form_class = ARTForm
-    template_name = 'fm/entidades/form_art.html'
+    template_name = 'modal/entidades/form_art.html'
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs): 
@@ -63,7 +63,7 @@ class ARTEditView(VariablesMixin,AjaxUpdateView):
     form_class = ARTForm
     model = ent_art
     pk_url_kwarg = 'id'
-    template_name = 'fm/entidades/form_art.html'
+    template_name = 'modal/entidades/form_art.html'
     
 
     @method_decorator(login_required)
@@ -127,7 +127,7 @@ class CargoView(VariablesMixin,ListView):
 
 class CargoCreateView(VariablesMixin,AjaxCreateView):
     form_class = CargoForm
-    template_name = 'fm/entidades/form_cargo.html'
+    template_name = 'modal/entidades/form_cargo.html'
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs): 
@@ -160,7 +160,7 @@ class CargoEditView(VariablesMixin,AjaxUpdateView):
     form_class = CargoForm
     model = ent_cargo
     pk_url_kwarg = 'id'
-    template_name = 'fm/entidades/form_cargo.html'
+    template_name = 'modal/entidades/form_cargo.html'
     
 
     @method_decorator(login_required)
@@ -224,7 +224,7 @@ class EspecialidadView(VariablesMixin,ListView):
 
 class EspecialidadCreateView(VariablesMixin,AjaxCreateView):
     form_class = EspecialidadForm
-    template_name = 'fm/entidades/form_esp.html'
+    template_name = 'modal/entidades/form_esp.html'
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs): 
@@ -257,7 +257,7 @@ class EspecialidadEditView(VariablesMixin,AjaxUpdateView):
     form_class = EspecialidadForm
     model = ent_especialidad
     pk_url_kwarg = 'id'
-    template_name = 'fm/entidades/form_esp.html'
+    template_name = 'modal/entidades/form_esp.html'
     
 
     @method_decorator(login_required)
@@ -322,7 +322,7 @@ class MedProfView(VariablesMixin,ListView):
 
 class MedProfCreateView(VariablesMixin,AjaxCreateView):
     form_class = MedProfForm
-    template_name = 'fm/entidades/form_med_prof.html'
+    template_name = 'modal/entidades/form_med_prof.html'
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs): 
@@ -356,7 +356,7 @@ class MedProfEditView(VariablesMixin,AjaxUpdateView):
     form_class = MedProfForm
     model = ent_medico_prof
     pk_url_kwarg = 'id'
-    template_name = 'fm/entidades/form_med_prof.html'
+    template_name = 'modal/entidades/form_med_prof.html'
     
 
     @method_decorator(login_required)
@@ -425,7 +425,7 @@ class EmpresaView(VariablesMixin,ListView):
 
 class EmpresaCreateView(VariablesMixin,AjaxCreateView):
     form_class = EmpresaForm
-    template_name = 'fm/entidades/form_empresa.html'
+    template_name = 'modal/entidades/form_empresa.html'
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs): 
@@ -459,7 +459,7 @@ class EmpresaEditView(VariablesMixin,AjaxUpdateView):
     form_class = EmpresaForm
     model = ent_empresa
     pk_url_kwarg = 'id'
-    template_name = 'fm/entidades/form_empresa.html'
+    template_name = 'modal/entidades/form_empresa.html'
     
 
     @method_decorator(login_required)
@@ -553,7 +553,7 @@ class EmpleadoView(VariablesMixin,ListView):
 
 class EmpleadoCreateView(VariablesMixin,AjaxCreateView):
     form_class = EmpleadoForm
-    template_name = 'fm/entidades/form_empleado.html'
+    template_name = 'modal/entidades/form_empleado.html'
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs): 
@@ -591,7 +591,7 @@ class EmpleadoEditView(VariablesMixin,AjaxUpdateView):
     form_class = EmpleadoForm
     model = ent_empleado
     pk_url_kwarg = 'id'
-    template_name = 'fm/entidades/form_empleado.html'
+    template_name = 'modal/entidades/form_empleado.html'
     
 
     @method_decorator(login_required)

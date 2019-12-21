@@ -96,7 +96,7 @@ class ausentismo(models.Model):
 		ordering = ['-fecha_creacion','empleado__empresa','-aus_fcrondesde','-aus_fcronhasta','-art_fcrondesde','-art_fcronhasta']
 
 	def __unicode__(self):
-	    return u'%s' % (self.empleado)
+	    return u'%s - %s' % (self.pk,self.empleado)
 
 	@property
 	def get_dias_caidos(self):
@@ -158,4 +158,9 @@ class ausentismo_controles(models.Model):
 	class Meta:
 	    db_table = 'ausentismo_controles'
 	    ordering = ['fecha','id']
+
+	def __unicode__(self):
+	    return u'%s - %s - %s' % (self.ausentismo.pk,self.fecha,self.detalle)
+
+
 

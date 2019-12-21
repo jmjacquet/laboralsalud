@@ -16,7 +16,7 @@
 {% endblock cargando %}
 {% block principal %}                            
 <br>   
-     <a class="btn btn-xs btn-primary fm-create" style="float:left;margin-right:20px;" href="{% url 'art_nuevo' %}" data-fm-head="AGREGAR ART" data-fm-callback="reload">Nueva ART</a>
+     <a class="btn btn-xs btn-primary modal-create" style="float:left;margin-right:20px;" href="{% url 'art_nuevo' %}" data-fm-head="AGREGAR ART" data-fm-callback="reload">Nueva ART</a>
     <table width="100%" id="art" style="display:none;" class="table table-striped compact table-hover table-no-bordered tabla_nueva nowrap">         
         <thead >
             <tr>
@@ -46,7 +46,7 @@
                         <li><a href="{% url 'art_detalles' id=a.pk %}" class="modal-detail" data-modal-head="DETALLE ART {{a.codigo}}" data-fm-callback="reload">
                         <i class=" icon-screen-desktop"></i> Detalle</a></li>
                         
-                        <li><a href="{% url 'art_editar' id=a.pk %}"  class="fm-update " title="Editar" data-fm-callback="reload" data-fm-head="EDITAR ART"data-fm-target="#object-{{ a.pk }}"><i class="icon-note"></i> Editar</a></li>
+                        <li><a href="{% url 'art_editar' id=a.pk %}"  class="modal-update " title="Editar" data-fm-callback="reload" data-fm-head="EDITAR ART"data-fm-target="#object-{{ a.pk }}"><i class="icon-note"></i> Editar</a></li>
 
                         <li><a href="#" 
                                 onClick="alerta= alertify.dialog('confirm').set({'labels':{ok:'Aceptar', cancel:'Cancelar'},'message': '¿DESEA DAR DE BAJA/REACTIVAR EL REGISTRO ACTUAL?',transition:'fade','onok': function(){ window.location.href = '{% url 'art_baja_alta' id=a.pk  %}'; },'oncancel': function(){ return true;} }); alerta.setting('modal', true); alerta.setHeader('BAJA/REACTIVAR'); alerta.show(); return true;" ><i class="icon-dislike"></i><i class="icon-like"></i>Baja/Reactivar</a>

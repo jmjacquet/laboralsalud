@@ -3,6 +3,8 @@
 {% load crispy_forms_tags %}
 {% load bootstrap3 %}
 
+
+
 <div id="form-container">
     <form role="form" class="form abm" method="POST" action="" id="form-alta" enctype="multipart/form-data">
      {% csrf_token %}         
@@ -25,7 +27,7 @@
 		 {% for hidden in form.hidden_fields %} {{ hidden }} {% endfor %}	       
     </form>
 </div>
-{% block extra_js %}
- <script src="{% static 'js/scripts/turnos.js' %}" type="text/javascript"></script>
 
+{% block scripts_js %}
+ <script src="{% static 'js/scripts/turnos.js' %}" type="text/javascript"></script>
 {% endblock %}

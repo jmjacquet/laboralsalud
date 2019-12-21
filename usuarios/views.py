@@ -9,7 +9,7 @@ from fm.views import AjaxDeleteView
 from django.views.generic import TemplateView,ListView,CreateView,UpdateView
 from .forms import *
 from django.contrib import messages
-from laboralsalud.utilidades import hoy,usuario_actual,empresa_actual
+from laboralsalud.utilidades import hoy,usuario_actual,empresa_actual,esAdmin
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.hashers import make_password
@@ -71,7 +71,7 @@ def unpassword(request):
   return HttpResponse( clave, content_type='application/json' ) 
 
 
-def cambiar_password(request):            
+def cambiar_password(request):                
     form = UsuarioCambiarPasswdForm(request.POST or None)
     if request.method == 'POST' and request.is_ajax():                                       
         if form.is_valid():                                   
@@ -99,8 +99,8 @@ class UsuarioList(VariablesMixin,ListView):
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):                
-        # if not tiene_permiso(self.request,'gral_configuracion'):
-        #     return redirect(reverse('principal'))
+        if not esAdmin(self.request):
+             return redirect(reverse('principal'))
         return super(UsuarioList, self).dispatch(*args, **kwargs)
 
     def get_context_data(self, **kwargs):
@@ -110,8 +110,8 @@ class UsuarioList(VariablesMixin,ListView):
 
 @login_required
 def UsuarioCreateView(request):    
-    # if not tiene_permiso(request,'gral_configuracion'):
-    #         return redirect(reverse('usuarios'))
+    if not esAdmin(request):
+             return redirect(reverse('principal'))
     context = {}
     context = getVariablesMixin(request)    
     try:
@@ -138,8 +138,8 @@ def UsuarioCreateView(request):
 
 @login_required
 def UsuarioEditView(request,id):
-    # if not tiene_permiso(request,'gral_configuracion'):
-    #         return redirect(reverse('usuarios'))
+    if not esAdmin(request):
+             return redirect(reverse('principal'))
     context = {}
     context = getVariablesMixin(request)    
    
@@ -164,8 +164,22 @@ def UsuarioEditView(request,id):
 
 @login_required
 def usuarios_baja_reactivar(request,id):
+    if not esAdmin(request):
+             return redirect(reverse('principal'))
     usr = UsuUsuario.objects.get(pk=id) 
     usr.baja = not usr.baja
     usr.save()  
     messages.success(request, u'Los datos se guardaron con éxito!')
-    return HttpResponseRedirect(reverse('usuarios'))           
+    return HttpResponseRedirect(reverse('usuarios'))  
+
+@login_required
+def usuarios_resetear_passwd(request,id):    
+    if not esAdmin(request):
+             return redirect(reverse('principal'))
+    usuario = UsuUsuario.objects.get(pk=id) 
+    clave = make_password(password=usuario.usuario,salt=None)
+    usuario.password = clave
+    usuario.save()
+    messages.success(request, u'Los datos se guardaron con éxito!')
+    return HttpResponseRedirect(reverse('usuarios'))  
+     

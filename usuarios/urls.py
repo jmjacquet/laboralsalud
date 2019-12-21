@@ -18,5 +18,6 @@ urlpatterns = [
   url(r'^usuarios/nuevo/$', UsuarioCreateView, name="usuarios_nuevo"),
   url(r'^usuarios/editar/(?P<id>\d+)/$', UsuarioEditView, name="usuarios_editar"),
   url(r'^usuarios/baja_reactivar/(?P<id>\d+)/$', usuarios_baja_reactivar, name='usuarios_baja_reactivar'),
+  url(r'^usuarios/resetear_passwd/(?P<id>\d+)/$', usuarios_resetear_passwd, name='usuarios_resetear_passwd'),
     
 ]

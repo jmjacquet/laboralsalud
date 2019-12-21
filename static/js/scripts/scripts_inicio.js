@@ -22,5 +22,5 @@ $.fn.datepicker.dates['es'] = {
         $(this).datepicker();
     });
     
-  
+   $("#cargando").hide();
 });

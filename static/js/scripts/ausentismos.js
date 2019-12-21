@@ -9,27 +9,18 @@ $.fn.datepicker.dates['es'] = {
     today: "Hoy"
   };
   
- $('.dateinput').datepicker({
+ $('.datepicker').datepicker({
         format: "dd/mm/yyyy",
         language: "es",
         autoclose: true,
         todayHighlight: true
   });
 
-  $('.dateinput').each(function(){
-       $(this).datepicker({
-                      format: "dd/mm/yyyy",
-                      language: "es",
-                      autoclose: true,
-                      todayHighlight: true
-                });                  
-  });
-
 $("input[type=number]").click(function(){
             this.select()
           });
 
-  $.fm({        
+  $.modal({        
           custom_callbacks: {
               "recargarE": function(data, options) {
                  recargarEmpleados();
@@ -46,13 +37,6 @@ $("input[type=number]").click(function(){
               }
     });
 
-
-
-$("#id_empleado").chosen({
-      no_results_text: "Empleado inexistente...",
-      placeholder_text_single:"Seleccione un Empleado",
-      allow_single_deselect: true,
-  });
 
 $("#id_aus_grupop").chosen({
       no_results_text: "Patología inexistente...",
@@ -200,25 +184,6 @@ $("#id_empleado").change(function(){
 }); 
 
 
-if ($('#id_tipo_form').val()=='ALTA'){  
-$("#id_empresa").change(function(){
-    var id =  $("#id_empresa").val();
-    if (id =='') {id=0;};
-    $('#cargando').show();
-    $.getJSON('/recargar_empleados_empresa/'+id,{},
-    function (c) {
-        $("#id_empleado").empty().append('<option value="">---</option>');
-        $.each(c["empleados"], function (idx, item) {
-            jQuery("<option/>").text(item['nombre']).attr("value", item['id']).appendTo("#id_empleado");
-        })
-        $('#id_empleado').trigger("chosen:updated");  
-        $("#id_empleado").trigger("change");          
-    });      
-    $('#cargando').hide();
-}); 
-
-};
-
 $('#id_tipo_ausentismo').change(function()
 {
   var id =  $("#id_tipo_ausentismo").val();
@@ -280,16 +245,10 @@ $('.formDetalle').formset({
           formCssClass: 'dynamic-form',
           keepFieldValues:'',
           added: function (row) {
-            
-            $('.dateinput').each(function(){
-              console.log($(this));
-                $(this).datepicker({
-                  format: "dd/mm/yyyy",
-                  language: "es",
-                  autoclose: true,
-                  todayHighlight: true
-                                });                  
-                  });
+            $('.datepicker').each(function(){       
+                 $(this).datepicker('destroy');
+                            
+            });
           },
           removed: function (row) {
             var i = $(row).index();
@@ -309,10 +268,46 @@ $('#cargando').hide();
 if ($('#id_tipo_form').val()=='EDICION'){  
   $("#id_empleado").trigger("change");
 } else {
-  if ($("#id_empleado").val()=='')
-  $("#id_empresa").trigger("change");
+  
+  $("#id_empresa").change(function(){
+      var id =  $("#id_empresa").val();
+      if (id =='') {id=0;};
+      $('#cargando').show();
+      $.getJSON('/recargar_empleados_empresa/'+id,{},
+      function (c) {
+          $("#id_empleado").empty().append('<option value="">---</option>');
+          $.each(c["empleados"], function (idx, item) {
+              jQuery("<option/>").text(item['nombre']).attr("value", item['id']).appendTo("#id_empleado");
+          })
+          $('#id_empleado').trigger("chosen:updated");  
+          $("#id_empleado").trigger("change");          
+      });      
+      $('#cargando').hide();
+  }); 
+
+
+    $("#id_empleado").chosen({
+        no_results_text: "Empleado inexistente...",
+        placeholder_text_single:"Seleccione un Empleado",
+        allow_single_deselect: true,
+    });
+    if ($("#id_empleado").val()==''){
+    $("#id_empresa").trigger("change");
+  }
 };
+
+$("#id_empleado").chosen({
+        no_results_text: "Empleado inexistente...",
+        placeholder_text_single:"Seleccione un Empleado",
+        allow_single_deselect: true,
+    });
 $("#id_tipo_ausentismo").trigger("change");
 
 
+
+   $( "#Guardar" ).click(function() {        
+       $("#form-alta :disabled").removeAttr('disabled');      
+        $("#Guardar").prop("disabled", true);    
+        $( "#form-alta" ).submit();         
+      });
  });

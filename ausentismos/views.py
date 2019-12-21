@@ -90,7 +90,7 @@ class AusentismoView(VariablesMixin,ListView):
 
 class ControlesDetalleFormSet(BaseInlineFormSet): 
     pass  
-ControlDetalleFormSet = inlineformset_factory(ausentismo, ausentismo_controles,form=ControlesDetalleForm,formset=ControlesDetalleFormSet, can_delete=True,extra=0,min_num=1)
+ControlDetalleFormSet = inlineformset_factory(ausentismo, ausentismo_controles,form=ControlesDetalleForm,formset=ControlesDetalleFormSet, can_delete=True,extra=0,min_num=10,max_num=13)
 
 class AusentismoCreateView(VariablesMixin,CreateView):
     form_class = AusentismoForm
@@ -119,7 +119,7 @@ class AusentismoCreateView(VariablesMixin,CreateView):
 
     def form_valid(self, form):                                
         self.object = form.save(commit=False)                           
-        self.object.usuario = usuario_actual(self.request)             
+        self.object.usuario_carga = usuario_actual(self.request)             
         self.object.save()      
         return super(AusentismoCreateView, self).form_valid(form)
 
@@ -177,6 +177,7 @@ class AusentismoEditView(VariablesMixin,UpdateView):
         self.object.save()
         controles_detalle.instance = self.object
         controles_detalle.ausentismo = self.object.id        
+        controles_detalle.usuario_carga = usuario_actual(self.request)        
         controles_detalle.save()   
         return HttpResponseRedirect(reverse('ausentismo_listado'))
 
@@ -244,7 +245,7 @@ class PatologiaView(VariablesMixin,ListView):
 
 class PatologiaCreateView(VariablesMixin,AjaxCreateView):
     form_class = PatologiaForm
-    template_name = 'fm/entidades/form_patologia.html'
+    template_name = 'modal/entidades/form_patologia.html'
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs): 
@@ -275,7 +276,7 @@ class PatologiaEditView(VariablesMixin,AjaxUpdateView):
     form_class = PatologiaForm
     model = aus_patologia
     pk_url_kwarg = 'id'
-    template_name = 'fm/entidades/form_patologia.html'
+    template_name = 'modal/entidades/form_patologia.html'
     
 
     @method_decorator(login_required)
@@ -337,7 +338,7 @@ class DiagnosticoView(VariablesMixin,ListView):
 
 class DiagnosticoCreateView(VariablesMixin,AjaxCreateView):
     form_class = DiagnosticoForm
-    template_name = 'fm/entidades/form_diagnostico.html'
+    template_name = 'modal/entidades/form_diagnostico.html'
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs): 
@@ -368,7 +369,7 @@ class DiagnosticoEditView(VariablesMixin,AjaxUpdateView):
     form_class = DiagnosticoForm
     model = aus_diagnostico
     pk_url_kwarg = 'id'
-    template_name = 'fm/entidades/form_diagnostico.html'
+    template_name = 'modal/entidades/form_diagnostico.html'
     
 
     @method_decorator(login_required)

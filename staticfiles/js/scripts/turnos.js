@@ -34,27 +34,24 @@ $("#id_empresa").change(function(){
         $.each(c["empleados"], function (idx, item) {
             jQuery("<option/>").text(item['nombre']).attr("value", item['id']).appendTo("#id_empleado");
         })
-        $('#id_empleado').trigger("chosen:updated");  
-        $('#id_empleado').val(ide).trigger('chosen:updated');
+        // $('#id_empleado').trigger("chosen:updated");  
+        // $('#id_empleado').val(ide).trigger('chosen:updated');
+        console.log($("#id_empleado"));
                     
     });      
     $('#cargando').hide();
 }); 
 
-$("#id_empleado").chosen({
-            no_results_text: "Empleado inexistente...",
-            placeholder_text_single:"Seleccione un Empleado",
-        });
+
 
 if ($('#id_tipo_form').val()=='ALTA'){  
   $("#id_empresa").trigger("change");
 }else{
   
-  $("#id_empresa").trigger("change");
-
-  
-};
    
+};
+
+
 
 
 

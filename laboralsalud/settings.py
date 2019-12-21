@@ -38,8 +38,7 @@ INSTALLED_APPS = (
     'usuarios',
     'entidades',
     'ausentismos',
-    'reportes',    
-    'fm',
+    'reportes',        
     'modal',
     # 'debug_toolbar',
 

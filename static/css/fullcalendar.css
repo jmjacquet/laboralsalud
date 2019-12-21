@@ -15,7 +15,8 @@
 }
 
 body .fc { /* extra precedence to overcome jqui */
-	font-size: 1em;
+	font-size: 0.9em;
+	background-color: #fff;
 }
 
 
@@ -33,6 +34,7 @@ body .fc { /* extra precedence to overcome jqui */
 .fc-unthemed .fc-list-view,
 .fc-unthemed .fc-list-heading td {
 	border-color: #ddd;
+
 }
 
 .fc-unthemed .fc-popover {
@@ -823,7 +825,7 @@ a.fc-more:hover {
 }
 
 .fc-toolbar.fc-header-toolbar {
-	margin-bottom: 1em;
+	margin-bottom: 0em;
 }
 
 .fc-toolbar.fc-footer-toolbar {
@@ -857,6 +859,7 @@ a.fc-more:hover {
 
 .fc-toolbar h2 {
 	margin: 0;
+	font-size: 2em;
 }
 
 /* button layering (for border precedence) */

@@ -272,6 +272,9 @@ def validar_cuit(cuit):
 def usuario_actual(request):    
     return request.user.userprofile.id_usuario
 
+def esAdmin(request):    
+    return (request.user.userprofile.id_usuario.tipoUsr == 0)     
+
 from entidades.models import ent_empresa
 def empresa_actual(request):    
     empresa = None
