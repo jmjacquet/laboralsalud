@@ -32,6 +32,7 @@ $("input[type=number]").click(function(){
                  recargarPatologias();
                  },
               "recargarD": function(data, options) {
+                 console.log(data);
                  recargarDiagnosticos();
                  },
               }

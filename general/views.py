@@ -187,7 +187,7 @@ def buscarDatosEntidad(request):
    return HttpResponse( json.dumps(lista, cls=DjangoJSONEncoder), content_type='application/json' )  
 
 
-# @login_required 
+@login_required 
 def recargar_empleados(request):
     context={}
     lista = []
@@ -197,6 +197,7 @@ def recargar_empleados(request):
     context["empleados"]=lista
     return HttpResponse(json.dumps(context))
 
+@login_required 
 def recargar_empleados_empresa(request,id):
     context={}
     lista = []
@@ -206,6 +207,7 @@ def recargar_empleados_empresa(request,id):
     context["empleados"]=lista
     return HttpResponse(json.dumps(context))
 
+@login_required 
 def recargar_medicos(request):
     context={}
     lista = []
@@ -215,15 +217,17 @@ def recargar_medicos(request):
     context["medicos"]=lista
     return HttpResponse(json.dumps(context))    
 
+@login_required 
 def recargar_diagnosticos(request):
     context={}
     lista = []
     diagnosticos = aus_diagnostico.objects.filter(baja=False)   
     for e in diagnosticos:
-        lista.append({'id':e.pk,'nombre':e.get_diagnostico()})
+        lista.append({'id':e.pk,'nombre':e.get_aus_diagnostico()})
     context["diagnosticos"]=lista
     return HttpResponse(json.dumps(context))    
 
+@login_required 
 def recargar_patologias(request):
     context={}
     lista = []

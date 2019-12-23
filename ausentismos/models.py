@@ -25,22 +25,25 @@ class aus_patologia(models.Model):
 		return entidad.upper()		
 
 class aus_diagnostico(models.Model):
-    id = models.AutoField(primary_key=True,db_index=True)    
-    codigo =  models.CharField(max_length=200)
-    diagnostico =  models.CharField(max_length=200)
-    baja = models.BooleanField(default=False)
-    class Meta:
-        db_table = 'aus_diagnostico'
-        ordering = ['diagnostico',]
-    
-    def __unicode__(self):
-        return u'%s' % (self.diagnostico)  
-	
-	def get_diagnostico(self):
+	id = models.AutoField(primary_key=True,db_index=True)    
+	codigo =  models.CharField(max_length=200)
+	diagnostico =  models.CharField(max_length=200)
+	baja = models.BooleanField(default=False)
+	class Meta:
+		db_table = 'aus_diagnostico'
+		ordering = ['diagnostico',]
+
+	def __unicode__(self):
 		entidad=u'%s' % self.diagnostico.upper()
 		if self.codigo:
-			entidad = u'%s - ' % (self.codigo)+entidad		
-		return entidad.upper()		               
+			entidad = u'%s - ' % (self.codigo)+entidad				
+		return entidad.upper()		    
+	
+	def get_aus_diagnostico(self):
+		entidad=u'%s' % self.diagnostico.upper()
+		if self.codigo:
+			entidad = u'%s - ' % (self.codigo)+entidad				
+		return entidad.upper()		   
 
 #Tabla de la Base de Configuracion
 class ausentismo(models.Model):	

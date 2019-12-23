@@ -104,7 +104,23 @@
     
     $(function() {        
         // $.fm({debug: false});
-        $.modal({debug: false});
+        $.modal({
+          debug: false,
+          custom_callbacks: {
+              "recargarE": function(data, options) {
+                 recargarEmpleados();
+                 },
+              "recargarM": function(data, options) {
+                 recargarMedicos();
+                 },
+              "recargarGP": function(data, options) {
+                 recargarPatologias();
+                 },
+              "recargarD": function(data, options) {
+                 recargarDiagnosticos();
+                 },
+              }
+        });
         {% if messages %}
           {% for message in messages %}                                                
                       toastr.{{ message.tags }}('{{ message }}');                                        
