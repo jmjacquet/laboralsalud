@@ -17,7 +17,7 @@
 {% block principal %}                            
 <br>
    
-     <a class="btn btn-xs btn-primary fm-create" style="float:left;margin-right:20px;" href="{% url 'medico_prof_nuevo' %}" data-fm-head="AGREGAR MÉDICO/PROF." data-fm-callback="reload">Nueva Méd/Prof</a>
+     <a class="btn btn-xs btn-primary modal-create" style="float:left;margin-right:20px;" href="{% url 'medico_prof_nuevo' %}" data-modal-head="AGREGAR MÉDICO/PROF." data-modal-callback="reload">Nueva Méd/Prof</a>
     <table width="100%" id="med" style="display:none;" class="table table-striped compact table-hover table-no-bordered tabla_nueva nowrap">         
         <thead >
             <tr>
@@ -47,10 +47,10 @@
                         <i class="icon-settings"> </i> <span class="caret"></span>
                       </button>
                       <ul class="dropdown-menu">
-                        <li><a href="{% url 'medico_prof_detalles' id=a.pk %}" class="modal-detail" data-modal-head="DETALLE MÉDICO/PROF. {{a.codigo}}" data-fm-callback="reload">
+                        <li><a href="{% url 'medico_prof_detalles' id=a.pk %}" class="modal-detail" data-modal-head="DETALLE MÉDICO/PROF. {{a.codigo}}" data-modal-callback="reload">
                         <i class=" icon-screen-desktop"></i> Detalle</a></li>
                         
-                        <li><a href="{% url 'medico_prof_editar' id=a.pk %}"  class="fm-update " title="Editar" data-fm-callback="reload" data-fm-head="EDITAR MÉDICO/PROF."data-fm-target="#object-{{ a.pk }}"><i class="icon-note"></i> Editar</a></li>
+                        <li><a href="{% url 'medico_prof_editar' id=a.pk %}"  class="modal-update " title="Editar" data-modal-callback="reload" data-modal-head="EDITAR MÉDICO/PROF."data-modal-target="#object-{{ a.pk }}"><i class="icon-note"></i> Editar</a></li>
 
                         <li><a href="#" 
                                 onClick="alerta= alertify.dialog('confirm').set({'labels':{ok:'Aceptar', cancel:'Cancelar'},'message': '¿DESEA DAR DE BAJA/REACTIVAR EL REGISTRO ACTUAL?',transition:'fade','onok': function(){ window.location.href = '{% url 'medico_prof_baja_alta' id=a.pk  %}'; },'oncancel': function(){ return true;} }); alerta.setting('modal', true); alerta.setHeader('BAJA/REACTIVAR'); alerta.show(); return true;" ><i class="icon-dislike"></i><i class="icon-like"></i>Baja/Reactivar</a>

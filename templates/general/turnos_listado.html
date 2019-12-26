@@ -22,7 +22,8 @@
     <img class="cargando-img" src="{% static 'img/loading-bars.svg' %}">
   </div>
 {% endblock cargando %}
-{% block principal %}                            
+
+ {% block principal %}                            
 <br>
 <div class="collapse barra_busqueda" id="barra_busqueda">
           <div class="panel panel-primary">
@@ -33,17 +34,17 @@
                         {% csrf_token %}                                                                                     
                           <div class="col-sm-1">{% bootstrap_field form.fdesde  %}</div>                                
                           <div class="col-sm-1">{% bootstrap_field form.fhasta  %}</div>                                    
-                          <div class="col-sm-3">{% bootstrap_field form.empresa  %}</div>                          
-                          <div class="col-sm-2">{% bootstrap_field form.empleado  %}</div>
-                          <div class="col-sm-1">{% bootstrap_field form.estado  %}</div>      
+                          <div class="col-sm-3">{% bootstrap_field form.qempresa  %}</div>                          
+                          <div class="col-sm-2">{% bootstrap_field form.qempleado  %}</div>
+                          <div class="col-sm-1">{% bootstrap_field form.qestado  %}</div>      
                           <div class="col-sm-1"><button class="btn btn-xs text-center" type="submit">Buscar</button></div>                
                         </form>             
                       </div>
               </div>  
           </div>                  
         </div>   
-<div class="col-sm-7">     
-    <a class="btn btn-xs btn-primary fm-create" style="float:left;margin-right:20px;" href="{% url 'turnos_nuevo' %}" data-fm-head="AGREGAR TURNO" data-fm-callback="reload">Nuevo Turno</a>
+<div class="col-sm-7 cerca">     
+    <a class="btn btn-xs btn-primary modal-create" style="float:left;margin-right:20px;" href="{% url 'turnos_nuevo' %}" data-modal-head="AGREGAR TURNO" data-modal-callback="reload">Nuevo Turno</a>
     <table width="100%" id="turnos" style="display:none;" class="table table-striped compact table-hover table-no-bordered tabla_nueva text-nowrap">         
         <thead >
             <tr>
@@ -71,8 +72,10 @@
                         <i class="icon-settings"> </i> <span class="caret"></span>
                       </button>
                       <ul class="dropdown-menu">                        
-                        
-                        <li><a href="{% url 'turnos_editar' id=t.pk %}"  class="fm-update " title="Editar" data-fm-callback="reload" data-fm-head="EDITAR TURNO"data-fm-target="#object-{{ t.pk }}"><i class="icon-note"></i> Editar</a></li>
+                        <li><a href="{% url 'turnos_detalles' id=t.pk %}" class="modal-detail" data-modal-head="DETALLE TURNO">
+                            <i class=" icon-screen-desktop"></i> Detalle</a></li>                            
+                            <li>
+                        <li><a href="{% url 'turnos_editar' id=t.pk %}"  class="modal-update " title="Editar" data-modal-callback="reload" data-modal-head="EDITAR TURNO" data-modal-target="#object-{{ t.pk }}"><i class="icon-note"></i> Editar</a></li>
                         <li><a href="#" 
                                     onClick="alerta= alertify.dialog('confirm').set({'labels':{ok:'Aceptar', cancel:'Cancelar'},'message': '¿DESEA ELIMINAR EL REGISTRO ACTUAL?',transition:'fade','onok': function(){ window.location.href = '{% url 'turnos_eliminar' id=t.pk  %}'; },'oncancel': function(){ return true;} }); alerta.setting('modal', true); alerta.setHeader('ELIMINAR'); alerta.show(); return true;" ><i class="glyphicon glyphicon-trash"></i>Eliminar</a>
                                 </li>
@@ -101,7 +104,7 @@
                 <td><a href="{% url 'turnos_detalles' id=t.pk %}" class="modal-detail" title="Ver Detalle" data-modal-head="DETALLE TURNO">
                             <strong>{{ t.get_turno }}</strong></a></td>
                 <td>{{ t.fecha|date:'d/m/Y' }} {{ t.hora|time:"H:i" }}hs</td>
-                <td title="{{ t.empleado.apellido_y_nombre|default_if_none:''}}"><a href="{% url 'empleado_detalles' id=t.empleado.id %}"  class="modal-detail" data-modal-head="DETALLE EMPLEADO {{t.empleado.legajo}}" data-fm-callback="reload"><strong>{{ t.empleado.apellido_y_nombre|default_if_none:''|truncatechars:60 }}</strong></a></td>
+                <td title="{{ t.empleado.apellido_y_nombre|default_if_none:''}}"><a href="{% url 'empleado_detalles' id=t.empleado.id %}"  class="modal-detail" data-modal-head="DETALLE EMPLEADO {{t.empleado.legajo}}" data-modal-callback="reload"><strong>{{ t.empleado.apellido_y_nombre|default_if_none:''|truncatechars:60 }}</strong></a></td>
                 <td title="{{ t.empresa|default_if_none:''}}">{{ t.empresa|default_if_none:''|truncatechars:60 }}</td>
                 <td>{{ t.get_estado_display|default_if_none:'' }}</td>
                 <td title="{{ t.detalle|default_if_none:''}}">{{ t.detalle|default_if_none:''|truncatechars:60 }}</td>
@@ -129,13 +132,12 @@
 </div>                  
 
 {% endblock principal %}
-
 {% block scripts_js %}     
  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
- <script src="{% static 'js/fullCalendar.js' %}" type="text/javascript"></script>  
+ <script src="{% static 'js/fullcalendar.js' %}" type="text/javascript"></script>  
  <script src="{% static 'js/fullc.locale-all.js' %}" type="text/javascript"></script>  
+ <script type="text/javascript">
 
-<script type="text/javascript">
 
 $(document).ready(function () {
 
