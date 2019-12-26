@@ -39,5 +39,5 @@ urlpatterns = [
     url(r'^empleado/detalles/(?P<id>\d+)/$', EmpleadoVerView.as_view(), name="empleado_detalles"),    
     url(r'^empleado/baja_alta/(?P<id>\d+)/$', empleado_baja_alta, name='empleado_baja_alta'),
 
-    url(r'^simple_upload/$', simple_upload,name="simple_upload"),
+    url(r'^importar_empleados/$', importar_empleados,name="importar_empleados"),
 ]

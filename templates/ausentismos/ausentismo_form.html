@@ -30,7 +30,9 @@
 		<div class="panel panel-body panel-primary panel_centrado">
 			<form role="form" class="form abm" method="POST" action="" id="form-alta" enctype="multipart/form-data">
 				{% csrf_token %}
-							
+				
+				<div class="col-xs-12">
+					
 					<div class="row cerca">
 					  {% if form.tipo_form.value == 'ALTA' %}
 					  <div class="col-xs-12 col-sm-6">
@@ -47,7 +49,7 @@
 							{% if form.tipo_form.value == 'ALTA' %}
 								{% if not sitio_mobile  %}
 									<div class="col-sm-1 hidden-xs">						                  
-						                  		<a id="nuevoEmpleado" href="{% url 'empleado_nuevo' %}" data-modal-head="AGREGAR EMPLEADO" class="recargarDatos modal-create" type="button" data-toggle="tooltip" data-modal-callback="recargarE" data-placement="top" title="Agregar Empleado"><i class="icon-users"></i></a>
+						                  		<a id="nuevoEmpleado" href="{% url 'empleado_nuevo' %}" data-fm-head="AGREGAR EMPLEADO" class="recargarDatos fm-create" type="button" data-toggle="tooltip" data-fm-callback="recargarE" data-placement="top" title="Agregar Empleado"><i class="icon-users"></i></a>
 					                </div>        				
 							    {% endif %}		
 						    {% endif %}
@@ -193,7 +195,7 @@
 															<div id="div_id_aus_medico" class="form-group">
 																<label for="id_aus_medico" class="control-label "></label>
 																<div class="controls">
-																	<a id="nuevoMedicoAUS" href="{% url 'medico_prof_nuevo' %}" data-modal-head="AGREGAR MÉDICO" class="recargarDatos modal-create" type="button" data-toggle="tooltip" data-modal-callback="recargarM" data-placement="top" title="Agregar Médico"><i class="icon-users"></i></a>
+																	<a id="nuevoMedicoAUS" href="{% url 'medico_prof_nuevo' %}" data-fm-head="AGREGAR MÉDICO" class="recargarDatos fm-create" type="button" data-toggle="tooltip" data-fm-callback="recargarM" data-placement="top" title="Agregar Médico"><i class="icon-users"></i></a>
 																</div>
 															</div>
 										                </div>        	    				
@@ -256,7 +258,7 @@
 															<div id="div_id_aus_medico" class="form-group">
 																<label for="id_aus_medico" class="control-label "></label>
 																<div class="controls ">
-																	<a id="nuevoMedicoART" href="{% url 'medico_prof_nuevo' %}" data-modal-head="AGREGAR MÉDICO" class="recargarDatos modal-create" type="button" data-toggle="tooltip" data-modal-callback="recargarM" data-placement="top" title="Agregar Médico"><i class="icon-users"></i></a>
+																	<a id="nuevoMedicoART" href="{% url 'medico_prof_nuevo' %}" data-fm-head="AGREGAR MÉDICO" class="recargarDatos fm-create" type="button" data-toggle="tooltip" data-fm-callback="recargarM" data-placement="top" title="Agregar Médico"><i class="icon-users"></i></a>
 																</div>
 															</div>
 										                </div>        				
@@ -266,14 +268,50 @@
 									</div>							
 						</div>
 					</div>
-					
+					{% if form.tipo_form.value == 'EDICION' %}
 					<div class="row cerca">
-					 
-					 <div class="col-sm-{% if form.tipo_form.value == 'EDICION' %}6{% else %}12{% endif %} cerca">
+					 <div class="col-xs-12">
+						<fieldset>
+							<legend>CONTROLES ADICIONALES REALIZADOS</legend>
+							<div class="row cerca">
+								<div class="col-sm-12">
+									<table id="id_forms_table" width="100%" class="table tabla table-condensed tabla_listado">
+					                    <thead>
+					                          <tr>
+					                              <th style="width: 10%;">Fecha Control</th>					                              
+					                              <th>Detalle</th>						                             
+					                              <th style="width: 10px;" class="remove-sorting"></th>
+					                          </tr>
+					                    </thead>					                    
+	  			                        <tbody class='form-detalles'>       											                    	
+					                    	{{ controles_detalle.management_form }}
+					                    	{{ controles_detalle.non_form_errors  }}
+					                    	{% for form2 in controles_detalle.forms %}					                      								                      	
+					                    	  	{{ form2.non_field_errors }}					                      								                      	
+						                      	<tr class="formDetalle" id="{{ form2.prefix }}">           					                      	
+							                      	<td>{% bootstrap_field form2.fecha show_label=False%}</td>
+							                      	<td>{% bootstrap_field form2.detalle show_label=False%}</td>							                      	
+							                      	<td>{{form2.DELETE}}
+							                      	 <a class="btn btn-danger delete-row1" title="Eliminar">
+							                      			<i class="fa fa-times" aria-hidden="true"></i></a>		 
+							                      	</td>
+							                      	{% for hidden in form2.hidden_fields %} {{ hidden }} {% endfor %}
+							                    </tr>								                    
+					                     	{% endfor %}							                     	
+					                    </tbody>
+					                </table>                 
+								</div>								
+							</div>
+						</fieldset>
+					 </div>
+					</div>
+					{% endif %}	
+					<div class="row cerca">
+					 <div class="col-xs-12">
 						<fieldset>
 							<legend>OBSERVACIONES/ESTUDIOS/DETALLES</legend>
 								<div class="row cerca">
-									<div class="col-sm-{% if not sitio_mobile %}5{% else %}6{% endif %}">
+									<div class="col-sm-5">
 										{{form.aus_grupop|as_crispy_field}}
 									</div>
 									{% if not sitio_mobile %}
@@ -281,12 +319,12 @@
 											<div id="div_id_grupopo" class="form-group">
 												<label for="id_grupop" class="control-label "></label>
 												<div class="controls ">
-													<a id="nuevoGrupoP" href="{% url 'patologia_nuevo' %}" data-modal-head="AGREGAR PATOLOGÍA" class="recargarDatos modal-create" type="button" data-toggle="tooltip" data-modal-callback="recargarGP" data-placement="top" title="Agregar Patología"><i class="icon-magnifier-add"></i></a>
+													<a id="nuevoGrupoP" href="{% url 'patologia_nuevo' %}" data-fm-head="AGREGAR PATOLOGÍA" class="recargarDatos fm-create" type="button" data-toggle="tooltip" data-fm-callback="recargarGP" data-placement="top" title="Agregar Patología"><i class="icon-magnifier-add"></i></a>
 												</div>
 											</div>
 						                </div>        	    				
 								    {% endif %}		
-									<div class="col-sm-{% if not sitio_mobile %}5{% else %}6{% endif %}">
+									<div class="col-sm-5">
 										{{form.aus_diagn|as_crispy_field}}
 									</div>
 									{% if not sitio_mobile %}
@@ -294,7 +332,7 @@
 											<div id="div_id_nuevoDiagn" class="form-group">
 												<label for="id_nuevoDiagn" class="control-label "></label>
 												<div class="controls ">
-													<a id="nuevoDiagn" href="{% url 'diagnostico_nuevo' %}" data-modal-head="AGREGAR DIAGNÓSTICO" class="recargarDatos modal-create" type="button" data-toggle="tooltip" data-modal-callback="recargarD" data-placement="top" title="Agregar Diagnóstico"><i class="icon-magnifier-add"></i></a>
+													<a id="nuevoDiagn" href="{% url 'diagnostico_nuevo' %}" data-fm-head="AGREGAR DIAGNÓSTICO" class="recargarDatos fm-create" type="button" data-toggle="tooltip" data-fm-callback="recargarD" data-placement="top" title="Agregar Diagnóstico"><i class="icon-magnifier-add"></i></a>
 												</div>
 											</div>
 						                </div>        	    				
@@ -324,64 +362,29 @@
 										{{form.recalificac_art|as_crispy_field}}
 									</div>
 								</div>
+								
 						</fieldset>
 					 </div>
-					 {% if form.tipo_form.value == 'EDICION' %}
-					 <div class="col-sm-6 cerca">
-						<fieldset>
-							<legend>CONTROLES ADICIONALES REALIZADOS</legend>
-							<div class="row cerca">
-								<div class="col-sm-12">
-									<table id="id_forms_table" width="100%" class="table tabla table-condensed tabla_listado">
-					                    <thead>
-					                          <tr>
-					                              <th style="width: 20%;">Fecha Control</th>					                              
-					                              <th>Detalle</th>						                             
-					                              <th style="width: 10px;" class="remove-sorting"></th>
-					                          </tr>
-					                    </thead>					                    
-	  			                        <tbody class='form-detalles'>       											                    	
-					                    	{{ controles_detalle.management_form }}
-					                    	{{ controles_detalle.non_form_errors  }}
-					                    	{% for form2 in controles_detalle.forms %}					                      								                      	
-					                    	  	{{ form2.non_field_errors }}					                      								                      	
-						                      	<tr class="formDetalle" id="{{ form2.prefix }}">           					                      	
-							                      	<td>{% bootstrap_field form2.fecha show_label=False%}</td>
-							                      	<td>{% bootstrap_field form2.detalle show_label=False%}</td>							                      	
-							                      	<td>{{form2.DELETE}}
-							                      	 <a class="btn btn-danger delete-row1" title="Eliminar">
-							                      			<i class="fa fa-times" aria-hidden="true"></i></a>		 
-							                      	</td>
-							                      	{% for hidden in form2.hidden_fields %} {{ hidden }} {% endfor %}
-							                    </tr>								                    
-					                     	{% endfor %}							                     	
-					                    </tbody>
-					                </table>                 
-								</div>								
-							</div>
-						</fieldset>
-					 </div>
-					 {% endif %}	
 					</div>
-					
 					{% if form.non_field_errors  %}
 						<script type="text/javascript">
 						alertify.errorAlert("{% for err in form.non_field_errors %}{{ err|safe }}{% endfor %}");
 						</script>
 				{% endif %}
-				{% for hidden in form.hidden_fields %} {{ hidden }} {% endfor %}
-				<br>			
-				<div class="row">
-					<div class="col-xs-6">
-						<a href="{% url 'ausentismo_listado' %}" class="btn btn-sm pull-left btn btn-danger" type="button">
-						<i class="fa fa-times"></i> Cancelar
-						</a>
-					</div>
-					<div class="col-xs-6">
-						<button class="btn pull-right btn-sm btn-primary" id="Guardar" type="button"><i class="fa fa-check"></i> Guardar</button>
-					</div>
+			{% for hidden in form.hidden_fields %} {{ hidden }} {% endfor %}
+			<br>
+			
+			<div class="row">
+				<div class="col-xs-6">
+					<a href="{% url 'ausentismo_listado' %}" class="btn btn-sm pull-left btn btn-danger" type="button">
+					<i class="fa fa-times"></i> Cancelar
+					</a>
 				</div>
-			</form>
-		</div>
+				<div class="col-xs-6">
+					<button class="btn pull-right btn-sm btn-primary" id="Guardar" type="button"><i class="fa fa-check"></i> Guardar</button>
+				</div>
+			</div>
+		</form>
 	</div>
+</div>
 {% endblock %}

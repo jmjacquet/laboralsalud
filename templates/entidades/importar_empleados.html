@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% load static from staticfiles %}
+{% load i18n l10n %}
+{% load humanize %}
+{% load bootstrap3 %}
+{% load crispy_forms_tags %}
+
+{% block breadcrumbs %}              
+        <div class="breadcrumbs">
+           IMPORTAR/ACTUALIZAR EMPLEADOS
+        </div>
+{% endblock breadcrumbs %}
+
+{% block principal %}                            
+<br>
+
+<div class="panel panel-body panel-primary panel_centrado">
+<div class="row">	
+ 	<div class="col-xs-12 ">
+	<fieldset>		
+		<form method="post" enctype="multipart/form-data">
+		{% csrf_token %}
+		<div class="col-sm-5">{% bootstrap_field form.empresa %}</div>
+		<div class="col-sm-5">{{ form.archivo|as_crispy_field }}</div>
+		<div class="col-sm-2"><button class="btn pull-right btn-primary" id="Guardar" type="submit"><i class="fa fa-check"></i> Importar</button></div>
+	</fieldset>
+ </div>
+</div> 
+</div> 
+
+
+  
+{% endblock principal %}
+
+
+
+
+

@@ -64,8 +64,7 @@ class AusentismoForm(forms.ModelForm):
 	aus_frevision = forms.DateField(label=u'F.Prox.Revisión',required = False,widget=forms.DateInput(attrs={'class': 'datepicker'}))
 	art_fcontrol = forms.DateField(label='Fecha Control',required = False,widget=forms.DateInput(attrs={'class': 'datepicker'}))
 	art_faccidente = forms.DateField(label='Fecha Accidente',required = False,widget=forms.DateInput(attrs={'class': 'datepicker'}))
-	art_fdenuncia = forms.DateField(label='Fecha Denuncia',required = False,widget=forms.DateInput(attrs={'class': 'datepicker'}))
-
+	art_fdenuncia = forms.DateField(label='Fecha Denuncia',required = False,widget=forms.DateInput(attrs={'class': 'datepicker'}))	
 	art_fcrondesde = forms.DateField(label='Fecha Desde',required = False,widget=forms.DateInput(attrs={'class': 'datepicker'}))
 	art_fcronhasta = forms.DateField(label='Fecha Hasta',required = False,widget=forms.DateInput(attrs={'class': 'datepicker'}))
 	art_freintegro = forms.DateField(label='Fecha Reintegro',required = False,widget=forms.DateInput(attrs={'class': 'datepicker'}))
@@ -100,6 +99,7 @@ class AusentismoForm(forms.ModelForm):
 			aus_fcrondesde = self.cleaned_data.get('aus_fcrondesde')	
 			aus_fcronhasta = self.cleaned_data.get('aus_fcronhasta')	
 			aus_diascaidos= self.cleaned_data.get('aus_diascaidos')				
+			aus_tipo_alta = self.cleaned_data.get('aus_tipo_alta')				
 			if not aus_fcrondesde:
 				self.add_error("aus_fcrondesde",u'¡Debe cargar una Fecha!')
 			if not aus_fcronhasta:
@@ -108,6 +108,13 @@ class AusentismoForm(forms.ModelForm):
 				self.add_error("aus_diascaidos",u'¡Debe cargar un Día!')
 			if aus_fcrondesde > aus_fcronhasta:
 				self.add_error("aus_fcrondesde",u'¡Verifique las Fechas!')
+			if not aus_tipo_alta:
+				self.add_error("aus_tipo_alta",u'¡Debe seleccionar un Tipo de Alta! Verifique.')
+
+			if aus_tipo_alta == 2:
+				descr_altaparc = self.cleaned_data.get('descr_altaparc')				
+				if not descr_altaparc:
+					self.add_error("descr_altaparc",u'¡Debe cargar el Detalle del Alta!')
 		else:
 			art_tipo_accidente = self.cleaned_data.get('art_tipo_accidente')							
 			if not art_tipo_accidente:
@@ -130,6 +137,14 @@ class AusentismoForm(forms.ModelForm):
 					self.add_error("art_diascaidos",u'¡Debe cargar un Día!')
 				if art_fcrondesde > art_fcronhasta:
 					self.add_error("art_fcrondesde",u'¡Verifique las Fechas!')
+			art_tipo_alta = self.cleaned_data.get('art_tipo_alta')	
+			if not art_tipo_alta:
+				self.add_error("art_tipo_alta",u'¡Debe seleccionar un Tipo de Alta! Verifique.')
+
+			if art_tipo_alta == 2:
+				descr_altaparc = self.cleaned_data.get('descr_altaparc')				
+				if not descr_altaparc:
+					self.add_error("descr_altaparc",u'¡Debe cargar el Detalle del Alta!')
 
 		if self._errors:
 			raise forms.ValidationError("¡Existen errores en la carga!.<br>Por favor verifique los campos marcados en rojo.")

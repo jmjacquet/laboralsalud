@@ -151,7 +151,6 @@ class EmpleadoForm(forms.ModelForm):
 		return self.cleaned_data
 
 
-
 class ConsultaEmpleados(forms.Form):               		
 	empresa = forms.ModelChoiceField(label='Empresa',queryset=ent_empresa.objects.filter(baja=False),empty_label='Todas',required=False)
 	estado = forms.ChoiceField(label='Estado',choices=ESTADO_,required=False,initial=0)	
@@ -160,3 +159,23 @@ class ConsultaEmpleados(forms.Form):
 		request = kwargs.pop('request', None) 
 		super(ConsultaEmpleados, self).__init__(*args, **kwargs)					
 		self.fields['empresa'].queryset = ent_empresa.objects.filter(baja=False,pk__in=empresas_habilitadas(request))
+
+
+class ImportarEmpleadosForm(forms.Form):
+	empresa = forms.ModelChoiceField(label='Empresa',queryset=ent_empresa.objects.filter(baja=False),empty_label='----',required=True)
+	archivo = forms.FileField(label='Seleccione un archivo',required=True)  
+	def __init__(self, *args, **kwargs):		
+		request = kwargs.pop('request', None) 
+		super(ImportarEmpleadosForm, self).__init__(*args, **kwargs)					
+		self.fields['empresa'].queryset = ent_empresa.objects.filter(baja=False,pk__in=empresas_habilitadas(request))
+
+	def clean(self):
+		archivo = self.cleaned_data.get('archivo')        
+		if not archivo.name.endswith('.csv'):
+			self.add_error("archivo",u'¡El archivo debe tener extensión .CSV!')            
+		#if file is too large, return
+		if archivo.multiple_chunks():
+			self.add_error("archivo",u"El archivo es demasiado grande (%.2f MB)." % (archivo.size/(1000*1000),))
+		return self.cleaned_data
+	    
+

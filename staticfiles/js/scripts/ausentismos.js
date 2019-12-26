@@ -20,6 +20,23 @@ $("input[type=number]").click(function(){
             this.select()
           });
 
+  $.modal({        
+          custom_callbacks: {
+              "recargarE": function(data, options) {
+                 recargarEmpleados();
+                 },
+              "recargarM": function(data, options) {
+                 recargarMedicos();
+                 },
+              "recargarGP": function(data, options) {
+                 recargarPatologias();
+                 },
+              "recargarD": function(data, options) {
+                 recargarDiagnosticos();
+                 },
+              }
+    });
+
 
 $("#id_aus_grupop").chosen({
       no_results_text: "Patología inexistente...",

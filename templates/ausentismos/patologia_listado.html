@@ -17,12 +17,12 @@
 {% block principal %}                            
 <br>
     
-     <a class="btn btn-xs btn-primary modal-create" style="float:left;margin-right:20px;" href="{% url 'patologia_nuevo' %}" data-modal-head="AGREGAR PATOLOGÍA" data-modal-callback="reload">Nueva Patología</a>
+     <a class="btn btn-xs btn-primary fm-create" style="float:left;margin-right:20px;" href="{% url 'patologia_nuevo' %}" data-fm-head="AGREGAR PATOLOGÍA" data-fm-callback="reload">Nueva Patología</a>
     <table width="100%" id="patologia" style="display:none;" class="table table-striped compact table-hover table-no-bordered tabla_nueva nowrap">         
         <thead >
             <tr>
-                <th width="10%">#</th>
-                <th width="10%" class="imprimir">Código</th>
+                <th>#</th>
+                <th class="imprimir">Código</th>
                 <th class="imprimir">Grupo Patológico</th>
             </tr>
         </thead>
@@ -40,7 +40,7 @@
                       <ul class="dropdown-menu">
                        
                         
-                        <li><a href="{% url 'patologia_editar' id=a.pk %}"  class="modal-update " title="Editar" data-modal-callback="reload" data-modal-head="EDITAR PATOLOGÍA"data-modal-target="#object-{{ a.pk }}"><i class="icon-note"></i> Editar</a></li>
+                        <li><a href="{% url 'patologia_editar' id=a.pk %}"  class="fm-update " title="Editar" data-fm-callback="reload" data-fm-head="EDITAR PATOLOGÍA"data-fm-target="#object-{{ a.pk }}"><i class="icon-note"></i> Editar</a></li>
 
                         <li><a href="#" 
                                 onClick="alerta= alertify.dialog('confirm').set({'labels':{ok:'Aceptar', cancel:'Cancelar'},'message': '¿DESEA DAR DE BAJA/REACTIVAR EL REGISTRO ACTUAL?',transition:'fade','onok': function(){ window.location.href = '{% url 'art_baja_alta' id=a.pk  %}'; },'oncancel': function(){ return true;} }); alerta.setting('modal', true); alerta.setHeader('BAJA/REACTIVAR'); alerta.show(); return true;" ><i class="icon-dislike"></i><i class="icon-like"></i>Baja/Reactivar</a>

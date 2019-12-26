@@ -169,8 +169,7 @@ class AusentismoEditView(VariablesMixin,UpdateView):
         controles_detalle = ControlDetalleFormSet(self.request.POST,instance=self.object,prefix='formDetalle')       
         if form.is_valid() and controles_detalle.is_valid():
             return self.form_valid(form, controles_detalle)
-        else:
-            print '%s error '%(form.errors)
+        else:            
             return self.form_invalid(form,controles_detalle)  
 
     def form_valid(self, form,controles_detalle):                                
@@ -181,8 +180,7 @@ class AusentismoEditView(VariablesMixin,UpdateView):
         controles_detalle.save()   
         return HttpResponseRedirect(reverse('ausentismo_listado'))
 
-    def form_invalid(self, form,controles_detalle):
-        # print form.errors
+    def form_invalid(self, form,controles_detalle):        
         return self.render_to_response(self.get_context_data(form=form,controles_detalle = controles_detalle))        
 
     def get_form_kwargs(self):
@@ -516,8 +514,7 @@ def ausencias_importar(request):
                ausentismo.objects.update_or_create(empleado=empleado,tipo_ausentismo=tipoa,aus_control=aus_control,aus_fcontrol=aus_fcontrol,aus_certificado=aus_certificado,
                 aus_fcertif=aus_fcertif,aus_fentrega_certif=aus_fentrega_certif,aus_fcrondesde=aus_fcrondesde,aus_fcronhasta=aus_fcronhasta,aus_diascaidos=aus_diascaidos,
                 aus_diasjustif=aus_diasjustif,aus_freintegro=aus_freintegro,aus_falta=aus_falta,aus_tipo_alta=aus_tipo_alta,aus_frevision=aus_frevision,aus_medico=aus_medico,
-                aus_grupop=aus_grupop,aus_diagn=aus_diagn,observaciones=observaciones,descr_altaparc=descr_altaparc)                                          
-               print index
+                aus_grupop=aus_grupop,aus_diagn=aus_diagn,observaciones=observaciones,descr_altaparc=descr_altaparc)                                                         
             except Exception as e:
                 print e
                 print dni                            

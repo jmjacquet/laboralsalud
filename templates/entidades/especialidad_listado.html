@@ -17,7 +17,7 @@
 {% block principal %}                            
 <br>
    
-     <a class="btn btn-xs btn-primary modal-create" style="float:left;margin-right:20px;" href="{% url 'especialidad_nuevo' %}" data-modal-head="AGREGAR ESPECIALIDAD" data-modal-callback="reload">Nueva Especialidad</a>
+     <a class="btn btn-xs btn-primary fm-create" style="float:left;margin-right:20px;" href="{% url 'especialidad_nuevo' %}" data-fm-head="AGREGAR ESPECIALIDAD" data-fm-callback="reload">Nueva Especialidad</a>
     <table width="100%" id="art" style="display:none;" class="table table-striped compact table-hover table-no-bordered tabla_nueva nowrap">         
         <thead >
             <tr>
@@ -37,10 +37,10 @@
                         <i class="icon-settings"> </i> <span class="caret"></span>
                       </button>
                       <ul class="dropdown-menu">
-                        <li><a href="{% url 'especialidad_detalles' id=a.pk %}" class="modal-detail" data-modal-head="DETALLE ESPECIALIDAD" data-modal-callback="reload">
+                        <li><a href="{% url 'especialidad_detalles' id=a.pk %}" class="modal-detail" data-modal-head="DETALLE ESPECIALIDAD" data-fm-callback="reload">
                         <i class=" icon-screen-desktop"></i> Detalle</a></li>
                         
-                        <li><a href="{% url 'especialidad_editar' id=a.pk %}"  class="modal-update " title="Editar" data-modal-callback="reload" data-modal-head="EDITAR ESPECIALIDAD"data-modal-target="#object-{{ a.pk }}"><i class="icon-note"></i> Editar</a></li>
+                        <li><a href="{% url 'especialidad_editar' id=a.pk %}"  class="fm-update " title="Editar" data-fm-callback="reload" data-fm-head="EDITAR ESPECIALIDAD"data-fm-target="#object-{{ a.pk }}"><i class="icon-note"></i> Editar</a></li>
 
                         <li><a href="#" 
                                 onClick="alerta= alertify.dialog('confirm').set({'labels':{ok:'Aceptar', cancel:'Cancelar'},'message': '¿DESEA DAR DE BAJA/REACTIVAR EL REGISTRO ACTUAL?',transition:'fade','onok': function(){ window.location.href = '{% url 'especialidad_baja_alta' id=a.pk  %}'; },'oncancel': function(){ return true;} }); alerta.setting('modal', true); alerta.setHeader('BAJA/REACTIVAR'); alerta.show(); return true;" ><i class="icon-dislike"></i><i class="icon-like"></i>Baja/Reactivar</a>
