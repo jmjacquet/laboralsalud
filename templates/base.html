@@ -107,7 +107,7 @@
         $.modal({debug: false});
         {% if messages %}
           {% for message in messages %}                                                
-                      toastr.{{ message.tags }}('{{ message }}');                                        
+                      toastr.{{ message.tags }}('{{ message|safe }}');                                        
           {% endfor %}
         {% endif %}
 

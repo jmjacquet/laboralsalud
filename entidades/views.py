@@ -657,6 +657,7 @@ import csv, io
 from .forms import ImportarEmpleadosForm   
 from general.views import getVariablesMixin
 import random
+
 @login_required 
 def importar_empleados(request):           
     context = {}
@@ -664,7 +665,7 @@ def importar_empleados(request):
     if request.method == 'POST':
         form = ImportarEmpleadosForm(request.POST,request.FILES,request=request)
         if form.is_valid(): 
-            csv_file = request.FILES['archivo']
+            csv_file = form.cleaned_data['archivo']
             empresa = form.cleaned_data['empresa']
             
             if not csv_file.name.endswith('.csv'):
@@ -675,42 +676,55 @@ def importar_empleados(request):
                 messages.error(request,"El archivo es demasiado grande (%.2f MB)." % (csv_file.size/(1000*1000),))
                 return HttpResponseRedirect(reverse("importar_empleados"))
 
-            file_data = csv_file.read().decode("utf8", "ignore")
-            lines = file_data.split("\n")
-            #DNI;LEGAJO/NRO;APELLIDO;NOMBRE;FECHA_NAC;DOMICILIO;CELULAR;TELEFONO;EMAIL;CP;LOCALIDAD;FECHA_INGR;ART;PUESTO
-            cant = len(lines)
-            # try:
-            for index,line in enumerate(lines):                      
-                campos = line.split(";")
-                # dni = campos[0].strip()              
-                dni = str(random.randrange(29000000,40000000))
-                try:
-                    empl = ent_empleado.objects.get(nro_doc=dni.strip())                     
-                except:                    
-                    legajo = campos[1].strip()  #nro_legajo              
-                    nombre = campos[2].strip()+' '+campos[3].strip() # apellido y Nombre                
-                    fecha_nac = datetime.datetime.strptime(campos[4], "%d/%m/%Y").date()   #fecha_nacim             
-                    domicilio = campos[5].strip()  #DOMICILIO
-                    celular =   campos[6].strip()  #celular
-                    telefono =   campos[7].strip()  #telefono
-                    email =   campos[8].strip()  #EMAIL
-                    cp =   campos[9].strip()  #CP
-                    localidad =   campos[9].strip()  #LOCALIDAD
-                    fecha_ingr = datetime.datetime.strptime(campos[10], "%d/%m/%Y").date()   #FECHA_INGR             
-                    art = campos[11].strip() #ART               
-                    art = ent_art.objects.get(nombre=art.strip())                             
-                    puesto = campos[12].strip() #Puesto               
-                    puesto = ent_cargo.objects.get(cargo=puesto.strip())        
+            decoded_file = csv_file.read().decode("utf8", "ignore")
+            io_string = io.StringIO(decoded_file)
+            reader = csv.reader(io_string)            
+            #DNI;LEGAJO/NRO;APELLIDO;NOMBRE;FECHA_NAC;DOMICILIO;CELULAR;TELEFONO;EMAIL;CP;LOCALIDAD;FECHA_INGR;ART;PUESTO            
+            cant=0
+            try:
+                next(reader) #Omito el Encabezado                            
+                for index,line in enumerate(reader):                      
+                    campos = line[0].split(";")               
+                    dni = campos[0].strip()              
+                    # dni = str(random.randrange(29000000,40000000))
+                    if dni=='':
+                        continue #Salta al siguiente
                     try:
-                       ent_empleado.objects.update_or_create(nro_doc=dni,legajo=legajo,apellido_y_nombre=nombre,fecha_nac=fecha_nac,art=art,empresa=empresa,trab_cargo=puesto,
-                        domicilio=domicilio,celular=celular,telefono=telefono,email=email,cod_postal=cp,localidad=localidad,empr_fingreso=fecha_ingr)                                                                 
-                    except Exception as e:
-                       error = u'Línea:%s -> %s' %(index,e)
-                       print error
-                       messages.error(request,error)                    
-            messages.add_message(request, messages.SUCCESS, u'Se importó el archivo con éxito!')
-            # except Exception as e:
-            #     messages.error(request,u'Línea:%s -> %s' %(index,e)) 
+                        empl = ent_empleado.objects.get(nro_doc=dni.strip())                     
+                    except:                    
+                        legajo = campos[1].strip()  #nro_legajo              
+                        nombre = campos[2].strip()+' '+campos[3].strip() # apellido y Nombre                
+                        fecha=campos[4].strip()
+                        if fecha=='':
+                            fecha_nac=None
+                        else:
+                            fecha_nac = datetime.datetime.strptime(fecha, "%d/%m/%Y").date()   #fecha_nacim             
+                        domicilio = campos[5].strip()  #DOMICILIO
+                        celular =   campos[6].strip()  #celular
+                        telefono =   campos[7].strip()  #telefono
+                        email =   campos[8].strip()  #EMAIL
+                        cp =   campos[9].strip()  #CP
+                        localidad =   campos[10].strip()  #LOCALIDAD
+                        fecha=campos[11].strip()
+                        if fecha=='':
+                            fecha_ingr=None
+                        else:
+                            fecha_ingr = datetime.datetime.strptime(fecha, "%d/%m/%Y").date()   #FECHA_INGR             
+                        art = campos[12].strip() #ART               
+                        art = ent_art.objects.get(nombre=art.strip())                             
+                        puesto = campos[13].strip() #Puesto               
+                        puesto = ent_cargo.objects.get(cargo=puesto.strip())        
+                        try:
+                           ent_empleado.objects.update_or_create(nro_doc=dni,legajo=legajo,apellido_y_nombre=nombre,fecha_nac=fecha_nac,art=art,empresa=empresa,trab_cargo=puesto,
+                            domicilio=domicilio,celular=celular,telefono=telefono,email=email,cod_postal=cp,localidad=localidad,empr_fingreso=fecha_ingr)                                                                 
+                           cant+=1
+                           
+                        except Exception as e:
+                           error = u'Línea:%s -> %s' %(index,e)
+                           messages.error(request,error)                                
+                messages.success(request, u'Se importó el archivo con éxito!<br>(%s empleados nuevos creados)'% cant )
+            except Exception as e:
+                messages.error(request,u'Línea:%s -> %s' %(index,e)) 
     else:
         form = ImportarEmpleadosForm(None,None,request=request)
     context['form'] = form    

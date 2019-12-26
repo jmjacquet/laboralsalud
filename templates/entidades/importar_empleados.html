@@ -7,7 +7,7 @@
 
 {% block breadcrumbs %}              
         <div class="breadcrumbs">
-           IMPORTAR/ACTUALIZAR EMPLEADOS
+           IMPORTAR/AGREGAR EMPLEADOS
         </div>
 {% endblock breadcrumbs %}
 
@@ -18,11 +18,25 @@
 <div class="row">	
  	<div class="col-xs-12 ">
 	<fieldset>		
-		<form method="post" enctype="multipart/form-data">
+		<form method="post" class="form" enctype="multipart/form-data">
 		{% csrf_token %}
-		<div class="col-sm-5">{% bootstrap_field form.empresa %}</div>
-		<div class="col-sm-5">{{ form.archivo|as_crispy_field }}</div>
-		<div class="col-sm-2"><button class="btn pull-right btn-primary" id="Guardar" type="submit"><i class="fa fa-check"></i> Importar</button></div>
+		<div class="row">	
+			<div class="col-xs-12 ">
+				<div class="col-sm-6">{{ form.empresa|as_crispy_field }}</div>
+				<div class="col-sm-6">{{ form.archivo|as_crispy_field }}</div>			
+			</div>
+	    </div>
+	    <div class="row">	
+			<div class="col-xs-12 ">
+				<div class="col-sm-6">
+		            <div class="callout callout-primary alert alert-info" role="alert">
+		             <a href="{% static 'img/logo.jpg' %}" class="alert-link" title="Imprimir Declaración Jurada a completar" target="_blank">Descargar aquí</a>
+		              la plantilla de ejemplo, completar e importar.
+		            </div>
+	            </div>
+				<div class="col-sm-6"><button class="btn pull-right btn-primary" id="Guardar" type="submit"><i class="fa fa-check"></i> Importar</button></div>
+			</div>
+		</div>
 	</fieldset>
  </div>
 </div> 
