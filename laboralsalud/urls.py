@@ -39,7 +39,6 @@ if settings.DEBUG:
     
     urlpatterns = [        
         url(r'^__debug__/', include(debug_toolbar.urls)),
-
     ] + urlpatterns
 handler500 = volverHome
 handler404 = volverHome

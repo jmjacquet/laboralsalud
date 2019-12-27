@@ -164,6 +164,7 @@ class ConsultaEmpleados(forms.Form):
 class ImportarEmpleadosForm(forms.Form):
 	empresa = forms.ModelChoiceField(label='Empresa',queryset=ent_empresa.objects.filter(baja=False),empty_label='----',required=True)
 	archivo = forms.FileField(label='Seleccione un archivo',required=True)  
+	sobreescribir = forms.ChoiceField(label=u'',choices=SINO,required=True,initial='N')
 	def __init__(self, *args, **kwargs):		
 		request = kwargs.pop('request', None) 
 		super(ImportarEmpleadosForm, self).__init__(*args, **kwargs)					

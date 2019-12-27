@@ -18,7 +18,7 @@
 <div class="row">	
  	<div class="col-xs-12 ">
 	<fieldset>		
-		<form method="post" class="form" enctype="multipart/form-data">
+		<form method="post" class="form " enctype="multipart/form-data">
 		{% csrf_token %}
 		<div class="row">	
 			<div class="col-xs-12 ">
@@ -30,11 +30,12 @@
 			<div class="col-xs-12 ">
 				<div class="col-sm-6">
 		            <div class="callout callout-primary alert alert-info" role="alert">
-		             <a href="{% static 'img/logo.jpg' %}" class="alert-link" title="Imprimir Declaración Jurada a completar" target="_blank">Descargar aquí</a>
-		              la plantilla de ejemplo, completar e importar.
+		             <a href="{{MEDIA_URL}}/PLANTILLA_EMPLEADOS.csv"class="alert-link" target="_blank">Descargar aquí</a>
+		              la plantilla de ejemplo, completar e importar (csv).
 		            </div>
 	            </div>
-				<div class="col-sm-6"><button class="btn pull-right btn-primary" id="Guardar" type="submit"><i class="fa fa-check"></i> Importar</button></div>
+				<div class="col-sm-3 text-right cerca"><label>¿Sobreescribir existentes?</label></div><div class="col-sm-1 cerca">{{ form.sobreescribir|as_crispy_field }}</div>
+				<div class="col-sm-2"><button class="btn pull-right btn-primary" id="Guardar" type="submit"><i class="fa fa-check"></i> Importar</button></div>
 			</div>
 		</div>
 	</fieldset>

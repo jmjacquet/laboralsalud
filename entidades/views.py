@@ -667,6 +667,7 @@ def importar_empleados(request):
         if form.is_valid(): 
             csv_file = form.cleaned_data['archivo']
             empresa = form.cleaned_data['empresa']
+            sobreescribir = form.cleaned_data['sobreescribir'] == 'S'
             
             if not csv_file.name.endswith('.csv'):
                 messages.error(request,'¡El archivo debe tener extensión .CSV!')
@@ -688,41 +689,43 @@ def importar_empleados(request):
                     dni = campos[0].strip()              
                     # dni = str(random.randrange(29000000,40000000))
                     if dni=='':
-                        continue #Salta al siguiente
+                        continue #Salta al siguiente                    
+                    
+                    empl = ent_empleado.objects.filter(nro_doc=dni).exists()
+                    if empl and not sobreescribir:
+                        continue
+
+                    legajo = campos[1].strip()  #nro_legajo              
+                    nombre = campos[2].strip()+' '+campos[3].strip() # apellido y Nombre                
+                    fecha=campos[4].strip()
+                    if fecha=='':
+                        fecha_nac=None
+                    else:
+                        fecha_nac = datetime.datetime.strptime(fecha, "%d/%m/%Y").date()   #fecha_nacim             
+                    domicilio = campos[5].strip()  #DOMICILIO
+                    celular =   campos[6].strip()  #celular
+                    telefono =   campos[7].strip()  #telefono
+                    email =   campos[8].strip()  #EMAIL
+                    cp =   campos[9].strip()  #CP
+                    localidad =   campos[10].strip()  #LOCALIDAD
+                    fecha=campos[11].strip()
+                    if fecha=='':
+                        fecha_ingr=None
+                    else:
+                        fecha_ingr = datetime.datetime.strptime(fecha, "%d/%m/%Y").date()   #FECHA_INGR             
+                    art = campos[12].strip() #ART               
+                    art = ent_art.objects.get(nombre=art.strip())                             
+                    puesto = campos[13].strip() #Puesto               
+                    puesto = ent_cargo.objects.get(cargo=puesto.strip())        
                     try:
-                        empl = ent_empleado.objects.get(nro_doc=dni.strip())                     
-                    except:                    
-                        legajo = campos[1].strip()  #nro_legajo              
-                        nombre = campos[2].strip()+' '+campos[3].strip() # apellido y Nombre                
-                        fecha=campos[4].strip()
-                        if fecha=='':
-                            fecha_nac=None
-                        else:
-                            fecha_nac = datetime.datetime.strptime(fecha, "%d/%m/%Y").date()   #fecha_nacim             
-                        domicilio = campos[5].strip()  #DOMICILIO
-                        celular =   campos[6].strip()  #celular
-                        telefono =   campos[7].strip()  #telefono
-                        email =   campos[8].strip()  #EMAIL
-                        cp =   campos[9].strip()  #CP
-                        localidad =   campos[10].strip()  #LOCALIDAD
-                        fecha=campos[11].strip()
-                        if fecha=='':
-                            fecha_ingr=None
-                        else:
-                            fecha_ingr = datetime.datetime.strptime(fecha, "%d/%m/%Y").date()   #FECHA_INGR             
-                        art = campos[12].strip() #ART               
-                        art = ent_art.objects.get(nombre=art.strip())                             
-                        puesto = campos[13].strip() #Puesto               
-                        puesto = ent_cargo.objects.get(cargo=puesto.strip())        
-                        try:
-                           ent_empleado.objects.update_or_create(nro_doc=dni,legajo=legajo,apellido_y_nombre=nombre,fecha_nac=fecha_nac,art=art,empresa=empresa,trab_cargo=puesto,
-                            domicilio=domicilio,celular=celular,telefono=telefono,email=email,cod_postal=cp,localidad=localidad,empr_fingreso=fecha_ingr)                                                                 
-                           cant+=1
-                           
-                        except Exception as e:
-                           error = u'Línea:%s -> %s' %(index,e)
-                           messages.error(request,error)                                
-                messages.success(request, u'Se importó el archivo con éxito!<br>(%s empleados nuevos creados)'% cant )
+                       ent_empleado.objects.update_or_create(nro_doc=dni,legajo=legajo,apellido_y_nombre=nombre,fecha_nac=fecha_nac,art=art,empresa=empresa,trab_cargo=puesto,
+                        domicilio=domicilio,celular=celular,telefono=telefono,email=email,cod_postal=cp,localidad=localidad,empr_fingreso=fecha_ingr)                                                                 
+                       cant+=1
+                       
+                    except Exception as e:
+                       error = u'Línea:%s -> %s' %(index,e)
+                       messages.error(request,error)                                
+                messages.success(request, u'Se importó el archivo con éxito!<br>(%s empleados creados/actualizados)'% cant )
             except Exception as e:
                 messages.error(request,u'Línea:%s -> %s' %(index,e)) 
     else:

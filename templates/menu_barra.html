@@ -25,6 +25,7 @@
           <ul class="dropdown-menu">
             {% if 'empl_pantalla' in permisos_grupo %}
             <li><a href="{% url 'empleado_listado' %}">Empleados</a></li>
+            <li><a href="{% url 'importar_empleados' %}">Importar Empleados</a></li>
             <li class="divider"></li>
             {% endif %}
             {% if 'aus_pantalla' in permisos_grupo %}
