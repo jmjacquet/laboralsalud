@@ -696,27 +696,33 @@ def importar_empleados(request):
                         continue
 
                     legajo = campos[1].strip()  #nro_legajo              
-                    nombre = campos[2].strip()+' '+campos[3].strip() # apellido y Nombre                
+                    nombre = campos[2].strip().upper()+' '+campos[3].strip().upper() # apellido y Nombre                
                     fecha=campos[4].strip()
                     if fecha=='':
                         fecha_nac=None
                     else:
                         fecha_nac = datetime.datetime.strptime(fecha, "%d/%m/%Y").date()   #fecha_nacim             
-                    domicilio = campos[5].strip()  #DOMICILIO
+                    domicilio = campos[5].strip().upper()  #DOMICILIO
                     celular =   campos[6].strip()  #celular
                     telefono =   campos[7].strip()  #telefono
                     email =   campos[8].strip()  #EMAIL
                     cp =   campos[9].strip()  #CP
-                    localidad =   campos[10].strip()  #LOCALIDAD
+                    localidad =   campos[10].strip().upper()  #LOCALIDAD
                     fecha=campos[11].strip()
                     if fecha=='':
                         fecha_ingr=None
                     else:
                         fecha_ingr = datetime.datetime.strptime(fecha, "%d/%m/%Y").date()   #FECHA_INGR             
-                    art = campos[12].strip() #ART               
-                    art = ent_art.objects.get(nombre=art.strip())                             
-                    puesto = campos[13].strip() #Puesto               
-                    puesto = ent_cargo.objects.get(cargo=puesto.strip())        
+                    art = campos[12].strip().upper() #ART               
+                    if art=='':
+                        art=None
+                    else:
+                        art = ent_art.objects.get_or_create(nombre=art)[0]                             
+                    puesto = campos[13].strip().upper() #Puesto               
+                    if puesto=='':
+                        puesto=None
+                    else:
+                        puesto = ent_cargo.objects.get_or_create(cargo=puesto)[0]        
                     try:
                        ent_empleado.objects.update_or_create(nro_doc=dni,legajo=legajo,apellido_y_nombre=nombre,fecha_nac=fecha_nac,art=art,empresa=empresa,trab_cargo=puesto,
                         domicilio=domicilio,celular=celular,telefono=telefono,email=email,cod_postal=cp,localidad=localidad,empr_fingreso=fecha_ingr)                                                                 
