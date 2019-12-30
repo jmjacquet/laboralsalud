@@ -47,6 +47,7 @@ class ausentismo(models.Model):
 	empleado = models.ForeignKey('entidades.ent_empleado',verbose_name='Empleado',db_column='empleado',blank=True, null=True,related_name='aus_empleado',on_delete=models.SET_NULL)
 	tipo_ausentismo = models.IntegerField('Ausentismo',choices=TIPO_AUSENCIA, blank=True, null=True)
 	tipo_control = models.CharField('Tipo Control',choices=TIPO_CONTROL, max_length=1,blank=True, null=True)
+	
 	aus_control = models.CharField(u'¿Asistió a Control?',max_length=1,default='N')
 	aus_fcontrol = models.DateField(u'Fecha Control',blank=True, null=True)
 	aus_certificado = models.CharField(u'¿Presenta Certificado?',max_length=1,default='N')
@@ -93,7 +94,7 @@ class ausentismo(models.Model):
 
 	class Meta:
 		db_table = 'ausentismo'
-		ordering = ['-fecha_creacion','empleado__empresa','-aus_fcrondesde','-aus_fcronhasta','-art_fcrondesde','-art_fcronhasta']
+		ordering = ['-aus_fcrondesde','-art_fcrondesde','-aus_fcronhasta','-art_fcronhasta','empleado__empresa']
 
 	def __unicode__(self):
 	    return u'%s - %s' % (self.pk,self.empleado)
@@ -145,6 +146,27 @@ class ausentismo(models.Model):
 			return self.aus_frevision		
 		else:
 			return self.art_frevision					
+
+	@property
+	def get_falta(self):
+		if self.tipo_ausentismo==1:
+			return self.aus_falta		
+		else:
+			return self.art_falta
+
+	@property
+	def get_tipo_alta(self):
+		if self.tipo_ausentismo==1:
+			return self.get_aus_tipo_alta_display()
+		else:
+			return self.get_art_tipo_alta_display()
+
+	@property
+	def get_fcontrol(self):
+		if self.tipo_ausentismo==1:
+			return self.aus_frevision		
+		else:
+			return self.art_frevision		
 
 
 class ausentismo_controles(models.Model):

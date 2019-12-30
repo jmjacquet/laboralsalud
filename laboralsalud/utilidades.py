@@ -304,3 +304,45 @@ class DecimalEncoder(json.JSONEncoder):
         if isinstance(obj, Decimal):
             return float(obj)
         return json.JSONEncoder.default(self, obj)
+
+from django.db.models import Func,IntegerField
+
+class Month(Func):
+    function = 'EXTRACT'
+    template = '%(function)s(MONTH from %(expressions)s)'
+    output_field = IntegerField()
+
+class Year(Func):
+    function = 'EXTRACT'
+    template = '%(function)s(YEAR from %(expressions)s)'
+    output_field = IntegerField()        
+
+MESES = (
+    ('1', 'Ene'),
+    ('2', 'Feb'),
+    ('3', 'Mar'),
+    ('4', 'Abr'),
+    ('5', 'May'),
+    ('6', 'Jun'),
+    ('7', 'Jul'),
+    ('8', 'Ago'),
+    ('9', 'Sep'),
+    ('10','Oct'),
+    ('11','Nov'),
+    ('12','Dic'),
+)
+
+PERIODOS = (
+    ('1', '1'),
+    ('2', '2'),
+    ('3', '3'),
+    ('4', '4'),
+    ('5', '5'),
+    ('6', '6'),
+    ('7', '7'),
+    ('8', '8'),
+    ('9', '9'),
+    ('10', '10'),
+    ('11', '11'),
+    ('12', '12'),
+)    

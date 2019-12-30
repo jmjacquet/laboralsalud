@@ -1,7 +1,7 @@
 .modal-modal .modal-content{
-	max-width:668px;position:relative;z-index:1050;
+	max-width:700px;position:relative;z-index:1050;
 	padding:0px 0px 20px 0px;margin-right:auto;margin-left:auto;border-radius:5px;font-size:11px;}
-@media (min-width:768px){.modal-dialog{width:668px;margin:20px auto;}
+@media (min-width:768px){.modal-dialog{width:700px;margin:20px auto;}
 .modal-content{-webkit-box-shadow:0 5px 15px rgba(0, 0, 0, 0.5);box-shadow:0 5px 15px rgba(0, 0, 0, 0.5);}
 .modal-sm{width:300px;}
 }

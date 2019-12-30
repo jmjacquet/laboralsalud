@@ -70,13 +70,16 @@
                           </button>
                           <ul class="dropdown-menu">
                             <li><a href="{% url 'ausentismo_detalles' id=a.pk %}" class="modal-detail" data-modal-head="DETALLE AUSENTISMO">
-                            <i class=" icon-screen-desktop"></i> Detalle</a></li>                            
+                                <i class=" icon-screen-desktop"></i> Detalle</a></li>                            
                             <li>
                                 <a href="{% url 'ausentismo_editar' id=a.pk %}"  title="Editar"><i class="icon-note"></i> Editar</a>
                             </li>
                             <li><a href="#" 
                                     onClick="alerta= alertify.dialog('confirm').set({'labels':{ok:'Aceptar', cancel:'Cancelar'},'message': '¿DESEA ELIMINAR EL REGISTRO ACTUAL?',transition:'fade','onok': function(){ window.location.href = '{% url 'ausentismo_eliminar' id=a.pk  %}'; },'oncancel': function(){ return true;} }); alerta.setting('modal', true); alerta.setHeader('ELIMINAR AUSENTISMO'); alerta.show(); return true;" ><i class="icon-trash"></i></i>Eliminar</a>
-                            </li>     
+                            </li>
+                            <li class="divider"></li>
+                            <li><a href="{% url 'ausentismo_historial' id=a.empleado.pk %}" class="modal-detail" data-modal-head="HISTORIA CLINICA">
+                                <i class=" icon-screen-desktop"></i> Historia Clínica</a></li>                                
                           </ul>                                      
                         </div>
                     </td>              

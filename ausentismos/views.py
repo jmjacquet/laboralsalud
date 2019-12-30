@@ -16,6 +16,7 @@ from django.forms.models import inlineformset_factory,BaseInlineFormSet,formset_
 from django.utils.functional import curry 
 
 from .models import *
+from entidades.models import ent_empleado
 from general.views import VariablesMixin
 from usuarios.views import tiene_permiso
 from .forms import AusentismoForm,PatologiaForm,DiagnosticoForm,ConsultaAusentismos,ControlesDetalleForm
@@ -213,6 +214,22 @@ class AusentismoVerView(VariablesMixin,DetailView):
         context = super(AusentismoVerView, self).get_context_data(**kwargs)
         a = self.get_object()
         context['controles'] = ausentismo_controles.objects.filter(ausentismo=a)
+        return context
+
+class AusentismoHistorialView(VariablesMixin,DetailView):
+    model = ent_empleado
+    pk_url_kwarg = 'id'
+    context_object_name = 'empleado'
+    template_name = 'ausentismos/historia_clinica.html'
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs): 
+        return super(AusentismoHistorialView, self).dispatch(*args, **kwargs)        
+
+    def get_context_data(self, **kwargs):
+        context = super(AusentismoHistorialView, self).get_context_data(**kwargs)
+        e = self.get_object()
+        context['historial'] = ausentismo.objects.filter(empleado=e)
         return context
 
 

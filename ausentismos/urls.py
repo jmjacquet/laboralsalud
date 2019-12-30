@@ -9,6 +9,8 @@ urlpatterns = [
     url(r'^detalles/(?P<id>\d+)/$', AusentismoVerView.as_view(), name="ausentismo_detalles"),    
     url(r'^eliminar/(?P<id>\d+)/$', ausentismo_eliminar, name='ausentismo_eliminar'),
 
+    url(r'^historial/(?P<id>\d+)/$', AusentismoHistorialView.as_view(), name="ausentismo_historial"),    
+
     url(r'^patologia/$', PatologiaView.as_view(),name="patologia_listado"),
     url(r'^patologia/nuevo/$', PatologiaCreateView.as_view(), name="patologia_nuevo"),
     url(r'^patologia/editar/(?P<id>\d+)/$', PatologiaEditView.as_view(), name="patologia_editar"),        
