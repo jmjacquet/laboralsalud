@@ -32,9 +32,10 @@
                           <div class="col-sm-1">{% bootstrap_field form.fdesde  %}</div>                                
                           <div class="col-sm-1">{% bootstrap_field form.fhasta  %}</div>                                    
                           <div class="col-sm-3">{% bootstrap_field form.empresa  %}</div>                                    
-                          <div class="col-sm-3">{% bootstrap_field form.tipo_ausentismo  %}</div>                            
+                          <div class="col-sm-2">{% bootstrap_field form.tipo_ausentismo  %}</div>                            
+                          <div class="col-sm-2">{% bootstrap_field form.trab_cargo  %}</div>                            
                           <div class="col-sm-3">{% bootstrap_field form.empleado  %}</div>                                            
-                          <div class="col-sm-1"><button class="btn btn-xs btn-primary text-center" type="submit">Buscar</button></div>
+                          <div class="col-sm-12"><button class="btn btn-xs btn-primary text-center pull-right" type="submit">Buscar</button></div>
                   </div>     
                   </form>         
               </div>
@@ -43,6 +44,7 @@
   </div>
                                                      
   <div class="row">  
+      {% if aus_total %}
       <div class="col-sm-6">
           <div class="panel panel-primary">
             <div class="panel-heading text-center">AUSENTISMO TOTAL</div>
@@ -81,7 +83,8 @@
             </div>
           </div>
           
-      </div>                                                                        
+      </div>
+      {% endif %}                                                                           
       {% if aus_inc %}
       <div class="col-sm-6">
           <div class="panel panel-primary">

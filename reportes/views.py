@@ -49,6 +49,7 @@ class ReporteResumenPeriodo(VariablesMixin,TemplateView):
             empresa = form.cleaned_data['empresa']                           
             empleado= form.cleaned_data['empleado']                           
             tipo_ausentismo = form.cleaned_data['tipo_ausentismo']     
+            trab_cargo= form.cleaned_data['trab_cargo']                           
 
             ausentismos = ausentismo.objects.filter(baja=False)                      
           
@@ -60,6 +61,8 @@ class ReporteResumenPeriodo(VariablesMixin,TemplateView):
                 ausentismos= ausentismos.filter(empleado__empresa=empresa)            
             if empleado:
                 ausentismos= ausentismos.filter(Q(empleado__apellido_y_nombre__icontains=empleado)|Q(empleado__nro_doc__icontains=empleado))
+            if trab_cargo:
+                ausentismos= ausentismos.filter(empleado__trab_cargo=trab_cargo)            
 
             if int(tipo_ausentismo) > 0: 
                 ausentismos = ausentismos.filter(tipo_ausentismo=int(tipo_ausentismo))
@@ -98,7 +101,7 @@ class ReporteResumenPeriodo(VariablesMixin,TemplateView):
             
             aus_total = {'dias_caidos_tot':dias_caidos_tot,'empleados_tot':empleados_tot,'dias_trab_tot':dias_trab_tot,'tasa_ausentismo':tasa_ausentismo,
             'dias_laborables':dias_laborables,'porc_dias_trab_tot':porc_dias_trab_tot}
-
+            #F('college_start_date') - F('school_passout_date')
             #AUSENTISMO INCULPABLE
             ausentismos_inc = ausentismos.filter(tipo_ausentismo=1)
             if ausentismos_inc:

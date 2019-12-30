@@ -4,6 +4,7 @@ from django.forms import ModelForm
 import datetime
 from laboralsalud.utilidades import *
 from entidades.models import ent_art,ent_cargo,ent_especialidad,ent_medico_prof,ent_empresa,ent_empleado
+from entidades.forms import TrabajoModelChoiceField
 
 
 class ConsultaPeriodo(forms.Form):               	
@@ -12,6 +13,7 @@ class ConsultaPeriodo(forms.Form):
 	empresa = forms.ModelChoiceField(label='Empresa',queryset=ent_empresa.objects.filter(baja=False),empty_label='Todas',required=False)
 	empleado = forms.CharField(required=False,label='Empleado')	
 	tipo_ausentismo = forms.ChoiceField(label='Tipo Ausentismo',choices=TIPO_AUSENCIA_,required=False,initial=0)	
+	trab_cargo = TrabajoModelChoiceField(label=u'Puesto de Trabajo',queryset=ent_cargo.objects.filter(baja=False),required=False,)
 	def __init__(self, *args, **kwargs):		
 		request = kwargs.pop('request', None) 
 		super(ConsultaPeriodo, self).__init__(*args, **kwargs)						
