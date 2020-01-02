@@ -248,8 +248,9 @@ class ReporteResumenAnual(VariablesMixin,TemplateView):
         import locale        
         locale.setlocale(locale.LC_ALL, '')
         for m in MESES:                        
-                meses.append(m[0])
-        context['meses']=  meses       
+                meses.append(m[1])
+        context['meses']=  meses 
+        # print meses      
         
         return context
 

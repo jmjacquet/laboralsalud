@@ -45,33 +45,11 @@
                                                      
   <div class="row">  
     
-      <div class="col-sm-6">
+      <div class="col-sm-12">
           <div class="panel panel-primary">
             <div class="panel-heading text-center">AUSENTISMO TOTAL</div>
             <div class="panel-body">
-              <div class="row">
-                <div class="col-sm-12">
-                  <table class="table table-striped table-hover table-condensed table-no-bordered">
-                    <tbody>
-                      <tr>
-                        <td  class="titulo" width="50%">Días caídos</td><td class="dato" width="50%">{{aus_total.dias_caidos_tot|default_if_none:0}}</td>
-                      </tr>
-                      <tr>
-                        <td class="titulo">Cantidad de Empleados</td><td class="dato">{{aus_total.empleados_tot|default_if_none:0}}</td>                
-                      </tr>
-                      <tr>
-                        <td  class="titulo">Días laborables del período</td><td class="dato">{{aus_total.dias_laborables|default_if_none:0}}</td>
-                      </tr>
-                      <tr>
-                        <td class="titulo">Tasa de Ausentismo</td><td class="dato">{{aus_total.tasa_ausentismo|default_if_none:0}}%</td>                
-                      </tr>
-                      <tr>
-                        <td class="titulo">Días trabajados</td><td class="dato">{{aus_total.dias_trab_tot|default_if_none:0}}</td>                
-                      </tr>                  
-                    </tbody>
-                  </table>
-                </div>
-               </div>
+             
                <div class="row">
                 <div class="col-sm-12">
                      <div class="chart" style="padding: 0px; position: relative;"> 

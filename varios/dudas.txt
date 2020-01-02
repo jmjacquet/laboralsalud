@@ -1,2 +1,3 @@
 ¿Se van a asignar sucursales a un usuario determinado o se podrían mostrar sólo las casas centrales? para que el login y permisos sea mas sencillo.
 
+¿rango de fechas en indicadores?

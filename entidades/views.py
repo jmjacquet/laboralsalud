@@ -691,7 +691,7 @@ def importar_empleados(request):
                     if dni=='':
                         continue #Salta al siguiente                    
                     
-                    empl = ent_empleado.objects.filter(nro_doc=dni).exists()
+                    empl = ent_empleado.objects.filter(nro_doc=dni,empresa=empresa).exists()
                     if empl and not sobreescribir:
                         continue
 
