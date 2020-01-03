@@ -7,7 +7,7 @@ from .models import *
 from django.views.generic import TemplateView,ListView,CreateView,UpdateView,FormView,DetailView
 from django.conf import settings
 from general.views import VariablesMixin
-from fm.views import AjaxCreateView,AjaxUpdateView,AjaxDeleteView
+from modal.views import AjaxCreateView,AjaxUpdateView,AjaxDeleteView
 from .forms import ARTForm,CargoForm,EspecialidadForm,MedProfForm,EmpresaForm,EmpleadoForm,ConsultaEmpleados
 from django.contrib import messages
 from laboralsalud.utilidades import ultimoNroId,usuario_actual,empresa_actual,empresas_habilitadas
@@ -39,8 +39,9 @@ class ARTCreateView(VariablesMixin,AjaxCreateView):
         return super(ARTCreateView, self).dispatch(*args, **kwargs)
 
     def form_valid(self, form):                
-        #form.instance.empresa = empresa_actual(self.request)
-        form.instance.usuario = usuario_actual(self.request)
+        self.object = form.save(commit=False)                           
+        self.object.usuario_carga = usuario_actual(self.request)             
+        self.object.save()  
         messages.success(self.request, u'Los datos se guardaron con éxito!')
         return super(ARTCreateView, self).form_valid(form)
 
@@ -434,8 +435,9 @@ class EmpresaCreateView(VariablesMixin,AjaxCreateView):
         return super(EmpresaCreateView, self).dispatch(*args, **kwargs)
 
     def form_valid(self, form):                
-        #form.instance.empresa = empresa_actual(self.request)
-        # form.instance.usuario = usuario_actual(self.request)
+        self.object = form.save(commit=False)                           
+        self.object.usuario_carga = usuario_actual(self.request)             
+        self.object.save()  
         messages.success(self.request, u'Los datos se guardaron con éxito!')
         return super(EmpresaCreateView, self).form_valid(form)
 
@@ -570,8 +572,9 @@ class EmpleadoCreateView(VariablesMixin,AjaxCreateView):
         return super(EmpleadoCreateView, self).dispatch(*args, **kwargs)
 
     def form_valid(self, form):                
-        #form.instance.empresa = empresa_actual(self.request)
-        # form.instance.usuario = usuario_actual(self.request)
+        self.object = form.save(commit=False)                           
+        self.object.usuario_carga = usuario_actual(self.request)             
+        self.object.save()  
         messages.success(self.request, u'Los datos se guardaron con éxito!')
         return super(EmpleadoCreateView, self).form_valid(form)
 

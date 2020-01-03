@@ -4,57 +4,19 @@
 {% load crispy_forms_tags %}
 {% load bootstrap3 %}
 
-<script src="{% static 'js/scripts/turnos.js' %}" type="text/javascript"></script>
-
 <div id="form-container">
-    <form role="form" class="form abm" method="POST" action="" id="form-turnos" enctype="multipart/form-data">
+    <form role="form" class="form" method="POST" action="" enctype="multipart/form-data">
      {% csrf_token %}         
         <div class="col-xs-12">
 	         <div class="row">
-                <div class="col-sm-6">{% bootstrap_field form.new_password  %}</div> 
-                <div class="col-sm-6">{% bootstrap_field form.reenter_password %}</div>
+                <label class="control-label col-sm-6">Ingrese su nueva Contraseña (sin espacios):</label>
+                <div class="col-sm-3">{% bootstrap_field form.password show_label=False %}</div>                 
              </div>  
 		</div>
 		 {% for hidden in form.hidden_fields %} {{ hidden }} {% endfor %}	       
     </form>
 </div>
 
-<script type="text/javascript">
-          $( "#AceptarPasswd" ).click(function() {
-            // csrfmiddlewaretoken = $("#selecc_cpbs").find("input[name='csrfmiddlewaretoken']" ).val();
-            formData = $('#cambio_pass').serialize();
-            // console.log(formData);
-            $.ajax({
-                url : "{% url 'cambiar_password' %}" ,
-                data : formData,
-                type: "POST",
-                // contentType: "application/json;charset=utf-8",
-                dataType : "json",
-               success: function(data) {            
-                 
-                  if(data.status == 1){                  
-                    window.location.href ="{% url 'principal' %}";
-                    }else{
-                         
-                         var errors = jQuery.parseJSON(data.message);
-                         console.log(errors);                    
-                         for (var name in errors){
-                          console.log(errors[name]); 
-                          var $input = $("input[name="+name+"]");
-                          $input.after('<p class="text-danger">' + errors[name] + '</p>');
-                         }
-                      }
-                    //alertify.errorAlert(data.message);
-
-                                          
-
-              },
-              error: function(data) {            
-                  console.log(data);}               
-            });
-        });  
-         
-    </script>         
 
 
 

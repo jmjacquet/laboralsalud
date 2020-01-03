@@ -10,7 +10,7 @@ from django.contrib import messages
 from laboralsalud.utilidades import ultimoNroId,usuario_actual
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
-from fm.views import AjaxCreateView,AjaxUpdateView,AjaxDeleteView
+from modal.views import AjaxCreateView,AjaxUpdateView,AjaxDeleteView
 from django.db.models import Q,Sum,Count,FloatField,Func
 from django.forms.models import inlineformset_factory,BaseInlineFormSet,formset_factory
 from django.utils.functional import curry 

@@ -88,7 +88,7 @@
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown"> {{usuario}}  <i class="icon-user"></i> <b class="caret"></b></a>
           <ul class="dropdown-menu">
-            <li><a id="cambiar_passwd" href="#">Cambiar Contraseña</a></li>
+            <li><a class="modal-update" data-modal-callback="reload" data-modal-head="CAMBIAR CONTRASEÑA" href="{% url 'cambiar_password' id=usuario.pk %}">Cambiar Contraseña</a></li>
             <li class="divider"></li>
             {% if esAdmin %}
             <li><a href="{% url 'usuarios' %}">Configurar Usuarios</a></li>                           

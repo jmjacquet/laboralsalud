@@ -3,21 +3,21 @@ from __future__ import unicode_literals
 
 from django.shortcuts import *
 from django.template import RequestContext,Context
-from .models import *
 from django.contrib.auth.decorators import login_required
-from fm.views import AjaxDeleteView
 from django.views.generic import TemplateView,ListView,CreateView,UpdateView
-from .forms import *
 from django.contrib import messages
-from laboralsalud.utilidades import hoy,usuario_actual,empresa_actual,esAdmin
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.hashers import make_password
 from django.utils.translation import ugettext as _
-
 from django.utils.decorators import method_decorator
 import json
 
+from modal.views import AjaxDeleteView,AjaxUpdateView
+from .models import *
+from .forms import *
+from laboralsalud.utilidades import hoy,usuario_actual,empresa_actual,esAdmin
+from general.views import VariablesMixin
 
 @login_required 
 def ver_permisos(request):
@@ -70,25 +70,59 @@ def unpassword(request):
 
   return HttpResponse( clave, content_type='application/json' ) 
 
+class cambiar_password(VariablesMixin,AjaxUpdateView):
+    form_class = UsuarioCambiarPasswdForm
+    model = UsuUsuario
+    pk_url_kwarg = 'id'
+    template_name = 'modal/general/form_cambiar_passwd.html'
+    
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):         
+        return super(cambiar_password, self).dispatch(*args, **kwargs)
 
-def cambiar_password(request):                
-    form = UsuarioCambiarPasswdForm(request.POST or None)
-    if request.method == 'POST' and request.is_ajax():                                       
-        if form.is_valid():                                   
-            new_password = form.cleaned_data['new_password']
-            usuario=request.user.userprofile.id_usuario
-            clave = make_password(password=new_password,salt=None)
-            usuario.password = clave
-            usuario.save()
-            update_session_auth_hash(request, usuario)            
-            response = {'status': 1, 'message': "Ok"} # for ok        
-        else:
-            errors = form.errors            
-            response = {'status': 0, 'message': json.dumps(errors)} 
+    def form_valid(self, form):        
+        new_password = form.cleaned_data['password'].replace(" ", "")
+        usuario=self.object
+        usuario2=self.request.user.userprofile.id_usuario        
+        if usuario!=usuario2:
+            messages.error(self.request, u'No puede modificar la contraseña de otro usuario!')
+            return redirect(reverse('principal'))
+        clave = make_password(password=new_password,salt=None)
+        usuario.password = clave
+        usuario.save()
+        update_session_auth_hash(self.request, usuario)            
+        messages.success(self.request, u'Los datos se guardaron con éxito!')
+        return super(cambiar_password, self).form_valid(form)
+
+    def form_invalid(self, form):
+        return super(cambiar_password, self).form_invalid(form)
+
+    def get_form_kwargs(self):
+        kwargs = super(cambiar_password, self).get_form_kwargs()        
+        return kwargs  
+
+    def get_initial(self):    
+        initial = super(cambiar_password, self).get_initial()                      
+        return initial   
+
+# def cambiar_password(request):                
+#     form = UsuarioCambiarPasswdForm(request.POST or None)
+#     if request.method == 'POST' and request.is_ajax():                                       
+#         if form.is_valid():                                   
+#             new_password = form.cleaned_data['new_password']
+#             usuario=request.user.userprofile.id_usuario
+#             clave = make_password(password=new_password,salt=None)
+#             usuario.password = clave
+#             usuario.save()
+#             update_session_auth_hash(request, usuario)            
+#             response = {'status': 1, 'message': "Ok"} # for ok        
+#         else:
+#             errors = form.errors            
+#             response = {'status': 0, 'message': json.dumps(errors)} 
             
-        return HttpResponse(json.dumps(response), content_type='application/json')
-    else:                
-        return render(request,"general/cambiar_password.html",{'form':form})
+#         return HttpResponse(json.dumps(response), content_type='application/json')
+#     else:                
+#         return render(request,"usuarios/cambiar_password.html",{'form':form})
 
 from general.views import VariablesMixin,getVariablesMixin
 

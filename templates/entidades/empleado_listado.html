@@ -54,10 +54,8 @@
                 <th class="imprimir">Domicilio</th>
                 <th class="imprimir">Localidad</th>           
                 <th class="imprimir">Provincia</th>           
-                <th class="imprimir">Puesto/Cargo</th>           
-                
-                
-                                                           
+                <th class="imprimir">Puesto/Cargo</th> 
+                <th class="imprimir" data-priority="12">F.Carga</th>
             </tr>
         </thead>
         <tbody>
@@ -98,6 +96,7 @@
                 <td>{{ a.localidad|default_if_none:'' }}</td>                                
                 <td>{{ a.get_provincia_display|default_if_none:'' }}</td>                                
                 <td title="{{ a.trab_cargo}}">{{ a.trab_cargo|default_if_none:''|truncatechars:60 }}</td>                                                                
+                <td title="Usuario Creación: {{a.usuario_carga|default_if_none:'SISTEMA'}} | Última Modificación: {{a.fecha_modif|date:'d/m/Y'}}">{{ a.fecha_creacion|date:'d/m/Y' }}</td>
                 
             </tr>
             {% endfor %}
@@ -116,6 +115,7 @@
                 <th></th>                                                                
                 <th></th>                                                                
                 <th></th>
+                <th></th>                
                 <th></th>                
                 <th></th>                
             </tr>

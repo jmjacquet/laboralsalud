@@ -11,7 +11,7 @@ urlpatterns = [
 	
   url(r'^password/$', password,name="password"),
   url(r'^unpassword/$', unpassword,name="unpassword"),
-  url(r'^cambiar_password/$', cambiar_password, name='cambiar_password'),
+  url(r'^cambiar_password/(?P<id>\d+)$', cambiar_password.as_view(), name='cambiar_password'),
   # url(r'^usuarios_conectados/$', get_usuarios_conectados, name='usuarios_conectados'),
   
   url(r'^$', UsuarioList.as_view(),name="usuarios"),

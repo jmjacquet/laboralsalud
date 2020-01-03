@@ -6,19 +6,12 @@ from django.utils.html import conditional_escape
 from itertools import chain
 from django.utils.safestring import mark_safe
       
-class UsuarioCambiarPasswdForm(forms.Form):      
-      new_password = forms.CharField(widget=forms.PasswordInput(render_value = True),max_length=20,label='Contraseña Nueva') 
-      reenter_password = forms.CharField(widget=forms.PasswordInput(render_value = True),max_length=20,label='Reingresar Contraseña') 
-     
-      def clean(self):
-         new_password = self.cleaned_data.get('new_password')
-         reenter_password = self.cleaned_data.get('reenter_password')
-                   
-         if new_password and new_password!=reenter_password:
-            self._errors['reenter_password'] = [u'Debe ingresar la misma contraseña.']         
-         #get the user object and check from old_password list if any one matches with the new password raise error(read whole answer you would know) 
-         return self.cleaned_data #don't forget this.
-
+class UsuarioCambiarPasswdForm(forms.ModelForm):      
+      password = forms.CharField(widget=forms.PasswordInput(render_value = False,attrs={'autofocus': 'autofocus'}),max_length=20,label='Contraseña Nueva')       
+      class Meta:
+        model = UsuUsuario  
+        exclude = ['baja','nro_doc','empresa','nombre','usuario','email','permisos','empresas','tipoUsr']
+      
 
 class CHKMultiplePermisos(forms.CheckboxSelectMultiple):   
      def __init__(self,usuario=None, *args, **kwargs):        
@@ -162,7 +155,7 @@ class UsuarioForm(forms.ModelForm):
     empresas =forms.ModelMultipleChoiceField(queryset=ent_empresa.objects.filter(baja=False), required=False, widget=CHKMultipleEmpresas())    
     class Meta:
     	model = UsuUsuario	
-        exclude = ['baja','password','numero_documento','empresa']
+        exclude = ['baja','password','nro_doc','empresa']
 
     def __init__(self,request,usuario, *args, **kwargs):                
         super(UsuarioForm, self).__init__(*args, **kwargs)            
