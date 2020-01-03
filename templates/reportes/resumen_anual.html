@@ -128,7 +128,8 @@ Highcharts.chart('grafico1', {
               title: {
                     text: 'Mes/Año'
                 },
-                crosshair: true
+                crosshair: true,                
+                
           },
     yAxis: {
                 min: 0,
@@ -143,23 +144,31 @@ Highcharts.chart('grafico1', {
         verticalAlign: 'bottom'
     },
 
+    tooltip: {
+        shared: true,
+        crosshairs: true
+    },
+
     plotOptions: {
         series: {
             label: {
                 connectorAllowed: false
             },
+            marker: {
+                lineWidth: 1
+            }
           
         }
     },
 
     series: [{
-        name: 'Ausentismos Inculpables',
+        name: 'Tasa x Inculpables',
         data: {{inculpables|safe}}
     }, {
-        name: 'Ausentismos x Accidente',
+        name: 'Tasa x Accidente',
         data: {{accidentes|safe}}
     }, {
-        name: 'Ausentismos x Enfermedad Profesional',
+        name: 'Tasa x Enfermedad Profesional',
         data: {{enfermos|safe}}
     }, ],
 
