@@ -224,15 +224,13 @@ class ReporteResumenAnual(VariablesMixin,TemplateView):
         inculpables = []
         accidentes = []
         enfermos = []
-        if ausentismos:                    
-            import time
-            from dateutil.rrule import rrule, MONTHLY
-            meses = [[int(dt.strftime("%m")),int(dt.strftime("%y"))] for dt in rrule(MONTHLY, dtstart=fdesde, until=fhasta)]
-            import locale        
-            locale.setlocale(locale.LC_ALL, '')
-            listado_meses = ["%s%s" % (dt.strftime("%b").upper(),(dt.strftime("%y"))) for dt in rrule(MONTHLY, dtstart=fdesde, until=fhasta)]
-            
-        
+        import time
+        from dateutil.rrule import rrule, MONTHLY
+        meses = [[int(dt.strftime("%m")),int(dt.strftime("%y"))] for dt in rrule(MONTHLY, dtstart=fdesde, until=fhasta)]
+        import locale        
+        locale.setlocale(locale.LC_ALL, '')
+        listado_meses = ["%s%s" % (dt.strftime("%b").upper(),(dt.strftime("%y"))) for dt in rrule(MONTHLY, dtstart=fdesde, until=fhasta)]
+        if ausentismos:                                                    
             for m in meses:                
                 dias_laborables = int(dias_mes(m[0],m[1],fdesde,fhasta)) 
                 ausencias = en_mes_anio(m[0],m[1],ausentismos)
