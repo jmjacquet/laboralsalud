@@ -45,8 +45,7 @@ class AusentismoView(VariablesMixin,ListView):
         fdesde=hoy()
         fhasta=finMes()
         ausentismos = ausentismo.objects.filter(baja=False,empleado__empresa__pk__in=empresas_habilitadas(self.request))
-        ausentismos = ausentismos.filter(Q(aus_fcrondesde__gte=fdesde,tipo_ausentismo=1)|Q(art_fcrondesde__gte=fdesde,tipo_ausentismo__gte=2))
-        ausentismos = ausentismos.filter(Q(aus_fcronhasta__lte=fhasta,tipo_ausentismo=1)|Q(art_fcronhasta__lte=fhasta,tipo_ausentismo__gte=2))                                
+        ausentismos = ausentismos.filter(aus_fcrondesde__gte=fdesde,aus_fcronhasta__lte=fhasta)                                
         if form.is_valid():                                                        
             fdesde = form.cleaned_data['fdesde']   
             fhasta = form.cleaned_data['fhasta']                                                 
@@ -58,14 +57,14 @@ class AusentismoView(VariablesMixin,ListView):
             ausentismos = ausentismo.objects.filter(empleado__empresa__pk__in=empresas_habilitadas(self.request))
 
             if int(estado) == 1:  
-                ausentismos = ausentismos.filter(Q(aus_fcronhasta__gte=hoy(),tipo_ausentismo=1)|Q(art_fcronhasta__gte=hoy(),tipo_ausentismo__gte=2))
+                ausentismos = ausentismos.filter(aus_fcronhasta__gte=hoy())
             elif int(estado) == 2:  
-                ausentismos = ausentismos.filter(Q(aus_fcronhasta__lt=hoy(),tipo_ausentismo=1)|Q(art_fcronhasta__lt=hoy(),tipo_ausentismo__gte=2))
+                ausentismos = ausentismos.filter(aus_fcronhasta__lt=hoy())
             elif int(estado) == 0: 
                 if fdesde:                
-                    ausentismos = ausentismos.filter(Q(aus_fcrondesde__gte=fdesde,tipo_ausentismo=1)|Q(art_fcrondesde__gte=fdesde,tipo_ausentismo__gte=2))                         
+                    ausentismos = ausentismos.filter(aus_fcrondesde__gte=fdesde)
                 if fhasta:                
-                    ausentismos = ausentismos.filter(Q(aus_fcronhasta__lte=fhasta,tipo_ausentismo=1)|Q(art_fcronhasta__lte=fhasta,tipo_ausentismo__gte=2))                                
+                    ausentismos = ausentismos.filter(aus_fcronhasta__lte=fhasta)
             if empresa:
                 ausentismos= ausentismos.filter(empleado__empresa=empresa)            
             if empleado:
@@ -322,7 +321,7 @@ def patologia_baja_alta(request,id):
     patologia.baja = not patologia.baja
     patologia.save()       
     messages.success(request, u'¡Los datos se guardaron con éxito!')
-    return HttpResponseRedirect(reverse("pat_pantalla")) 
+    return HttpResponseRedirect(reverse("patologia_listado")) 
 
 
 ############ DIAGNOSTICOS ############################
@@ -399,11 +398,11 @@ class DiagnosticoEditView(VariablesMixin,AjaxUpdateView):
 
 @login_required 
 def diagnostico_baja_alta(request,id):
-    diagnostico = diagnostico_baja_alta.objects.get(pk=id)     
+    diagnostico = aus_diagnostico.objects.get(pk=id)     
     diagnostico.baja = not diagnostico.baja
     diagnostico.save()       
     messages.success(request, u'¡Los datos se guardaron con éxito!')
-    return HttpResponseRedirect(reverse("diag_pantalla")) 
+    return HttpResponseRedirect(reverse("diagnostico_listado")) 
 
 
 import csv, io

@@ -100,7 +100,7 @@ class CHKMultipleEmpresas(forms.CheckboxSelectMultiple):
          del self.choices
          self.choices = []                          
 
-         empresas = ent_empresa.objects.filter(baja=False)             
+         empresas = ent_empresa.objects.filter(baja=False,casa_central__isnull=True)             
 
          for e in empresas:
              self.choices.append((e.pk,e.razon_social))

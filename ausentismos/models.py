@@ -62,24 +62,15 @@ class ausentismo(models.Model):
 	aus_falta = models.DateField(u'Fecha Alta',blank=True, null=True)
 	aus_tipo_alta = models.IntegerField('Tipo Alta',choices=TIPO_ALTA, blank=True, null=True)
 	aus_frevision = models.DateField(u'Fecha Próx.Control',blank=True, null=True)
-	aus_medico = models.ForeignKey('entidades.ent_medico_prof',verbose_name=u'Médico Tratante',db_column='aus_medico',blank=True, null=True,related_name='aus_medico',on_delete=models.SET_NULL)
+	aus_medico = models.ForeignKey('entidades.ent_medico_prof',verbose_name=u'Médico Tratante/ART',db_column='aus_medico',blank=True, null=True,related_name='aus_medico',on_delete=models.SET_NULL)
 	aus_grupop = models.ForeignKey(aus_patologia,verbose_name=u'Grupo Patológico',db_column='aus_grupop',blank=True, null=True,related_name='aus_grupop',on_delete=models.SET_NULL)
 	aus_diagn = models.ForeignKey(aus_diagnostico,verbose_name=u'Diagnóstico',db_column='aus_diagn',blank=True, null=True,related_name='aus_diagn',on_delete=models.SET_NULL)
 
 	art_tipo_accidente = models.IntegerField('Tipo Accidente/Enfermedad',choices=TIPO_ACCIDENTE, blank=True, null=True)
-	art_ndenuncia = models.CharField(u'Nº Denuncia',max_length=50,blank=True, null=True)
-	art_fcontrol = models.DateField(u'Fecha Control',blank=True, null=True)
+	art_ndenuncia = models.CharField(u'Nº Denuncia',max_length=50,blank=True, null=True)	
 	art_faccidente = models.DateField(u'Fecha Accidente',blank=True, null=True)
 	art_fdenuncia = models.DateField(u'Fecha Denuncia',blank=True, null=True)
-	art_fcrondesde = models.DateField(u'Cronológica Desde',blank=True, null=True)
-	art_fcronhasta = models.DateField(u'Cronológica Hasta',blank=True, null=True)
-	art_diascaidos = models.IntegerField(u'Días Caídos',blank=True, null=True)
-	art_freintegro = models.DateField(u'Fecha Reintegro',blank=True, null=True)
-	art_falta = models.DateField(u'Fecha Alta',blank=True, null=True)
-	art_tipo_alta = models.IntegerField('Tipo Alta',choices=TIPO_ALTA, blank=True, null=True)
-	art_frevision = models.DateField(u'Fecha Próx.Control',blank=True, null=True)
-	art_medico = models.ForeignKey('entidades.ent_medico_prof',verbose_name=u'Médico ART',db_column='art_medico',blank=True, null=True,related_name='art_medico',on_delete=models.SET_NULL)
-
+	
 	observaciones = models.TextField('Observaciones',blank=True, null=True)       
 	descr_altaparc = models.TextField(u'Descr.Alta Parcial',blank=True, null=True)       
 	detalle_acc_art = models.TextField(u'Detalle Acc.ART',blank=True, null=True)       
@@ -94,80 +85,48 @@ class ausentismo(models.Model):
 
 	class Meta:
 		db_table = 'ausentismo'
-		ordering = ['-aus_fcrondesde','-art_fcrondesde','-aus_fcronhasta','-art_fcronhasta','empleado__empresa']
+		ordering = ['-aus_fcrondesde','-aus_fcronhasta','empleado__empresa']
 
 	def __unicode__(self):
-	    return u'%s - %s' % (self.pk,self.empleado)
+	    return u'%s - %s (%s)' % (self.pk,self.empleado,self.get_fechas)
 
 	@property
 	def get_dias_caidos(self):
 		dias = 0
-		if self.tipo_ausentismo==1:
-			if self.aus_diascaidos:
-				dias = self.aus_diascaidos
-		else:
-			if self.art_diascaidos:
-				dias = self.art_diascaidos
+		if self.aus_diascaidos:
+			dias = self.aus_diascaidos
 		return dias
 
 	@property
 	def get_fechas(self):        
-		desde=''
-		hasta=''
-		if self.tipo_ausentismo==1:
-			if self.aus_fcrondesde:
-				desde = self.aus_fcrondesde.strftime('%d/%m/%Y')		
-			if self.aus_fcronhasta:
-				hasta = self.aus_fcronhasta.strftime('%d/%m/%Y')
-		else:
-			if self.art_fcrondesde:
-				desde = self.art_fcrondesde.strftime('%d/%m/%Y')		
-			if self.art_fcronhasta:
-				hasta = self.art_fcronhasta.strftime('%d/%m/%Y')
+		desde=self.aus_fcrondesde.strftime('%d/%m/%Y')
+		hasta=self.aus_fcronhasta.strftime('%d/%m/%Y')		
 		return '%s hasta %s' % (desde,hasta)
 
 	@property
 	def get_fcrondesde(self):
-		if self.tipo_ausentismo==1:
-			return self.aus_fcrondesde
-		else:
-			return self.art_fcrondesde
+		return self.aus_fcrondesde
 				
 	@property
 	def get_fcronhasta(self):
-		if self.tipo_ausentismo==1:
-			return self.aus_fcronhasta		
-		else:
-			return self.art_fcronhasta		
-
+		return self.aus_fcronhasta		
+		
 	@property
 	def get_fcontrol(self):
-		if self.tipo_ausentismo==1:
-			return self.aus_frevision		
-		else:
-			return self.art_frevision					
-
+		return self.aus_frevision		
+		
 	@property
 	def get_falta(self):
-		if self.tipo_ausentismo==1:
-			return self.aus_falta		
-		else:
-			return self.art_falta
-
+		return self.aus_falta		
+		
 	@property
 	def get_tipo_alta(self):
-		if self.tipo_ausentismo==1:
-			return self.get_aus_tipo_alta_display()
-		else:
-			return self.get_art_tipo_alta_display()
-
+		return self.get_aus_tipo_alta_display()
+		
 	@property
 	def get_fcontrol(self):
-		if self.tipo_ausentismo==1:
-			return self.aus_frevision		
-		else:
-			return self.art_frevision		
-
+		return self.aus_frevision		
+		
 
 class ausentismo_controles(models.Model):
 	id = models.AutoField(primary_key=True,db_index=True)

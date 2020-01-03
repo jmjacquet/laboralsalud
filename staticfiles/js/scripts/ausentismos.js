@@ -190,9 +190,11 @@ $('#id_tipo_ausentismo').change(function()
   if (id==1){
     $('#tab_ausencia').show();
     $('#tab_art').hide();
+    $('#titulo').html('DATOS DE LA AUSENCIA')
   }else{
     $('#tab_art').show();
     $('#tab_ausencia').hide();
+    $('#titulo').html('DATOS DE LA ART')
   }
   
 })
@@ -214,25 +216,6 @@ $('#id_aus_fcronhasta').change(function()
     $("#id_aus_fcrondesde").val($('#id_aus_fcronhasta').val());
   };
   diasRestantes($('#id_aus_fcrondesde'),$("#id_aus_fcronhasta"),$("#id_aus_diascaidos"));
-});
-
-
-$('#id_art_fcrondesde').change(function()
-{  
-  if ($("#id_art_fcronhasta").val()=='')
-  {
-    $("#id_art_fcronhasta").val($('#id_art_fcrondesde').val());
-  };
-  diasRestantes($('#id_art_fcrondesde'),$("#id_art_fcronhasta"),$("#id_art_diascaidos"));
-});
-
-$('#id_art_fcronhasta').change(function()
-{  
-  if ($("#id_art_fcrondesde").val() == '')
-  {
-    $("#id_art_fcrondesde").val($('#id_art_fcronhasta').val());
-  };
-  diasRestantes($('#id_art_fcrondesde'),$("#id_art_fcronhasta"),$("#id_art_diascaidos"));
 });
 
 

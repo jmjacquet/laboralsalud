@@ -218,24 +218,6 @@ $('#id_aus_fcronhasta').change(function()
 });
 
 
-$('#id_art_fcrondesde').change(function()
-{  
-  if ($("#id_art_fcronhasta").val()=='')
-  {
-    $("#id_art_fcronhasta").val($('#id_art_fcrondesde').val());
-  };
-  diasRestantes($('#id_art_fcrondesde'),$("#id_art_fcronhasta"),$("#id_art_diascaidos"));
-});
-
-$('#id_art_fcronhasta').change(function()
-{  
-  if ($("#id_art_fcrondesde").val() == '')
-  {
-    $("#id_art_fcrondesde").val($('#id_art_fcronhasta').val());
-  };
-  diasRestantes($('#id_art_fcrondesde'),$("#id_art_fcronhasta"),$("#id_art_diascaidos"));
-});
-
 
 $('.formDetalle').formset({
           addText: 'Agregar Control',

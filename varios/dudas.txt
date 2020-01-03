@@ -1,3 +1,5 @@
-¿Se van a asignar sucursales a un usuario determinado o se podrían mostrar sólo las casas centrales? para que el login y permisos sea mas sencillo.
+¿Se van a asignar sucursales a un usuario determinado o se podrían mostrar sólo las casas centrales? para que el login y permisos sea mas sencillo.?
+solo CCentral
 
-¿rango de fechas en indicadores?
+¿Rango de fechas en indicadores?
+Segun cortes

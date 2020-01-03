@@ -1,0 +1,726 @@
+[02/Jan/2020 17:02:53] ERROR [django.request:135] Internal Server Error: /entidades/art/baja_alta/10/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "D:\Repo\laboralsalud\entidades\views.py", line 107, in art_baja_alta
+    art = ent_art.objects.get(pk=id)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\db\models\manager.py", line 85, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\db\models\query.py", line 379, in get
+    self.model._meta.object_name
+DoesNotExist: ent_art matching query does not exist.
+[02/Jan/2020 17:02:53] ERROR [django.server:124] "GET /entidades/art/baja_alta/10/ HTTP/1.1" 500 87413
+[02/Jan/2020 17:04:47] ERROR [django.request:135] Internal Server Error: /ausentismos/patologia/baja_alta/1/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "D:\Repo\laboralsalud\ausentismos\views.py", line 325, in patologia_baja_alta
+    return HttpResponseRedirect(reverse("pat_pantalla"))
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\urls\base.py", line 91, in reverse
+    return force_text(iri_to_uri(resolver._reverse_with_prefix(view, prefix, *args, **kwargs)))
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\urls\resolvers.py", line 497, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+NoReverseMatch: Reverse for 'pat_pantalla' not found. 'pat_pantalla' is not a valid view function or pattern name.
+[02/Jan/2020 17:04:47] ERROR [django.server:124] "GET /ausentismos/patologia/baja_alta/1/ HTTP/1.1" 500 91147
+[02/Jan/2020 17:06:16] ERROR [django.request:135] Internal Server Error: /ausentismos/diagnostico/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 217, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 215, in _get_response
+    response = response.render()
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\response.py", line 107, in render
+    self.content = self.rendered_content
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\response.py", line 84, in rendered_content
+    content = template.render(context, self._request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\backends\django.py", line 66, in render
+    return self.template.render(context)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 207, in render
+    return self._render(context)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\test\utils.py", line 107, in instrumented_test_render
+    return self.nodelist.render(context)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 990, in render
+    bit = node.render_annotated(context)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 957, in render_annotated
+    return self.render(context)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\loader_tags.py", line 177, in render
+    return compiled_parent._render(context)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\test\utils.py", line 107, in instrumented_test_render
+    return self.nodelist.render(context)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 990, in render
+    bit = node.render_annotated(context)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 957, in render_annotated
+    return self.render(context)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\loader_tags.py", line 72, in render
+    result = block.nodelist.render(context)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 990, in render
+    bit = node.render_annotated(context)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 957, in render_annotated
+    return self.render(context)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\loader_tags.py", line 72, in render
+    result = block.nodelist.render(context)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 990, in render
+    bit = node.render_annotated(context)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 957, in render_annotated
+    return self.render(context)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\defaulttags.py", line 216, in render
+    nodelist.append(node.render_annotated(context))
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 957, in render_annotated
+    return self.render(context)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\defaulttags.py", line 458, in render
+    url = reverse(view_name, args=args, kwargs=kwargs, current_app=current_app)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\urls\base.py", line 91, in reverse
+    return force_text(iri_to_uri(resolver._reverse_with_prefix(view, prefix, *args, **kwargs)))
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\urls\resolvers.py", line 497, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+NoReverseMatch: Reverse for 'diagnostico_listado' with keyword arguments '{u'id': 33}' not found. 1 pattern(s) tried: ['ausentismos/diagnostico/$']
+[02/Jan/2020 17:06:17] ERROR [django.server:124] "GET /ausentismos/diagnostico/ HTTP/1.1" 500 261028
+[02/Jan/2020 17:07:40] ERROR [django.request:135] Internal Server Error: /ausentismos/diagnostico/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 217, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 215, in _get_response
+    response = response.render()
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\response.py", line 107, in render
+    self.content = self.rendered_content
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\response.py", line 84, in rendered_content
+    content = template.render(context, self._request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\backends\django.py", line 66, in render
+    return self.template.render(context)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 207, in render
+    return self._render(context)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\test\utils.py", line 107, in instrumented_test_render
+    return self.nodelist.render(context)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 990, in render
+    bit = node.render_annotated(context)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 957, in render_annotated
+    return self.render(context)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\loader_tags.py", line 177, in render
+    return compiled_parent._render(context)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\test\utils.py", line 107, in instrumented_test_render
+    return self.nodelist.render(context)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 990, in render
+    bit = node.render_annotated(context)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 957, in render_annotated
+    return self.render(context)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\loader_tags.py", line 72, in render
+    result = block.nodelist.render(context)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 990, in render
+    bit = node.render_annotated(context)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 957, in render_annotated
+    return self.render(context)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\loader_tags.py", line 72, in render
+    result = block.nodelist.render(context)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 990, in render
+    bit = node.render_annotated(context)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 957, in render_annotated
+    return self.render(context)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\defaulttags.py", line 216, in render
+    nodelist.append(node.render_annotated(context))
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 957, in render_annotated
+    return self.render(context)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\defaulttags.py", line 458, in render
+    url = reverse(view_name, args=args, kwargs=kwargs, current_app=current_app)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\urls\base.py", line 91, in reverse
+    return force_text(iri_to_uri(resolver._reverse_with_prefix(view, prefix, *args, **kwargs)))
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\urls\resolvers.py", line 497, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+NoReverseMatch: Reverse for 'diagnostico_listado' with keyword arguments '{u'id': 33}' not found. 1 pattern(s) tried: ['ausentismos/diagnostico/$']
+[02/Jan/2020 17:07:40] ERROR [django.server:124] "GET /ausentismos/diagnostico/ HTTP/1.1" 500 261163
+[02/Jan/2020 17:07:53] ERROR [django.request:135] Internal Server Error: /ausentismos/diagnostico/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 217, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 215, in _get_response
+    response = response.render()
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\response.py", line 107, in render
+    self.content = self.rendered_content
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\response.py", line 84, in rendered_content
+    content = template.render(context, self._request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\backends\django.py", line 66, in render
+    return self.template.render(context)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 207, in render
+    return self._render(context)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\test\utils.py", line 107, in instrumented_test_render
+    return self.nodelist.render(context)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 990, in render
+    bit = node.render_annotated(context)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 957, in render_annotated
+    return self.render(context)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\loader_tags.py", line 177, in render
+    return compiled_parent._render(context)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\test\utils.py", line 107, in instrumented_test_render
+    return self.nodelist.render(context)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 990, in render
+    bit = node.render_annotated(context)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 957, in render_annotated
+    return self.render(context)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\loader_tags.py", line 72, in render
+    result = block.nodelist.render(context)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 990, in render
+    bit = node.render_annotated(context)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 957, in render_annotated
+    return self.render(context)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\loader_tags.py", line 72, in render
+    result = block.nodelist.render(context)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 990, in render
+    bit = node.render_annotated(context)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 957, in render_annotated
+    return self.render(context)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\defaulttags.py", line 216, in render
+    nodelist.append(node.render_annotated(context))
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 957, in render_annotated
+    return self.render(context)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\defaulttags.py", line 458, in render
+    url = reverse(view_name, args=args, kwargs=kwargs, current_app=current_app)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\urls\base.py", line 91, in reverse
+    return force_text(iri_to_uri(resolver._reverse_with_prefix(view, prefix, *args, **kwargs)))
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\urls\resolvers.py", line 497, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+NoReverseMatch: Reverse for 'diagnostico_listado' with keyword arguments '{u'id': 33}' not found. 1 pattern(s) tried: ['ausentismos/diagnostico/$']
+[02/Jan/2020 17:07:53] ERROR [django.server:124] "GET /ausentismos/diagnostico/ HTTP/1.1" 500 260992
+[02/Jan/2020 17:08:38] ERROR [django.request:135] Internal Server Error: /ausentismos/diagnostico/baja_alta/31/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "D:\Repo\laboralsalud\ausentismos\views.py", line 402, in diagnostico_baja_alta
+    diagnostico = diagnostico_baja_alta.objects.get(pk=id)
+AttributeError: 'function' object has no attribute 'objects'
+[02/Jan/2020 17:08:38] ERROR [django.server:124] "GET /ausentismos/diagnostico/baja_alta/31/ HTTP/1.1" 500 79717
+[02/ene./2020 17:30:36] ERROR [django.request:135] Internal Server Error: /reportes/reporte_resumen_anual/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\views\generic\base.py", line 68, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\utils\decorators.py", line 67, in _wrapper
+    return bound_func(*args, **kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\utils\decorators.py", line 63, in bound_func
+    return func.__get__(self, type(self))(*args2, **kwargs2)
+  File "D:\Repo\laboralsalud\reportes\views.py", line 173, in dispatch
+    return super(ReporteResumenAnual, self).dispatch(*args,**kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\views\generic\base.py", line 88, in dispatch
+    return handler(request, *args, **kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\views\generic\base.py", line 155, in get
+    context = self.get_context_data(**kwargs)
+  File "D:\Repo\laboralsalud\reportes\views.py", line 250, in get_context_data
+    sd = dt.strptime(fdesde, "%Y-%m-%d")
+NameError: global name 'dt' is not defined
+[02/ene./2020 17:30:39] ERROR [django.server:124] "GET /reportes/reporte_resumen_anual/ HTTP/1.1" 500 109758
+[02/ene./2020 17:31:00] ERROR [django.request:135] Internal Server Error: /reportes/reporte_resumen_anual/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\views\generic\base.py", line 68, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\utils\decorators.py", line 67, in _wrapper
+    return bound_func(*args, **kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\utils\decorators.py", line 63, in bound_func
+    return func.__get__(self, type(self))(*args2, **kwargs2)
+  File "D:\Repo\laboralsalud\reportes\views.py", line 173, in dispatch
+    return super(ReporteResumenAnual, self).dispatch(*args,**kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\views\generic\base.py", line 88, in dispatch
+    return handler(request, *args, **kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\views\generic\base.py", line 155, in get
+    context = self.get_context_data(**kwargs)
+  File "D:\Repo\laboralsalud\reportes\views.py", line 250, in get_context_data
+    sd = datetime.strptime(fdesde, "%Y-%m-%d")
+TypeError: must be string, not datetime.date
+[02/ene./2020 17:31:00] ERROR [django.server:124] "GET /reportes/reporte_resumen_anual/ HTTP/1.1" 500 109875
+[02/Jan/2020 18:28:36] ERROR [django.request:135] Internal Server Error: /ausentismos/editar/60/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 217, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 215, in _get_response
+    response = response.render()
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\response.py", line 107, in render
+    self.content = self.rendered_content
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\response.py", line 84, in rendered_content
+    content = template.render(context, self._request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\backends\django.py", line 66, in render
+    return self.template.render(context)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 207, in render
+    return self._render(context)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\test\utils.py", line 107, in instrumented_test_render
+    return self.nodelist.render(context)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 990, in render
+    bit = node.render_annotated(context)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 957, in render_annotated
+    return self.render(context)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\loader_tags.py", line 177, in render
+    return compiled_parent._render(context)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\test\utils.py", line 107, in instrumented_test_render
+    return self.nodelist.render(context)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 990, in render
+    bit = node.render_annotated(context)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 957, in render_annotated
+    return self.render(context)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\loader_tags.py", line 72, in render
+    result = block.nodelist.render(context)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 990, in render
+    bit = node.render_annotated(context)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 957, in render_annotated
+    return self.render(context)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\loader_tags.py", line 72, in render
+    result = block.nodelist.render(context)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 990, in render
+    bit = node.render_annotated(context)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 957, in render_annotated
+    return self.render(context)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 1040, in render
+    output = self.filter_expression.resolve(context)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 736, in resolve
+    new_obj = func(obj, *arg_vals)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\crispy_forms\templatetags\crispy_forms_filters.py", line 104, in as_crispy_field
+    raise CrispyError('|as_crispy_field got passed an invalid or inexistent field')
+CrispyError: |as_crispy_field got passed an invalid or inexistent field
+[02/Jan/2020 18:28:36] ERROR [django.server:124] "GET /ausentismos/editar/60/ HTTP/1.1" 500 232790
+[02/Jan/2020 19:28:18] ERROR [django.request:135] Internal Server Error: /reportes/reporte_resumen_periodo/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\views\generic\base.py", line 68, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\utils\decorators.py", line 67, in _wrapper
+    return bound_func(*args, **kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\utils\decorators.py", line 63, in bound_func
+    return func.__get__(self, type(self))(*args2, **kwargs2)
+  File "D:\Repo\laboralsalud\reportes\views.py", line 37, in dispatch
+    return super(ReporteResumenPeriodo, self).dispatch(*args,**kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\views\generic\base.py", line 88, in dispatch
+    return handler(request, *args, **kwargs)
+  File "D:\Repo\laboralsalud\reportes\views.py", line 162, in post
+    return self.get(*args, **kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\views\generic\base.py", line 155, in get
+    context = self.get_context_data(**kwargs)
+  File "D:\Repo\laboralsalud\reportes\views.py", line 97, in get_context_data
+    dias_caidos_tot = ausentismos.aggregate(dias_caidos=Sum(Coalesce('aus_diascaidos', 0)+Coalesce('art_diascaidos', 0)))['dias_caidos'] or 0
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\db\models\query.py", line 347, in aggregate
+    query.add_annotation(aggregate_expr, alias, is_summary=True)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\db\models\sql\query.py", line 983, in add_annotation
+    summarize=is_summary)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\db\models\aggregates.py", line 19, in resolve_expression
+    c = super(Aggregate, self).resolve_expression(query, allow_joins, reuse, summarize)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\db\models\expressions.py", line 548, in resolve_expression
+    c.source_expressions[pos] = arg.resolve_expression(query, allow_joins, reuse, summarize, for_save)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\db\models\expressions.py", line 412, in resolve_expression
+    c.rhs = c.rhs.resolve_expression(query, allow_joins, reuse, summarize, for_save)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\db\models\expressions.py", line 548, in resolve_expression
+    c.source_expressions[pos] = arg.resolve_expression(query, allow_joins, reuse, summarize, for_save)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\db\models\expressions.py", line 471, in resolve_expression
+    return query.resolve_ref(self.name, allow_joins, reuse, summarize)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\db\models\sql\query.py", line 1487, in resolve_ref
+    self.get_initial_alias(), reuse)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\db\models\sql\query.py", line 1427, in setup_joins
+    names, opts, allow_many, fail_on_missing=True)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\db\models\sql\query.py", line 1362, in names_to_path
+    "Choices are: %s" % (name, ", ".join(available)))
+FieldError: Cannot resolve keyword 'art_diascaidos' into field. Choices are: art_faccidente, art_fdenuncia, art_ndenuncia, art_tipo_accidente, aus_certificado, aus_control, aus_diagn, aus_diagn_id, aus_diascaidos, aus_diasjustif, aus_falta, aus_fcertif, aus_fcontrol, aus_fcrondesde, aus_fcronhasta, aus_fentrega_certif, aus_freintegro, aus_frevision, aus_grupop, aus_grupop_id, aus_medico, aus_medico_id, aus_tipo_alta, baja, control_ausentismo, descr_altaparc, detalle_acc_art, empleado, empleado_id, estudios_art, estudios_partic, fecha_creacion, fecha_modif, id, observaciones, recalificac_art, tipo_ausentismo, tipo_control, usuario_carga, usuario_carga_id
+[02/Jan/2020 19:28:19] ERROR [django.server:124] "POST /reportes/reporte_resumen_periodo/ HTTP/1.1" 500 169683
+[02/ene./2020 20:29:27] ERROR [django.request:135] Internal Server Error: /reportes/reporte_resumen_anual/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\views\generic\base.py", line 68, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\utils\decorators.py", line 67, in _wrapper
+    return bound_func(*args, **kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\utils\decorators.py", line 63, in bound_func
+    return func.__get__(self, type(self))(*args2, **kwargs2)
+  File "D:\Repo\laboralsalud\reportes\views.py", line 173, in dispatch
+    return super(ReporteResumenAnual, self).dispatch(*args,**kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\views\generic\base.py", line 88, in dispatch
+    return handler(request, *args, **kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\views\generic\base.py", line 155, in get
+    context = self.get_context_data(**kwargs)
+  File "D:\Repo\laboralsalud\reportes\views.py", line 256, in get_context_data
+    print lst
+NameError: global name 'lst' is not defined
+[02/ene./2020 20:29:27] ERROR [django.server:124] "GET /reportes/reporte_resumen_anual/ HTTP/1.1" 500 109676
+[02/ene./2020 20:30:22] ERROR [django.request:135] Internal Server Error: /reportes/reporte_resumen_anual/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\views\generic\base.py", line 68, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\utils\decorators.py", line 67, in _wrapper
+    return bound_func(*args, **kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\utils\decorators.py", line 63, in bound_func
+    return func.__get__(self, type(self))(*args2, **kwargs2)
+  File "D:\Repo\laboralsalud\reportes\views.py", line 173, in dispatch
+    return super(ReporteResumenAnual, self).dispatch(*args,**kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\views\generic\base.py", line 88, in dispatch
+    return handler(request, *args, **kwargs)
+  File "D:\Repo\laboralsalud\reportes\views.py", line 262, in post
+    return self.get(*args, **kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\views\generic\base.py", line 155, in get
+    context = self.get_context_data(**kwargs)
+  File "D:\Repo\laboralsalud\reportes\views.py", line 229, in get_context_data
+    delta = timedelta(months=1)
+TypeError: 'months' is an invalid keyword argument for this function
+[02/ene./2020 20:30:23] ERROR [django.server:124] "POST /reportes/reporte_resumen_anual/ HTTP/1.1" 500 117530
+[02/Jan/2020 21:09:52] ERROR [django.request:135] Internal Server Error: /reportes/reporte_resumen_anual/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\views\generic\base.py", line 68, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\utils\decorators.py", line 67, in _wrapper
+    return bound_func(*args, **kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\utils\decorators.py", line 63, in bound_func
+    return func.__get__(self, type(self))(*args2, **kwargs2)
+  File "D:\Repo\laboralsalud\reportes\views.py", line 173, in dispatch
+    return super(ReporteResumenAnual, self).dispatch(*args,**kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\views\generic\base.py", line 88, in dispatch
+    return handler(request, *args, **kwargs)
+  File "D:\Repo\laboralsalud\reportes\views.py", line 259, in post
+    return self.get(*args, **kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\views\generic\base.py", line 155, in get
+    context = self.get_context_data(**kwargs)
+  File "D:\Repo\laboralsalud\reportes\views.py", line 231, in get_context_data
+    ausencias = len(en_mes_anio(m[0],m[1],ausentismos))
+  File "D:\Repo\laboralsalud\reportes\views.py", line 272, in en_mes_anio
+    print ausencias
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\db\models\query.py", line 229, in __repr__
+    return '<%s %r>' % (self.__class__.__name__, data)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\db\models\base.py", line 588, in __repr__
+    u = six.text_type(self)
+  File "D:\Repo\laboralsalud\ausentismos\models.py", line 91, in __unicode__
+    return u'%s - %s (%s)' % (self.pk,self.empleado,self.get_fechas())
+TypeError: 'unicode' object is not callable
+[02/Jan/2020 21:09:52] ERROR [django.server:124] "POST /reportes/reporte_resumen_anual/ HTTP/1.1" 500 129652
+[02/Jan/2020 21:17:15] ERROR [django.request:135] Internal Server Error: /reportes/reporte_resumen_anual/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\views\generic\base.py", line 68, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\utils\decorators.py", line 67, in _wrapper
+    return bound_func(*args, **kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\utils\decorators.py", line 63, in bound_func
+    return func.__get__(self, type(self))(*args2, **kwargs2)
+  File "D:\Repo\laboralsalud\reportes\views.py", line 173, in dispatch
+    return super(ReporteResumenAnual, self).dispatch(*args,**kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\views\generic\base.py", line 88, in dispatch
+    return handler(request, *args, **kwargs)
+  File "D:\Repo\laboralsalud\reportes\views.py", line 261, in post
+    return self.get(*args, **kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\views\generic\base.py", line 155, in get
+    context = self.get_context_data(**kwargs)
+  File "D:\Repo\laboralsalud\reportes\views.py", line 232, in get_context_data
+    listado = lisado.append([m,cant_ausencias])
+NameError: global name 'lisado' is not defined
+[02/Jan/2020 21:17:16] ERROR [django.server:124] "POST /reportes/reporte_resumen_anual/ HTTP/1.1" 500 121464
+[02/Jan/2020 21:17:32] ERROR [django.request:135] Internal Server Error: /reportes/reporte_resumen_anual/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\views\generic\base.py", line 68, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\utils\decorators.py", line 67, in _wrapper
+    return bound_func(*args, **kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\utils\decorators.py", line 63, in bound_func
+    return func.__get__(self, type(self))(*args2, **kwargs2)
+  File "D:\Repo\laboralsalud\reportes\views.py", line 173, in dispatch
+    return super(ReporteResumenAnual, self).dispatch(*args,**kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\views\generic\base.py", line 88, in dispatch
+    return handler(request, *args, **kwargs)
+  File "D:\Repo\laboralsalud\reportes\views.py", line 261, in post
+    return self.get(*args, **kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\views\generic\base.py", line 155, in get
+    context = self.get_context_data(**kwargs)
+  File "D:\Repo\laboralsalud\reportes\views.py", line 232, in get_context_data
+    listado = listado.append([m,cant_ausencias])
+AttributeError: 'NoneType' object has no attribute 'append'
+[02/Jan/2020 21:17:33] ERROR [django.server:124] "POST /reportes/reporte_resumen_anual/ HTTP/1.1" 500 121604
+[02/Jan/2020 21:23:19] ERROR [django.request:135] Internal Server Error: /reportes/reporte_resumen_anual/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\views\generic\base.py", line 68, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\utils\decorators.py", line 67, in _wrapper
+    return bound_func(*args, **kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\utils\decorators.py", line 63, in bound_func
+    return func.__get__(self, type(self))(*args2, **kwargs2)
+  File "D:\Repo\laboralsalud\reportes\views.py", line 173, in dispatch
+    return super(ReporteResumenAnual, self).dispatch(*args,**kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\views\generic\base.py", line 88, in dispatch
+    return handler(request, *args, **kwargs)
+  File "D:\Repo\laboralsalud\reportes\views.py", line 261, in post
+    return self.get(*args, **kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\views\generic\base.py", line 155, in get
+    context = self.get_context_data(**kwargs)
+  File "D:\Repo\laboralsalud\reportes\views.py", line 230, in get_context_data
+    cant_ausencias = (en_mes_anio(m[0],m[1],ausentismos))
+  File "D:\Repo\laboralsalud\reportes\views.py", line 268, in en_mes_anio
+    fdesde = datetime.strptime(d_fmt.format(1, mes, anio), '%d/%m/%Y').date()
+  File "C:\Python27\Lib\_strptime.py", line 325, in _strptime
+    (data_string, format))
+ValueError: time data '01/08/19' does not match format '%d/%m/%Y'
+[02/Jan/2020 21:23:19] ERROR [django.server:124] "POST /reportes/reporte_resumen_anual/ HTTP/1.1" 500 131134
+[02/Jan/2020 21:32:33] ERROR [django.request:135] Internal Server Error: /reportes/reporte_resumen_anual/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\views\generic\base.py", line 68, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\utils\decorators.py", line 67, in _wrapper
+    return bound_func(*args, **kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\utils\decorators.py", line 63, in bound_func
+    return func.__get__(self, type(self))(*args2, **kwargs2)
+  File "D:\Repo\laboralsalud\reportes\views.py", line 173, in dispatch
+    return super(ReporteResumenAnual, self).dispatch(*args,**kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\views\generic\base.py", line 88, in dispatch
+    return handler(request, *args, **kwargs)
+  File "D:\Repo\laboralsalud\reportes\views.py", line 270, in post
+    return self.get(*args, **kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\views\generic\base.py", line 155, in get
+    context = self.get_context_data(**kwargs)
+  File "D:\Repo\laboralsalud\reportes\views.py", line 237, in get_context_data
+    tasa_ausentismo = calcular_tasa_ausentismo(cant_ausencias,dias_laborables,empleados_tot)
+NameError: global name 'cant_ausencias' is not defined
+[02/Jan/2020 21:32:33] ERROR [django.server:124] "POST /reportes/reporte_resumen_anual/ HTTP/1.1" 500 121096
+[02/ene./2020 21:46:03] ERROR [django.request:135] Internal Server Error: /reportes/reporte_resumen_anual/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\views\generic\base.py", line 68, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\utils\decorators.py", line 67, in _wrapper
+    return bound_func(*args, **kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\utils\decorators.py", line 63, in bound_func
+    return func.__get__(self, type(self))(*args2, **kwargs2)
+  File "D:\Repo\laboralsalud\reportes\views.py", line 173, in dispatch
+    return super(ReporteResumenAnual, self).dispatch(*args,**kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\views\generic\base.py", line 88, in dispatch
+    return handler(request, *args, **kwargs)
+  File "D:\Repo\laboralsalud\reportes\views.py", line 278, in post
+    return self.get(*args, **kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\views\generic\base.py", line 155, in get
+    context = self.get_context_data(**kwargs)
+  File "D:\Repo\laboralsalud\reportes\views.py", line 252, in get_context_data
+    listado.append([m,cant_ausencias])
+NameError: global name 'cant_ausencias' is not defined
+[02/ene./2020 21:46:03] ERROR [django.server:124] "POST /reportes/reporte_resumen_anual/ HTTP/1.1" 500 122022
+[02/ene./2020 21:53:56] ERROR [django.request:135] Internal Server Error: /reportes/reporte_resumen_anual/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\views\generic\base.py", line 68, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\utils\decorators.py", line 67, in _wrapper
+    return bound_func(*args, **kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\utils\decorators.py", line 63, in bound_func
+    return func.__get__(self, type(self))(*args2, **kwargs2)
+  File "D:\Repo\laboralsalud\reportes\views.py", line 173, in dispatch
+    return super(ReporteResumenAnual, self).dispatch(*args,**kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\views\generic\base.py", line 88, in dispatch
+    return handler(request, *args, **kwargs)
+  File "D:\Repo\laboralsalud\reportes\views.py", line 273, in post
+    return self.get(*args, **kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\views\generic\base.py", line 155, in get
+    context = self.get_context_data(**kwargs)
+  File "D:\Repo\laboralsalud\reportes\views.py", line 241, in get_context_data
+    inculpables.append(tasa_inclup)
+AttributeError: 'dict' object has no attribute 'append'
+[02/ene./2020 21:53:56] ERROR [django.server:124] "POST /reportes/reporte_resumen_anual/ HTTP/1.1" 500 122418
+[02/Jan/2020 22:41:03] ERROR [django.request:135] Internal Server Error: /reportes/reporte_resumen_anual/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\views\generic\base.py", line 68, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\utils\decorators.py", line 67, in _wrapper
+    return bound_func(*args, **kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\utils\decorators.py", line 63, in bound_func
+    return func.__get__(self, type(self))(*args2, **kwargs2)
+  File "D:\Repo\laboralsalud\reportes\views.py", line 173, in dispatch
+    return super(ReporteResumenAnual, self).dispatch(*args,**kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\views\generic\base.py", line 88, in dispatch
+    return handler(request, *args, **kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\views\generic\base.py", line 155, in get
+    context = self.get_context_data(**kwargs)
+  File "D:\Repo\laboralsalud\reportes\views.py", line 266, in get_context_data
+    context['dias_laborables']=  dias_laborables
+UnboundLocalError: local variable 'dias_laborables' referenced before assignment
+[02/Jan/2020 22:41:04] ERROR [django.server:124] "GET /reportes/reporte_resumen_anual/ HTTP/1.1" 500 109308
+[02/ene./2020 23:05:42] ERROR [django.request:135] Internal Server Error: /reportes/reporte_resumen_anual/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\views\generic\base.py", line 68, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\utils\decorators.py", line 67, in _wrapper
+    return bound_func(*args, **kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\utils\decorators.py", line 63, in bound_func
+    return func.__get__(self, type(self))(*args2, **kwargs2)
+  File "D:\Repo\laboralsalud\reportes\views.py", line 173, in dispatch
+    return super(ReporteResumenAnual, self).dispatch(*args,**kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\views\generic\base.py", line 88, in dispatch
+    return handler(request, *args, **kwargs)
+  File "D:\Repo\laboralsalud\reportes\views.py", line 272, in post
+    return self.get(*args, **kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\views\generic\base.py", line 155, in get
+    context = self.get_context_data(**kwargs)
+  File "D:\Repo\laboralsalud\reportes\views.py", line 250, in get_context_data
+    tasa_acc =  calcular_tasa_ausentismo(ausenc_acc,dias_laborables,empl_tot_acc)
+  File "D:\Repo\laboralsalud\reportes\views.py", line 26, in calcular_tasa_ausentismo
+    tasa_ausentismo = (Decimal(dias_caidos_tot) / Decimal(dias_laborables * empleados_tot))*100
+  File "C:\Python27\Lib\decimal.py", line 1321, in __truediv__
+    return context._raise_error(DivisionUndefined, '0 / 0')
+  File "C:\Python27\Lib\decimal.py", line 3873, in _raise_error
+    raise error(explanation)
+InvalidOperation: 0 / 0
+[02/ene./2020 23:05:43] ERROR [django.server:124] "POST /reportes/reporte_resumen_anual/ HTTP/1.1" 500 135425

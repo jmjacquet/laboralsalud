@@ -138,26 +138,41 @@
 					</div>
 					<div class="row cerca">
 						<div class="col-xs-12">
-									<div id="tab_ausencia">
+									
 										<fieldset>
-											<legend>DATOS DE LA AUSENCIA</legend>
-												<div class="row cerca">
-													<div class="col-sm-2">
-														{{form.aus_control|as_crispy_field}}
+											<legend id='titulo'>DATOS DE LA AUSENCIA</legend>
+												<div id="tab_ausencia">
+													<div class="row cerca">
+														<div class="col-sm-2">
+															{{form.aus_control|as_crispy_field}}
+														</div>														
+														<div class="col-sm-2">
+															{{form.aus_certificado|as_crispy_field}}
+														</div>
+														<div class="col-sm-2">
+															{{form.aus_fcertif|as_crispy_field}}
+														</div>
+														<div class="col-sm-2">
+															{{form.aus_fentrega_certif|as_crispy_field}}
+														</div>													
 													</div>
-													<div class="col-sm-2">
-														{{form.aus_fcontrol|as_crispy_field}}
-													</div>
-													<div class="col-sm-2">
-														{{form.aus_certificado|as_crispy_field}}
-													</div>
-													<div class="col-sm-2">
-														{{form.aus_fcertif|as_crispy_field}}
-													</div>
-													<div class="col-sm-2">
-														{{form.aus_fentrega_certif|as_crispy_field}}
-													</div>													
 												</div>
+												<div id="tab_art">
+													<div class="row cerca">
+														<div class="col-sm-4">
+															{{form.art_tipo_accidente|as_crispy_field}}
+														</div>
+														<div class="col-sm-2">
+															{{form.art_faccidente|as_crispy_field}}
+														</div>
+														<div class="col-sm-2">
+															{{form.art_ndenuncia|as_crispy_field}}
+														</div>
+														<div class="col-sm-2">
+															{{form.art_fdenuncia|as_crispy_field}}
+														</div>																															
+													</div>				
+												</div>				
 												<div class="row cerca">
 													<div class="col-sm-2">
 														{{form.aus_fcrondesde|as_crispy_field}}
@@ -172,8 +187,12 @@
 														{{form.aus_diasjustif|as_crispy_field}}
 													</div>
 													<div class="col-sm-2">
+															{{form.aus_fcontrol|as_crispy_field}}
+													</div>	
+													<div class="col-sm-2">
 														{{form.aus_freintegro|as_crispy_field}}
-													</div>													
+													</div>
+																									
 												</div>
 												<div class="row cerca">
 													<div class="col-sm-2">
@@ -200,70 +219,7 @@
 												    {% endif %}	
 												</div>												
 										</fieldset>
-									</div>
-									<div id="tab_art">
-										<fieldset>
-											<legend>DATOS DE LA ART</legend>
-												<div class="row cerca">
-													<div class="col-sm-4">
-														{{form.art_tipo_accidente|as_crispy_field}}
-													</div>
-													<div class="col-sm-2">
-														{{form.art_ndenuncia|as_crispy_field}}
-													</div>
-													<div class="col-sm-2">
-														{{form.art_fcontrol|as_crispy_field}}
-													</div>
-													<div class="col-sm-2">
-														{{form.art_faccidente|as_crispy_field}}
-													</div>
-													<div class="col-sm-2">
-														{{form.art_fdenuncia|as_crispy_field}}
-													</div>													
-												</div>
-												<div class="row cerca">
-													<div class="col-sm-2">														
-														{{form.art_fcrondesde|as_crispy_field}}
-													</div>
-													<div class="col-sm-2">
-														{{form.art_fcronhasta|as_crispy_field}}
-													</div>
-													<div class="col-sm-2">
-														{{form.art_diascaidos|as_crispy_field}}
-													</div>
-													<div class="col-sm-2">
-														{{form.art_freintegro|as_crispy_field}}
-													</div>
-													<div class="col-sm-2">
-														
-													</div>													
-												</div>
-												<div class="row cerca">
-													<div class="col-sm-2">
-														{{form.art_falta|as_crispy_field}}
-													</div>
-													<div class="col-sm-2">
-														{{form.art_tipo_alta|as_crispy_field}}
-													</div>
-													<div class="col-sm-2">
-														{{form.art_frevision|as_crispy_field}}
-													</div>
-													<div class="col-sm-4">
-														{{form.art_medico|as_crispy_field}}
-													</div>
-													{% if not sitio_mobile %}													
-														<div class="col-sm-1 hidden-xs">						                  
-															<div id="div_id_aus_medico" class="form-group">
-																<label for="id_aus_medico" class="control-label "></label>
-																<div class="controls ">
-																	<a id="nuevoMedicoART" href="{% url 'medico_prof_nuevo' %}" data-modal-head="AGREGAR MÉDICO" class="recargarDatos modal-create" type="button" data-toggle="tooltip" data-modal-callback="recargarM" data-placement="top" title="Agregar Médico"><i class="icon-users"></i></a>
-																</div>
-															</div>
-										                </div>        				
-												    {% endif %}														
-												</div>
-										</fieldset>								
-									</div>							
+											
 						</div>
 					</div>
 					
