@@ -122,8 +122,8 @@ class PrincipalView(VariablesMixin,TemplateView):
         if not fecha2:
             fecha2=hoy()            
            
-        ausentismos = ausentismo.objects.filter(baja=False).filter(Q(aus_fcronhasta__gte=fecha1,tipo_ausentismo=1)|Q(art_fcronhasta__gte=fecha1,tipo_ausentismo__gte=2))
-        fechas_control = ausentismo.objects.filter(baja=False).filter(Q(aus_frevision__gte=fecha1,tipo_ausentismo=1)|Q(art_frevision__gte=fecha1,tipo_ausentismo__gte=2))
+        ausentismos = ausentismo.objects.filter(baja=False).filter(aus_fcronhasta__gte=fecha1)
+        fechas_control = ausentismo.objects.filter(baja=False).filter(aus_frevision__gte=fecha1)
         prox_turnos = turnos.objects.filter(empresa__pk__in=empresas_habilitadas(self.request),fecha__gte=fecha2)
         
         context['form'] = form
