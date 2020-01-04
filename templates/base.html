@@ -97,12 +97,13 @@
 {% endblock %}
 
 {% block content %}{% endblock %} 
+
 {% include "modal/modal.html" %}     
  
 <script type="text/javascript">
     
     $(function() {        
-        // $.fm({debug: false});
+        // $.modal({debug: false});
         $.modal({debug: false});
         {% if messages %}
           {% for message in messages %}                                                

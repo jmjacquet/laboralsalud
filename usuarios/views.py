@@ -83,7 +83,7 @@ class cambiar_password(VariablesMixin,AjaxUpdateView):
     def form_valid(self, form):        
         new_password = form.cleaned_data['password'].replace(" ", "")
         usuario=self.object
-        usuario2=self.request.user.userprofile.id_usuario        
+        usuario2=self.request.user.userprofile.id_usuario                
         if usuario!=usuario2:
             messages.error(self.request, u'No puede modificar la contraseña de otro usuario!')
             return redirect(reverse('principal'))

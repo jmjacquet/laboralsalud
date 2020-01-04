@@ -30,7 +30,7 @@ class ARTView(VariablesMixin,ListView):
 
 class ARTCreateView(VariablesMixin,AjaxCreateView):
     form_class = ARTForm
-    template_name = 'modal/entidades/form_art.html'
+    template_name = 'modal2/entidades/form_art.html'
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs): 

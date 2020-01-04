@@ -90,8 +90,7 @@ class AjaxFormMixin(JSONResponseMixin):
     def get_message_template_html(self):
         return render_to_string(
             self.message_template,
-            self.get_message_template_context(),
-            context_instance=RequestContext(self.request)
+            self.get_message_template_context(),            
         )
 
     def get_response_message(self):
@@ -106,8 +105,7 @@ class AjaxFormMixin(JSONResponseMixin):
     def get_error_result(self, form):
         html = render_to_string(
             self.template_name,
-            self.get_context_data(form=form),
-            context_instance=RequestContext(self.request)
+            self.get_context_data(form=form),            
         )
         return {'status': 'error', 'message': html}
 

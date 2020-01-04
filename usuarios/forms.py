@@ -7,11 +7,11 @@ from itertools import chain
 from django.utils.safestring import mark_safe
       
 class UsuarioCambiarPasswdForm(forms.ModelForm):      
-      password = forms.CharField(widget=forms.PasswordInput(render_value = False,attrs={'autofocus': 'autofocus'}),max_length=20,label='Contraseña Nueva')       
+      password = forms.CharField(widget=forms.PasswordInput(render_value = False),max_length=20,required = True)       
       class Meta:
         model = UsuUsuario  
         exclude = ['baja','nro_doc','empresa','nombre','usuario','email','permisos','empresas','tipoUsr']
-      
+     
 
 class CHKMultiplePermisos(forms.CheckboxSelectMultiple):   
      def __init__(self,usuario=None, *args, **kwargs):        
