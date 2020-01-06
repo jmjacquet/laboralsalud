@@ -532,12 +532,12 @@ class EmpleadoView(VariablesMixin,ListView):
             if 'empleados' in self.request.session:
                 busq = self.request.session["empleados"]
         form = ConsultaEmpleados(busq or None,request=self.request)           
-        empleados = ent_empleado.objects.filter(empresa__pk__in=empresas_habilitadas(self.request)).select_related('empresa','trab_cargo','art')[:1000]         
+        empleados = ent_empleado.objects.filter(empresa__pk__in=empresas_habilitadas(self.request)).select_related('empresa','trab_cargo','art','usuario_carga')[:1000]         
         if form.is_valid():                                                        
             empresa = form.cleaned_data['empresa']                                       
             estado = form.cleaned_data['estado']
             art = form.cleaned_data['art']
-            empleados = ent_empleado.objects.filter(empresa__pk__in=empresas_habilitadas(self.request)).select_related('empresa','trab_cargo','art')                                   
+            empleados = ent_empleado.objects.filter(empresas__pk__in=empresas_habilitadas(self.request)).select_related('empresa','trab_cargo','art','usuario_carga')                                   
           
             if int(estado) == 0:  
                 empleados = empleados.filter(baja=False)
@@ -716,12 +716,12 @@ def importar_empleados(request):
                         fecha_ingr=None
                     else:
                         fecha_ingr = datetime.datetime.strptime(fecha, "%d/%m/%Y").date()   #FECHA_INGR             
-                    art = campos[12].strip().upper() #ART               
+                    art = campos[12].strip().upper().replace(",", "").replace(".", "") #ART               
                     if art=='':
                         art=None
                     else:
                         art = ent_art.objects.get_or_create(nombre=art)[0]                             
-                    puesto = campos[13].strip().upper() #Puesto               
+                    puesto = campos[13].strip().upper().replace(",", "").replace(".", "") #Puesto               
                     if puesto=='':
                         puesto=None
                     else:

@@ -151,3 +151,22 @@ class ConsultaAusentismos(forms.Form):
 		request = kwargs.pop('request', None) 
 		super(ConsultaAusentismos, self).__init__(*args, **kwargs)			
 		self.fields['empresa'].queryset = ent_empresa.objects.filter(baja=False,pk__in=empresas_habilitadas(request))
+
+
+class ImportarAusentismosForm(forms.Form):
+	empresa = forms.ModelChoiceField(label='Empresa',queryset=ent_empresa.objects.filter(baja=False),empty_label='----',required=True)
+	archivo = forms.FileField(label='Seleccione un archivo',required=True)  
+	sobreescribir = forms.ChoiceField(label=u'',choices=SINO,required=True,initial='N')
+	def __init__(self, *args, **kwargs):		
+		request = kwargs.pop('request', None) 
+		super(ImportarAusentismosForm, self).__init__(*args, **kwargs)					
+		self.fields['empresa'].queryset = ent_empresa.objects.filter(baja=False,pk__in=empresas_habilitadas(request))
+
+	def clean(self):
+		archivo = self.cleaned_data.get('archivo')        
+		if not archivo.name.endswith('.csv'):
+			self.add_error("archivo",u'¡El archivo debe tener extensión .CSV!')            
+		#if file is too large, return
+		if archivo.multiple_chunks():
+			self.add_error("archivo",u"El archivo es demasiado grande (%.2f MB)." % (archivo.size/(1000*1000),))
+		return self.cleaned_data		

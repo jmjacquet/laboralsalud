@@ -81,7 +81,7 @@ class AusentismoView(VariablesMixin,ListView):
         else:
             self.request.session["ausentismos"] = None        
         context['form'] = form
-        context['ausentismos'] = ausentismos.select_related('empleado','empleado__empresa','aus_grupop','aus_diagn')
+        context['ausentismos'] = ausentismos.select_related('empleado','empleado__empresa','aus_grupop','aus_diagn','usuario_carga')
         return context
 
     def post(self, *args, **kwargs):
@@ -406,133 +406,191 @@ def diagnostico_baja_alta(request,id):
 
 
 import csv, io
-   
+from .forms import ImportarAusentismosForm   
+from general.views import getVariablesMixin
 import datetime
+import random
+@login_required 
 def ausencias_importar(request):
-    data = {}    
-   
-    if request.method == 'POST':  
-        csv_file = request.FILES["archivo"]
-        #tabla = request.POST['username']     
-        if not csv_file.name.endswith('.csv'):
-            messages.error(request,'File is not CSV type')
-            return HttpResponseRedirect(reverse("ausencias_importar"))
-        #if file is too large, return
-        if csv_file.multiple_chunks():
-            messages.error(request,"Uploaded file is too big (%.2f MB)." % (csv_file.size/(1000*1000),))
-            return HttpResponseRedirect(reverse("ausencias_importar"))
+    context = {}
+    context = getVariablesMixin(request) 
+    if request.method == 'POST':
+        form = ImportarAusentismosForm(request.POST,request.FILES,request=request)
+        if form.is_valid(): 
+            csv_file = form.cleaned_data['archivo']
+            empresa = form.cleaned_data['empresa']
+            sobreescribir = form.cleaned_data['sobreescribir'] == 'S'
+            
+            if not csv_file.name.endswith('.csv'):
+                messages.error(request,'¡El archivo debe tener extensión .CSV!')
+                return HttpResponseRedirect(reverse("importar_empleados"))
+            
+            if csv_file.multiple_chunks():
+                messages.error(request,"El archivo es demasiado grande (%.2f MB)." % (csv_file.size/(1000*1000),))
+                return HttpResponseRedirect(reverse("importar_empleados"))
 
-        file_data = csv_file.read().decode("utf8", "ignore")
+            decoded_file = csv_file.read().decode("utf8", "ignore").replace(",", "").replace("'", "")
+            io_string = io.StringIO(decoded_file)
+            reader = csv.reader(io_string)            
+            
+            # DNI;TIPO_AUSENCIA;aus_control;aus_fcontrol;aus_certificado;aus_fcertif;aus_fentrega_certif;aus_fcrondesde;aus_fcronhasta;aus_diascaidos;
+            # aus_diasjustif;aus_freintegro;aus_falta;TIPO_ALTA;aus_frevision;aus_medico;aus_grupop;aus_diagn;TIPO_ACCIDENTE;art_ndenuncia;art_faccidente;
+            # art_fdenuncia;observaciones;descr_altaparc;detalle_acc_art;estudios_partic;estudios_art;recalificac_art
+            cant=0
+            # try:
+            next(reader) #Omito el Encabezado                            
+            for index,line in enumerate(reader):                      
+              
+                campos = line[0].split(";")                  
+               
+                dni = campos[0].strip()                
+                if dni=='':
+                    continue #Salta al siguiente                          
 
-        lines = file_data.split("\n")
-        cant = len(lines)
+                try:
+                    empl = ent_empleado.objects.get(nro_doc=dni)
+                except:
+                    continue
+                if (empl.empresa==empresa) and not sobreescribir:
+                    continue
+                
+                tipoa = campos[1].strip()                       
+                if tipoa=='':
+                    tipoa = None
+                else:
+                    ta=dict(TIPO_AUSENCIA)        
+                    tipoa = [k for k, v in ta.items() if v.upper() == tipoa.upper()][0]
+
+                if (campos[2].strip().upper() == 'SI'): 
+                    aus_control = 'S' 
+                else: 
+                    aus_control = 'N'
+                 
+                if campos[3].strip()=='':
+                    aus_fcontrol = None
+                else:
+                    aus_fcontrol = datetime.datetime.strptime(campos[3], "%d/%m/%Y").date()                
+
+                if (campos[4].strip().upper() == 'SI'): 
+                    aus_certificado = 'S' 
+                else: 
+                    aus_certificado = 'N'
+
+                if campos[5]=='':
+                    aus_fcertif = None
+                else:
+                    aus_fcertif = datetime.datetime.strptime(campos[5], "%d/%m/%Y").date()                
+                if campos[6]=='':
+                    aus_fentrega_certif = None
+                else:
+                    aus_fentrega_certif = datetime.datetime.strptime(campos[6], "%d/%m/%Y").date()                
+                
+                if campos[7]=='':
+                    aus_fcrondesde = None
+                else:
+                    aus_fcrondesde = datetime.datetime.strptime(campos[7], "%d/%m/%Y").date()                
+                if campos[8]=='':
+                    aus_fcronhasta = None
+                else:
+                    aus_fcronhasta = datetime.datetime.strptime(campos[8], "%d/%m/%Y").date()                
+                
+                if campos[9]=='':
+                    aus_diascaidos = None
+                else:
+                    aus_diascaidos = campos[9].strip()
+                
+                if campos[10]=='':
+                    aus_diasjustif = None
+                else:
+                    aus_diasjustif = campos[10].strip()
+                
+                if campos[11]=='':
+                    aus_freintegro = None
+                else:
+                    aus_freintegro = datetime.datetime.strptime(campos[11], "%d/%m/%Y").date()                
+                
+                if campos[12]=='':
+                    aus_falta = None
+                else:
+                    aus_falta = datetime.datetime.strptime(campos[12], "%d/%m/%Y").date()                
+                
+                austa = campos[13].strip()
+                if austa=='':
+                    aus_tipo_alta = None
+                else:
+                    aus_tipo_alta=dict(TIPO_ALTA)        
+                    aus_tipo_alta = [k for k, v in aus_tipo_alta.items() if v.upper() == austa.upper()][0]
+
+                if campos[14]=='':
+                    aus_frevision = None
+                else:
+                    aus_frevision = datetime.datetime.strptime(campos[14], "%d/%m/%Y").date()                
+
+                aus_medico = campos[15].strip().upper()
+              
+                if aus_medico=='':
+                    aus_medico=None
+                else:
+                    aus_medico = ent_medico_prof.objects.get_or_create(apellido_y_nombre=aus_medico)[0]                           
+
+                aus_grupop = campos[16].strip().upper()
+                if aus_grupop=='':
+                    aus_grupop=None
+                else:
+                    aus_grupop = aus_patologia.objects.get_or_create(patologia=aus_grupop)[0]       
+
+                aus_diagn = campos[17].strip().upper()
+                if aus_diagn=='':
+                    aus_diagn=None
+                else:
+                    aus_diagn = aus_diagnostico.objects.get_or_create(diagnostico=aus_diagn)[0]              
+
+                tacc = campos[18].strip()
+                if tacc=='':
+                    art_tipo_accidente = None
+                else:
+                    art_tipo_accidente=dict(TIPO_ACCIDENTE)        
+                    art_tipo_accidente = [k for k, v in art_tipo_accidente.items() if v.upper() == tacc.upper()][0]
+
+                if campos[19]=='':
+                    art_ndenuncia = None
+                else:
+                    art_ndenuncia = campos[19].strip()
+
+                if campos[20]=='':
+                    art_faccidente = None
+                else:
+                    art_faccidente = datetime.datetime.strptime(campos[20], "%d/%m/%Y").date()                
+
+                if campos[21]=='':
+                    art_fdenuncia = None
+                else:
+                    art_fdenuncia = datetime.datetime.strptime(campos[21], "%d/%m/%Y").date()    
+                
+                
+               
+                observaciones = campos[22].strip()                
+                descr_altaparc = campos[23].strip()                
+                detalle_acc_art = campos[24].strip()                
+                estudios_partic = campos[25].strip()                
+                estudios_art =campos[26].strip()                
+                recalificac_art =campos[27].strip()                
+
         
-        for index,line in enumerate(lines):                      
-            campos = line.split(";")
-            legajo = campos[0].strip()                
-            dni = campos[1].strip()                
-            empleado = ent_empleado.objects.get(nro_doc=dni)
-
-            if campos[2]=='':
-                fecha_creacion = None
-            else:
-                fecha_creacion = datetime.datetime.strptime(campos[2], "%d/%m/%Y").date()                
-            
-            tipoa = campos[3].strip()                       
-            if tipoa=='':
-                tipoa = None
-            else:
-                ta=dict(TIPO_AUSENCIA)        
-                tipoa = [k for k, v in ta.items() if v == tipoa][0]
-
-            if (campos[4].strip() == 'Si'): 
-                aus_control = 'S' 
-            else: 
-                aus_control = 'N'
-             
-            if campos[5]=='':
-                aus_fcontrol = None
-            else:
-                aus_fcontrol = datetime.datetime.strptime(campos[5], "%d/%m/%Y").date()                
-            if (campos[6].strip() == 'Si'): 
-                aus_certificado = 'S' 
-            else: 
-                aus_certificado = 'N'
-
-            if campos[7]=='':
-                aus_fcertif = None
-            else:
-                aus_fcertif = datetime.datetime.strptime(campos[7], "%d/%m/%Y").date()                
-            if campos[8]=='':
-                aus_fentrega_certif = None
-            else:
-                aus_fentrega_certif = datetime.datetime.strptime(campos[8], "%d/%m/%Y").date()                
-            
-            if campos[9]=='':
-                aus_fcrondesde = None
-            else:
-                aus_fcrondesde = datetime.datetime.strptime(campos[9], "%d/%m/%Y").date()                
-            if campos[10]=='':
-                aus_fcronhasta = None
-            else:
-                aus_fcronhasta = datetime.datetime.strptime(campos[10], "%d/%m/%Y").date()                
-            aus_diascaidos = campos[11].strip()
-            if campos[11]=='':
-                aus_diascaidos = None
-            aus_diasjustif = campos[12].strip()
-            if campos[12]=='':
-                aus_diasjustif = None
-            if campos[13]=='':
-                aus_freintegro = None
-            else:
-                aus_freintegro = datetime.datetime.strptime(campos[13], "%d/%m/%Y").date()                
-            
-            if campos[14]=='':
-                aus_falta = None
-            else:
-                aus_falta = datetime.datetime.strptime(campos[14], "%d/%m/%Y").date()                
-            
-            austa = campos[15].strip()
-            if austa=='':
-                aus_tipo_alta = None
-            else:
-                aus_tipo_alta=dict(TIPO_ALTA)        
-                aus_tipo_alta = [k for k, v in aus_tipo_alta.items() if v == austa][0]
-
-            if campos[16]=='':
-                aus_frevision = None
-            else:
-                aus_frevision = datetime.datetime.strptime(campos[16], "%d/%m/%Y").date()                
-
-            aus_medico = campos[17].strip().upper()
-            if aus_medico=='':
-                aus_medico=None
-            else:
-                aus_medico = ent_medico_prof.objects.get_or_create(apellido_y_nombre=aus_medico)[0]                           
-
-            aus_grupop = campos[18].strip().upper()
-            if aus_grupop=='':
-                aus_grupop=None
-            else:
-                aus_grupop = aus_patologia.objects.get_or_create(patologia=aus_grupop)[0]       
-
-            aus_diagn = campos[19].strip().upper()
-            if aus_diagn=='':
-                aus_diagn=None
-            else:
-                aus_diagn = aus_diagnostico.objects.get_or_create(diagnostico=aus_diagn)[0]              
-
-                   
-            observaciones = campos[20].strip()                
-            descr_altaparc = campos[21].strip()                
-            
-            try:
-               ausentismo.objects.update_or_create(empleado=empleado,tipo_ausentismo=tipoa,aus_control=aus_control,aus_fcontrol=aus_fcontrol,aus_certificado=aus_certificado,
-                aus_fcertif=aus_fcertif,aus_fentrega_certif=aus_fentrega_certif,aus_fcrondesde=aus_fcrondesde,aus_fcronhasta=aus_fcronhasta,aus_diascaidos=aus_diascaidos,
-                aus_diasjustif=aus_diasjustif,aus_freintegro=aus_freintegro,aus_falta=aus_falta,aus_tipo_alta=aus_tipo_alta,aus_frevision=aus_frevision,aus_medico=aus_medico,
-                aus_grupop=aus_grupop,aus_diagn=aus_diagn,observaciones=observaciones,descr_altaparc=descr_altaparc)                                                         
-            except Exception as e:
-                print e
-                print dni                            
-
-    return render(request, 'general/importar.html')
+                try:
+                   ausentismo.objects.update_or_create(empleado=empl,tipo_ausentismo=tipoa,aus_control=aus_control,aus_fcontrol=aus_fcontrol,aus_certificado=aus_certificado,
+                    aus_fcertif=aus_fcertif,aus_fentrega_certif=aus_fentrega_certif,aus_fcrondesde=aus_fcrondesde,aus_fcronhasta=aus_fcronhasta,aus_diascaidos=aus_diascaidos,
+                    aus_diasjustif=aus_diasjustif,aus_freintegro=aus_freintegro,aus_falta=aus_falta,aus_tipo_alta=aus_tipo_alta,aus_frevision=aus_frevision,aus_medico=aus_medico,
+                    aus_grupop=aus_grupop,aus_diagn=aus_diagn,art_tipo_accidente=art_tipo_accidente,art_ndenuncia=art_ndenuncia,art_faccidente=art_faccidente,art_fdenuncia=art_fdenuncia,
+                    observaciones=observaciones,descr_altaparc=descr_altaparc,detalle_acc_art=detalle_acc_art,estudios_partic=estudios_partic,estudios_art=estudios_art,
+                    recalificac_art=recalificac_art)                                                         
+                except Exception as e:
+                   error = u"Línea:%s -> %s" %(index,e)
+                   messages.error(request,error)                                
+            messages.success(request, u'Se importó el archivo con éxito!<br>(%s ausentismos creados/actualizados)'% cant )
+            # except Exception as e:
+            #     messages.error(request,u'Línea:%s -> %s' %(index,e))                        
+    else:
+        form = ImportarAusentismosForm(None,None,request=request)
+    context['form'] = form    
+    return render(request, 'ausentismos/importar_ausentismos.html',context)

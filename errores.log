@@ -724,3 +724,390 @@ Traceback (most recent call last):
     raise error(explanation)
 InvalidOperation: 0 / 0
 [02/ene./2020 23:05:43] ERROR [django.server:124] "POST /reportes/reporte_resumen_anual/ HTTP/1.1" 500 135425
+[04/Jan/2020 17:20:06] ERROR [django.request:135] Internal Server Error: /entidades/empleado/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\views\generic\base.py", line 68, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\utils\decorators.py", line 67, in _wrapper
+    return bound_func(*args, **kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\utils\decorators.py", line 63, in bound_func
+    return func.__get__(self, type(self))(*args2, **kwargs2)
+  File "D:\Repo\laboralsalud\entidades\views.py", line 524, in dispatch
+    return super(EmpleadoView, self).dispatch(*args, **kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\views\generic\base.py", line 88, in dispatch
+    return handler(request, *args, **kwargs)
+  File "D:\Repo\laboralsalud\entidades\views.py", line 561, in post
+    return self.get(*args, **kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\views\generic\list.py", line 174, in get
+    context = self.get_context_data()
+  File "D:\Repo\laboralsalud\entidades\views.py", line 540, in get_context_data
+    empleados = ent_empleado.objects.filter(empresasss__pk__in=empresas_habilitadas(self.request)).select_related('empresa','trab_cargo','art')
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\db\models\manager.py", line 85, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\db\models\query.py", line 781, in filter
+    return self._filter_or_exclude(False, *args, **kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\db\models\query.py", line 799, in _filter_or_exclude
+    clone.query.add_q(Q(*args, **kwargs))
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\db\models\sql\query.py", line 1260, in add_q
+    clause, _ = self._add_q(q_object, self.used_aliases)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\db\models\sql\query.py", line 1286, in _add_q
+    allow_joins=allow_joins, split_subq=split_subq,
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\db\models\sql\query.py", line 1164, in build_filter
+    lookups, parts, reffed_expression = self.solve_lookup_type(arg)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\db\models\sql\query.py", line 1044, in solve_lookup_type
+    _, field, _, lookup_parts = self.names_to_path(lookup_splitted, self.get_meta())
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\db\models\sql\query.py", line 1362, in names_to_path
+    "Choices are: %s" % (name, ", ".join(available)))
+FieldError: Cannot resolve keyword 'empresasss' into field. Choices are: apellido_y_nombre, art, art_id, aus_empleado, baja, celular, cod_postal, domicilio, email, empr_fingreso, empresa, empresa_id, fecha_creacion, fecha_modif, fecha_nac, id, legajo, localidad, nro_doc, observaciones, provincia, telefono, trab_accidentes, trab_antecedentes, trab_anteriores, trab_armas, trab_cargo, trab_cargo_id, trab_factores_riesgo, trab_fbaja, trab_fingreso, trab_preocup_conclus, trab_preocup_fecha, trab_preocupac, trab_tareas_dif, trab_tareas_dif_det, trab_vacunas, turno_empleado, usuario_carga, usuario_carga_id
+[04/Jan/2020 17:20:07] ERROR [django.server:124] "POST /entidades/empleado/ HTTP/1.1" 500 161045
+[04/Jan/2020 17:21:50] ERROR [django.request:135] Internal Server Error: /entidades/empleado/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\views\generic\base.py", line 68, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\utils\decorators.py", line 67, in _wrapper
+    return bound_func(*args, **kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\utils\decorators.py", line 63, in bound_func
+    return func.__get__(self, type(self))(*args2, **kwargs2)
+  File "D:\Repo\laboralsalud\entidades\views.py", line 524, in dispatch
+    return super(EmpleadoView, self).dispatch(*args, **kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\views\generic\base.py", line 88, in dispatch
+    return handler(request, *args, **kwargs)
+  File "D:\Repo\laboralsalud\entidades\views.py", line 561, in post
+    return self.get(*args, **kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\views\generic\list.py", line 174, in get
+    context = self.get_context_data()
+  File "D:\Repo\laboralsalud\entidades\views.py", line 540, in get_context_data
+    empleados = ent_empleado.objects.filter(empresasss__pk__in=empresas_habilitadas(self.request)).select_related('empresa','trab_cargo','art')
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\db\models\manager.py", line 85, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\db\models\query.py", line 781, in filter
+    return self._filter_or_exclude(False, *args, **kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\db\models\query.py", line 799, in _filter_or_exclude
+    clone.query.add_q(Q(*args, **kwargs))
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\db\models\sql\query.py", line 1260, in add_q
+    clause, _ = self._add_q(q_object, self.used_aliases)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\db\models\sql\query.py", line 1286, in _add_q
+    allow_joins=allow_joins, split_subq=split_subq,
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\db\models\sql\query.py", line 1164, in build_filter
+    lookups, parts, reffed_expression = self.solve_lookup_type(arg)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\db\models\sql\query.py", line 1044, in solve_lookup_type
+    _, field, _, lookup_parts = self.names_to_path(lookup_splitted, self.get_meta())
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\db\models\sql\query.py", line 1362, in names_to_path
+    "Choices are: %s" % (name, ", ".join(available)))
+FieldError: Cannot resolve keyword 'empresasss' into field. Choices are: apellido_y_nombre, art, art_id, aus_empleado, baja, celular, cod_postal, domicilio, email, empr_fingreso, empresa, empresa_id, fecha_creacion, fecha_modif, fecha_nac, id, legajo, localidad, nro_doc, observaciones, provincia, telefono, trab_accidentes, trab_antecedentes, trab_anteriores, trab_armas, trab_cargo, trab_cargo_id, trab_factores_riesgo, trab_fbaja, trab_fingreso, trab_preocup_conclus, trab_preocup_fecha, trab_preocupac, trab_tareas_dif, trab_tareas_dif_det, trab_vacunas, turno_empleado, usuario_carga, usuario_carga_id
+[04/Jan/2020 18:27:26] ERROR [django.request:135] Internal Server Error: /ausentismos/ausencias_importar/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "D:\Repo\laboralsalud\ausentismos\views.py", line 587, in ausencias_importar
+    form = ImportarEmpleadosForm(None,None,request=request)
+NameError: global name 'ImportarEmpleadosForm' is not defined
+[04/Jan/2020 18:27:27] ERROR [django.server:124] "GET /ausentismos/ausencias_importar/ HTTP/1.1" 500 89602
+[04/Jan/2020 18:27:44] ERROR [django.request:135] Internal Server Error: /ausentismos/ausencias_importar/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "D:\Repo\laboralsalud\ausentismos\views.py", line 587, in ausencias_importar
+    form = ImportarAusentismosForm(None,None,request=request)
+  File "D:\Repo\laboralsalud\ausentismos\forms.py", line 162, in __init__
+    super(ImportarEmpleadosForm, self).__init__(*args, **kwargs)
+NameError: global name 'ImportarEmpleadosForm' is not defined
+[04/Jan/2020 18:27:45] ERROR [django.server:124] "GET /ausentismos/ausencias_importar/ HTTP/1.1" 500 94233
+[04/Jan/2020 18:35:20] ERROR [django.request:135] Internal Server Error: /ausentismos/ausencias_importar/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "D:\Repo\laboralsalud\ausentismos\views.py", line 476, in ausencias_importar
+    aus_fcertif = datetime.datetime.strptime(campos[5], "%d/%m/%Y").date()
+AttributeError: type object 'datetime.datetime' has no attribute 'datetime'
+[04/Jan/2020 18:35:21] ERROR [django.server:124] "POST /ausentismos/ausencias_importar/ HTTP/1.1" 500 109914
+[04/Jan/2020 18:40:45] ERROR [django.request:135] Internal Server Error: /ausentismos/ausencias_importar/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "D:\Repo\laboralsalud\ausentismos\views.py", line 530, in ausencias_importar
+    aus_grupop = campos[16].strip().upper()
+IndexError: list index out of range
+[04/Jan/2020 18:40:46] ERROR [django.server:124] "POST /ausentismos/ausencias_importar/ HTTP/1.1" 500 105171
+[04/Jan/2020 18:48:47] ERROR [django.request:135] Internal Server Error: /ausentismos/ausencias_importar/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "D:\Repo\laboralsalud\ausentismos\views.py", line 530, in ausencias_importar
+    aus_grupop = campos[16].strip().upper().replace(",", "").replace(".", "")
+IndexError: list index out of range
+[04/Jan/2020 18:48:49] ERROR [django.server:124] "POST /ausentismos/ausencias_importar/ HTTP/1.1" 500 110875
+[04/Jan/2020 18:50:13] ERROR [django.request:135] Internal Server Error: /ausentismos/ausencias_importar/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "D:\Repo\laboralsalud\ausentismos\views.py", line 532, in ausencias_importar
+    aus_grupop = campos[16].strip().upper().replace(",", "").replace(".", "")
+IndexError: list index out of range
+[04/Jan/2020 18:50:15] ERROR [django.server:124] "POST /ausentismos/ausencias_importar/ HTTP/1.1" 500 110810
+[04/Jan/2020 18:50:40] ERROR [django.request:135] Internal Server Error: /ausentismos/ausencias_importar/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "D:\Repo\laboralsalud\ausentismos\views.py", line 532, in ausencias_importar
+    aus_grupop = campos[16].strip().upper().replace(",", "").replace(".", "")
+IndexError: list index out of range
+[04/Jan/2020 18:50:41] ERROR [django.server:124] "POST /ausentismos/ausencias_importar/ HTTP/1.1" 500 110810
+[04/Jan/2020 18:53:59] ERROR [django.request:135] Internal Server Error: /ausentismos/ausencias_importar/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "D:\Repo\laboralsalud\ausentismos\views.py", line 434, in ausencias_importar
+    reader = csv.reader(io_string).replace(",", "")
+AttributeError: '_csv.reader' object has no attribute 'replace'
+[04/Jan/2020 18:54:00] ERROR [django.server:124] "POST /ausentismos/ausencias_importar/ HTTP/1.1" 500 102957
+[04/Jan/2020 18:54:16] ERROR [django.request:135] Internal Server Error: /ausentismos/ausencias_importar/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "D:\Repo\laboralsalud\ausentismos\views.py", line 433, in ausencias_importar
+    io_string = io.StringIO(decoded_file).replace(",", "")
+AttributeError: '_io.StringIO' object has no attribute 'replace'
+[04/Jan/2020 18:54:17] ERROR [django.server:124] "POST /ausentismos/ausencias_importar/ HTTP/1.1" 500 102825
+[04/Jan/2020 18:54:36] ERROR [django.request:135] Internal Server Error: /ausentismos/ausencias_importar/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "D:\Repo\laboralsalud\ausentismos\views.py", line 433, in ausencias_importar
+    io_string = io.StringIO(decoded_file).replace(",", "")
+AttributeError: '_io.StringIO' object has no attribute 'replace'
+[04/Jan/2020 18:54:37] ERROR [django.server:124] "POST /ausentismos/ausencias_importar/ HTTP/1.1" 500 102827
+[04/Jan/2020 18:54:52] ERROR [django.request:135] Internal Server Error: /ausentismos/ausencias_importar/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "D:\Repo\laboralsalud\ausentismos\views.py", line 532, in ausencias_importar
+    aus_grupop = campos[16].strip().upper()
+IndexError: list index out of range
+[04/Jan/2020 18:54:53] ERROR [django.server:124] "POST /ausentismos/ausencias_importar/ HTTP/1.1" 500 110588
+[04/Jan/2020 18:55:31] ERROR [django.request:135] Internal Server Error: /ausentismos/ausencias_importar/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "D:\Repo\laboralsalud\ausentismos\views.py", line 532, in ausencias_importar
+    aus_grupop = campos[16].strip().upper()
+IndexError: list index out of range
+[04/Jan/2020 18:55:33] ERROR [django.server:124] "POST /ausentismos/ausencias_importar/ HTTP/1.1" 500 110593
+[04/Jan/2020 18:56:50] ERROR [django.request:135] Internal Server Error: /ausentismos/ausencias_importar/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "D:\Repo\laboralsalud\ausentismos\views.py", line 569, in ausencias_importar
+    descr_altaparc = campos[23].strip()
+IndexError: list index out of range
+[04/Jan/2020 18:56:51] ERROR [django.server:124] "POST /ausentismos/ausencias_importar/ HTTP/1.1" 500 105463
+[04/Jan/2020 19:00:36] ERROR [django.request:135] Internal Server Error: /ausentismos/ausencias_importar/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "D:\Repo\laboralsalud\ausentismos\views.py", line 569, in ausencias_importar
+    descr_altaparc = campos[23].strip()
+IndexError: list index out of range
+[04/Jan/2020 19:00:38] ERROR [django.server:124] "POST /ausentismos/ausencias_importar/ HTTP/1.1" 500 110872
+[04/Jan/2020 19:01:44] ERROR [django.request:135] Internal Server Error: /ausentismos/ausencias_importar/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "D:\Repo\laboralsalud\ausentismos\views.py", line 443, in ausencias_importar
+    line.replace(",", "").replace("'", "")
+AttributeError: 'list' object has no attribute 'replace'
+[04/Jan/2020 19:01:45] ERROR [django.server:124] "POST /ausentismos/ausencias_importar/ HTTP/1.1" 500 104346
+[04/Jan/2020 19:02:42] ERROR [django.request:135] Internal Server Error: /ausentismos/ausencias_importar/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "D:\Repo\laboralsalud\ausentismos\views.py", line 512, in ausencias_importar
+    aus_falta = datetime.datetime.strptime(campos[12], "%d/%m/%Y").date()
+  File "C:\Python27\Lib\_strptime.py", line 325, in _strptime
+    (data_string, format))
+ValueError: time data '26/22' does not match format '%d/%m/%Y'
+[04/Jan/2020 19:02:44] ERROR [django.server:124] "POST /ausentismos/ausencias_importar/ HTTP/1.1" 500 124278
+[04/Jan/2020 19:03:57] ERROR [django.request:135] Internal Server Error: /ausentismos/ausencias_importar/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "D:\Repo\laboralsalud\ausentismos\views.py", line 512, in ausencias_importar
+    aus_falta = datetime.datetime.strptime(campos[12], "%d/%m/%Y").date()
+  File "C:\Python27\Lib\_strptime.py", line 325, in _strptime
+    (data_string, format))
+ValueError: time data '26/22' does not match format '%d/%m/%Y'
+[04/Jan/2020 19:03:59] ERROR [django.server:124] "POST /ausentismos/ausencias_importar/ HTTP/1.1" 500 124276
+[04/Jan/2020 19:04:21] ERROR [django.request:135] Internal Server Error: /ausentismos/ausencias_importar/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "D:\Repo\laboralsalud\ausentismos\views.py", line 512, in ausencias_importar
+    aus_falta = datetime.datetime.strptime(campos[12], "%d/%m/%Y").date()
+  File "C:\Python27\Lib\_strptime.py", line 325, in _strptime
+    (data_string, format))
+ValueError: time data '26/22' does not match format '%d/%m/%Y'
+[04/Jan/2020 19:04:23] ERROR [django.server:124] "POST /ausentismos/ausencias_importar/ HTTP/1.1" 500 124277

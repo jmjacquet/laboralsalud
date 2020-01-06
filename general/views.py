@@ -277,7 +277,7 @@ class TurnosView(VariablesMixin,ListView):
                 listado= listado.filter(estado=estado)            
                 
         context['form'] = form        
-        context['turnos'] = listado
+        context['turnos'] = listado.select_related('empleado','empresa','usuario_carga')
 
 
 

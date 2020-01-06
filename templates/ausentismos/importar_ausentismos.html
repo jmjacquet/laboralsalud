@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% load static from staticfiles %}
+{% load i18n l10n %}
+{% load humanize %}
+{% load bootstrap3 %}
+{% load crispy_forms_tags %}
+
+{% block breadcrumbs %}              
+        <div class="breadcrumbs">
+           IMPORTAR/AGREGAR AUSENTISMOS
+        </div>
+{% endblock breadcrumbs %}
+
+{% block principal %}                            
+<br>
+
+<div class="panel panel-body panel-primary panel_centrado">
+<div class="row">	
+ 	<div class="col-xs-12 ">
+	<fieldset>		
+		<form method="post" class="form " enctype="multipart/form-data">
+		{% csrf_token %}
+		<div class="row">	
+			<div class="col-xs-12 ">
+				<div class="col-sm-6">{{ form.empresa|as_crispy_field }}</div>
+				<div class="col-sm-6">{{ form.archivo|as_crispy_field }}</div>			
+			</div>
+	    </div>
+	    <div class="row">	
+			<div class="col-xs-12 ">
+				<div class="col-sm-6">
+		            <div class="callout callout-primary alert alert-info" role="alert">
+		             <a href="{{MEDIA_URL}}PLANTILLA_AUSENTISMOS.csv"class="alert-link" target="_blank">Descargar aquí</a>
+		              la plantilla de ejemplo, completar e importar (csv).
+		            </div>
+	            </div>
+				<div class="col-sm-3 text-right cerca"><label>¿Sobreescribir existentes?</label></div><div class="col-sm-1 cerca">{{ form.sobreescribir|as_crispy_field }}</div>
+				<div class="col-sm-2"><button class="btn pull-right btn-primary" id="Guardar" type="submit"><i class="fa fa-check"></i> Importar</button></div>
+			</div>
+		</div>
+	</fieldset>
+ </div>
+</div> 
+</div> 
+
+
+  
+{% endblock principal %}
+
+
+
+
+
