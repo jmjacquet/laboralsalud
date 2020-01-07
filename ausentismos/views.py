@@ -61,10 +61,8 @@ class AusentismoView(VariablesMixin,ListView):
             elif int(estado) == 2:  
                 ausentismos = ausentismos.filter(aus_fcronhasta__lt=hoy())
             elif int(estado) == 0: 
-                if fdesde:                
-                    ausentismos = ausentismos.filter(aus_fcrondesde__gte=fdesde)
-                if fhasta:                
-                    ausentismos = ausentismos.filter(aus_fcronhasta__lte=fhasta)
+                ausentismos = ausentismos.filter(Q(aus_fcrondesde__range=[fdesde,fhasta])|Q(aus_fcronhasta__range=[fdesde,fhasta])
+                |Q(aus_fcrondesde__lt=fdesde,aus_fcronhasta__gt=fhasta)) 
             if empresa:
                 ausentismos= ausentismos.filter(empleado__empresa=empresa)            
             if empleado:
@@ -450,6 +448,7 @@ def ausencias_importar(request):
                 try:
                     empl = ent_empleado.objects.get(nro_doc=dni)
                 except:
+                    messages.error(request,u'Empleado no existente! (%s)'%dni)   
                     continue
                 if (empl.empresa==empresa) and not sobreescribir:
                     continue
@@ -584,9 +583,11 @@ def ausencias_importar(request):
                     aus_grupop=aus_grupop,aus_diagn=aus_diagn,art_tipo_accidente=art_tipo_accidente,art_ndenuncia=art_ndenuncia,art_faccidente=art_faccidente,art_fdenuncia=art_fdenuncia,
                     observaciones=observaciones,descr_altaparc=descr_altaparc,detalle_acc_art=detalle_acc_art,estudios_partic=estudios_partic,estudios_art=estudios_art,
                     recalificac_art=recalificac_art)                                                         
+                   cant+=1
                 except Exception as e:
                    error = u"Línea:%s -> %s" %(index,e)
                    messages.error(request,error)                                
+            
             messages.success(request, u'Se importó el archivo con éxito!<br>(%s ausentismos creados/actualizados)'% cant )
             # except Exception as e:
             #     messages.error(request,u'Línea:%s -> %s' %(index,e))                        

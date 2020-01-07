@@ -53,11 +53,7 @@ class ReporteResumenPeriodo(VariablesMixin,TemplateView):
             trab_cargo= form.cleaned_data['trab_cargo']                           
 
             ausentismos = ausentismo.objects.filter(baja=False)                      
-          
-            if fdesde:                
-                ausentismos = ausentismos.filter(aus_fcrondesde__gte=fdesde)
-            if fhasta:                
-                ausentismos = ausentismos.filter(aus_fcronhasta__lte=fhasta)
+                     
             if empresa:
                 ausentismos= ausentismos.filter(empleado__empresa=empresa)            
             if empleado:
@@ -67,6 +63,9 @@ class ReporteResumenPeriodo(VariablesMixin,TemplateView):
 
             if int(tipo_ausentismo) > 0: 
                 ausentismos = ausentismos.filter(tipo_ausentismo=int(tipo_ausentismo))
+
+            ausentismos = ausentismos.filter(Q(aus_fcrondesde__range=[fdesde,fhasta])|Q(aus_fcronhasta__range=[fdesde,fhasta])
+                |Q(aus_fcrondesde__lt=fdesde,aus_fcronhasta__gt=fhasta))  
 
 
         else:
@@ -92,10 +91,9 @@ class ReporteResumenPeriodo(VariablesMixin,TemplateView):
         if ausentismos:
             
             #AUSENTISMO TOTAL            
-            empleados_tot = ausentismos.values('empleado').distinct().count()
-            # empleados_tot = 77
-            dias_caidos_tot = ausentismos.aggregate(dias_caidos=Sum(Coalesce('aus_diascaidos', 0)))['dias_caidos'] or 0
-            # dias_caidos_tot = 67            
+            empleados_tot = ausentismos.values('empleado').distinct().count()            
+            # dias_caidos_tot = ausentismos.aggregate(dias_caidos=Sum(Coalesce('aus_diascaidos', 0)))['dias_caidos'] or 0            
+            dias_caidos_tot=dias_ausentes(fdesde,fhasta,ausentismos)               
             dias_trab_tot = (dias_laborables * empleados_tot)-dias_caidos_tot
             tasa_ausentismo = calcular_tasa_ausentismo(dias_caidos_tot,dias_laborables,empleados_tot)        
             porc_dias_trab_tot = 100 - tasa_ausentismo        
@@ -108,7 +106,7 @@ class ReporteResumenPeriodo(VariablesMixin,TemplateView):
             if ausentismos_inc:
                 empleados_tot = ausentismos_inc.values('empleado').distinct().count()
                 # empleados_tot = 77
-                dias_caidos_tot = ausentismos_inc.aggregate(dias_caidos=Sum(Coalesce('aus_diascaidos', 0)))['dias_caidos'] or 0
+                dias_caidos_tot=dias_ausentes(fdesde,fhasta,ausentismos_inc) 
                 # dias_caidos_tot = 67            
                 dias_trab_tot = (dias_laborables * empleados_tot)-dias_caidos_tot
 
@@ -133,7 +131,7 @@ class ReporteResumenPeriodo(VariablesMixin,TemplateView):
             if ausentismos_acc:
                 empleados_tot = ausentismos_acc.values('empleado').distinct().count()
                 # empleados_tot = 77
-                dias_caidos_tot = ausentismos_acc.aggregate(dias_caidos=Sum(Coalesce('aus_diascaidos', 0)))['dias_caidos'] or 0
+                dias_caidos_tot=dias_ausentes(fdesde,fhasta,ausentismos_acc) 
                 # dias_caidos_tot = 67            
                 dias_trab_tot = (dias_laborables * empleados_tot)-dias_caidos_tot
                 tasa_ausentismo = calcular_tasa_ausentismo(dias_caidos_tot,dias_laborables,empleados_tot)                       
@@ -232,21 +230,23 @@ class ReporteResumenAnual(VariablesMixin,TemplateView):
         listado_meses = ["%s%s" % (dt.strftime("%b").upper(),(dt.strftime("%y"))) for dt in rrule(MONTHLY, dtstart=fdesde, until=fhasta)]
         if ausentismos:                                                    
             for m in meses:                
-                dias_laborables = int(dias_mes(m[0],m[1],fdesde,fhasta)) 
+                dias_laborables = int(dias_mes(m[0],m[1],fdesde,fhasta))                 
                 ausencias = en_mes_anio(m[0],m[1],ausentismos)
                 
-                
-                ausenc_inculp = ausencias.filter(tipo_ausentismo=1).count()                
-                empl_tot_inculp= ausencias.filter(tipo_ausentismo=1).values('empleado').distinct().count()
+                qs_inculpables = ausencias.filter(tipo_ausentismo=1)
+                ausenc_inculp = dias_ausentes_mes(m[0],m[1],qs_inculpables)            
+                empl_tot_inculp= qs_inculpables.values('empleado').distinct().count()
                 dias_trab_tot = (dias_laborables * empl_tot_inculp)-ausenc_inculp
-                if ausenc_inculp >0:
+                if ausenc_inculp >0:                    
                     tasa_inclup =  calcular_tasa_ausentismo(ausenc_inculp,dias_laborables,empl_tot_inculp)                        
                 else:
                     tasa_inclup = 0
                 inculpables.append(tasa_inclup)
                 
-                ausenc_acc = ausencias.filter(tipo_ausentismo=2).count()
-                empl_tot_acc= ausencias.filter(tipo_ausentismo=2).values('empleado').distinct().count()
+                qs_accidentes = ausencias.filter(tipo_ausentismo=2)
+                ausenc_acc = dias_ausentes_mes(m[0],m[1],qs_accidentes)  
+                # ausenc_acc = qs_accidentes.count()
+                empl_tot_acc= qs_accidentes.values('empleado').distinct().count()
                 dias_trab_tot = (dias_laborables * empl_tot_acc)-ausenc_acc
                 if ausenc_acc >0:
                     tasa_acc =  calcular_tasa_ausentismo(ausenc_acc,dias_laborables,empl_tot_acc)                        
@@ -254,8 +254,10 @@ class ReporteResumenAnual(VariablesMixin,TemplateView):
                     tasa_acc = 0
                 accidentes.append(tasa_acc)
 
-                ausenc_enf = ausencias.filter(tipo_ausentismo=3).count()
-                empl_tot_enf= ausencias.filter(tipo_ausentismo=3).values('empleado').distinct().count()
+                qs_enfermos = ausencias.filter(tipo_ausentismo=3)
+                ausenc_enf = dias_ausentes_mes(m[0],m[1],qs_enfermos)  
+                # ausenc_enf = qs_enfermos.count()
+                empl_tot_enf= qs_enfermos.values('empleado').distinct().count()
                 dias_trab_tot = (dias_laborables * empl_tot_enf)-ausenc_enf
                 if ausenc_enf >0:
                     tasa_enf =  calcular_tasa_ausentismo(ausenc_enf,dias_laborables,empl_tot_enf)                    
@@ -301,4 +303,32 @@ def dias_mes(mes, anio,fdesde,fhasta):
      if fhasta<=ffin:
         ffin =fhasta
 
-     return (ffin-fini).days
+     return (ffin-fini).days+1
+
+def dias_ausentes(fdesde,fhasta,ausentismos):     
+    tot=0
+    for a in ausentismos:
+        fini = a.aus_fcrondesde     
+        ffin = a.aus_fcronhasta
+        if fdesde>=fini:
+            fini=fdesde
+        if fhasta<=ffin:
+            ffin =fhasta
+        tot+=(ffin-fini).days+1
+    return tot
+
+def dias_ausentes_mes(mes, anio,ausentismos):     
+    tot=0
+    d_fmt = "{0:>02}/{1:>02}/{2}"
+    fdesde = datetime.strptime(d_fmt.format(1, mes, anio), '%d/%m/%y').date()
+    ultimo_dia_mes = calendar.monthrange(anio, mes)[1]
+    fhasta = datetime.strptime(d_fmt.format(ultimo_dia_mes, mes, anio), '%d/%m/%y').date()
+    for a in ausentismos:
+        fini = a.aus_fcrondesde     
+        ffin = a.aus_fcronhasta
+        if fdesde>=fini:
+            fini=fdesde
+        if fhasta<=ffin:
+            ffin =fhasta
+        tot+=(ffin-fini).days+1
+    return tot    
