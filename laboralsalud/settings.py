@@ -147,62 +147,62 @@ EMAIL_USE_TLS = True
 SERVER_EMAIL = 'errores_web@grupoguadalupe.com.ar'
 DEFAULT_FROM_EMAIL = 'errores_web@grupoguadalupe.com.ar'
 
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'formatters': {
-        'verbose': {
-            'format' : "[%(asctime)s] %(levelname)s [%(name)s:%(lineno)s] %(message)s",
-            'datefmt' : "%d/%b/%Y %H:%M:%S"
-        },
-        'simple': {
-            'format': '%(levelname)s %(message)s'
-        },
-    },
-    'filters': {
-         'require_debug_false': {
-             '()': 'django.utils.log.RequireDebugFalse'
-         }
-     },
-    'handlers': {
-        'logfile': {
-            'class': 'logging.handlers.WatchedFileHandler',
-            'filename': os.path.join(SITE_ROOT, "errores.log"),
-            'formatter': 'verbose'
-        },
-         'mail_admins': {
-            'class': 'django.utils.log.AdminEmailHandler',
-            'level': 'ERROR',
-            'filters': ['require_debug_false'],
-             # But the emails are plain text by default - HTML is nicer
-            'include_html': True,
-            'formatter': 'verbose',
-        },
-        'console': {
-            'class': 'logging.StreamHandler',
-        },
-    },
-    'loggers': {
-        'django.request': {
-            'handlers': ['mail_admins'],
-            'level': 'ERROR',
-            'propagate': True,
-        },
+# LOGGING = {
+#     'version': 1,
+#     'disable_existing_loggers': False,
+#     'formatters': {
+#         'verbose': {
+#             'format' : "[%(asctime)s] %(levelname)s [%(name)s:%(lineno)s] %(message)s",
+#             'datefmt' : "%d/%b/%Y %H:%M:%S"
+#         },
+#         'simple': {
+#             'format': '%(levelname)s %(message)s'
+#         },
+#     },
+#     'filters': {
+#          'require_debug_false': {
+#              '()': 'django.utils.log.RequireDebugFalse'
+#          }
+#      },
+#     'handlers': {
+#         'logfile': {
+#             'class': 'logging.handlers.WatchedFileHandler',
+#             'filename': os.path.join(SITE_ROOT, "errores.log"),
+#             'formatter': 'verbose'
+#         },
+#          'mail_admins': {
+#             'class': 'django.utils.log.AdminEmailHandler',
+#             'level': 'ERROR',
+#             'filters': ['require_debug_false'],
+#              # But the emails are plain text by default - HTML is nicer
+#             'include_html': True,
+#             'formatter': 'verbose',
+#         },
+#         'console': {
+#             'class': 'logging.StreamHandler',
+#         },
+#     },
+#     'loggers': {
+#         'django.request': {
+#             'handlers': ['mail_admins'],
+#             'level': 'ERROR',
+#             'propagate': True,
+#         },
         
-        'django': {
-            'handlers': ['logfile'],
-            'level': 'ERROR',
-            'propagate': False,
-        },
-        # 'xhtml2pdf': {
-        #     'handlers': ['console'],
-        #     'level': 'DEBUG',
-        # },
+#         'django': {
+#             'handlers': ['logfile'],
+#             'level': 'ERROR',
+#             'propagate': False,
+#         },
+#         # 'xhtml2pdf': {
+#         #     'handlers': ['console'],
+#         #     'level': 'DEBUG',
+#         # },
         
-        'general': {
-            'handlers': ['logfile'],
-            'level': 'DEBUG',
-            'propagate': False,
-        },
-    }
-}
+#         'general': {
+#             'handlers': ['logfile'],
+#             'level': 'DEBUG',
+#             'propagate': False,
+#         },
+#     }
+# }
