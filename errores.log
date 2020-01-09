@@ -1217,3 +1217,64 @@ Traceback (most recent call last):
     fini = a.aus_fcrondesde
 NameError: global name 'a' is not defined
 [06/Jan/2020 20:32:04] ERROR [django.server:124] "POST /reportes/reporte_resumen_periodo/ HTTP/1.1" 500 130189
+[08/Jan/2020 19:22:01] ERROR [django.request:135] Internal Server Error: /entidades/empresa/detalles/1/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 217, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 215, in _get_response
+    response = response.render()
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\response.py", line 107, in render
+    self.content = self.rendered_content
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\response.py", line 82, in rendered_content
+    template = self.resolve_template(self.template_name)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\response.py", line 64, in resolve_template
+    return select_template(template, using=self.using)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\loader.py", line 53, in select_template
+    raise TemplateDoesNotExist(', '.join(template_name_list), chain=chain)
+TemplateDoesNotExist: entidades/empresa_detalle.html
+[08/Jan/2020 19:22:01] ERROR [django.server:124] "GET /entidades/empresa/detalles/1/ HTTP/1.1" 500 18760
+[08/Jan/2020 19:22:06] ERROR [django.request:135] Internal Server Error: /entidades/empresa/detalles/1/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 217, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 215, in _get_response
+    response = response.render()
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\response.py", line 107, in render
+    self.content = self.rendered_content
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\response.py", line 82, in rendered_content
+    template = self.resolve_template(self.template_name)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\response.py", line 64, in resolve_template
+    return select_template(template, using=self.using)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\loader.py", line 53, in select_template
+    raise TemplateDoesNotExist(', '.join(template_name_list), chain=chain)
+TemplateDoesNotExist: entidades/empresa_detalle.html
+[08/Jan/2020 19:22:07] ERROR [django.server:124] "GET /entidades/empresa/detalles/1/ HTTP/1.1" 500 99761
+[08/Jan/2020 21:57:41] ERROR [django.server:124] "GET /ausentismos/editar/4/ HTTP/1.1" 500 59
+[08/Jan/2020 22:04:46] ERROR [django.request:135] Internal Server Error: /entidades/cargo/detalles/4/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 217, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 215, in _get_response
+    response = response.render()
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\response.py", line 107, in render
+    self.content = self.rendered_content
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\response.py", line 82, in rendered_content
+    template = self.resolve_template(self.template_name)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\response.py", line 64, in resolve_template
+    return select_template(template, using=self.using)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\loader.py", line 53, in select_template
+    raise TemplateDoesNotExist(', '.join(template_name_list), chain=chain)
+TemplateDoesNotExist: entidades/cargo_detalle.html
+[08/Jan/2020 22:04:46] ERROR [django.server:124] "GET /entidades/cargo/detalles/4/ HTTP/1.1" 500 18730

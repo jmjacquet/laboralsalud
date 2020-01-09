@@ -595,3 +595,59 @@ def ausencias_importar(request):
         form = ImportarAusentismosForm(None,None,request=request)
     context['form'] = form    
     return render(request, 'ausentismos/importar_ausentismos.html',context)
+
+#************* EMAIL **************
+from django.core.mail import send_mail, EmailMessage
+from django.core.mail.backends.smtp import EmailBackend
+
+@login_required 
+def mandarEmail(request,id):   
+    try:
+        cpb = cpb_comprobante.objects.get(id=id)            
+        mail_destino = []
+        direccion = str(cpb.entidad.email)
+        if not direccion:
+            messages.error(request, 'El comprobante no pudo ser enviado! (verifique la dirección de correo del destinatario)')  
+            return HttpResponseRedirect(cpb.get_listado())
+        mail_destino.append(direccion)
+        try:
+            config = gral_empresa.objects.get(id=settings.ENTIDAD_ID)        
+        except gral_empresa.DoesNotExist:
+             raise ValueError
+
+        datos = config.get_datos_mail()      
+        mail_cuerpo = datos['mail_cuerpo']
+        mail_servidor = datos['mail_servidor']
+        mail_puerto = int(datos['mail_puerto'])
+        mail_usuario = datos['mail_usuario']
+        mail_password = str(datos['mail_password'])
+        mail_origen = datos['mail_origen']      
+       
+        if cpb.cpb_tipo.tipo == 4 or cpb.cpb_tipo.tipo == 7:
+            post_pdf = imprimirCobranza(request,id,True)              
+        elif cpb.cpb_tipo.tipo == 5:
+            post_pdf = imprimirRemito(request,id,True)          
+        elif cpb.cpb_tipo.tipo == 6:
+            post_pdf = imprimirPresupuesto(request,id,True)  
+        else:
+            post_pdf = imprimirFactura(request,id,True)  
+            
+        fecha = datetime.now()              
+        nombre = "%s" % cpb
+        image_url = request.build_absolute_uri(reverse("chequear_email",kwargs={'id': cpb.id}))
+        
+        html_content = get_template('general/varios/email.html').render({'mensaje': mail_cuerpo,'image_url':image_url})
+                
+        backend = EmailBackend(host=mail_servidor, port=mail_puerto, username=mail_usuario,password=mail_password,fail_silently=False)        
+        email = EmailMessage( subject=u'%s' % (cpb.get_cpb_tipo),body=html_content,from_email=mail_origen,to=mail_destino,connection=backend)                
+        email.attach(u'%s.pdf' %nombre,post_pdf, "application/pdf")
+        email.content_subtype = 'html'        
+        email.send()        
+        cpb.fecha_envio_mail=fecha
+        cpb.save()
+        messages.success(request, 'El comprobante fué enviado con éxito!')
+        return HttpResponseRedirect(cpb.get_listado())
+    except Exception as e:
+        print e        
+        messages.error(request, 'El comprobante no pudo ser enviado! (verifique la dirección de correo del destinatario) '+str(e))  
+        return HttpResponseRedirect(cpb.get_listado())    
