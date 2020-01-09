@@ -54,7 +54,7 @@
                 <th class="imprimir">Empleado</th>
                 <th class="imprimir">Empresa</th>
                 <th class="imprimir">Estado</th>
-                <th class="imprimir">Detalle</th>
+                <th class="imprimir">Diagnóstico</th>
                 <th class="imprimir">Observaciones</th>                                          
             </tr>
         </thead>
@@ -356,7 +356,7 @@ $('#calendar').fullCalendar({
             trigger: "click",
             container:'body',
             html: true,
-            content: 'Empelado: <b>' + event.name + '</b><br>Detalle: <b>' + event.description+'</b>',
+            content: 'Empelado: <b>' + event.name + '</b><br>Diagnóstico: <b>' + event.description+'</b>',
         });
     }
 
