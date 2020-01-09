@@ -1278,3 +1278,5 @@ Traceback (most recent call last):
     raise TemplateDoesNotExist(', '.join(template_name_list), chain=chain)
 TemplateDoesNotExist: entidades/cargo_detalle.html
 [08/Jan/2020 22:04:46] ERROR [django.server:124] "GET /entidades/cargo/detalles/4/ HTTP/1.1" 500 18730
+[09/Jan/2020 17:35:15] ERROR [django.server:124] "GET /login/?next=/ HTTP/1.1" 500 59
+[09/Jan/2020 17:48:59] ERROR [django.server:124] "GET /ausentismos/nuevo/ HTTP/1.1" 500 59

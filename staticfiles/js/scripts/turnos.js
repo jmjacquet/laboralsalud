@@ -58,12 +58,16 @@ $("#id_empresa").change(function(){
 if ($('#id_tipo_form').val()=='ALTA'){  
   $("#id_empresa").trigger("change");
 }else{
-  
+   
    
 };
 
 
-
+$( "#Aceptar" ).click(function() {        
+       $("#form-alta :disabled").removeAttr('disabled');      
+        $("#Aceptar").prop("disabled", true);    
+        $( "#form-alta" ).submit();         
+      });
 
 
 });
