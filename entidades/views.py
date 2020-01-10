@@ -680,7 +680,7 @@ def importar_empleados(request):
                 messages.error(request,"El archivo es demasiado grande (%.2f MB)." % (csv_file.size/(1000*1000),))
                 return HttpResponseRedirect(reverse("importar_empleados"))
 
-            decoded_file = csv_file.read().decode("utf8", "ignore")
+            decoded_file = csv_file.read().decode("utf8", "ignore").replace(",", "").replace("'", "")
             io_string = io.StringIO(decoded_file)
             reader = csv.reader(io_string)            
             #DNI;LEGAJO/NRO;APELLIDO;NOMBRE;FECHA_NAC;DOMICILIO;CELULAR;TELEFONO;EMAIL;CP;LOCALIDAD;FECHA_INGR;ART;PUESTO            
@@ -698,7 +698,7 @@ def importar_empleados(request):
                     if empl and not sobreescribir:
                         continue
 
-                    legajo = campos[1].strip()  #nro_legajo              
+                    legajo = campos[1].strip()  #nro_legajo                                  
                     nombre = campos[2].strip().upper()+' '+campos[3].strip().upper() # apellido y Nombre                
                     fecha=campos[4].strip()
                     if fecha=='':
@@ -727,16 +727,15 @@ def importar_empleados(request):
                     else:
                         puesto = ent_cargo.objects.get_or_create(cargo=puesto)[0]        
                     try:
-                       ent_empleado.objects.update_or_create(nro_doc=dni,legajo=legajo,apellido_y_nombre=nombre,fecha_nac=fecha_nac,art=art,empresa=empresa,trab_cargo=puesto,
-                        domicilio=domicilio,celular=celular,telefono=telefono,email=email,cod_postal=cp,localidad=localidad,empr_fingreso=fecha_ingr)                                                                 
-                       cant+=1
-                       
+                       ent_empleado.objects.update_or_create(nro_doc=dni,empresa=empresa,defaults={'legajo':legajo,'apellido_y_nombre':nombre,'fecha_nac':fecha_nac,'art':art,'trab_cargo':puesto,
+                        'domicilio':domicilio,'celular':celular,'telefono':telefono,'email':email,'cod_postal':cp,'localidad':localidad,'empr_fingreso':fecha_ingr})                                                                 
+                       cant+=1                       
                     except Exception as e:
-                       error = u'Línea:%s -> %s' %(index,e)
+                       error = u"Línea:%s -> %s" %(index,e)
                        messages.error(request,error)                                
                 messages.success(request, u'Se importó el archivo con éxito!<br>(%s empleados creados/actualizados)'% cant )
             except Exception as e:
-                messages.error(request,u'Línea:%s -> %s' %(index,e)) 
+                messages.error(request,u"Línea:%s -> %s" %(index,e)) 
     else:
         form = ImportarEmpleadosForm(None,None,request=request)
     context['form'] = form    

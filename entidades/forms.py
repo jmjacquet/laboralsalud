@@ -172,11 +172,12 @@ class ImportarEmpleadosForm(forms.Form):
 
 	def clean(self):
 		archivo = self.cleaned_data.get('archivo')        
-		if not archivo.name.endswith('.csv'):
-			self.add_error("archivo",u'¡El archivo debe tener extensión .CSV!')            
-		#if file is too large, return
-		if archivo.multiple_chunks():
-			self.add_error("archivo",u"El archivo es demasiado grande (%.2f MB)." % (archivo.size/(1000*1000),))
+		if archivo:
+			if not archivo.name.endswith('.csv'):
+				self.add_error("archivo",u'¡El archivo debe tener extensión .CSV!')            
+			#if file is too large, return
+			if archivo.multiple_chunks():
+				self.add_error("archivo",u"El archivo es demasiado grande (%.2f MB)." % (archivo.size/(1000*1000),))
 		return self.cleaned_data
 	    
 

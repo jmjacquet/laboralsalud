@@ -1321,3 +1321,260 @@ Traceback (most recent call last):
 TemplateDoesNotExist: modal2/entidades/form_art.html
 [09/Jan/2020 19:29:11] ERROR [django.server:124] "GET /entidades/art/nuevo/ HTTP/1.1" 500 99538
 [09/Jan/2020 20:35:57] ERROR [django.server:124] "GET /ausentismos/nuevo/ HTTP/1.1" 500 59
+[10/Jan/2020 11:22:40] ERROR [django.request:135] Internal Server Error: /admin/ausentismos/ausentismo/
+Traceback (most recent call last):
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 217, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 215, in _get_response
+    response = response.render()
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\response.py", line 107, in render
+    self.content = self.rendered_content
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\response.py", line 84, in rendered_content
+    content = template.render(context, self._request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\backends\django.py", line 66, in render
+    return self.template.render(context)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 207, in render
+    return self._render(context)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\test\utils.py", line 107, in instrumented_test_render
+    return self.nodelist.render(context)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 990, in render
+    bit = node.render_annotated(context)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 957, in render_annotated
+    return self.render(context)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\loader_tags.py", line 177, in render
+    return compiled_parent._render(context)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\test\utils.py", line 107, in instrumented_test_render
+    return self.nodelist.render(context)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 990, in render
+    bit = node.render_annotated(context)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 957, in render_annotated
+    return self.render(context)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\loader_tags.py", line 177, in render
+    return compiled_parent._render(context)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\test\utils.py", line 107, in instrumented_test_render
+    return self.nodelist.render(context)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 990, in render
+    bit = node.render_annotated(context)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 957, in render_annotated
+    return self.render(context)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\loader_tags.py", line 72, in render
+    result = block.nodelist.render(context)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 990, in render
+    bit = node.render_annotated(context)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 957, in render_annotated
+    return self.render(context)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\loader_tags.py", line 72, in render
+    result = block.nodelist.render(context)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 990, in render
+    bit = node.render_annotated(context)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 957, in render_annotated
+    return self.render(context)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\library.py", line 225, in render
+    _dict = self.func(*resolved_args, **resolved_kwargs)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\contrib\admin\templatetags\admin_list.py", line 340, in result_list
+    'results': list(results(cl))}
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\contrib\admin\templatetags\admin_list.py", line 316, in results
+    yield ResultList(None, items_for_result(cl, res, None))
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\contrib\admin\templatetags\admin_list.py", line 307, in __init__
+    super(ResultList, self).__init__(*items)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\contrib\admin\templatetags\admin_list.py", line 218, in items_for_result
+    f, attr, value = lookup_field(field_name, result, cl.model_admin)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\contrib\admin\utils.py", line 299, in lookup_field
+    value = attr()
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\db\models\base.py", line 595, in __str__
+    return force_text(self).encode('utf-8')
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\utils\encoding.py", line 78, in force_text
+    s = six.text_type(s)
+  File "D:\GitHub\laboralsalud\ausentismos\models.py", line 91, in __unicode__
+    return u'%s - %s (%s)' % (self.pk,self.empleado,self.get_fechas)
+  File "D:\GitHub\laboralsalud\ausentismos\models.py", line 102, in get_fechas
+    desde=self.aus_fcrondesde.strftime('%d/%m/%Y')
+AttributeError: 'NoneType' object has no attribute 'strftime'
+[10/Jan/2020 11:22:41] ERROR [django.server:124] "GET /admin/ausentismos/ausentismo/ HTTP/1.1" 500 353317
+[10/Jan/2020 11:24:17] ERROR [django.request:135] Internal Server Error: /admin/ausentismos/ausentismo/
+Traceback (most recent call last):
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 217, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 215, in _get_response
+    response = response.render()
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\response.py", line 107, in render
+    self.content = self.rendered_content
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\response.py", line 84, in rendered_content
+    content = template.render(context, self._request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\backends\django.py", line 66, in render
+    return self.template.render(context)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 207, in render
+    return self._render(context)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\test\utils.py", line 107, in instrumented_test_render
+    return self.nodelist.render(context)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 990, in render
+    bit = node.render_annotated(context)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 957, in render_annotated
+    return self.render(context)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\loader_tags.py", line 177, in render
+    return compiled_parent._render(context)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\test\utils.py", line 107, in instrumented_test_render
+    return self.nodelist.render(context)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 990, in render
+    bit = node.render_annotated(context)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 957, in render_annotated
+    return self.render(context)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\loader_tags.py", line 177, in render
+    return compiled_parent._render(context)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\test\utils.py", line 107, in instrumented_test_render
+    return self.nodelist.render(context)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 990, in render
+    bit = node.render_annotated(context)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 957, in render_annotated
+    return self.render(context)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\loader_tags.py", line 72, in render
+    result = block.nodelist.render(context)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 990, in render
+    bit = node.render_annotated(context)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 957, in render_annotated
+    return self.render(context)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\loader_tags.py", line 72, in render
+    result = block.nodelist.render(context)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 990, in render
+    bit = node.render_annotated(context)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 957, in render_annotated
+    return self.render(context)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\library.py", line 225, in render
+    _dict = self.func(*resolved_args, **resolved_kwargs)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\contrib\admin\templatetags\admin_list.py", line 340, in result_list
+    'results': list(results(cl))}
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\contrib\admin\templatetags\admin_list.py", line 316, in results
+    yield ResultList(None, items_for_result(cl, res, None))
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\contrib\admin\templatetags\admin_list.py", line 307, in __init__
+    super(ResultList, self).__init__(*items)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\contrib\admin\templatetags\admin_list.py", line 218, in items_for_result
+    f, attr, value = lookup_field(field_name, result, cl.model_admin)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\contrib\admin\utils.py", line 299, in lookup_field
+    value = attr()
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\db\models\base.py", line 595, in __str__
+    return force_text(self).encode('utf-8')
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\utils\encoding.py", line 78, in force_text
+    s = six.text_type(s)
+  File "D:\GitHub\laboralsalud\ausentismos\models.py", line 91, in __unicode__
+    return u'%s - %s (%s)' % (self.pk,self.empleado,self.get_fechas)
+  File "D:\GitHub\laboralsalud\ausentismos\models.py", line 104, in get_fechas
+    if aus_fcrondesde:
+NameError: global name 'aus_fcrondesde' is not defined
+[10/Jan/2020 11:24:17] ERROR [django.server:124] "GET /admin/ausentismos/ausentismo/ HTTP/1.1" 500 351528
+[10/Jan/2020 12:18:06] ERROR [django.request:135] Internal Server Error: /entidades/importar_empleados/
+Traceback (most recent call last):
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "D:\GitHub\laboralsalud\entidades\views.py", line 670, in importar_empleados
+    if form.is_valid():
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\forms\forms.py", line 183, in is_valid
+    return self.is_bound and not self.errors
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\forms\forms.py", line 175, in errors
+    self.full_clean()
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\forms\forms.py", line 385, in full_clean
+    self._clean_form()
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\forms\forms.py", line 412, in _clean_form
+    cleaned_data = self.clean()
+  File "D:\GitHub\laboralsalud\entidades\forms.py", line 175, in clean
+    if not archivo.name.endswith('.csv'):
+AttributeError: 'NoneType' object has no attribute 'name'
+[10/Jan/2020 12:18:06] ERROR [django.server:124] "POST /entidades/importar_empleados/ HTTP/1.1" 500 109290
+[10/Jan/2020 12:35:46] ERROR [django.request:135] Internal Server Error: /ausentismos/ausencias_importar/
+Traceback (most recent call last):
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "D:\GitHub\laboralsalud\ausentismos\views.py", line 420, in ausencias_importar
+    sobreescribir = form.cleaned_data['sobreescribir'] == 'S'
+KeyError: u'sobreescribir'
+[10/Jan/2020 12:35:47] ERROR [django.server:124] "POST /ausentismos/ausencias_importar/ HTTP/1.1" 500 91925
+[10/Jan/2020 12:36:22] ERROR [django.request:135] Internal Server Error: /ausentismos/ausencias_importar/
+Traceback (most recent call last):
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "D:\GitHub\laboralsalud\ausentismos\views.py", line 519, in ausencias_importar
+    aus_tipo_alta = [k for k, v in aus_tipo_alta.items() if v.upper() == austa.upper()][0]
+IndexError: list index out of range
+[10/Jan/2020 12:36:26] ERROR [django.server:124] "POST /ausentismos/ausencias_importar/ HTTP/1.1" 500 103988
+[10/Jan/2020 12:36:26] ERROR [django.server:124] "POST /ausentismos/ausencias_importar/ HTTP/1.1" 500 59
+[10/Jan/2020 12:49:07] ERROR [django.request:135] Internal Server Error: /ausentismos/ausencias_importar/
+Traceback (most recent call last):
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "D:\GitHub\laboralsalud\ausentismos\views.py", line 519, in ausencias_importar
+    aus_tipo_alta = [k for k, v in aus_tipo_alta.items() if v.upper() == austa.upper()][0]
+IndexError: list index out of range
+[10/Jan/2020 12:49:12] ERROR [django.server:124] "POST /ausentismos/ausencias_importar/ HTTP/1.1" 500 104185
+[10/Jan/2020 12:51:42] ERROR [django.request:135] Internal Server Error: /ausentismos/ausencias_importar/
+Traceback (most recent call last):
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "D:\GitHub\laboralsalud\ausentismos\views.py", line 519, in ausencias_importar
+    aus_tipo_alta = [k for k, v in aus_tipo_alta.items() if unicode(v.upper()) == unicode(austa.upper())][0]
+IndexError: list index out of range
+[10/Jan/2020 12:51:47] ERROR [django.server:124] "POST /ausentismos/ausencias_importar/ HTTP/1.1" 500 104221
+[10/Jan/2020 12:58:04] ERROR [django.request:135] Internal Server Error: /ausentismos/ausencias_importar/
+Traceback (most recent call last):
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "D:\GitHub\laboralsalud\ausentismos\views.py", line 429, in ausencias_importar
+    decoded_file = csv_file.read().decode("utf8").replace(",", "").replace("'", "")
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\encodings\utf_8.py", line 16, in decode
+    return codecs.utf_8_decode(input, errors, True)
+UnicodeDecodeError: 'utf8' codec can't decode byte 0xd3 in position 42: invalid continuation byte
+[10/Jan/2020 12:58:04] ERROR [django.server:124] "POST /ausentismos/ausencias_importar/ HTTP/1.1" 500 112392

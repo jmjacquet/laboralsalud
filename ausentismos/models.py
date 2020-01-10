@@ -99,8 +99,12 @@ class ausentismo(models.Model):
 
 	@property
 	def get_fechas(self):        
-		desde=self.aus_fcrondesde.strftime('%d/%m/%Y')
-		hasta=self.aus_fcronhasta.strftime('%d/%m/%Y')		
+		desde = None
+		hasta = None
+		if self.aus_fcrondesde:
+			desde=self.aus_fcrondesde.strftime('%d/%m/%Y')
+		if self.aus_fcronhasta:
+			hasta=self.aus_fcronhasta.strftime('%d/%m/%Y')		
 		return '%s hasta %s' % (desde,hasta)
 
 	@property

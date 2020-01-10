@@ -416,8 +416,7 @@ def ausencias_importar(request):
         form = ImportarAusentismosForm(request.POST,request.FILES,request=request)
         if form.is_valid(): 
             csv_file = form.cleaned_data['archivo']
-            empresa = form.cleaned_data['empresa']
-            sobreescribir = form.cleaned_data['sobreescribir'] == 'S'
+            empresa = form.cleaned_data['empresa']            
             
             if not csv_file.name.endswith('.csv'):
                 messages.error(request,'¡El archivo debe tener extensión .CSV!')
@@ -427,7 +426,7 @@ def ausencias_importar(request):
                 messages.error(request,"El archivo es demasiado grande (%.2f MB)." % (csv_file.size/(1000*1000),))
                 return HttpResponseRedirect(reverse("importar_empleados"))
 
-            decoded_file = csv_file.read().decode("utf8", "ignore").replace(",", "").replace("'", "")
+            decoded_file = csv_file.read().decode("utf8").replace(",", "").replace("'", "")
             io_string = io.StringIO(decoded_file)
             reader = csv.reader(io_string)            
             
@@ -442,16 +441,15 @@ def ausencias_importar(request):
                 campos = line[0].split(";")                  
                
                 dni = campos[0].strip()                
+                
                 if dni=='':
                     continue #Salta al siguiente                          
 
                 try:
-                    empl = ent_empleado.objects.get(nro_doc=dni)
+                    empl = ent_empleado.objects.get(nro_doc=dni)                    
                 except:
                     messages.error(request,u'Empleado no existente! (%s)'%dni)   
-                    continue
-                if (empl.empresa==empresa) and not sobreescribir:
-                    continue
+                    continue               
                 
                 tipoa = campos[1].strip()                       
                 if tipoa=='':
@@ -518,7 +516,7 @@ def ausencias_importar(request):
                     aus_tipo_alta = None
                 else:
                     aus_tipo_alta=dict(TIPO_ALTA)        
-                    aus_tipo_alta = [k for k, v in aus_tipo_alta.items() if v.upper() == austa.upper()][0]
+                    aus_tipo_alta = [k for k, v in aus_tipo_alta.items() if unicode(v.upper()) == unicode(austa.upper())][0]
 
                 if campos[14]=='':
                     aus_frevision = None
@@ -576,20 +574,23 @@ def ausencias_importar(request):
                 recalificac_art =campos[27].strip()                
 
         
-                try:
-                   ausentismo.objects.update_or_create(empleado=empl,tipo_ausentismo=tipoa,aus_control=aus_control,aus_fcontrol=aus_fcontrol,aus_certificado=aus_certificado,
+                try:              
+                   obj, created = ausentismo.objects.update_or_create(empleado=empl,tipo_ausentismo=tipoa,aus_control=aus_control,aus_fcontrol=aus_fcontrol,aus_certificado=aus_certificado,
                     aus_fcertif=aus_fcertif,aus_fentrega_certif=aus_fentrega_certif,aus_fcrondesde=aus_fcrondesde,aus_fcronhasta=aus_fcronhasta,aus_diascaidos=aus_diascaidos,
                     aus_diasjustif=aus_diasjustif,aus_freintegro=aus_freintegro,aus_falta=aus_falta,aus_tipo_alta=aus_tipo_alta,aus_frevision=aus_frevision,aus_medico=aus_medico,
                     aus_grupop=aus_grupop,aus_diagn=aus_diagn,art_tipo_accidente=art_tipo_accidente,art_ndenuncia=art_ndenuncia,art_faccidente=art_faccidente,art_fdenuncia=art_fdenuncia,
                     observaciones=observaciones,descr_altaparc=descr_altaparc,detalle_acc_art=detalle_acc_art,estudios_partic=estudios_partic,estudios_art=estudios_art,
-                    recalificac_art=recalificac_art)                                                         
-                   cant+=1
-                except Exception as e:
+                    recalificac_art=recalificac_art)                                                                            
+                   if created:
+                    cant+=1
+                except Exception as e:                   
+                   print e
                    error = u"Línea:%s -> %s" %(index,e)
                    messages.error(request,error)                                
             
-            messages.success(request, u'Se importó el archivo con éxito!<br>(%s ausentismos creados/actualizados)'% cant )
+            messages.success(request, u'Se importó el archivo con éxito!<br>(%s ausentismos creados)'% cant )
             # except Exception as e:
+            #     print e
             #     messages.error(request,u'Línea:%s -> %s' %(index,e))                        
     else:
         form = ImportarAusentismosForm(None,None,request=request)
