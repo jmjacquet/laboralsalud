@@ -20,6 +20,50 @@
                 custom_callbacks : {}
             };
             var global_options = jQuery.extend(defaults, custom_options);
+            
+            var delegate_target = $(global_options.delegate_target);
+            var modal = $(global_options.modal_selector);
+            var modal_loader = $(global_options.modal_loader_selector);
+            var modal_wrapper = $(global_options.modal_wrapper_selector);
+            var modal_head = $(global_options.modal_head_selector);
+            var modal_body = $(global_options.modal_body_selector);
+            var modal_buttons = $(global_options.modal_buttons_selector);
+
+            var default_callbacks = {
+                "reload": function() {
+                    window.location.reload();
+                },
+                "redirect": function(data, options) {
+                    window.location = options.modal_target;
+                },
+                "remove": function(data, options) {
+                    $(options.modal_target).remove();
+                },
+                "delete": function(data, options) {
+                    $(options.modal_target).remove();
+                },
+                "append": function(data, options) {
+                    $(options.modal_target).append(data.message);
+                },
+                "prepend": function(data, options) {
+                    $(options.modal_target).prepend(data.message);
+                },
+                "replace": function(data, options) {
+                    $(options.modal_target).replaceWith(data.message);
+                },
+                "redirect_from_response": function(data) {
+                    window.location = data.message;
+                },
+                "trigger": function(data, options) {
+                    delegate_target.trigger(global_options.trigger_event_name, {
+                        data: data,
+                        options: options
+                    });
+                }
+            };
+
+            var global_callbacks = jQuery.extend(default_callbacks, global_options.custom_callbacks);
+
             function getCookie(name) {
                 var cookieValue = null;
                 if (document.cookie && document.cookie != '') {
@@ -47,13 +91,7 @@
                     jqXHR.setRequestHeader('X-CSRFToken', getCookie('csrftoken'));
                 }
             });
-            var delegate_target = $(global_options.delegate_target);
-            var modal = $(global_options.modal_selector);
-            var modal_loader = $(global_options.modal_loader_selector);
-            var modal_wrapper = $(global_options.modal_wrapper_selector);
-            var modal_head = $(global_options.modal_head_selector);
-            var modal_body = $(global_options.modal_body_selector);
-            var modal_buttons = $(global_options.modal_buttons_selector);
+
             function debug(data) {
                 if (global_options.debug === true) {
                     console.log(data);
@@ -164,39 +202,31 @@
             function process_response_data(data, options) {
                 if (data.status === 'ok') {
                     modal.modal("hide");
+                    var callback = options.modal_callback;
                     if (options.modal_callback === null || options.modal_callback === undefined) {
                         $.noop();
-                    } else if (options.modal_callback === 'reload') {
-                        window.location.reload();
-                    } else if (options.modal_callback === 'redirect') {
-                        window.location = options.modal_target;
-                    } else if (options.modal_callback === 'remove' || options.modal_callback === 'delete') {
-                        $(options.modal_target).remove();
-                    } else if (options.modal_callback === 'append') {
-                        $(options.modal_target).append(data.message);
-                    } else if (options.modal_callback === 'prepend') {
-                        $(options.modal_target).prepend(data.message);
-                    } else if (options.modal_callback === 'replace') {
-                        $(options.modal_target).replaceWith(data.message);
-                    } else if (options.modal_callback === 'trigger') {
-                        delegate_target.trigger(global_options.trigger_event_name, {
-                            data: data,
-                            options: options
-                        });
+                    } else if (callback in global_callbacks) {
+                        var cb = global_callbacks[callback];
+                        cb(data, options);
                     } else {
                         debug("unknown action " + data.action);
                     }
                 } else {
                     modal_body.html(data.message);
+                    // Also reinstate bindings on submit buttons (in case a
+                    // form is invalid, subsequent invalid submissions should
+                    // keep the user on the form):
                     var form = modal.find('form');
-                    form.on('submit', function() {
-                        submit_form(form, options);
-                        return false;
+                    form.on('submit', function () {
+                            submit_form(form, options);
+                            return false;
                     });
+                    // and set event ready:
                     modal.trigger(global_options.ready_event_name);
                 }
                 enable_modal_buttons();
             }
+            
             function hide_modal_wrapper() {
                 modal_wrapper.hide();
             }

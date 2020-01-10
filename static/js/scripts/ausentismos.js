@@ -32,7 +32,6 @@ $("input[type=number]").click(function(){
                  recargarPatologias();
                  },
               "recargarD": function(data, options) {
-                 console.log(data);
                  recargarDiagnosticos();
                  },
               }
@@ -191,9 +190,11 @@ $('#id_tipo_ausentismo').change(function()
   if (id==1){
     $('#tab_ausencia').show();
     $('#tab_art').hide();
+    $('#titulo').html('DATOS DE LA AUSENCIA')
   }else{
     $('#tab_art').show();
     $('#tab_ausencia').hide();
+    $('#titulo').html('DATOS DE LA ART')
   }
   
 })
@@ -216,7 +217,6 @@ $('#id_aus_fcronhasta').change(function()
   };
   diasRestantes($('#id_aus_fcrondesde'),$("#id_aus_fcronhasta"),$("#id_aus_diascaidos"));
 });
-
 
 
 $('.formDetalle').formset({

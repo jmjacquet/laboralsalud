@@ -404,7 +404,7 @@ def diagnostico_baja_alta(request,id):
 
 
 import csv, io
-from .forms import ImportarAusentismosForm   
+from .forms import ImportarAusentismosForm,InformeAusenciasForm   
 from general.views import getVariablesMixin
 import datetime
 import random
@@ -601,7 +601,7 @@ from django.core.mail import send_mail, EmailMessage
 from django.core.mail.backends.smtp import EmailBackend
 
 @login_required 
-def mandarEmail(request,id):   
+def mandarEmail(request):   
     try:
         cpb = cpb_comprobante.objects.get(id=id)            
         mail_destino = []
@@ -643,11 +643,76 @@ def mandarEmail(request,id):
         email.attach(u'%s.pdf' %nombre,post_pdf, "application/pdf")
         email.content_subtype = 'html'        
         email.send()        
-        cpb.fecha_envio_mail=fecha
-        cpb.save()
-        messages.success(request, 'El comprobante fué enviado con éxito!')
+        messages.success(request, 'El informe fué enviado con éxito!')
         return HttpResponseRedirect(cpb.get_listado())
     except Exception as e:
         print e        
         messages.error(request, 'El comprobante no pudo ser enviado! (verifique la dirección de correo del destinatario) '+str(e))  
         return HttpResponseRedirect(cpb.get_listado())    
+
+@login_required 
+def generarReporte(request,ausencias,pdf=None):       
+    if not ausencias:
+      raise Http404    
+    # try:        
+    #     empresa = empresa_actual(request)
+    # except gral_empresa.DoesNotExist:
+    #     empresa = None 
+    
+    # c = empresa
+    
+    # tipo_logo_factura = c.tipo_logo_factura
+    # cuit = c.cuit
+    # ruta_logo = c.ruta_logo
+    # nombre_fantasia = c.nombre_fantasia
+    # domicilio = c.domicilio
+    # email = c.email
+    # telefono = c.telefono
+    # celular = c.celular
+    # iibb = c.iibb
+    # categ_fiscal = c.categ_fiscal
+    # fecha_inicio_activ = c.fecha_inicio_activ       
+    
+    # cobranzas = cpb_cobranza.objects.filter(cpb_comprobante=cpb)    
+    # retenciones = cpb_comprobante_retenciones.objects.filter(cpb_comprobante=cpb)    
+    # leyenda = u'DOCUMENTO NO VÁLIDO COMO FACTURA'
+    # pagos = cpb_comprobante_fp.objects.filter(cpb_comprobante=cpb)    
+    # codigo_letra = '000'
+    
+    context = Context()    
+    fecha = hoy()    
+        
+    template = 'ausentismos/informeAusentismos.html'                        
+    if pdf:
+        return render_to_pdf(template,locals())
+    return render_to_pdf_response(request, template, locals())
+
+def generarInforme(request):
+    if request.method == 'POST' and request.is_ajax():                                       
+        lista = request.POST.getlist('id')                        
+        form = InformeAusenciasForm(request.POST or None)     
+        if lista:
+            ausencias = ausentismo.objects.filter(id__in=lista)
+        else:
+            response = {'cant': 0, 'message': "¡Debe seleccionar al menos un Ausentismo!"}
+            return HttpResponse(json.dumps(response,default=default), content_type='application/json')
+        
+        if form.is_valid():                                   
+            fecha = form.cleaned_data['fecha']
+            asunto = form.cleaned_data['asunto']
+            destinatario = form.cleaned_data['destinatario']
+            observaciones = form.cleaned_data['observaciones']
+            
+            cant=len(ausencias)
+
+            response = {'cant': cant, 'message': "Se actualizaron exitosamente."} # for ok        
+        else:
+            response = {'cant': 0, 'message': "¡Verifique los datos ingresados!"} 
+        # except:
+        #     response = {'cant': 0, 'message': "¡No se actualizaron Precios!"} 
+            
+        return HttpResponse(json.dumps(response,default=default), content_type='application/json')
+    else:    
+        form = InformeAusenciasForm(None)          
+        variables = RequestContext(request, {'form':form})        
+        return render_to_response("productos/actualizar_stock.html", variables)

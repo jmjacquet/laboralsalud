@@ -1,79 +1,30 @@
-{% extends "base.html" %}
-{% load static from staticfiles %}
-{% load i18n l10n %}
-{% load humanize %}
-
-{% block breadcrumbs %}              
-        <div class="breadcrumbs">
-            LISTADO ESPECIALIDADES <small> carga e impresión</small>
-        </div>
-{% endblock breadcrumbs %}
-{% block cargando %}            
-  <div id="cargando" class="cargando" >
-    <span class="cargando-txt">CARGANDO...</span>
-    <img class="cargando-img" src="{% static 'img/loading-bars.svg' %}">
-  </div>
-{% endblock cargando %}
-{% block principal %}                            
-<br>
-   
-     <a class="btn btn-xs btn-primary modal-create" style="float:left;margin-right:20px;" href="{% url 'especialidad_nuevo' %}" data-modal-head="AGREGAR ESPECIALIDAD" data-modal-callback="reload">Nueva Especialidad</a>
-    <table width="100%" id="art" style="display:none;" class="table table-striped compact table-hover table-no-bordered tabla_nueva nowrap">         
-        <thead >
-            <tr>
-                <th width="20">#</th>                
-                <th class="imprimir">Nombre</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for a in esp %}
-            <tr
-             {% if a.baja %}
-                class='danger'
-             {% endif %}>
-                
-                <td><div class="btn-group">
-                      <button type="button" title="{{ a.pk|safe}}" class="btn btn-xs color_barra" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class="icon-settings"> </i> <span class="caret"></span>
-                      </button>
-                      <ul class="dropdown-menu">
-                        <li><a href="{% url 'especialidad_detalles' id=a.pk %}" class="modal-detail" data-modal-head="DETALLE ESPECIALIDAD" data-modal-callback="reload">
-                        <i class=" icon-screen-desktop"></i> Detalle</a></li>
-                        
-                        <li><a href="{% url 'especialidad_editar' id=a.pk %}"  class="modal-update " title="Editar" data-modal-callback="reload" data-modal-head="EDITAR ESPECIALIDAD"data-modal-target="#object-{{ a.pk }}"><i class="icon-note"></i> Editar</a></li>
-
-                        <li><a href="#" 
-                                onClick="alerta= alertify.dialog('confirm').set({'labels':{ok:'Aceptar', cancel:'Cancelar'},'message': '¿DESEA DAR DE BAJA/REACTIVAR EL REGISTRO ACTUAL?',transition:'fade','onok': function(){ window.location.href = '{% url 'especialidad_baja_alta' id=a.pk  %}'; },'oncancel': function(){ return true;} }); alerta.setting('modal', true); alerta.setHeader('BAJA/REACTIVAR'); alerta.show(); return true;" ><i class="icon-dislike"></i><i class="icon-like"></i>Baja/Reactivar</a>
-                            </li>     
-                        
-                        
-                      </ul>                                      
-                    </div>
-                </td>              
-                
-                <td>{{ a.especialidad|default_if_none:'' }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-        <tfoot>
-            <tr>
-                <th></th> 
-                <th></th> 
-            </tr>
-        </tfoot>
-        
-    </table>                   
-
-{% endblock principal %}
-
-{% block scripts_js %}     
-<script type="text/javascript">
 
 $(document).ready(function() { 
    
 moment.locale('es');
 $.fn.dataTable.moment('DD/MM/YYYY'); 
-var tabla = $('#art').DataTable({
+
+$.fn.datepicker.dates['es'] = {
+    days: ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"],
+    daysShort: ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb", "Dom"],
+    daysMin: ["Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa", "Do"],
+    months: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"],
+    monthsShort: ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"],
+    today: "Hoy"
+  };
+  
+ $('.datepicker').datepicker({
+        format: "dd/mm/yyyy",
+        language: "es",
+        autoclose: true,
+        todayHighlight: true
+  });
+
+  $('.datepicker').each(function(){
+      $(this).datepicker();
+  });
+
+var tabla = $('#ausentismos').DataTable({
             "language": {
                 "decimal": ",",
                 "thousands": ".",                 
@@ -114,10 +65,10 @@ var tabla = $('#art').DataTable({
            "colReorder": true,
            "searching": true,
             fixedHeader: {
-              header: true,
+              header: false,
               footer: false
               },
-            responsive: true,
+            responsive: true,            
             dom: 'Bfrtlip',
             buttons: [
                 {
@@ -137,7 +88,7 @@ var tabla = $('#art').DataTable({
                     extend:    'excel',
                     text:      '<i class="fa fa-file-excel-o"></i>',
                     titleAttr: 'Excel',
-                    filename: 'ESPECIALIDADES',                    
+                    filename: 'AUSENTISMOS.',                    
                     exportOptions: {  modifier: {
                                         page: 'current'
                                     }, 
@@ -198,19 +149,109 @@ var tabla = $('#art').DataTable({
             },
             initComplete: function () {
                // this.api().columns().every( function () {[0, 1, 9]
-
-                $("#art").show();
+                this.api().columns([8,9,10,11]).every( function () {
+                    var column = this;
+                    var select = $('<select class="form-control"><option value="">Todos</option></select>')
+                        .appendTo( $(column.footer()).empty() )
+                        .on( 'change', function () {
+                            var val = $.fn.dataTable.util.escapeRegex(
+                                $(this).val()
+                            );
+     
+                            column
+                                .search( val ? '^'+val+'$' : '', true, false )
+                                .draw();
+                        } );
+     
+                     column.data().unique().sort().each( function ( d, j ) {
+                    //column.cells('', column[0]).render('display').sort().unique().each( function ( d, j ){
+                        select.append( '<option value="'+d+'">'+d+'</option>' )
+                    } );
+                } );
+                $("#ausentismos").show();
                   this.fnAdjustColumnSizing();
                 $("#cargando").hide();
-            }
+            },
+            footerCallback: function ( row, data, start, end, display ) {
+            var api = this.api(), data;
+            var floatVal = function (i) {
+                if (typeof i === "number") {
+                    return i;
+                } else if (typeof i === "string") {
+                    i = i.replace(/\$/g, "");
+                    i = i.replace(/\,/g ,"");                    
+                    i = i.replace(/\./g, "");                    
+                    var result = parseFloat(i)/100;
+                    
+                    if (isNaN(result)) {
+                        try {
+                            var result = $jq(i).text();
+                            result = parseFloat(result);
+                            if (isNaN(result)) { result = 0 };
+                            return result * 1;
+                        } catch (error) {
+                            return 0;
+                        }
+                    } else {
+                        return result * 1;
+                    }
+                } else {
+                    alert("Unhandled type for totals [" + (typeof i) + "]");
+                    return 0
+                }
+            };
+                        
+            
+            pageTotal = api.column(4, { page: 'current'} ).data().reduce( function (a, b) {return parseFloat(a) + parseFloat(b);}, 0 );            
+            $( api.column(4).footer() ).html(pageTotal.toLocaleString(undefined,{minimumFractionDigits:0}));
+          
+        }
         });
 
 
 
 
+
+$("#checkall").click (function () {
+     var checkedStatus = this.checked;
+    $("input[class='tildado stock']").each(function () {
+        $(this).prop("checked", checkedStatus);
+        $(this).change();
+     });
+  });
+
+var lista = [];
+
+
+$("input[class='tildado stock']").change(function() {      
+      chk_precio();                     
+  });
+
+function chk_precio() {
+    lista = [];
+    cant = 0; 
+    str1 = '/productos/prod_stock_actualizar?'
+    str2 = ''
+    $("input[class='tildado stock']").each(function(index,checkbox){
+        if(checkbox.checked){               
+         id = document.getElementById(checkbox.id+"_id").value.replace('.', '');                        
+         lista.push(id);             
+         cant += 1;          
+         $(checkbox).closest('tr').toggleClass('selected', checkbox.checked);
+         if (str2==''){
+          str2= str2+'id='+id;
+         }else{
+          str2= str2+'&id='+id;
+         };
+      }
+      else {  
+          if($(checkbox).closest('tr').hasClass('selected')){
+            $(checkbox).closest('tr').removeClass('selected');}
+          };
+      $('#btnActualizar').val(str2)
+          
+    });
+   //console.log('CPBs:'+cpbs);
+};
+
 });
-</script> 
-{% endblock scripts_js %}
-
-
-
