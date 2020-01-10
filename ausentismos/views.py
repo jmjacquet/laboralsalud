@@ -426,7 +426,7 @@ def ausencias_importar(request):
                 messages.error(request,"El archivo es demasiado grande (%.2f MB)." % (csv_file.size/(1000*1000),))
                 return HttpResponseRedirect(reverse("importar_empleados"))
 
-            decoded_file = csv_file.read().decode("utf8").replace(",", "").replace("'", "")
+            decoded_file = csv_file.read().decode("utf8","ignore").replace(",", "").replace("'", "")
             io_string = io.StringIO(decoded_file)
             reader = csv.reader(io_string)            
             
@@ -456,7 +456,7 @@ def ausencias_importar(request):
                     tipoa = None
                 else:
                     ta=dict(TIPO_AUSENCIA)        
-                    tipoa = [k for k, v in ta.items() if v.upper() == tipoa.upper()][0]
+                    tipoa = [k for k, v in ta.items() if v.encode("ascii","ignore").upper() == tipoa.upper()][0]
 
                 if (campos[2].strip().upper() == 'SI'): 
                     aus_control = 'S' 
@@ -516,7 +516,7 @@ def ausencias_importar(request):
                     aus_tipo_alta = None
                 else:
                     aus_tipo_alta=dict(TIPO_ALTA)        
-                    aus_tipo_alta = [k for k, v in aus_tipo_alta.items() if unicode(v.upper()) == unicode(austa.upper())][0]
+                    aus_tipo_alta = [k for k, v in aus_tipo_alta.items() if v.encode("ascii","ignore").upper() == austa.upper()][0]
 
                 if campos[14]=='':
                     aus_frevision = None
@@ -547,7 +547,7 @@ def ausencias_importar(request):
                     art_tipo_accidente = None
                 else:
                     art_tipo_accidente=dict(TIPO_ACCIDENTE)        
-                    art_tipo_accidente = [k for k, v in art_tipo_accidente.items() if v.upper() == tacc.upper()][0]
+                    art_tipo_accidente = [k for k, v in art_tipo_accidente.items() if v.encode("ascii","ignore").upper() == tacc.upper()][0]
 
                 if campos[19]=='':
                     art_ndenuncia = None

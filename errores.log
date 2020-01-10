@@ -1578,3 +1578,1480 @@ Traceback (most recent call last):
     return codecs.utf_8_decode(input, errors, True)
 UnicodeDecodeError: 'utf8' codec can't decode byte 0xd3 in position 42: invalid continuation byte
 [10/Jan/2020 12:58:04] ERROR [django.server:124] "POST /ausentismos/ausencias_importar/ HTTP/1.1" 500 112392
+[10/Jan/2020 17:39:37] ERROR [django.request:135] Internal Server Error: /ausentismos/ausencias_importar/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "D:\Repo\laboralsalud\ausentismos\views.py", line 429, in ausencias_importar
+    decoded_file = csv_file.read().decode("utf8").replace(",", "").replace("'", "")
+  File "C:\Users\juanma\Envs\laboralsalud\lib\encodings\utf_8.py", line 16, in decode
+    return codecs.utf_8_decode(input, errors, True)
+UnicodeDecodeError: 'utf8' codec can't decode byte 0xd3 in position 42: invalid continuation byte
+[10/Jan/2020 17:39:38] ERROR [django.server:124] "POST /ausentismos/ausencias_importar/ HTTP/1.1" 500 112945
+[10/Jan/2020 17:41:56] ERROR [django.request:135] Internal Server Error: /ausentismos/ausencias_importar/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "D:\Repo\laboralsalud\ausentismos\views.py", line 519, in ausencias_importar
+    aus_tipo_alta = [k for k, v in aus_tipo_alta.items() if unicode(v.upper()) == unicode(austa.upper())][0]
+IndexError: list index out of range
+[10/Jan/2020 17:42:07] ERROR [django.server:124] "POST /ausentismos/ausencias_importar/ HTTP/1.1" 500 104645
+[10/Jan/2020 17:44:28] ERROR [django.request:135] Internal Server Error: /ausentismos/ausencias_importar/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "D:\Repo\laboralsalud\ausentismos\views.py", line 519, in ausencias_importar
+    aus_tipo_alta = [k for k, v in aus_tipo_alta.items() if v.decode("utf8","ignore").upper() == austa.upper()][0]
+  File "C:\Users\juanma\Envs\laboralsalud\lib\encodings\utf_8.py", line 16, in decode
+    return codecs.utf_8_decode(input, errors, True)
+UnicodeEncodeError: 'ascii' codec can't encode character u'\xf3' in position 13: ordinal not in range(128)
+[10/Jan/2020 17:44:30] ERROR [django.server:124] "POST /ausentismos/ausencias_importar/ HTTP/1.1" 500 108795
+[10/Jan/2020 17:50:17] ERROR [django.request:135] Internal Server Error: /ausentismos/ausencias_importar/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "D:\Repo\laboralsalud\ausentismos\views.py", line 520, in ausencias_importar
+    aus_tipo_alta = [k for k, v in aus_tipo_alta.items() if smart_str(v).upper() == smart_str(austa).upper()][0]
+IndexError: list index out of range
+[10/Jan/2020 17:50:27] ERROR [django.server:124] "POST /ausentismos/ausencias_importar/ HTTP/1.1" 500 104653
+[10/Jan/2020 17:52:58] ERROR [django.request:135] Internal Server Error: /ausentismos/ausencias_importar/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "D:\Repo\laboralsalud\ausentismos\views.py", line 520, in ausencias_importar
+    aus_tipo_alta = [k for k, v in aus_tipo_alta.items() if v.decode("utf8","ignore").upper() == smart_str(austa).upper()][0]
+  File "C:\Users\juanma\Envs\laboralsalud\lib\encodings\utf_8.py", line 16, in decode
+    return codecs.utf_8_decode(input, errors, True)
+UnicodeEncodeError: 'ascii' codec can't encode character u'\xf3' in position 13: ordinal not in range(128)
+[10/Jan/2020 17:52:59] ERROR [django.server:124] "POST /ausentismos/ausencias_importar/ HTTP/1.1" 500 108817
+[10/Jan/2020 17:57:15] ERROR [django.request:135] Internal Server Error: /ausentismos/ausencias_importar/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "D:\Repo\laboralsalud\ausentismos\views.py", line 441, in ausencias_importar
+    aus_tipo_alta = [k for k, v in aus_tipo_alta.items() if v.decode("utf8","ignore").upper() == smart_str(austa).upper()][0]
+UnboundLocalError: local variable 'aus_tipo_alta' referenced before assignment
+[10/Jan/2020 17:57:16] ERROR [django.server:124] "POST /ausentismos/ausencias_importar/ HTTP/1.1" 500 97977
+[10/Jan/2020 17:59:02] ERROR [django.request:135] Internal Server Error: /ausentismos/ausencias_importar/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "D:\Repo\laboralsalud\ausentismos\views.py", line 442, in ausencias_importar
+    aus_tipo_alta = [k for k, v in aus_tipo_alta.items() if v.decode("utf8","ignore").upper() == smart_str(austa).upper()][0]
+  File "C:\Users\juanma\Envs\laboralsalud\lib\encodings\utf_8.py", line 16, in decode
+    return codecs.utf_8_decode(input, errors, True)
+UnicodeEncodeError: 'ascii' codec can't encode character u'\xf3' in position 13: ordinal not in range(128)
+[10/Jan/2020 17:59:02] ERROR [django.server:124] "POST /ausentismos/ausencias_importar/ HTTP/1.1" 500 102121
+[10/Jan/2020 18:01:47] ERROR [django.request:135] Internal Server Error: /ausentismos/ausencias_importar/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "D:\Repo\laboralsalud\ausentismos\views.py", line 524, in ausencias_importar
+    aus_tipo_alta = [k for k, v in aus_tipo_alta.items() if v.upper() == austa.upper()][0]
+IndexError: list index out of range
+[10/Jan/2020 18:01:58] ERROR [django.server:124] "POST /ausentismos/ausencias_importar/ HTTP/1.1" 500 104609
+[10/Jan/2020 18:02:57] ERROR [django.request:135] Internal Server Error: /ausentismos/ausencias_importar/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "D:\Repo\laboralsalud\ausentismos\views.py", line 430, in ausencias_importar
+    decoded_file = csv_file.read().replace(",", "").replace("'", "")
+UnicodeDecodeError: 'ascii' codec can't decode byte 0xd3 in position 42: ordinal not in range(128)
+[10/Jan/2020 18:02:58] ERROR [django.server:124] "POST /ausentismos/ausencias_importar/ HTTP/1.1" 500 105373
+[10/Jan/2020 18:04:54] ERROR [django.request:135] Internal Server Error: /ausentismos/ausencias_importar/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "D:\Repo\laboralsalud\ausentismos\views.py", line 430, in ausencias_importar
+    decoded_file = smart_unicode(csv_file.read()).replace(",", "").replace("'", "")
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\utils\encoding.py", line 41, in smart_text
+    return force_text(s, encoding, strings_only, errors)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\utils\encoding.py", line 88, in force_text
+    raise DjangoUnicodeDecodeError(s, *e.args)
+DjangoUnicodeDecodeError: 'utf8' codec can't decode byte 0xd3 in position 42: invalid continuation byte. You passed in 'DNI (sin puntos);TIPO DE AUSENTISMO;ASISTI\xd3 A CONTROL?;FECHA DE CONTROL;PRESENT\xd3 CERTIFICADO?;FECHA DEL CERTIFICADO;FECHA DE ENTREGA DE CERTIF.;CRONOLOG\xcdCA DESDE;CRONOLOG\xcdCA HASTA;D\xcdAS CAIDOS;D\xcdAS JUSTIFICADOS;REINTEGRO;FECHA DE ALTA;TIPO DE ALTA;FECHA DE REVISI\xd3N;M\xc9DICO TRATANTE;GRUPO PATOL\xd3GICO;DIAGN\xd3STICO;TIPO DE ACCIDENTE;N\xb0 DE DENUNCIA;FECHA DE ACCIDENTE;FECHA DE DENUNCIA;OBSERVACIONES;DESCRIPCI\xd3N DE ALTA PARCIAL;DETALLE DE ACCIDENTE ART;ESTUDIOS PARTICULARES;ESTUDIOS REALIZADOS POR LA ART;RECALIFICACI\xd3N ART\r\n39949111;Inculpable;Si;9/1/2020;Si;9/1/2020;9/1/2020;9/1/2020;9/1/2020;1;1;10/1/2020;;;;XXXXXX;OSTEOMIOARTICULAR;LUMBALGIA;;;;;;;;;;\r\n24722532;Inculpable;Si;9/1/2020;Si;9/1/2020;9/1/2020;9/1/2020;10/1/2020;2;2;;;;10/1/2020;;OTORRINOLARINGOLOGICO;VERTIGO VESTIBULAR;;;;;;;;;;\r\n34827652;Inculpable;Si;9/1/2020;Si;9/1/2020;9/1/2020;9/1/2020;23/1/2020;15;;;;;23/1/2020;;OSTEOMIOARTICULAR;CERVICALGIA;;;;;;;;;;\r\n35651601;Inculpable;Si;8/1/2020;Si;6/1/2020;8/1/2020;7/1/2020;8/1/2020;2;2;9/1/2020;;;;;DIGESTIVO;GASTROENTERITIS;;;;;;;;;;\r\n39124533;Inculpable;Si;8/1/2020;Si;7/1/2020;8/1/2020;7/1/2020;7/1/2020;1;1;8/1/2020;;;;;OSTEOMIOARTICULAR;POLITRAUMATISMOS;;;;;;;;;;\r\n37571863;Inculpable;Si;8/1/2020;Si;6/1/2020;8/1/2020;6/1/2020;14/1/2020;9;;;;;14/1/2020;;QUIRURGICO;CIRUGIA BUCAL;;;;;;;;;;\r\n32995007;Inculpable;Si;7/1/2020;Si;6/1/2020;7/1/2020;6/1/2020;9/1/2020;4;4;10/1/2020;8/1/2020;;;;OSTEOMIOARTICULAR;LUMBALGIA;;;;;;;;;;\r\n32871748;Inculpable;Si;6/1/2020;Si;6/1/2020;6/1/2020;6/1/2020;9/1/2020;4;4;10/1/2020;9/1/2020;Definitiva;9/1/2020;;DIGESTIVO;GASTROENTERITIS;;;;;;;;;;\r\n32871447;Inculpable;Si;6/1/2020;Si;6/1/2020;6/1/2020;6/1/2020;11/1/2020;6;;12/1/2020;;Definitiva;9/1/2020;;DIGESTIVO;GASTROENTERITIS;;;;;;;;;;\r\n34827652;Inculpable;Si;6/1/2020;Si;5/1/2020;6/1/2020;5/1/2020;6/1/2020;2;;;;;;;OTORRINOLARINGOLOGICO;SINDROME GRIPAL;;;;;;;;;;\r\n17722036;Inculpable;Si;3/1/2020;Si;23/12/2019;3/1/2020;23/12/2019;21/1/2020;30;;;;;24/1/2020;;OSTEOMIOARTICULAR;LUMBOCIATALGIA;;;;;;;;;;\r\n26460959;Inculpable;Si;2/1/2020;Si;2/1/2020;3/1/2020;2/1/2020;3/1/2020;2;;;;;;;OSTEOMIOARTICULAR;SINDROME TUNEL CARPIANO;;;;;;;;;;\r\n39570156;Inculpable;Si;3/1/2020;Si;2/1/2020;3/1/2020;2/1/2020;3/1/2020;2;;;;;;;DIGESTIVO;VOMITOS;;;;;;;;;;\r\n40276627;Inculpable;Si;31/12/2019;Si;30/12/2019;31/12/2019;30/12/2019;31/12/2019;2;2;1/1/2020;;;;;DIGESTIVO;GASTROENTERITIS;;;;;;;;;;\r\n37284952;Inculpable;Si;30/12/2019;Si;30/12/2019;30/12/2019;30/12/2019;30/12/2019;1;;;;;;;OSTEOMIOARTICULAR;GONALGIA;;;;;;;;;;\r\n24275736;Inculpable;Si;30/12/2019;Si;28/12/2019;30/12/2019;28/12/2019;28/12/2019;1;;;;;;;OSTEOMIOARTICULAR;LUMBALGIA;;;;;;;;;;\r\n34822167;Inculpable;Si;23/12/2019;Si;23/12/2019;23/12/2019;23/12/2019;20/1/2020;29;;;;;20/1/2020;;OBSTETRICO;AMENAZA DE PARTO PREMATURO;;;;;;;;;;\r\n25910224;Inculpable;Si;23/12/2019;Si;20/12/2019;23/12/2019;20/12/2019;21/12/2019;2;;;;;;;DIGESTIVO;GASTROENTERITIS;;;;;;;;;;\r\n36263023;Inculpable;Si;23/12/2019;No;18/12/2019;23/12/2019;18/12/2019;22/1/2020;36;36;;;;22/1/2020;;OSTEOMIOARTICULAR;FRACTURA DE MU\xd1ECA O MANO;;;;;;;;;;\r\n36266249;Inculpable;Si;27/12/2019;Si;26/12/2019;27/12/2019;26/12/2019;27/12/2019;2;;;;;;;RESPIRATORIO;SINDROME GRIPAL;;;;;;;;;;\r\n40645705;Inculpable;Si;23/12/2019;Si;23/12/2019;23/12/2019;23/12/2019;10/1/2020;19;17;;;;10/1/2020;;OFTALMICO;CONJUNTIVITIS BACTERIANA;;;;;;;;;;\r\n41847675;Inculpable;Si;19/12/2019;Si;16/12/2019;19/12/2019;16/12/2019;6/1/2020;22;22;;7/1/2020;;;;OSTEOMIOARTICULAR;POLITRAUMATISMOS;;;;;;;;;;\r\n31155363;Inculpable;Si;19/12/2019;Si;18/12/2019;19/12/2019;18/12/2019;23/12/2019;6;6;;;;;;OSTEOMIOARTICULAR;POLITRAUMATISMOS;;;;;;;;;;\r\n37580190;Inculpable;Si;17/12/2019;Si;15/12/2019;17/12/2019;15/12/2019;16/12/2019;2;2;17/12/2019;;;;;DIGESTIVO;GASTROENTERITIS;;;;;;;;;;\r\n40360625;Inculpable;Si;16/12/2019;No;;;16/12/2019;16/12/2019;1;;;;;;;SALUD MENTAL;CRISIS NERVIOSA;;;;;;;;;;\r\n36266398;Inculpable;Si;16/12/2019;Si;14/12/2019;16/12/2019;14/12/2019;15/12/2019;2;;;;;;;OTORRINOLARINGOLOGICO;ODONTALGIA;;;;;;;;;;\r\n27863121;Inculpable;Si;16/12/2019;Si;16/12/2019;16/12/2019;16/12/2019;16/12/2019;1;;;;;;;OSTEOMIOARTICULAR;DORSALGIA;;;;;;;;;;\r\n25910224;Inculpable;Si;16/12/2019;Si;13/12/2019;16/12/2019;13/12/2019;13/12/2019;1;1;;;;;;OSTEOMIOARTICULAR;TENDINITIS DE MMSS;;;;;;;;;;\r\n40278876;Inculpable;Si;13/12/2019;Si;7/12/2019;13/12/2019;14/12/2019;21/1/2020;39;;;;;3/1/2019;;OSTEOMIOARTICULAR;CERVICALGIA;;;;;;;;;;\r\n27320385;Inculpable;Si;13/12/2019;Si;12/12/2019;13/12/2019;13/12/2019;9/1/2020;28;;;;;6/1/2019;;OSTEOMIOARTICULAR;LUMBOCIATALGIA;;;;;;;;;;\r\n27320385;Inculpable;No;;Si;11/12/2019;11/12/2019;10/12/2019;11/12/2019;2;;;;;;;CARDIOVASCULAR;HIPERTENSION;;;;;;;;;;\r\n34822167;Inculpable;Si;12/12/2019;Si;10/12/2019;12/12/2019;10/12/2019;17/12/2019;8;;18/12/2019;17/12/2019;;17/12/2019;;OBSTETRICO;HIPEREMESIS GRAVIDICA;;;;;;;;;;\r\n25015103;Inculpable;Si;12/12/2019;Si;11/12/2019;12/12/2019;11/12/2019;16/12/2019;6;;17/12/2019;17/12/2019;;17/12/2019;;QUIRURGICO;CIRUGIA OCULAR;;;;;;;;;;\r\n41287405;Inculpable;Si;5/12/2019;Si;4/12/2019;5/12/2019;4/12/2019;17/1/2020;45;;;;;10/1/2020;;QUIRURGICO;CIRUGIA DE RODILLA;;;;;;;;;;\r\n39048465;Inculpable;Si;11/12/2019;Si;10/12/2019;11/12/2019;10/12/2019;11/12/2019;2;2;12/12/2019;;;;;DIGESTIVO;GASTROENTERITIS;;;;;;;;;;\r\n36266398;Inculpable;Si;11/12/2019;Si;10/12/2019;11/12/2019;10/12/2019;13/12/2019;4;4;14/12/2019;12/12/2019;;;;OTORRINOLARINGOLOGICO;ODONTALGIA;;;;;;;;;;\r\n40645705;Inculpable;Si;9/12/2019;Si;9/12/2019;9/12/2019;9/12/2019;20/12/2019;12;;;;;20/12/2019;;OFTALMICO;CONJUNTIVITIS BACTERIANA;;;;;;;;;;\r\n38897929;Inculpable;Si;6/12/2019;Si;6/12/2019;6/12/2019;6/12/2019;7/12/2019;2;;;;;;;OTROS;OTROS;;;;;;;;;;\r\n25015103;Inculpable;Si;9/12/2019;Si;9/12/2019;9/12/2019;9/12/2019;9/12/2019;1;43811;;;;;;GENITOURINARIO;INFECCION URINARIA ;;;;;;;;;;\r\n36263023;Inculpable;No;9/12/2019;Si;7/12/2019;9/12/2019;7/12/2019;25/12/2019;19;;;;;23/12/2019;;OSTEOMIOARTICULAR;TRAUMATISMO DE MMII;;;;;;;;;;\r\n36814272;Inculpable;Si;6/12/2019;Si;6/12/2019;6/12/2019;6/12/2019;6/12/2019;1;;;;;;;NERVIOSO;MIGRA\xd1A;;;;;;;;;;\r\n35651308;Inculpable;Si;6/12/2019;Si;6/12/2019;6/12/2019;6/12/2019;7/12/2019;2;;;;;;;OSTEOMIOARTICULAR;CERVICALGIA;;;;;;;;;;\r\n32701892;Inculpable;Si;6/12/2019;Si;6/12/2019;6/12/2019;6/12/2019;6/12/2019;1;;;;;;;OTORRINOLARINGOLOGICO;ODONTALGIA;;;;;;;;;;\r\n38982217;Inculpable;Si;6/12/2019;Si;5/12/2019;6/12/2019;5/12/2019;24/1/2019;51;;;;;30/12/2019;;OSTEOMIOARTICULAR;TENDINITIS DE MMSS;;;;;;;;;;\r\n40645705;Inculpable;Si;6/12/2019;Si;6/12/2019;6/12/2019;6/12/2019;6/12/2019;1;43817;;;;;;OFTALMICO;CONJUNTIVITIS BACTERIANA;;;;;;;;;;\r\n40121903;Inculpable;Si;4/12/2019;Si;4/12/2019;4/12/2019;4/12/2019;11/12/2019;8;8;12/12/2019;11/12/2019;;11/12/2019;;OSTEOMIOARTICULAR;TENDINITIS DE MMSS;;;;;;;;;;\r\n34822167;Inculpable;Si;4/12/2019;Si;3/12/2019;4/12/2019;3/12/2019;5/12/2019;3;3;6/12/2019;;;;;OBSTETRICO;HIPEREMESIS GRAVIDICA;;;;;;;;;;\r\n25910224;Inculpable;Si;3/12/2019;Si;3/12/2019;3/12/2019;3/12/2019;3/12/2019;1;1;4/12/2019;;;;;OSTEOMIOARTICULAR;LUMBOCIATALGIA;;;;;;;;;;\r\n27413996;Inculpable;Si;3/12/2019;Si;2/12/2019;3/12/2019;2/12/2019;2/12/2019;1;1;3/12/2019;;;;;OTORRINOLARINGOLOGICO;VERTIGO VESTIBULAR;;;;;;;;;;\r\n36814272;Inculpable;Si;2/12/2019;Si;29/11/2019;2/12/2019;29/11/2019;4/12/2019;6;;5/12/2019;;;4/12/2019;;DIGESTIVO;DISPEPSIA;;;;;;;;;;\r\n30501842;Inculpable;Si;2/12/2019;Si;2/12/2019;2/12/2019;2/12/2019;4/12/2019;3;;;;;;;OSTEOMIOARTICULAR;TRAUMATISMO DE MMII;;;;;;;;;;\r\n35652259;Inculpable;Si;2/12/2019;Si;30/11/2019;2/12/2019;30/11/2019;30/11/2019;1;;;;;;;OSTEOMIOARTICULAR;TRAUMATISMO DE MMII;;;;;;;;;;\r\n36002873;Inculpable;Si;29/11/2019;Si;29/11/2019;29/11/2019;29/11/2019;25/1/2019;58;;;;;27/12/2019;;OBSTETRICO;AMENAZA DE PARTO PREMATURO;;;;;;;;;;\r\n35749663;Inculpable;Si;29/11/2019;Si;29/11/2019;29/11/2019;29/11/2019;29/11/2019;1;;;;;;;DIGESTIVO;DIARREA;;;;;;;;;;\r\n34827170;Inculpable;Si;29/11/2019;Si;28/11/2019;29/11/2019;28/11/2019;29/11/2019;2;;;;;;;OSTEOMIOARTICULAR;MORDEDURA DE PERRO ;;;;;;;;;;\r\n35651689;Inculpable;Si;28/11/2019;Si;27/11/2019;27/11/2019;27/11/2019;29/11/2019;3;3;30/11/2019;;;;;DIGESTIVO;GASTROENTERITIS;;;;;;;;;;\r\n23027438;Inculpable;Si;28/11/2019;Si;27/11/2019;28/11/2019;27/11/2019;29/11/2019;3;3;30/11/2019;;;;;CARDIOVASCULAR;HIPERTENSION;;;;;;;;;;\r\n32556673;Inculpable;Si;28/11/2019;Si;27/11/2019;28/11/2019;27/11/2019;2/12/2019;6;;;;;29/11/2019;;OSTEOMIOARTICULAR;POLITRAUMATISMOS;;;;;;;;;;\r\n25015103;Inculpable;Si;27/11/2019;Si;22/11/2019;27/11/2019;23/11/2019;23/11/2019;1;1;27/11/2019;27/11/2019;Definitiva;;;OTROS;OTROS;;;;;;;;;;\r\n36264406;Inculpable;Si;26/11/2019;Si;22/11/2019;26/11/2019;22/11/2019;11/12/2019;20;;;;;3/12/2019;;OSTEOMIOARTICULAR;TENDINITIS DE MMSS;;;;;;;;;;\r\n38329077;Inculpable;Si;26/11/2019;No;;;26/11/2019;6/1/2019;42;42;;;;30/12/2019;;OSTEOMIOARTICULAR;TENDINITIS DE QUERVAIN;;;;;;;;;;\r\n37711780;Inculpable;Si;26/11/2019;Si;26/11/2019;26/11/2019;26/11/2019;27/11/2019;2;2;28/11/2019;;;;;OTORRINOLARINGOLOGICO;SINUSITIS AGUDA;;;;;;;;;;\r\n27518061;Inculpable;Si;25/11/2019;Si;22/11/2019;25/11/2019;22/11/2019;22/11/2019;1;;;;;;;OTROS;;;;;;;;;;;\r\n36263694;Inculpable;Si;25/11/2019;Si;25/11/2019;25/11/2019;25/11/2019;27/11/2019;3;;;;;;;OSTEOMIOARTICULAR;MIALGIAS;;;;;;;;;;\r\n26152958;Inculpable;Si;22/11/2019;Si;22/11/2019;22/11/2019;22/11/2019;23/11/2019;2;;;;;;;RESPIRATORIO;FARINGITIS;;;;;;;;;;\r\n35651689;Inculpable;Si;22/11/2019;Si;22/11/2019;22/11/2019;22/11/2019;23/11/2019;2;;;;;;;DIGESTIVO;GASTROENTERITIS;;;;;;;;;;\r\n34827170;Inculpable;Si;22/11/2019;Si;22/11/2019;22/11/2019;22/11/2019;22/11/2019;1;;;;;;;OTORRINOLARINGOLOGICO;ODONTALGIA;;;;;;;;;;\r\n35446466;Inculpable;Si;20/11/2019;Si;20/11/2019;20/11/2019;20/11/2019;15/1/2020;57;3;;;;27/12/2019;;SALUD MENTAL;TRANSTORNO DE ANSIEDAD;;;;;;;;;;\r\n40450167;Inculpable;Si;20/11/2019;Si;19/11/2019;20/11/2019;19/11/2019;20/11/2019;2;2;21/11/2019;;;;;OTORRINOLARINGOLOGICO;VERTIGO VESTIBULAR;;;;;;;;;;\r\n37260910;Inculpable;Si;19/11/2019;Si;20/11/2019;19/11/2019;20/11/2019;29/11/2019;10;10;;;;29/11/2019;;OSTEOMIOARTICULAR;LESION DE MU\xd1ECA Y/O MANO;;;;;;;;;;\r\n38329077;Inculpable;Si;19/11/2019;Si;16/11/2019;19/11/2019;16/11/2019;17/11/2019;2;2;18/11/2019;;;;;DIGESTIVO;GASTROENTERITIS;;;;;;;;;;\r\n38897066;Inculpable;Si;14/11/2019;Si;14/11/2019;14/11/2019;14/11/2019;28/11/2019;15;15;29/11/2019;28/11/2019;;28/11/2019;;OSTEOMIOARTICULAR;TENDINITIS DE MMSS;;;;;;;;;;\r\n35749534;Inculpable;Si;14/11/2019;Si;12/11/2019;14/11/2019;12/11/2019;17/1/2020;67;67;;;;17/1/2020;;OBSTETRICO;AMENAZA DE PARTO PREMATURO;;;;;;;;;;\r\n40121903;Inculpable;Si;12/11/2019;Si;11/11/2019;12/11/2019;11/11/2019;11/11/2019;1;1;12/11/2019;;;;;PIEL;URTICARIA;;;;;;;;;;\r\n17722036;Inculpable;Si;12/11/2019;Si;11/11/2019;12/11/2019;11/11/2019;28/11/2019;18;18;;;;28/11/2019;;OSTEOMIOARTICULAR;LUMBALGIA;;;;;;;;;;\r\n28153881;Inculpable;Si;11/11/2019;Si;11/11/2019;11/11/2019;11/11/2019;12/11/2019;2;2;13/11/2019;;;;;OFTALMICO;CONJUNTIVITIS BACTERIANA;;;;;;;;;;\r\n29848817;Inculpable;Si;8/8/2019;Si;7/8/2019;8/8/2019;7/8/2019;7/8/2019;1;;;;;;;GENITOURINARIO;INFECCION URINARIA ;;;;;;;;;;\r\n37284952;Inculpable;Si;6/11/2019;Si;6/11/2019;6/11/2019;6/11/2019;11/11/2019;6;6;12/11/2019;;;;;OSTEOMIOARTICULAR;GONALGIA;;;;;;;;;;\r\n38982217;Inculpable;Si;5/11/2019;Si;4/11/2019;5/11/2019;4/11/2019;5/11/2019;2;2;6/11/2019;;;;;RESPIRATORIO;SINDROME GRIPAL;;;;;;;;;;\r\n25015103;Inculpable;No;31/10/2019;Si;31/10/2019;31/10/2019;31/10/2019;21/11/2019;22;;22/11/2019;20/11/2019;;20/11/2019;;RESPIRATORIO;ANEMIA;;;;;;;;;;\r\n37571863;Inculpable;No;1/11/2019;No;1/11/2019;1/11/2019;1/11/2019;1/11/2019;1;;;;;;;OTORRINOLARINGOLOGICO;FARINGOAMIGDALITIS;;;;;;;;;;\r\n31718701;Inculpable;No;;Si;24/10/2019;31/10/2019;24/10/2019;23/11/2019;31;31;23/11/2019;23/11/2019;Definitiva;12/11/2019;;QUIRURGICO;APENDICETOMIA;;;;;;;;;;\r\n31880814;Inculpable;Si;31/10/2019;Si;31/10/2019;31/10/2019;31/10/2019;31/10/2019;1;1;1/11/2019;;;;;OTORRINOLARINGOLOGICO;EXTRACCION MOLAR;;;;;;;;;;\r\n38329077;Inculpable;Si;31/10/2019;Si;28/10/2019;31/10/2019;28/10/2019;30/10/2019;3;3;31/10/2019;;;;;DIGESTIVO;GASTROENTERITIS;;;;;;;;;;\r\n35468468;Inculpable;Si;30/10/2019;Si;29/10/2019;30/10/2019;29/10/2019;30/10/2019;2;2;31/10/2019;;;;;DIGESTIVO;GASTROENTEROCOLITIS;;;;;;;;;;\r\n32376162;Inculpable;Si;30/10/2019;Si;29/10/2019;30/10/2019;29/10/2019;29/10/2019;1;1;30/10/2019;;;;;OTROS;OTROS;;;;;;;;;;\r\n31565477;Inculpable;Si;29/10/2019;Si;29/10/2019;29/10/2019;29/10/2019;1/11/2019;4;4;;;;31/10/2019;;GENITOURINARIO;INFECCION URINARIA ;;;;;;;;;;\r\n36814272;Inculpable;Si;29/10/2019;Si;28/10/2019;29/10/2019;28/10/2019;30/10/2019;3;3;31/10/2019;;;;;DIGESTIVO;GASTROENTEROCOLITIS;;;;;;;;;;\r\n37711780;Inculpable;Si;29/10/2019;Si;29/10/2019;29/10/2019;29/10/2019;29/10/2019;1;1;30/10/2019;;;;;OFTALMICO;ORZUELO;;;;;;;;;;\r\n40363139;Inculpable;Si;28/10/2019;Si;26/10/2019;28/10/2019;26/10/2019;28/10/2019;3;3;;;;;;DIGESTIVO;DOLOR ABDOMINAL;;;;;;;;;;\r\n24275736;Inculpable;Si;28/10/2019;Si;28/10/2019;28/10/2019;28/10/2019;31/10/2019;4;;;;;31/10/2019;;DIGESTIVO;DOLOR ABDOMINAL;;;;;;;;;;\r\n32860828;Inculpable;Si;28/10/2019;Si;25/10/2019;28/10/2019;25/10/2019;28/10/2019;4;;29/10/2019;;;;;RESPIRATORIO;NEUMONIA BACTERIANA;;;;;;;;;;\r\n24275736;Inculpable;Si;25/10/2019;Si;25/10/2019;25/10/2019;25/10/2019;26/10/2019;2;;;;;;;GENITOURINARIO;COLICO RENAL;;;;;;;;;;\r\n38329077;Inculpable;Si;25/10/2019;Si;25/10/2019;25/10/2019;25/10/2019;26/10/2019;2;2;;;;;;CARDIOVASCULAR;HIPERTENSION;;;;;;;;;;\r\n38329077;Inculpable;Si;24/10/2019;Si;24/10/2019;24/10/2019;24/10/2019;24/10/2019;1;1;25/10/2019;;;;;CARDIOVASCULAR;HIPERTENSION;;;;;;;;;;\r\n40363139;Inculpable;Si;23/10/2019;Si;23/10/2019;23/10/2019;23/10/2019;25/10/2019;3;3;26/10/2019;24/10/2019;;;;DIGESTIVO;OTRO;;;;;;;;;;\r\n31155363;Inculpable;Si;23/10/2019;Si;23/10/2019;23/10/2019;23/10/2019;23/10/2019;1;1;24/10/2019;;;;;NERVIOSO;MIGRA\xd1A;;;;;;;;;;\r\n38722929;Inculpable;Si;23/10/2019;Si;22/10/2019;23/10/2019;22/10/2019;25/10/2019;4;43762;;;;;;OTORRINOLARINGOLOGICO;EXTRACCION MOLAR;;;;;;;;;;\r\n32701892;Inculpable;Si;22/10/2019;Si;21/10/2019;22/10/2019;21/10/2019;21/10/2019;1;1;22/10/2019;;;;;CARDIOVASCULAR;HIPERTENSION;;;;;;;;;;\r\n16948407;Inculpable;Si;22/10/2019;Si;21/10/2019;22/10/2019;21/10/2019;22/10/2019;2;2;23/10/2019;;;;;OFTALMICO;CONJUNTIVITIS VIROSICA;;;;;;;;;;\r\n39181998;Inculpable;Si;22/10/2019;Si;19/10/2019;22/10/2019;19/8/2019;19/10/2019;1;1;21/10/2019;;;;;OSTEOMIOARTICULAR;POLITRAUMATISMOS;;;;;;;;;;\r\n24275736;Inculpable;Si;21/10/2019;Si;19/10/2019;21/1/2019;19/10/2019;21/10/2019;3;;22/10/2019;;;;;OSTEOMIOARTICULAR;DORSALGIA;;;;;;;;;;\r\n35651308;Inculpable;Si;21/10/2019;Si;21/10/2019;21/10/2019;21/10/2019;22/10/2019;2;;;;;;;RESPIRATORIO;SINDROME GRIPAL;;;;;;;;;;\r\n32733094;Inculpable;Si;18/10/2019;Si;18/10/2019;18/10/2019;18/10/2019;18/10/2019;1;;;;;;;OTROS;OTROS;;;;;;;;;;\r\n34333846;Inculpable;Si;18/10/2019;Si;18/10/2019;18/10/2019;18/10/2019;20/10/2019;3;;;;;;;RESPIRATORIO;BRONQUITIS;;;;;;;;;;\r\n31257722;Inculpable;Si;18/10/2019;Si;18/10/2019;18/10/2019;18/10/2019;18/10/2019;1;;19/10/2019;;;;;DIGESTIVO;GASTROENTERITIS;;;;;;;;;;\r\n35651689;Inculpable;No;18/10/2019;Si;18/10/2019;18/10/2019;18/10/2019;19/10/2019;2;;;;;;;DIGESTIVO;GASTROENTEROCOLITIS;;;;;;;;;;\r\n35651689;Inculpable;Si;16/10/2019;Si;16/10/2019;16/10/2019;16/10/2019;17/10/2019;2;2;18/10/2019;;;;;DIGESTIVO;GASTROENTERITIS;;;;;;;;;;\r\n34827726;Inculpable;Si;14/10/2019;Si;14/10/2019;14/10/2019;14/10/2019;14/10/2019;1;1;;;;;;OFTALMICO;TRAUMATISMO OCULAR;;;;;;;;;;\r\n33815292;Inculpable;Si;11/10/2019;Si;11/10/2019;11/10/2019;11/10/2019;12/10/2019;2;;;;;;;RESPIRATORIO;SINDROME GRIPAL;;;;;;;;;;\r\n24536097;Inculpable;Si;11/10/2019;Si;2/10/2019;11/10/2019;2/10/2019;20/10/2019;19;;;;Con restricci\xf3n;3/12/2019;;DIGESTIVO;DOLOR ABDOMINAL;;;;;;;;;;\r\n37580190;Inculpable;Si;9/10/2019;No;;;9/10/2019;10/10/2019;2;;11/10/2019;10/10/2019;;10/10/2019;;OSTEOMIOARTICULAR;TENDINITIS DE HOMBRO;;;;;;;;;;\r\n26152958;Inculpable;Si;8/10/2019;Si;7/10/2019;8/10/2019;7/10/2019;8/10/2019;2;;9/10/2019;;;;;OSTEOMIOARTICULAR;ARTRITIS;;;;;;;;;;\r\n40450167;Inculpable;Si;8/10/2019;Si;7/10/2019;8/10/2019;7/10/2019;8/10/2019;2;2;9/10/2019;;;;;DIGESTIVO;GASTROENTEROCOLITIS;;;;;;;;;;\r\n31204832;Inculpable;Si;8/10/2019;Si;7/10/2019;8/10/2019;7/10/2019;7/10/2019;1;1;8/10/2019;;;;;DIGESTIVO;GASTROENTEROCOLITIS;;;;;;;;;;\r\n36002873;Inculpable;Si;8/10/2019;Si;7/10/2019;8/10/2019;7/10/2019;21/10/2019;15;;;;;17/10/2019;;OBSTETRICO;AMENAZA DE PARTO PREMATURO;;;;;;;;;;\r\n16948407;Inculpable;Si;4/10/2019;Si;4/10/2019;4/10/2019;4/10/2019;5/10/2019;2;2;;;;;;OSTEOMIOARTICULAR;TENDINITIS DE MMII;;;;;;;;;;\r\n36001710;Inculpable;Si;3/10/2019;Si;3/10/2019;3/10/2019;3/10/2019;4/10/2019;2;2;5/10/2019;;;;;DIGESTIVO;GASTROENTERITIS;;;;;;;;;;\r\n32871447;Inculpable;Si;3/10/2019;Si;3/10/2019;3/10/2019;3/10/2019;4/10/2019;2;2;5/10/2019;;;;;OSTEOMIOARTICULAR;TENDINITIS DE MMSS;;;;;;;;;;\r\n23027438;Inculpable;Si;30/9/2019;Si;30/9/2019;30/9/2019;30/9/2019;30/9/2019;1;1;;;;;;DIGESTIVO;GASTROENTERITIS;;;;;;;;;;\r\n40363139;Inculpable;Si;20/9/2019;Si;20/9/2019;20/9/2019;20/9/2019;22/9/2019;3;;;;;;;DIGESTIVO;GASTROENTERITIS;;;;;;;;;;\r\n17722036;Inculpable;No;;Si;28/8/2019;20/9/2019;28/8/2019;6/10/2019;40;;;;Con restricci\xf3n;20/9/2019;;OSTEOMIOARTICULAR;CERVICALGIA;;;;;;;;;;\r\n40450167;Inculpable;Si;20/9/2019;Si;19/9/2019;20/9/2019;19/9/2019;19/9/2019;1;1;;;;;;OSTEOMIOARTICULAR;LUMBALGIA;;;;;;;;;;\r\n27863121;Inculpable;Si;27/9/2019;Si;26/9/2019;27/9/2019;26/9/2019;28/9/2019;3;3;30/9/2019;;;;;DIGESTIVO;GASTROENTEROCOLITIS;;;;;;;;;;\r\n28415239;Inculpable;Si;20/9/2019;Si;20/9/2019;20/9/2019;20/9/2019;22/9/2019;3;3;;;;;;RESPIRATORIO;SINDROME GRIPAL;;;;;;;;;;\r\n31366746;Inculpable;Si;26/9/2019;Si;25/9/2019;26/9/2019;25/9/2019;26/9/2019;2;2;27/9/2019;;;;;OFTALMICO;QUERATITIS;;;;;;;;;;\r\n35651689;Inculpable;Si;24/9/2019;Si;21/9/2019;24/9/2019;21/9/2019;21/9/2019;1;1;22/9/2019;;;;;DIGESTIVO;GASTROENTERITIS;;;;;;;;;;\r\n39124533;Inculpable;Si;17/9/2019;Si;17/9/2019;17/9/2019;17/9/2019;24/9/2019;8;8;24/9/2019;24/9/2019;;24/9/2019;;PIEL;CELULITIS;;;;;;;;;;\r\n34832621;Inculpable;Si;17/9/2019;Si;17/9/2019;17/9/2019;17/9/2019;17/9/2019;1;1;18/9/2019;;;;;DIGESTIVO;DOLOR ABDOMINAL;;;;;;;;;;\r\n40645705;Inculpable;Si;16/9/2019;Si;14/9/2019;16/9/2019;15/9/2019;17/10/2019;33;;18/10/2019;17/10/2019;;27/9/2019;;OSTEOMIOARTICULAR;ESGUINCE O DESGARRO MMII;;;;;;;;;;\r\n37260910;Inculpable;Si;16/9/2019;Si;16/9/2019;16/9/2019;16/9/2019;16/9/2019;1;;;;;;;DIGESTIVO;VOMITOS;;;;;;;;;;\r\n36264406;Inculpable;Si;13/9/2019;Si;13/9/2019;13/9/2019;13/9/2019;8/11/2019;57;;;;;25/10/2019;;OSTEOMIOARTICULAR;TENDINITIS DE MMSS;;;;;;;;;;\r\n35652259;Inculpable;Si;13/9/2019;Si;13/9/2019;13/9/2019;13/9/2019;14/9/2019;2;2;;;;;;OSTEOMIOARTICULAR;LUMBALGIA;;;;;;;;;;\r\n37711780;Inculpable;Si;13/9/2019;Si;13/9/2019;13/9/2019;13/9/2019;13/9/2019;1;1;;;;;;OSTEOMIOARTICULAR;LUMBALGIA;;;;;;;;;;\r\n36814272;Inculpable;No;16/9/2019;Si;16/9/2019;16/9/2019;16/9/2019;18/9/2019;3;3;;;;;;RESPIRATORIO;SINDROME GRIPAL;;;;;;;;;;\r\n33077669;Inculpable;Si;10/9/2019;Si;9/9/2019;10/9/2019;10/9/2019;19/9/2019;10;2;;;;12/9/2019;;OSTEOMIOARTICULAR;TENDINITIS DE MMII;;;;;;;;;;\r\n39629444;Inculpable;Si;9/9/2019;Si;9/9/2019;9/9/2019;9/9/2019;9/9/2019;1;1;10/9/2019;;;;;DIGESTIVO;VOMITOS;;;;;;;;;;\r\n40645705;Inculpable;Si;6/9/2019;Si;5/9/2019;6/9/2019;5/9/2019;7/9/2019;3;3;9/9/2019;;;;;OSTEOMIOARTICULAR;ESGUINCE O DESGARRO MMII;;;;;;;;;;\r\n28241285;Inculpable;Si;5/9/2019;Si;5/9/2019;5/9/2019;5/9/2019;7/9/2019;3;3;8/9/2019;;;;;OSTEOMIOARTICULAR;LUMBALGIA;;;;;;;;;;\r\n38897929;Inculpable;Si;5/9/2019;Si;5/9/2019;5/9/2019;5/9/2019;2/10/2019;28;;3/10/2019;2/10/2019;;;;OSTEOMIOARTICULAR;TENDINITIS DE MMSS;;;;;;;;;;\r\n30501686;Inculpable;Si;5/9/2019;Si;5/9/2019;5/9/2019;5/9/2019;5/9/2019;1;1;6/9/2019;;;;;DIGESTIVO;GASTROENTERITIS;;;;;;;;;;\r\n37765693;Inculpable;Si;5/9/2019;Si;5/9/2019;5/9/2019;5/9/2019;4/12/2019;91;;;;;4/12/2019;;OSTEOMIOARTICULAR;TENDINITIS DE MMSS;;;;;;;;;;\r\n29848817;Inculpable;Si;4/9/2019;Si;29/8/2019;4/9/2019;29/8/2019;27/9/2019;30;30;;;;27/9/2019;;GENITOURINARIO;OTRO;;;;;;;;;;\r\n31155363;Inculpable;Si;3/9/2019;Si;3/9/2019;3/9/2019;3/9/2019;4/9/2019;2;2;5/9/2019;;;;;NERVIOSO;CEFALEA;;;;;;;;;;\r\n28158307;Inculpable;Si;2/9/2019;Si;30/9/2019;2/9/2019;30/8/2019;8/9/2019;10;;9/9/2019;3/9/2019;;;;OSTEOMIOARTICULAR;ESGUINCE O DESGARRO MMII;;;;;;;;;;\r\n35651640;Inculpable;Si;2/9/2019;Si;30/8/2019;2/9/2019;30/8/2019;31/8/2019;2;;;;;;;DIGESTIVO;GASTROENTERITIS;;;;;;;;;;\r\n37153462;Inculpable;Si;30/8/2019;Si;29/8/2019;30/8/2019;29/8/2019;31/8/2019;3;3;;;;;;OTROS;OTROS;;;;;;;;;;\r\n33496476;Inculpable;Si;29/8/2019;Si;29/8/2019;30/8/2019;29/8/2019;19/1/2020;144;;;;;26/12/2019;;SALUD MENTAL;SINDROME DEPRESIVO;;;;;;;;;;\r\n22453494;Inculpable;Si;29/8/2019;Si;29/8/2019;29/8/2019;29/8/2019;31/8/2019;3;;2/9/2019;;;;;RESPIRATORIO;SINDROME GRIPAL;;;;;;;;;;\r\n27320385;Inculpable;Si;27/8/2019;Si;26/8/2019;27/8/2019;26/8/2019;3/10/2019;39;;4/10/2019;3/10/2019;;;;OSTEOMIOARTICULAR;LUMBOCIATALGIA;;;;;;;;;;\r\n40278876;Inculpable;Si;27/8/2019;Si;26/8/2019;27/8/2019;26/8/2019;1/10/2019;37;;;;;30/9/2019;;OSTEOMIOARTICULAR;43725;;;;;;;;;;\r\n26845184;Inculpable;Si;27/8/2019;Si;26/8/2019;27/8/2019;26/8/2019;27/8/2019;2;2;28/8/2019;;;;;OTORRINOLARINGOLOGICO;EXTRACCION MOLAR;;;;;;;;;;\r\n34565172;Inculpable;Si;26/8/2019;Si;22/8/2019;26/8/2019;22/8/2019;25/8/2019;4;4;26/8/2019;;;;;DIGESTIVO;ULCERA GASTRODUODENAL;;;;;;;;;;\r\n38329077;Inculpable;Si;23/8/2019;Si;23/8/2019;23/8/2019;23/8/2019;6/9/2019;15;;;;;2/9/2019;;OSTEOMIOARTICULAR;TENDINITIS DE MMII;;;;;;;;;;\r\n35749534;Inculpable;Si;26/8/2019;Si;26/8/2019;26/8/2019;26/8/2019;11/9/2019;17;;;;;;;DIGESTIVO;VOMITOS;;;;;;;;;;\r\n40363139;Inculpable;Si;23/8/2019;Si;22/8/2019;23/8/2019;22/8/2019;23/8/2019;2;2;26/8/2019;;;;;DIGESTIVO;GASTROENTERITIS;;;;;;;;;;\r\n40363139;Inculpable;Si;21/8/2019;Si;20/8/2019;21/8/2019;20/8/2019;21/8/2019;2;2;22/8/2019;;;;;DIGESTIVO;GASTROENTERITIS;;;;;;;;;;\r\n29401467;Inculpable;Si;21/8/2019;Si;20/8/2019;21/8/2019;20/8/2019;3/9/2019;15;15;;;;3/9/2019;;OSTEOMIOARTICULAR;CERVICALGIA;;;;;;;;;;\r\n35653742;Inculpable;Si;20/8/2019;Si;20/8/2019;20/8/2019;20/8/2019;6/10/2019;48;48;;;;;;OBSTETRICO;AMENAZA DE PARTO PREMATURO;;;;;;;;;;\r\n36263023;Inculpable;Si;20/8/2019;Si;19/8/2019;20/8/2019;19/8/2019;20/8/2019;2;2;21/8/2019;;;;;GENITOURINARIO;METRORRAGIA;;;;;;;;;;\r\n35650794;Inculpable;Si;19/8/2019;Si;14/8/2019;14/8/2019;14/8/2019;1/9/2019;19;;;;;2/9/2019;;GENITOURINARIO;CA UTERO;;;;;;;;;;\r\n32959474;Inculpable;Si;19/8/2019;Si;19/8/2019;16/8/2019;19/8/2019;27/11/2019;101;;;;;8/11/2019;;SALUD MENTAL;SINDROME DEPRESIVO;;;;;;;;;;\r\n35651308;Inculpable;Si;19/8/2019;Si;19/8/2019;19/8/2019;19/8/2019;20/8/2019;2;2;;;;;;RESPIRATORIO;SINDROME GRIPAL;;;;;;;;;;\r\n37446963;Inculpable;Si;16/8/2019;Si;15/8/2019;16/8/2019;16/8/2019;13/9/2019;29;13;;;;28/8/2019;;SALUD MENTAL;TRANSTORNO DE ANSIEDAD;;;;;;;;;;\r\n32895479;Inculpable;Si;16/8/2019;Si;15/8/2019;16/8/2019;15/8/2019;17/8/2019;3;3;18/8/2019;;;;;OTORRINOLARINGOLOGICO;EXTRACCION MOLAR;;;;;;;;;;\r\n24536097;Inculpable;Si;16/8/2019;Si;15/8/2019;16/8/2019;15/8/2019;16/8/2019;2;2;17/8/2019;;;;;RESPIRATORIO;SINDROME GRIPAL;;;;;;;;;;\r\n32432197;Inculpable;Si;15/8/2019;Si;16/8/2019;15/8/2019;16/8/2019;30/8/2019;15;15;;;;30/8/2019;;QUIRURGICO;CIRUGIA DE MMSS;;;;;;;;;;\r\n23394712;Inculpable;Si;15/8/2019;Si;15/8/2019;15/8/2019;15/8/2019;16/8/2019;2;2;17/8/2019;;;;;RESPIRATORIO;BRONQUITIS;;;;;;;;;;\r\n35749534;Inculpable;Si;14/8/2019;Si;14/8/2019;14/8/2019;14/8/2019;15/8/2019;2;2;;;;;;OBSTETRICO;AMENAZA DE PARTO PREMATURO;;;;;;;;;;\r\n37712496;Inculpable;Si;13/8/2019;Si;13/8/2019;13/8/2019;13/8/2019;13/8/2019;1;1;14/8/2019;;;;;DIGESTIVO;GASTROENTERITIS;;;;;;;;;;\r\n36266398;Inculpable;Si;13/8/2019;Si;13/8/2019;13/8/2019;13/8/2019;19/9/2019;38;38;20/9/2019;;;;;OSTEOMIOARTICULAR;LUMBOCIATALGIA;;;;;;;;;;\r\n30232100;Inculpable;Si;13/8/2019;Si;15/8/2019;13/8/2019;15/8/2019;30/10/2019;77;77;30/10/2019;30/10/2019;Con restricci\xf3n;30/1/2020;;QUIRURGICO;CIRUGIA DE COLUMNA CERVICAL;;;;;;;;;;\r\n33077669;Inculpable;Si;13/8/2019;Si;13/8/2019;13/8/2019;13/8/2019;22/8/2019;10;10;23/8/2019;;Definitiva;;;OSTEOMIOARTICULAR;TENDINITIS DE MMII;;;;;;;;;;\r\n38904636;Inculpable;Si;12/8/2019;No;12/8/2019;12/8/2019;12/8/2019;8/11/2019;89;89;;;;;;OBSTETRICO;AMENAZA DE PARTO PREMATURO;;;;;;;;;;\r\n37570307;Inculpable;Si;9/8/2019;Si;8/8/2019;9/8/2019;8/8/2019;29/8/2019;22;22;28/8/2019;;;;;OBSTETRICO;ABORTO;;;;;;;;;;\r\n37153462;Inculpable;Si;9/8/2019;Si;8/8/2019;9/8/2019;9/8/2019;11/8/2019;3;3;12/8/2019;;;;;OTROS;OTROS;;;;;;;;;;\r\n38896554;Inculpable;Si;9/8/2019;Si;9/8/2019;9/8/2019;9/8/2019;10/8/2019;2;2;;;;;;OTORRINOLARINGOLOGICO;FARINGOAMIGDALITIS;;;;;;;;;;\r\n23394712;Inculpable;Si;8/8/2019;No;;;7/8/2019;8/8/2019;2;2;9/8/2019;;;;;OSTEOMIOARTICULAR;GONALGIA;;;;;;;;;;\r\n34827652;Inculpable;Si;7/8/2019;Si;6/8/2019;7/8/2019;6/8/2019;6/8/2019;1;;7/8/2019;;;;;RESPIRATORIO;SINDROME GRIPAL;;;;;;;;;;\r\n35651689;Inculpable;Si;7/8/2019;Si;7/8/2019;7/8/2019;7/8/2019;8/8/2019;2;2;;;;8/8/2019;;DIGESTIVO;GASTROENTERITIS;;;;;;;;;;\r\n37765693;Inculpable;Si;6/8/2019;Si;5/8/2019;6/8/2019;5/8/2019;22/8/2019;18;;23/8/2019;;;;;OSTEOMIOARTICULAR;TENDINITIS DE MMSS;;;;;;;;;;\r\n39048465;Inculpable;Si;5/8/2019;Si;5/8/2019;5/8/2019;5/8/2019;6/8/2019;2;2;7/8/2019;;;;;RESPIRATORIO;SINDROME GRIPAL;;;;;;;;;;\r\n46483574;Inculpable;Si;5/8/2019;Si;5/8/2019;5/8/2019;5/8/2019;28/10/2019;85;17;;;;28/10/2019;;OSTEOMIOARTICULAR;MENISCOPATIA;;;;;;;;;;\r\n29848817;Inculpable;Si;5/8/2019;Si;2/8/2019;5/8/2019;2/8/2019;3/8/2019;2;2;4/5/2019;4/5/2019;Definitiva;;;OTORRINOLARINGOLOGICO;OTITIS MEDIA AGUDA;;;;;;;;;;\r\n34166660;Inculpable;Si;29/7/2019;Si;26/7/2019;29/7/2019;26/7/2019;9/1/2020;168;;;;;20/12/2019;;SALUD MENTAL;TRANSTORNO DE ANSIEDAD;;;;;;;;;;\r\n46483574;Inculpable;Si;2/8/2019;Si;29/7/2019;2/8/2019;29/7/2019;31/10/2019;95;95;1/11/2019;;Definitiva;30/10/2019;;OSTEOMIOARTICULAR;43720;;;;;;;;;;\r\n38982217;Inculpable;Si;2/8/2019;Si;18/1/1900;2/8/2019;1/8/2019;3/8/2019;3;3;5/8/2019;;;;;RESPIRATORIO;NEUMONIA BACTERIANA;;;;;;;;;;\r\n28241412;Inculpable;Si;1/8/2019;Si;29/7/2019;1/8/2019;29/7/2019;1/2/2020;187;;;;;20/1/2020;;OSTEOMIOARTICULAR;LUMBALGIA;;;;;;;;;;\r\n36002873;Inculpable;Si;1/8/2019;Si;5/8/2019;1/8/2019;5/8/2019;8/9/2019;35;35;;;;9/9/2019;;OSTEOMIOARTICULAR;LESION DE MU\xd1ECA Y/O MANO;;;;;;;;;;\r\n38904636;Inculpable;Si;1/8/2019;Si;1/8/2019;1/8/2019;1/8/2019;1/8/2019;1;1;2/8/2019;;;;;GENITOURINARIO;INFECCION URINARIA ;;;;;;;;;;\r\n' (<type 'str'>)
+[10/Jan/2020 18:04:55] ERROR [django.server:124] "POST /ausentismos/ausencias_importar/ HTTP/1.1" 500 206200
+[10/Jan/2020 18:05:16] ERROR [django.request:135] Internal Server Error: /ausentismos/ausencias_importar/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "D:\Repo\laboralsalud\ausentismos\views.py", line 430, in ausencias_importar
+    decoded_file = smart_str(csv_file.read()).replace(",", "").replace("'", "")
+UnicodeDecodeError: 'ascii' codec can't decode byte 0xd3 in position 42: ordinal not in range(128)
+[10/Jan/2020 18:05:17] ERROR [django.server:124] "POST /ausentismos/ausencias_importar/ HTTP/1.1" 500 105394
+[10/Jan/2020 18:07:20] ERROR [django.request:135] Internal Server Error: /ausentismos/ausencias_importar/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "D:\Repo\laboralsalud\ausentismos\views.py", line 439, in ausencias_importar
+    next(reader) #Omito el Encabezado
+UnicodeEncodeError: 'ascii' codec can't encode character u'\xd3' in position 42: ordinal not in range(128)
+[10/Jan/2020 18:07:21] ERROR [django.server:124] "POST /ausentismos/ausencias_importar/ HTTP/1.1" 500 99551
+[10/Jan/2020 18:09:06] ERROR [django.request:135] Internal Server Error: /ausentismos/ausencias_importar/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "D:\Repo\laboralsalud\ausentismos\views.py", line 439, in ausencias_importar
+    next(reader) #Omito el Encabezado
+UnicodeEncodeError: 'ascii' codec can't encode character u'\xd3' in position 42: ordinal not in range(128)
+[10/Jan/2020 18:09:07] ERROR [django.server:124] "POST /ausentismos/ausencias_importar/ HTTP/1.1" 500 99551
+[10/Jan/2020 18:11:07] ERROR [django.request:135] Internal Server Error: /ausentismos/ausencias_importar/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "D:\Repo\laboralsalud\ausentismos\views.py", line 430, in ausencias_importar
+    decoded_file = csv_file.read().replace(",", "").replace("'", "")
+UnicodeDecodeError: 'ascii' codec can't decode byte 0xd3 in position 42: ordinal not in range(128)
+[10/Jan/2020 18:11:08] ERROR [django.server:124] "POST /ausentismos/ausencias_importar/ HTTP/1.1" 500 105383
+[10/Jan/2020 18:13:52] ERROR [django.request:135] Internal Server Error: /ausentismos/ausencias_importar/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "D:\Repo\laboralsalud\ausentismos\views.py", line 430, in ausencias_importar
+    decoded_file = csv_file.encode('utf-8').read().replace(",", "").replace("'", "")
+AttributeError: 'InMemoryUploadedFile' object has no attribute 'encode'
+[10/Jan/2020 18:13:53] ERROR [django.server:124] "POST /ausentismos/ausencias_importar/ HTTP/1.1" 500 93059
+[10/Jan/2020 18:14:07] ERROR [django.request:135] Internal Server Error: /ausentismos/ausencias_importar/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "D:\Repo\laboralsalud\ausentismos\views.py", line 430, in ausencias_importar
+    decoded_file = csv_file.read().encode('utf-8').replace(",", "").replace("'", "")
+UnicodeDecodeError: 'ascii' codec can't decode byte 0xd3 in position 42: ordinal not in range(128)
+[10/Jan/2020 18:14:08] ERROR [django.server:124] "POST /ausentismos/ausencias_importar/ HTTP/1.1" 500 105430
+[10/Jan/2020 18:17:46] ERROR [django.request:135] Internal Server Error: /ausentismos/ausencias_importar/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "D:\Repo\laboralsalud\ausentismos\views.py", line 430, in ausencias_importar
+    decoded_file = unicode(csv_file.read(),'utf-8').replace(",", "").replace("'", "")
+UnicodeDecodeError: 'utf8' codec can't decode byte 0xd3 in position 42: invalid continuation byte
+[10/Jan/2020 18:17:47] ERROR [django.server:124] "POST /ausentismos/ausencias_importar/ HTTP/1.1" 500 105429
+[10/Jan/2020 18:19:33] ERROR [django.request:135] Internal Server Error: /ausentismos/ausencias_importar/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "D:\Repo\laboralsalud\ausentismos\views.py", line 430, in ausencias_importar
+    decoded_file = csv_file.read(encoding='latin-1').replace(",", "").replace("'", "")
+TypeError: read() takes no keyword arguments
+[10/Jan/2020 18:19:34] ERROR [django.server:124] "POST /ausentismos/ausencias_importar/ HTTP/1.1" 500 92789
+[10/Jan/2020 18:20:02] ERROR [django.request:135] Internal Server Error: /ausentismos/ausencias_importar/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "D:\Repo\laboralsalud\ausentismos\views.py", line 430, in ausencias_importar
+    decoded_file = csv_file.read().encode('latin-1').replace(",", "").replace("'", "")
+UnicodeDecodeError: 'ascii' codec can't decode byte 0xd3 in position 42: ordinal not in range(128)
+[10/Jan/2020 18:20:03] ERROR [django.server:124] "POST /ausentismos/ausencias_importar/ HTTP/1.1" 500 105434
+[10/Jan/2020 18:21:40] ERROR [django.request:135] Internal Server Error: /ausentismos/ausencias_importar/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "D:\Repo\laboralsalud\ausentismos\views.py", line 442, in ausencias_importar
+    print decoded_file
+  File "C:\Users\juanma\Envs\laboralsalud\lib\encodings\cp850.py", line 12, in encode
+    return codecs.charmap_encode(input,errors,encoding_map)
+UnicodeEncodeError: 'charmap' codec can't encode character u'\ufffd' in position 42: character maps to <undefined>
+[10/Jan/2020 18:21:41] ERROR [django.server:124] "POST /ausentismos/ausencias_importar/ HTTP/1.1" 500 117246
+[10/Jan/2020 18:22:09] ERROR [django.request:135] Internal Server Error: /ausentismos/ausencias_importar/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "D:\Repo\laboralsalud\ausentismos\views.py", line 442, in ausencias_importar
+    print decoded_file
+  File "C:\Users\juanma\Envs\laboralsalud\lib\encodings\cp850.py", line 12, in encode
+    return codecs.charmap_encode(input,errors,encoding_map)
+UnicodeEncodeError: 'charmap' codec can't encode character u'\ufffd' in position 42: character maps to <undefined>
+[10/Jan/2020 18:22:10] ERROR [django.server:124] "POST /ausentismos/ausencias_importar/ HTTP/1.1" 500 117244
+[10/Jan/2020 18:22:36] ERROR [django.request:135] Internal Server Error: /ausentismos/ausencias_importar/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "D:\Repo\laboralsalud\ausentismos\views.py", line 442, in ausencias_importar
+    print decoded_file
+  File "C:\Users\juanma\Envs\laboralsalud\lib\encodings\cp850.py", line 12, in encode
+    return codecs.charmap_encode(input,errors,encoding_map)
+UnicodeEncodeError: 'charmap' codec can't encode character u'\ufffd' in position 42: character maps to <undefined>
+[10/Jan/2020 18:22:37] ERROR [django.server:124] "POST /ausentismos/ausencias_importar/ HTTP/1.1" 500 117244
+[10/Jan/2020 18:23:14] ERROR [django.request:135] Internal Server Error: /ausentismos/ausencias_importar/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "D:\Repo\laboralsalud\ausentismos\views.py", line 430, in ausencias_importar
+    decoded_file = csv_file.read().decode().encode('utf-8')
+UnicodeDecodeError: 'ascii' codec can't decode byte 0xd3 in position 42: ordinal not in range(128)
+[10/Jan/2020 18:23:15] ERROR [django.server:124] "POST /ausentismos/ausencias_importar/ HTTP/1.1" 500 105292
+[10/Jan/2020 18:23:27] ERROR [django.request:135] Internal Server Error: /ausentismos/ausencias_importar/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "D:\Repo\laboralsalud\ausentismos\views.py", line 430, in ausencias_importar
+    decoded_file = csv_file.read().decode()
+UnicodeDecodeError: 'ascii' codec can't decode byte 0xd3 in position 42: ordinal not in range(128)
+[10/Jan/2020 18:23:28] ERROR [django.server:124] "POST /ausentismos/ausencias_importar/ HTTP/1.1" 500 105245
+[10/Jan/2020 18:24:27] ERROR [django.request:135] Internal Server Error: /ausentismos/ausencias_importar/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "D:\Repo\laboralsalud\ausentismos\views.py", line 430, in ausencias_importar
+    decoded_file = csv_file.read().encode('ascii', 'replace').decode()
+UnicodeDecodeError: 'ascii' codec can't decode byte 0xd3 in position 42: ordinal not in range(128)
+[10/Jan/2020 18:24:27] ERROR [django.server:124] "POST /ausentismos/ausencias_importar/ HTTP/1.1" 500 105330
+[10/Jan/2020 18:27:19] ERROR [django.request:135] Internal Server Error: /ausentismos/ausencias_importar/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "D:\Repo\laboralsalud\ausentismos\views.py", line 430, in ausencias_importar
+    decoded_file = csv_file.read().decode()
+UnicodeDecodeError: 'ascii' codec can't decode byte 0xd3 in position 42: ordinal not in range(128)
+[10/Jan/2020 18:27:20] ERROR [django.server:124] "POST /ausentismos/ausencias_importar/ HTTP/1.1" 500 105244
+[10/Jan/2020 18:27:34] ERROR [django.request:135] Internal Server Error: /ausentismos/ausencias_importar/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "D:\Repo\laboralsalud\ausentismos\views.py", line 430, in ausencias_importar
+    decoded_file = csv_file.read().decode('ascii')
+UnicodeDecodeError: 'ascii' codec can't decode byte 0xd3 in position 42: ordinal not in range(128)
+[10/Jan/2020 18:27:35] ERROR [django.server:124] "POST /ausentismos/ausencias_importar/ HTTP/1.1" 500 105274
+[10/Jan/2020 18:35:38] ERROR [django.request:135] Internal Server Error: /ausentismos/ausencias_importar/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "D:\Repo\laboralsalud\ausentismos\views.py", line 431, in ausencias_importar
+    io_string = io.StringIO(decoded_file)
+TypeError: initial_value must be unicode or None, not str
+[10/Jan/2020 18:35:39] ERROR [django.server:124] "POST /ausentismos/ausencias_importar/ HTTP/1.1" 500 96914
+[10/Jan/2020 18:37:51] ERROR [django.request:135] Internal Server Error: /ausentismos/ausencias_importar/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "D:\Repo\laboralsalud\ausentismos\views.py", line 430, in ausencias_importar
+    decoded_file = csv_file.read().replace(",", "").replace("'", "")
+UnicodeDecodeError: 'ascii' codec can't decode byte 0xd3 in position 42: ordinal not in range(128)
+[10/Jan/2020 18:37:52] ERROR [django.server:124] "POST /ausentismos/ausencias_importar/ HTTP/1.1" 500 105377
+[10/Jan/2020 18:38:26] ERROR [django.request:135] Internal Server Error: /ausentismos/ausencias_importar/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "D:\Repo\laboralsalud\ausentismos\views.py", line 431, in ausencias_importar
+    io_string = io.StringIO(decoded_file)
+TypeError: initial_value must be unicode or None, not str
+[10/Jan/2020 18:38:27] ERROR [django.server:124] "POST /ausentismos/ausencias_importar/ HTTP/1.1" 500 96888
+[10/Jan/2020 18:54:00] ERROR [django.request:135] Internal Server Error: /ausentismos/ausencias_importar/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "D:\Repo\laboralsalud\ausentismos\views.py", line 435, in ausencias_importar
+    result = chardet.detect(reader)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\chardet\__init__.py", line 34, in detect
+    '{0}'.format(type(byte_str)))
+TypeError: Expected object of type bytes or bytearray, got: <class 'unicodecsv.py2.UnicodeReader'>
+[10/Jan/2020 18:54:01] ERROR [django.server:124] "POST /ausentismos/ausencias_importar/ HTTP/1.1" 500 101136
+[10/Jan/2020 19:02:43] ERROR [django.request:135] Internal Server Error: /ausentismos/ausencias_importar/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "D:\Repo\laboralsalud\ausentismos\views.py", line 439, in ausencias_importar
+    next(reader) #Omito el Encabezado
+UnicodeEncodeError: 'ascii' codec can't encode character u'\xd1' in position 36: ordinal not in range(128)
+[10/Jan/2020 19:02:44] ERROR [django.server:124] "POST /ausentismos/ausencias_importar/ HTTP/1.1" 500 99568
+[10/Jan/2020 19:03:39] ERROR [django.request:135] Internal Server Error: /ausentismos/ausencias_importar/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "D:\Repo\laboralsalud\ausentismos\views.py", line 439, in ausencias_importar
+    next(reader) #Omito el Encabezado
+UnicodeEncodeError: 'ascii' codec can't encode character u'\xd1' in position 36: ordinal not in range(128)
+[10/Jan/2020 19:03:40] ERROR [django.server:124] "POST /ausentismos/ausencias_importar/ HTTP/1.1" 500 99585
+[10/Jan/2020 19:04:06] ERROR [django.request:135] Internal Server Error: /ausentismos/ausencias_importar/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "D:\Repo\laboralsalud\ausentismos\views.py", line 438, in ausencias_importar
+    next(decoded_file) #Omito el Encabezado
+TypeError: unicode object is not an iterator
+[10/Jan/2020 19:04:07] ERROR [django.server:124] "POST /ausentismos/ausencias_importar/ HTTP/1.1" 500 96942
+[10/Jan/2020 19:06:08] ERROR [django.request:135] Internal Server Error: /ausentismos/ausencias_importar/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "D:\Repo\laboralsalud\ausentismos\views.py", line 440, in ausencias_importar
+    next(reader) #Omito el Encabezado
+  File "D:\Repo\laboralsalud\unicodecsv\py2.py", line 117, in next
+    row = self.reader.next()
+UnicodeEncodeError: 'ascii' codec can't encode character u'\xd1' in position 36: ordinal not in range(128)
+[10/Jan/2020 19:06:09] ERROR [django.server:124] "POST /ausentismos/ausencias_importar/ HTTP/1.1" 500 102969
+[10/Jan/2020 19:06:32] ERROR [django.request:135] Internal Server Error: /ausentismos/ausencias_importar/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "D:\Repo\laboralsalud\ausentismos\views.py", line 432, in ausencias_importar
+    io_string = io.StringIO(decoded_file)
+TypeError: initial_value must be unicode or None, not str
+[10/Jan/2020 19:06:33] ERROR [django.server:124] "POST /ausentismos/ausencias_importar/ HTTP/1.1" 500 96937
+[10/Jan/2020 19:07:05] ERROR [django.request:135] Internal Server Error: /ausentismos/ausencias_importar/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "D:\Repo\laboralsalud\ausentismos\views.py", line 440, in ausencias_importar
+    next(reader) #Omito el Encabezado
+  File "D:\Repo\laboralsalud\unicodecsv\py2.py", line 117, in next
+    row = self.reader.next()
+UnicodeEncodeError: 'ascii' codec can't encode character u'\xd1' in position 36: ordinal not in range(128)
+[10/Jan/2020 19:07:06] ERROR [django.server:124] "POST /ausentismos/ausencias_importar/ HTTP/1.1" 500 102940
+[10/Jan/2020 19:07:51] ERROR [django.request:135] Internal Server Error: /ausentismos/ausencias_importar/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "D:\Repo\laboralsalud\ausentismos\views.py", line 447, in ausencias_importar
+    campos = line[0].split(";")
+IndexError: list index out of range
+[10/Jan/2020 19:08:01] ERROR [django.server:124] "POST /ausentismos/ausencias_importar/ HTTP/1.1" 500 97489
+[10/Jan/2020 19:08:53] ERROR [django.request:135] Internal Server Error: /ausentismos/ausencias_importar/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "D:\Repo\laboralsalud\ausentismos\views.py", line 433, in ausencias_importar
+    reader = csv.reader(decoded_file,encoding='iso-8859-1')
+TypeError: 'encoding' is an invalid keyword argument for this function
+[10/Jan/2020 19:08:53] ERROR [django.server:124] "POST /ausentismos/ausencias_importar/ HTTP/1.1" 500 102110
+[10/Jan/2020 19:09:08] ERROR [django.request:135] Internal Server Error: /ausentismos/ausencias_importar/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "D:\Repo\laboralsalud\ausentismos\views.py", line 447, in ausencias_importar
+    campos = line[0].split(";")
+UnicodeDecodeError: 'ascii' codec can't decode byte 0xd1 in position 0: ordinal not in range(128)
+[10/Jan/2020 19:09:10] ERROR [django.server:124] "POST /ausentismos/ausencias_importar/ HTTP/1.1" 500 103078
+[10/Jan/2020 19:10:36] ERROR [django.request:135] Internal Server Error: /ausentismos/ausencias_importar/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "D:\Repo\laboralsalud\ausentismos\views.py", line 431, in ausencias_importar
+    decoded_file = csv_file.read().encode("ISO-8859-1")
+UnicodeDecodeError: 'ascii' codec can't decode byte 0xd1 in position 36: ordinal not in range(128)
+[10/Jan/2020 19:10:37] ERROR [django.server:124] "POST /ausentismos/ausencias_importar/ HTTP/1.1" 500 110370
+[10/Jan/2020 19:10:56] ERROR [django.request:135] Internal Server Error: /ausentismos/ausencias_importar/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "D:\Repo\laboralsalud\ausentismos\views.py", line 431, in ausencias_importar
+    decoded_file = csv_file.encode("ISO-8859-1").read()
+AttributeError: 'InMemoryUploadedFile' object has no attribute 'encode'
+[10/Jan/2020 19:10:57] ERROR [django.server:124] "POST /ausentismos/ausencias_importar/ HTTP/1.1" 500 97999
+[10/Jan/2020 19:11:19] ERROR [django.request:135] Internal Server Error: /ausentismos/ausencias_importar/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "D:\Repo\laboralsalud\ausentismos\views.py", line 433, in ausencias_importar
+    reader = csv.reader(decoded_file.encode("ISO-8859-1"))
+UnicodeDecodeError: 'ascii' codec can't decode byte 0xd1 in position 36: ordinal not in range(128)
+[10/Jan/2020 19:11:20] ERROR [django.server:124] "POST /ausentismos/ausencias_importar/ HTTP/1.1" 500 114545
+[10/Jan/2020 19:11:59] ERROR [django.request:135] Internal Server Error: /ausentismos/ausencias_importar/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "D:\Repo\laboralsalud\ausentismos\views.py", line 431, in ausencias_importar
+    decoded_file = csv_file.read().encode("ISO-8859-1")
+UnicodeDecodeError: 'ascii' codec can't decode byte 0xd1 in position 36: ordinal not in range(128)
+[10/Jan/2020 19:12:00] ERROR [django.server:124] "POST /ausentismos/ausencias_importar/ HTTP/1.1" 500 110371
+[10/Jan/2020 19:12:31] ERROR [django.request:135] Internal Server Error: /ausentismos/ausencias_importar/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "D:\Repo\laboralsalud\ausentismos\views.py", line 431, in ausencias_importar
+    decoded_file = csv_file.read().encode("ISO-8859-1")
+UnicodeDecodeError: 'ascii' codec can't decode byte 0xd1 in position 36: ordinal not in range(128)
+[10/Jan/2020 19:12:32] ERROR [django.server:124] "POST /ausentismos/ausencias_importar/ HTTP/1.1" 500 110371
+[10/Jan/2020 19:12:47] ERROR [django.request:135] Internal Server Error: /ausentismos/ausencias_importar/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "D:\Repo\laboralsalud\ausentismos\views.py", line 431, in ausencias_importar
+    decoded_file = csv_file.read().encode("ISO-8859-1")
+UnicodeDecodeError: 'ascii' codec can't decode byte 0xd1 in position 36: ordinal not in range(128)
+[10/Jan/2020 19:12:48] ERROR [django.server:124] "POST /ausentismos/ausencias_importar/ HTTP/1.1" 500 110264
+[10/Jan/2020 19:13:07] ERROR [django.request:135] Internal Server Error: /ausentismos/ausencias_importar/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "D:\Repo\laboralsalud\ausentismos\views.py", line 431, in ausencias_importar
+    decoded_file = csv_file.read().encode("ISO-8859-1")
+UnicodeDecodeError: 'ascii' codec can't decode byte 0xd1 in position 36: ordinal not in range(128)
+[10/Jan/2020 19:13:07] ERROR [django.server:124] "POST /ausentismos/ausencias_importar/ HTTP/1.1" 500 110265
+[10/Jan/2020 19:17:28] ERROR [django.request:135] Internal Server Error: /ausentismos/ausencias_importar/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "D:\Repo\laboralsalud\ausentismos\views.py", line 431, in ausencias_importar
+    decoded_file = csv_file.read().encode('ISO-8859-1')
+UnicodeDecodeError: 'ascii' codec can't decode byte 0xd1 in position 36: ordinal not in range(128)
+[10/Jan/2020 19:17:28] ERROR [django.server:124] "POST /ausentismos/ausencias_importar/ HTTP/1.1" 500 110290
+[10/Jan/2020 19:17:47] ERROR [django.request:135] Internal Server Error: /ausentismos/ausencias_importar/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "D:\Repo\laboralsalud\ausentismos\views.py", line 434, in ausencias_importar
+    reader = csv.reader(decoded_file,encoding='ISO-8859-1')
+TypeError: 'encoding' is an invalid keyword argument for this function
+[10/Jan/2020 19:17:48] ERROR [django.server:124] "POST /ausentismos/ausencias_importar/ HTTP/1.1" 500 102108
+[10/Jan/2020 19:18:05] ERROR [django.request:135] Internal Server Error: /ausentismos/ausencias_importar/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "D:\Repo\laboralsalud\ausentismos\views.py", line 448, in ausencias_importar
+    campos = line[0].split(";")
+UnicodeDecodeError: 'ascii' codec can't decode byte 0xd1 in position 0: ordinal not in range(128)
+[10/Jan/2020 19:18:06] ERROR [django.server:124] "POST /ausentismos/ausencias_importar/ HTTP/1.1" 500 103078
+[10/Jan/2020 19:19:45] ERROR [django.request:135] Internal Server Error: /ausentismos/ausencias_importar/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "D:\Repo\laboralsalud\ausentismos\views.py", line 448, in ausencias_importar
+    campos = line[0].split(";").encode('iso-')
+AttributeError: 'list' object has no attribute 'encode'
+[10/Jan/2020 19:19:46] ERROR [django.server:124] "POST /ausentismos/ausencias_importar/ HTTP/1.1" 500 102491
+[10/Jan/2020 19:20:11] ERROR [django.request:135] Internal Server Error: /ausentismos/ausencias_importar/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "D:\Repo\laboralsalud\ausentismos\views.py", line 446, in ausencias_importar
+    for index,line in enumerate(reader):
+UnicodeEncodeError: 'ascii' codec can't encode character u'\xd1' in position 0: ordinal not in range(128)
+[10/Jan/2020 19:20:12] ERROR [django.server:124] "POST /ausentismos/ausencias_importar/ HTTP/1.1" 500 103082
+[10/Jan/2020 19:21:43] ERROR [django.request:135] Internal Server Error: /ausentismos/ausencias_importar/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "D:\Repo\laboralsalud\ausentismos\views.py", line 434, in ausencias_importar
+    reader = csv.reader(decoded_file).decode('iso-8859-1')
+AttributeError: '_csv.reader' object has no attribute 'decode'
+[10/Jan/2020 19:21:43] ERROR [django.server:124] "POST /ausentismos/ausencias_importar/ HTTP/1.1" 500 102140
+[10/Jan/2020 19:21:59] ERROR [django.request:135] Internal Server Error: /ausentismos/ausencias_importar/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "D:\Repo\laboralsalud\ausentismos\views.py", line 446, in ausencias_importar
+    for index,line in enumerate(reader):
+UnicodeEncodeError: 'ascii' codec can't encode character u'\xd1' in position 0: ordinal not in range(128)
+[10/Jan/2020 19:22:00] ERROR [django.server:124] "POST /ausentismos/ausencias_importar/ HTTP/1.1" 500 103082
+[10/Jan/2020 19:27:04] ERROR [django.request:135] Internal Server Error: /ausentismos/ausencias_importar/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "D:\Repo\laboralsalud\ausentismos\views.py", line 434, in ausencias_importar
+    print chardet.detect(decoded_file)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\chardet\__init__.py", line 34, in detect
+    '{0}'.format(type(byte_str)))
+TypeError: Expected object of type bytes or bytearray, got: <type 'unicode'>
+[10/Jan/2020 19:27:05] ERROR [django.server:124] "POST /ausentismos/ausencias_importar/ HTTP/1.1" 500 109889
+[10/Jan/2020 19:27:42] ERROR [django.request:135] Internal Server Error: /ausentismos/ausencias_importar/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "D:\Repo\laboralsalud\ausentismos\views.py", line 449, in ausencias_importar
+    campos = line[0].split(";")
+UnicodeDecodeError: 'ascii' codec can't decode byte 0xd1 in position 0: ordinal not in range(128)
+[10/Jan/2020 19:27:44] ERROR [django.server:124] "POST /ausentismos/ausencias_importar/ HTTP/1.1" 500 103345
+[10/Jan/2020 19:28:26] ERROR [django.request:135] Internal Server Error: /ausentismos/ausencias_importar/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "D:\Repo\laboralsalud\ausentismos\views.py", line 449, in ausencias_importar
+    campos = line[0].decode('iso-8859-1').split(";")
+IndexError: list index out of range
+[10/Jan/2020 19:28:36] ERROR [django.server:124] "POST /ausentismos/ausencias_importar/ HTTP/1.1" 500 102866
+[10/Jan/2020 19:30:21] ERROR [django.request:135] Internal Server Error: /ausentismos/ausencias_importar/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "D:\Repo\laboralsalud\ausentismos\views.py", line 448, in ausencias_importar
+    line = line.decode('iso-8859-1')
+AttributeError: 'list' object has no attribute 'decode'
+[10/Jan/2020 19:30:22] ERROR [django.server:124] "POST /ausentismos/ausencias_importar/ HTTP/1.1" 500 97693
+[10/Jan/2020 19:31:01] ERROR [django.request:135] Internal Server Error: /ausentismos/ausencias_importar/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "D:\Repo\laboralsalud\ausentismos\views.py", line 449, in ausencias_importar
+    campos = line[0].split(";")
+UnicodeDecodeError: 'ascii' codec can't decode byte 0xd1 in position 0: ordinal not in range(128)
+[10/Jan/2020 19:31:02] ERROR [django.server:124] "POST /ausentismos/ausencias_importar/ HTTP/1.1" 500 98288
+[10/Jan/2020 19:31:49] ERROR [django.request:135] Internal Server Error: /ausentismos/ausencias_importar/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "D:\Repo\laboralsalud\ausentismos\views.py", line 432, in ausencias_importar
+    io_string = io.StringIO(decoded_file)
+TypeError: initial_value must be unicode or None, not str
+[10/Jan/2020 19:31:49] ERROR [django.server:124] "POST /ausentismos/ausencias_importar/ HTTP/1.1" 500 101974
+[10/Jan/2020 19:32:14] ERROR [django.request:135] Internal Server Error: /ausentismos/ausencias_importar/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "D:\Repo\laboralsalud\ausentismos\views.py", line 434, in ausencias_importar
+    print chardet.detect(decoded_file)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\chardet\__init__.py", line 34, in detect
+    '{0}'.format(type(byte_str)))
+TypeError: Expected object of type bytes or bytearray, got: <type 'unicode'>
+[10/Jan/2020 19:32:15] ERROR [django.server:124] "POST /ausentismos/ausencias_importar/ HTTP/1.1" 500 110175
+[10/Jan/2020 19:32:33] ERROR [django.request:135] Internal Server Error: /ausentismos/ausencias_importar/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "D:\Repo\laboralsalud\ausentismos\views.py", line 434, in ausencias_importar
+    print chardet.detect(io_string)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\chardet\__init__.py", line 34, in detect
+    '{0}'.format(type(byte_str)))
+TypeError: Expected object of type bytes or bytearray, got: <type '_io.StringIO'>
+[10/Jan/2020 19:32:34] ERROR [django.server:124] "POST /ausentismos/ausencias_importar/ HTTP/1.1" 500 106101
+[10/Jan/2020 19:33:34] ERROR [django.request:135] Internal Server Error: /ausentismos/ausencias_importar/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "D:\Repo\laboralsalud\ausentismos\views.py", line 441, in ausencias_importar
+    next(reader) #Omito el Encabezado
+UnicodeEncodeError: 'ascii' codec can't encode character u'\xd1' in position 36: ordinal not in range(128)
+[10/Jan/2020 19:33:34] ERROR [django.server:124] "POST /ausentismos/ausencias_importar/ HTTP/1.1" 500 99569
+[10/Jan/2020 19:36:55] ERROR [django.request:135] Internal Server Error: /ausentismos/ausencias_importar/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "D:\Repo\laboralsalud\ausentismos\views.py", line 434, in ausencias_importar
+    reader = csv.reader(io_string, delimiter=';')
+TypeError: "delimiter" must be string, not unicode
+[10/Jan/2020 19:36:56] ERROR [django.server:124] "POST /ausentismos/ausencias_importar/ HTTP/1.1" 500 97096
+[10/Jan/2020 19:37:13] ERROR [django.request:135] Internal Server Error: /ausentismos/ausencias_importar/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "D:\Repo\laboralsalud\ausentismos\views.py", line 434, in ausencias_importar
+    reader = csv.reader(io_string, delimiter=";")
+TypeError: "delimiter" must be string, not unicode
+[10/Jan/2020 19:37:14] ERROR [django.server:124] "POST /ausentismos/ausencias_importar/ HTTP/1.1" 500 97101
+[10/Jan/2020 19:37:40] ERROR [django.request:135] Internal Server Error: /ausentismos/ausencias_importar/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "D:\Repo\laboralsalud\ausentismos\views.py", line 446, in ausencias_importar
+    # print aus_tipo_alta
+UnicodeEncodeError: 'ascii' codec can't encode character u'\xd1' in position 36: ordinal not in range(128)
+[10/Jan/2020 19:37:41] ERROR [django.server:124] "POST /ausentismos/ausencias_importar/ HTTP/1.1" 500 99283
+[10/Jan/2020 19:38:28] ERROR [django.request:135] Internal Server Error: /ausentismos/ausencias_importar/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "D:\Repo\laboralsalud\ausentismos\views.py", line 447, in ausencias_importar
+    for index,line in enumerate(reader):
+UnicodeEncodeError: 'ascii' codec can't encode character u'\xd1' in position 36: ordinal not in range(128)
+[10/Jan/2020 19:38:29] ERROR [django.server:124] "POST /ausentismos/ausencias_importar/ HTTP/1.1" 500 99238
+[10/Jan/2020 19:39:27] ERROR [django.request:135] Internal Server Error: /ausentismos/ausencias_importar/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "D:\Repo\laboralsalud\ausentismos\views.py", line 431, in ausencias_importar
+    decoded_file = csv_file.read().decode('iso-8859-1').encode('ascii')
+UnicodeEncodeError: 'ascii' codec can't encode character u'\xd1' in position 36: ordinal not in range(128)
+[10/Jan/2020 19:39:27] ERROR [django.server:124] "POST /ausentismos/ausencias_importar/ HTTP/1.1" 500 105125
+[10/Jan/2020 19:40:05] ERROR [django.request:135] Internal Server Error: /ausentismos/ausencias_importar/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "D:\Repo\laboralsalud\ausentismos\views.py", line 441, in ausencias_importar
+    next(reader) #Omito el Encabezado
+UnicodeEncodeError: 'ascii' codec can't encode character u'\xd1' in position 36: ordinal not in range(128)
+[10/Jan/2020 19:40:06] ERROR [django.server:124] "POST /ausentismos/ausencias_importar/ HTTP/1.1" 500 99569
+[10/Jan/2020 19:49:10] ERROR [django.request:135] Internal Server Error: /ausentismos/ausencias_importar/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "D:\Repo\laboralsalud\ausentismos\views.py", line 443, in ausencias_importar
+    next(reader) #Omito el Encabezado
+  File "D:\Repo\laboralsalud\unicodecsv\py2.py", line 128, in next
+    for value in row]
+UnicodeDecodeError: 'utf8' codec can't decode byte 0xd1 in position 36: invalid continuation byte
+[10/Jan/2020 19:49:11] ERROR [django.server:124] "POST /ausentismos/ausencias_importar/ HTTP/1.1" 500 104814
+[10/Jan/2020 19:49:39] ERROR [django.request:135] Internal Server Error: /ausentismos/ausencias_importar/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "D:\Repo\laboralsalud\ausentismos\views.py", line 443, in ausencias_importar
+    next(reader) #Omito el Encabezado
+  File "D:\Repo\laboralsalud\unicodecsv\py2.py", line 128, in next
+    for value in row]
+UnicodeDecodeError: 'utf8' codec can't decode byte 0xd1 in position 36: invalid continuation byte
+[10/Jan/2020 19:49:40] ERROR [django.server:124] "POST /ausentismos/ausencias_importar/ HTTP/1.1" 500 104815
+[10/Jan/2020 19:51:48] ERROR [django.request:135] Internal Server Error: /ausentismos/ausencias_importar/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "D:\Repo\laboralsalud\ausentismos\views.py", line 449, in ausencias_importar
+    print line.decode('iso-8859-1')
+AttributeError: 'list' object has no attribute 'decode'
+[10/Jan/2020 19:51:49] ERROR [django.server:124] "POST /ausentismos/ausencias_importar/ HTTP/1.1" 500 97818
+[10/Jan/2020 19:53:12] ERROR [django.request:135] Internal Server Error: /ausentismos/ausencias_importar/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "D:\Repo\laboralsalud\ausentismos\views.py", line 451, in ausencias_importar
+    campos = [c.decode('iso-8859-1') for c in campos]
+UnicodeEncodeError: 'ascii' codec can't encode character u'\xd1' in position 14: ordinal not in range(128)
+[10/Jan/2020 19:53:14] ERROR [django.server:124] "POST /ausentismos/ausencias_importar/ HTTP/1.1" 500 105464
+[10/Jan/2020 19:53:48] ERROR [django.request:135] Internal Server Error: /ausentismos/ausencias_importar/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "D:\Repo\laboralsalud\ausentismos\views.py", line 552, in ausencias_importar
+    aus_diagn = aus_diagnostico.objects.get_or_create(diagnostico=aus_diagn)[0]
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\db\models\manager.py", line 85, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\db\models\query.py", line 463, in get_or_create
+    return self.get(**lookup), False
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\db\models\query.py", line 373, in get
+    num = len(clone)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\db\models\query.py", line 232, in __len__
+    self._fetch_all()
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\db\models\query.py", line 1102, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\db\models\query.py", line 53, in __iter__
+    results = compiler.execute_sql(chunked_fetch=self.chunked_fetch)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\db\models\sql\compiler.py", line 876, in execute_sql
+    cursor.execute(sql, params)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\debug_toolbar\panels\sql\tracking.py", line 186, in execute
+    return self._record(self.cursor.execute, sql, params)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\debug_toolbar\panels\sql\tracking.py", line 124, in _record
+    return method(sql, params)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\db\backends\utils.py", line 84, in execute
+    sql = self.db.ops.last_executed_query(self.cursor, sql, params)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\db\backends\sqlite3\operations.py", line 135, in last_executed_query
+    params = self._quote_params_for_last_executed_query(params)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\db\backends\sqlite3\operations.py", line 124, in _quote_params_for_last_executed_query
+    return cursor.execute(sql, params).fetchone()
+ProgrammingError: You must not use 8-bit bytestrings unless you use a text_factory that can interpret 8-bit bytestrings (like text_factory = str). It is highly recommended that you instead just switch your application to Unicode strings.
+[10/Jan/2020 19:53:51] ERROR [django.server:124] "POST /ausentismos/ausencias_importar/ HTTP/1.1" 500 163253
+[10/Jan/2020 19:55:18] ERROR [django.request:135] Internal Server Error: /ausentismos/ausencias_importar/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "D:\Repo\laboralsalud\ausentismos\views.py", line 552, in ausencias_importar
+    aus_diagn = aus_diagnostico.objects.get_or_create(diagnostico=aus_diagn)[0]
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\db\models\manager.py", line 85, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\db\models\query.py", line 463, in get_or_create
+    return self.get(**lookup), False
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\db\models\query.py", line 373, in get
+    num = len(clone)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\db\models\query.py", line 232, in __len__
+    self._fetch_all()
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\db\models\query.py", line 1102, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\db\models\query.py", line 53, in __iter__
+    results = compiler.execute_sql(chunked_fetch=self.chunked_fetch)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\db\models\sql\compiler.py", line 876, in execute_sql
+    cursor.execute(sql, params)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\debug_toolbar\panels\sql\tracking.py", line 186, in execute
+    return self._record(self.cursor.execute, sql, params)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\debug_toolbar\panels\sql\tracking.py", line 124, in _record
+    return method(sql, params)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\db\backends\utils.py", line 84, in execute
+    sql = self.db.ops.last_executed_query(self.cursor, sql, params)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\db\backends\sqlite3\operations.py", line 135, in last_executed_query
+    params = self._quote_params_for_last_executed_query(params)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\db\backends\sqlite3\operations.py", line 124, in _quote_params_for_last_executed_query
+    return cursor.execute(sql, params).fetchone()
+ProgrammingError: You must not use 8-bit bytestrings unless you use a text_factory that can interpret 8-bit bytestrings (like text_factory = str). It is highly recommended that you instead just switch your application to Unicode strings.
+[10/Jan/2020 19:55:21] ERROR [django.server:124] "POST /ausentismos/ausencias_importar/ HTTP/1.1" 500 163259
+[10/Jan/2020 20:08:08] ERROR [django.request:135] Internal Server Error: /ausentismos/ausencias_importar/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "D:\Repo\laboralsalud\ausentismos\views.py", line 519, in ausencias_importar
+    aus_tipo_alta = [k for k, v in aus_tipo_alta.items() if v.upper() == austa.upper()][0]
+IndexError: list index out of range
+[10/Jan/2020 20:08:21] ERROR [django.server:124] "POST /ausentismos/ausencias_importar/ HTTP/1.1" 500 104609
+[10/Jan/2020 20:09:54] ERROR [django.request:135] Internal Server Error: /ausentismos/ausencias_importar/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "D:\Repo\laboralsalud\ausentismos\views.py", line 519, in ausencias_importar
+    aus_tipo_alta = [k for k, v in aus_tipo_alta.items() if v.decode("utf8","ignore").upper() == austa.upper()][0]
+  File "C:\Users\juanma\Envs\laboralsalud\lib\encodings\utf_8.py", line 16, in decode
+    return codecs.utf_8_decode(input, errors, True)
+UnicodeEncodeError: 'ascii' codec can't encode character u'\xf3' in position 13: ordinal not in range(128)
+[10/Jan/2020 20:09:55] ERROR [django.server:124] "POST /ausentismos/ausencias_importar/ HTTP/1.1" 500 108795
+[10/Jan/2020 20:11:31] ERROR [django.request:135] Internal Server Error: /ausentismos/ausencias_importar/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "D:\Repo\laboralsalud\ausentismos\views.py", line 519, in ausencias_importar
+    aus_tipo_alta = [k for k, v in aus_tipo_alta.items() if v.encode("utf8","ignore").upper() == austa.upper()][0]
+IndexError: list index out of range
+[10/Jan/2020 20:11:41] ERROR [django.server:124] "POST /ausentismos/ausencias_importar/ HTTP/1.1" 500 104696
+[10/Jan/2020 20:13:04] ERROR [django.request:135] Internal Server Error: /ausentismos/ausencias_importar/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "D:\Repo\laboralsalud\ausentismos\views.py", line 519, in ausencias_importar
+    aus_tipo_alta = [k for k, v in aus_tipo_alta.items() if v.encode("utf8","ignore").upper() == austa.upper()][0]
+IndexError: list index out of range
+[10/Jan/2020 20:13:23] ERROR [django.request:135] Internal Server Error: /ausentismos/ausencias_importar/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "D:\Repo\laboralsalud\ausentismos\views.py", line 519, in ausencias_importar
+    aus_tipo_alta = [k for k, v in aus_tipo_alta.items() if unicode(v.encode("utf8","ignore")).upper() == austa.upper()][0]
+UnicodeDecodeError: 'ascii' codec can't decode byte 0xc3 in position 13: ordinal not in range(128)
+[10/Jan/2020 20:13:24] ERROR [django.server:124] "POST /ausentismos/ausencias_importar/ HTTP/1.1" 500 105363
+[10/Jan/2020 20:16:38] ERROR [django.request:135] Internal Server Error: /ausentismos/ausencias_importar/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "D:\Repo\laboralsalud\ausentismos\views.py", line 519, in ausencias_importar
+    aus_tipo_alta = [k for k, v in aus_tipo_alta.items() if unicode(v.encode("utf8","ignore")).upper() == austa.upper()][0]
+UnicodeDecodeError: 'ascii' codec can't decode byte 0xc3 in position 13: ordinal not in range(128)
+[10/Jan/2020 20:16:39] ERROR [django.server:124] "POST /ausentismos/ausencias_importar/ HTTP/1.1" 500 105366
+[10/Jan/2020 20:19:34] ERROR [django.request:135] Internal Server Error: /ausentismos/ausencias_importar/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "D:\Repo\laboralsalud\ausentismos\views.py", line 519, in ausencias_importar
+    aus_tipo_alta = [k for k, v in aus_tipo_alta.items() if v.upper() == austa.upper()][0]
+IndexError: list index out of range
+[10/Jan/2020 20:19:46] ERROR [django.server:124] "POST /ausentismos/ausencias_importar/ HTTP/1.1" 500 104610
+[10/Jan/2020 20:20:41] ERROR [django.request:135] Internal Server Error: /ausentismos/ausencias_importar/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "D:\Repo\laboralsalud\ausentismos\views.py", line 519, in ausencias_importar
+    aus_tipo_alta = [k for k, v in aus_tipo_alta.items() if v.decode("Unicode","ignore").upper() == austa.upper()][0]
+LookupError: unknown encoding: Unicode
+[10/Jan/2020 20:20:42] ERROR [django.server:124] "POST /ausentismos/ausencias_importar/ HTTP/1.1" 500 104764
+[10/Jan/2020 20:21:00] ERROR [django.request:135] Internal Server Error: /ausentismos/ausencias_importar/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "D:\Repo\laboralsalud\ausentismos\views.py", line 519, in ausencias_importar
+    aus_tipo_alta = [k for k, v in aus_tipo_alta.items() if v.decode("unicode","ignore").upper() == austa.upper()][0]
+LookupError: unknown encoding: unicode
+[10/Jan/2020 20:21:01] ERROR [django.server:124] "POST /ausentismos/ausencias_importar/ HTTP/1.1" 500 104764
+[10/Jan/2020 20:22:53] ERROR [django.request:135] Internal Server Error: /ausentismos/ausencias_importar/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "D:\Repo\laboralsalud\ausentismos\views.py", line 519, in ausencias_importar
+    aus_tipo_alta = [k for k, v in aus_tipo_alta.items() if v.encode("utf8","ignore").upper() == austa.upper()][0]
+IndexError: list index out of range
+[10/Jan/2020 20:23:05] ERROR [django.server:124] "POST /ausentismos/ausencias_importar/ HTTP/1.1" 500 104698
+[10/Jan/2020 20:32:10] ERROR [django.request:135] Internal Server Error: /ausentismos/ausencias_importar/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "D:\Repo\laboralsalud\ausentismos\views.py", line 519, in ausencias_importar
+    aus_tipo_alta = [k for k, v in aus_tipo_alta.items() if v.decode("utf8").encode("latin1").upper() == austa.upper()][0]
+  File "C:\Users\juanma\Envs\laboralsalud\lib\encodings\utf_8.py", line 16, in decode
+    return codecs.utf_8_decode(input, errors, True)
+UnicodeEncodeError: 'ascii' codec can't encode character u'\xf3' in position 13: ordinal not in range(128)
+[10/Jan/2020 20:32:11] ERROR [django.server:124] "POST /ausentismos/ausencias_importar/ HTTP/1.1" 500 108813
+[10/Jan/2020 20:33:05] ERROR [django.request:135] Internal Server Error: /ausentismos/ausencias_importar/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "D:\Repo\laboralsalud\ausentismos\views.py", line 519, in ausencias_importar
+    aus_tipo_alta = [k for k, v in aus_tipo_alta.items() if v.encode("latin1").upper() == austa.upper()][0]
+IndexError: list index out of range
+[10/Jan/2020 20:33:19] ERROR [django.server:124] "POST /ausentismos/ausencias_importar/ HTTP/1.1" 500 104664
