@@ -15,7 +15,7 @@ class turnos(models.Model):
 	fecha = models.DateField(u'Fecha Turno',blank=True, null=True)
 	hora = models.TimeField(u'Hora Turno',blank=True, null=True)
 	empleado = models.ForeignKey('entidades.ent_empleado',verbose_name='Empleado',db_column='empleado',blank=True, null=True,related_name='turno_empleado',on_delete=models.SET_NULL)
-	detalle = models.CharField(u'Detalle',max_length=100,blank=True, null=True)
+	detalle = models.CharField(u'Diagnóstico',max_length=100,blank=True, null=True)
 	estado = models.IntegerField('Estado',choices=ESTADO_TURNO, blank=True, null=True)
 	observaciones = models.TextField('Observaciones',blank=True, null=True)  
 	baja = models.BooleanField(default=False)

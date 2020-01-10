@@ -71,3 +71,6 @@ class ConsultaFechasInicio(forms.Form):
 	fecha1 =  forms.DateField(label='',widget=forms.DateInput(attrs={'class': 'form-control datepicker'}),required = True,initial=hoy())	
 	fecha2 =  forms.DateField(label='',widget=forms.DateInput(attrs={'class': 'form-control datepicker'}),required = True,initial=hoy())	
 	
+
+	
+		

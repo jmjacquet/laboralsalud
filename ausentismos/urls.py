@@ -23,5 +23,5 @@ urlpatterns = [
     url(r'^diagnostico/baja_alta/(?P<id>\d+)/$', diagnostico_baja_alta, name='diagnostico_baja_alta'),
     
     url(r'^ausencias_importar/$', ausencias_importar,name="ausencias_importar"),
-    url(r'^mandarEmail/(?P<id>\d+)/$',mandarEmail,name="mandarEmail"),
+    url(r'^generarInforme/$',generarInforme,name="generarInforme"),
 ]

@@ -351,6 +351,14 @@ class TurnosEditView(VariablesMixin,AjaxUpdateView):
         initial['tipo_form'] = 'EDICION'  
         return initial            
 
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        form_class = self.get_form_class()
+        form = self.get_form(form_class)                               
+        form.fields['empleado'].widget.attrs['disabled'] = True                    
+        form.fields['empresa'].widget.attrs['disabled'] = 'disabled'                    
+        return self.render_to_response(self.get_context_data(form=form))
+
     def get_success_url(self):
         messages.success(self.request, u'Los datos se guardaron con éxito!')
         return reverse('turnos_listado')

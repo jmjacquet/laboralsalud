@@ -25,8 +25,7 @@
 			  										
 		</div>
 		 {% for hidden in form.hidden_fields %} {{ hidden }} {% endfor %}	       
-</div>
-<div class="modal-buttons">
+		 <div class="modal-buttons">
     <div class="row">
         <div class="col-xs-6">
          <button data-dismiss="modal" class="btn btn-sm pull-left btn btn-danger" type="button">
@@ -34,16 +33,18 @@
          </button>
         </div>
         <div class="col-xs-6">
-         <button data-dismiss="modal" class="btn pull-right btn-sm btn-primary" id="Aceptar" type="submit">
+         <button class="btn pull-right btn-sm btn-primary" id="Aceptar" type="button">
               <i class="fa fa-check"></i>{% trans 'Aceptar' %}</button>
         </div>
       
       </div>
     
+
 </div>
+
 </form>	
+</div>
 
 {% block scripts_js %}
  <script src="{% static 'js/scripts/turnos.js' %}" type="text/javascript"></script>
-
 {% endblock %}
