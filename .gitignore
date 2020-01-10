@@ -1,3 +1,5 @@
-*.pyc
-error_laboralsalud.log
+errores.log
 /static/*.*
+*.pyc
+*.log
+!generarI25.pyc
