@@ -537,7 +537,7 @@ class EmpleadoView(VariablesMixin,ListView):
             empresa = form.cleaned_data['empresa']                                       
             estado = form.cleaned_data['estado']
             art = form.cleaned_data['art']
-            empleados = ent_empleado.objects.filter(empresas__pk__in=empresas_habilitadas(self.request)).select_related('empresa','trab_cargo','art','usuario_carga')                                   
+            empleados = ent_empleado.objects.filter(empresa__pk__in=empresas_habilitadas(self.request)).select_related('empresa','trab_cargo','art','usuario_carga')                                   
           
             if int(estado) == 0:  
                 empleados = empleados.filter(baja=False)
