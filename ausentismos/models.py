@@ -116,7 +116,7 @@ class ausentismo(models.Model):
 		return self.aus_fcronhasta		
 		
 	@property
-	def get_fcontrol(self):
+	def get_proxcontrol(self):
 		return self.aus_frevision		
 		
 	@property
@@ -129,7 +129,7 @@ class ausentismo(models.Model):
 		
 	@property
 	def get_fcontrol(self):
-		return self.aus_frevision		
+		return self.aus_fcontrol		
 		
 
 class ausentismo_controles(models.Model):

@@ -9,6 +9,7 @@
       <tr>
           <th class="no-sort text-center" data-priority="1">#</th>
           <th class="imprimir" data-priority="2">F.Próx.Control</th>
+          <th class="imprimir" data-priority="2">F.Control</th>
           <th class="imprimir" data-priority="8">F.Desde</th>
           <th class="imprimir" data-priority="9">F.Hasta</th>
           <th class="imprimir" data-priority="7">Días Caídos</th> 
@@ -26,6 +27,7 @@
           <td class="text-center">
             <a href="{% url 'ausentismo_detalles' id=a.pk %}" class="modal-detail" data-modal-head="DETALLE AUSENTISMO" title="Ver Detalle"><i class="fa fa-list-alt text-primary"></i></a>
           </td>
+          <td>{{ a.get_proxcontrol|date:'d/m/Y' }}</td>
           <td>{{ a.get_fcontrol|date:'d/m/Y' }}</td>
           <td>{{ a.get_fcrondesde|date:'d/m/Y' }}</td>               
           <td>{{ a.get_fcronhasta|date:'d/m/Y' }}</td>
@@ -41,6 +43,7 @@
   </tbody>
   <tfoot>
       <tr>
+          <th></th>
           <th></th>
           <th></th> 
           <th></th>

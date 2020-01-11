@@ -123,7 +123,7 @@ class PrincipalView(VariablesMixin,TemplateView):
             fecha2=hoy()            
            
         ausentismos = ausentismo.objects.filter(baja=False).filter(aus_fcronhasta__gte=fecha1)
-        fechas_control = ausentismo.objects.filter(baja=False).filter(aus_frevision__gte=fecha1)
+        fechas_control = ausentismo.objects.filter(baja=False).filter(aus_frevision__gte=fecha1).order_by('-aus_frevision')
         prox_turnos = turnos.objects.filter(empresa__pk__in=empresas_habilitadas(self.request),fecha__gte=fecha2)
         
         context['form'] = form

@@ -39,6 +39,7 @@
         </div>
         <div class="btn-group " style="float:left;margin-right:20px;margin-bottom:10px;">
         <a class="btn btn-xs btn-primary" style="float:left;margin-right:20px;" href="{% url 'ausentismo_nuevo' %}" >Cargar Ausentismo</a>
+        <button class="btn btn-xs btn-danger" value="" style="margin-right:10px;" id="btnEliminar">Eliminar</button>
         <button class="btn btn-xs btn-primary" id="informe" style="float:left;margin-right:20px;" >Generar Informe</button>
         </div>  
         <table width="100%" id="ausentismos" style="display:none;" class="table table-striped compact table-hover table-no-bordered tabla_nueva text-nowrap">         
@@ -87,7 +88,7 @@
                         </div>
                     </td>
                     <td class="text-center">
-                        <input class="hidden" value="{{a.pk|safe}}" id="chk_{{forloop.counter0}}_id" /><input type="checkbox" class='tildado' id="chk_{{forloop.counter0}}"/>
+                        <input type="checkbox" class="tildado" id="chk_{{forloop.counter0}}" value="{{ a.pk|safe }}" aria-label="chk_{{forloop.counter0}}">
                     </td>              
                     <td>{{ a.get_fcrondesde|date:'d/m/Y' }}</td>               
                     <td>{{ a.get_fcronhasta|date:'d/m/Y' }}</td>

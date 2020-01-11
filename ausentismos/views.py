@@ -235,10 +235,17 @@ def ausentismo_eliminar(request,id):
     if not tiene_permiso(request,'aus_abm'):
             return redirect(reverse('principal'))
     aus = ausentismo.objects.get(pk=id).delete()         
-    messages.success(request, u'¡Los datos se guardaron con éxito!')
+    messages.success(request, u'¡Los datos se eliminaron con éxito!')
     return HttpResponseRedirect(reverse("ausentismo_listado"))     
 
-
+@login_required 
+def ausentismo_eliminar_masivo(request):        
+    if not tiene_permiso(request,'aus_abm'):
+            return redirect(reverse('principal'))
+    listado = request.GET.getlist('id')    
+    ausentismos = ausentismo.objects.filter(id__in=listado).delete()   
+    messages.success(request, u'¡Los datos se eliminaron con éxito!')
+    return HttpResponse(json.dumps(len(listado)), content_type = "application/json")
 ############ PATOLOGIAS ############################
 
 class PatologiaView(VariablesMixin,ListView):
@@ -575,17 +582,17 @@ def ausencias_importar(request):
 
         
                 try:              
-                   obj, created = ausentismo.objects.update_or_create(empleado=empl,tipo_ausentismo=tipoa,aus_control=aus_control,aus_fcontrol=aus_fcontrol,aus_certificado=aus_certificado,
-                    aus_fcertif=aus_fcertif,aus_fentrega_certif=aus_fentrega_certif,aus_fcrondesde=aus_fcrondesde,aus_fcronhasta=aus_fcronhasta,aus_diascaidos=aus_diascaidos,
-                    aus_diasjustif=aus_diasjustif,aus_freintegro=aus_freintegro,aus_falta=aus_falta,aus_tipo_alta=aus_tipo_alta,aus_frevision=aus_frevision,aus_medico=aus_medico,
-                    aus_grupop=aus_grupop,aus_diagn=aus_diagn,art_tipo_accidente=art_tipo_accidente,art_ndenuncia=art_ndenuncia,art_faccidente=art_faccidente,art_fdenuncia=art_fdenuncia,
-                    observaciones=observaciones,descr_altaparc=descr_altaparc,detalle_acc_art=detalle_acc_art,estudios_partic=estudios_partic,estudios_art=estudios_art,
-                    recalificac_art=recalificac_art)                                                                            
+                   obj, created = ausentismo.objects.update_or_create(empleado=empl,tipo_ausentismo=tipoa,aus_fcrondesde=aus_fcrondesde,aus_fcronhasta=aus_fcronhasta,
+                    defaults={'aus_control':aus_control,'aus_fcontrol':aus_fcontrol,'aus_certificado':aus_certificado,
+                    'aus_fcertif':aus_fcertif,'aus_fentrega_certif':aus_fentrega_certif,'aus_diascaidos':aus_diascaidos,
+                    'aus_diasjustif':aus_diasjustif,'aus_freintegro':aus_freintegro,'aus_falta':aus_falta,'aus_tipo_alta':aus_tipo_alta,'aus_frevision':aus_frevision,
+                    'aus_medico':aus_medico,'aus_grupop':aus_grupop,'aus_diagn':aus_diagn,'art_tipo_accidente':art_tipo_accidente,'art_ndenuncia':art_ndenuncia,
+                    'art_faccidente':art_faccidente,'art_fdenuncia':art_fdenuncia,'observaciones':observaciones,'descr_altaparc':descr_altaparc,'detalle_acc_art':detalle_acc_art,
+                    'estudios_partic':estudios_partic,'estudios_art':estudios_art,'recalificac_art':recalificac_art})                                                                            
                    if created:
                     cant+=1
-                except Exception as e:                   
-                   print e
-                   error = u"Línea:%s -> %s" %(index,e)
+                except Exception as e:                                      
+                   error = u"Línea:%s -> %s DNI:" %(index,e,dni)                   
                    messages.error(request,error)                                
             
             messages.success(request, u'Se importó el archivo con éxito!<br>(%s ausentismos creados)'% cant )

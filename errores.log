@@ -3055,3 +3055,4 @@ Traceback (most recent call last):
     aus_tipo_alta = [k for k, v in aus_tipo_alta.items() if v.encode("latin1").upper() == austa.upper()][0]
 IndexError: list index out of range
 [10/Jan/2020 20:33:19] ERROR [django.server:124] "POST /ausentismos/ausencias_importar/ HTTP/1.1" 500 104664
+[11/Jan/2020 19:35:30] ERROR [django.server:124] "GET /login/?next=/ HTTP/1.1" 500 59
