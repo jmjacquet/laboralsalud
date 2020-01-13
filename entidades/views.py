@@ -660,7 +660,18 @@ import csv, io
 from .forms import ImportarEmpleadosForm   
 from general.views import getVariablesMixin
 import random
+def unicode_csv_reader(unicode_csv_data, dialect=csv.excel, **kwargs):
+    # csv.py doesn't do Unicode; encode temporarily as UTF-8:
+    csv_reader = csv.reader(utf_8_encoder(unicode_csv_data),
+                            dialect=dialect, **kwargs)
+    for row in csv_reader:
+        # decode UTF-8 back to Unicode, cell by cell:
+        yield [unicode(cell, 'utf-8') for cell in row]
 
+def utf_8_encoder(unicode_csv_data):
+    for line in unicode_csv_data:
+        yield line.encode('utf-8')
+        
 @login_required 
 def importar_empleados(request):           
     context = {}
@@ -680,9 +691,9 @@ def importar_empleados(request):
                 messages.error(request,"El archivo es demasiado grande (%.2f MB)." % (csv_file.size/(1000*1000),))
                 return HttpResponseRedirect(reverse("importar_empleados"))
 
-            decoded_file = csv_file.read().decode("utf8", "ignore").replace(",", "").replace("'", "")
+            decoded_file = csv_file.read().decode("latin1").replace(",", "").replace("'", "")
             io_string = io.StringIO(decoded_file)
-            reader = csv.reader(io_string)            
+            reader = unicode_csv_reader(io_string)                
             #DNI;LEGAJO/NRO;APELLIDO;NOMBRE;FECHA_NAC;DOMICILIO;CELULAR;TELEFONO;EMAIL;CP;LOCALIDAD;FECHA_INGR;ART;PUESTO            
             cant=0
             try:
