@@ -89,6 +89,7 @@
                     </td>
                     <td class="text-center">
                         <input type="checkbox" class="tildado" id="chk_{{forloop.counter0}}" value="{{ a.pk|safe }}" aria-label="chk_{{forloop.counter0}}">
+                         {% if a.observaciones %}  <i title="{{a.observaciones}}" class="icon-speech icono_seguimiento"></i> {% endif %}
                     </td>              
                     <td>{{ a.get_fcrondesde|date:'d/m/Y' }}</td>               
                     <td>{{ a.get_fcronhasta|date:'d/m/Y' }}</td>
