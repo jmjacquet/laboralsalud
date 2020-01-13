@@ -107,4 +107,10 @@ $.fn.datepicker.dates['es'] = {
         $(this).datepicker();
     });
 
+       $( "#Aceptar" ).click(function() {        
+       $("#form-ent :disabled").removeAttr('disabled');      
+        $("#Aceptar").prop("disabled", true);    
+        $( "#form-ent" ).submit();         
+      });
+
 });

@@ -61,4 +61,13 @@ if ($("#id_empr_fingreso").val()!=''){
 if ($("#id_trab_fingreso").val()!=''){
 $("#id_trab_fingreso").trigger("change");};
 
+
+
+
+   $( "#Aceptar" ).click(function() {        
+       $("#form-empl :disabled").removeAttr('disabled');      
+        $("#Aceptar").prop("disabled", true);    
+        $( "#form-empl" ).submit();         
+      });
+
 });    

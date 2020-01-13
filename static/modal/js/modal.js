@@ -203,10 +203,11 @@
                 if (data.status === 'ok') {
                     modal.modal("hide");
                     var callback = options.modal_callback;
+                    console.log(callback);
                     if (options.modal_callback === null || options.modal_callback === undefined) {
                         $.noop();
                     } else if (callback in global_callbacks) {
-                        var cb = global_callbacks[callback];
+                        var cb = global_callbacks[callback];                        
                         cb(data, options);
                     } else {
                         debug("unknown action " + data.action);

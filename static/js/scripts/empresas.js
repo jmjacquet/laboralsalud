@@ -110,4 +110,9 @@ $.fn.datepicker.dates['es'] = {
     $('.dateinput').each(function(){
         $(this).datepicker();
     });
+     $( "#Aceptar" ).click(function() {        
+       $("#form-empr :disabled").removeAttr('disabled');      
+        $("#Aceptar").prop("disabled", true);    
+        $( "#form-empr" ).submit();         
+      });
 });

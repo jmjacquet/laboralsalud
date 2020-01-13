@@ -179,6 +179,10 @@ class AusentismoEditView(VariablesMixin,UpdateView):
         return HttpResponseRedirect(reverse('ausentismo_listado'))
 
     def form_invalid(self, form,controles_detalle):        
+        self.object = self.get_object()
+        form_class = self.get_form_class()
+        form = self.get_form(form_class)      
+        form.fields['empleado'].widget.attrs['disabled'] = True
         return self.render_to_response(self.get_context_data(form=form,controles_detalle = controles_detalle))        
 
     def get_form_kwargs(self):

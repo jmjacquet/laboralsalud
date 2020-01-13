@@ -120,7 +120,7 @@ class AusentismoForm(forms.ModelForm):
 				art_fdenuncia = self.cleaned_data.get('art_fdenuncia')
 				if not art_fdenuncia:
 					self.add_error("art_fdenuncia",u'¡Debe cargar una Fecha!')					
-
+	
 		if self._errors:
 			raise forms.ValidationError("¡Existen errores en la carga!.<br>Por favor verifique los campos marcados en rojo.")
 

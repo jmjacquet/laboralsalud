@@ -5,7 +5,7 @@
 {% load bootstrap3 %}
 
 <div id="form-container">
-    <form role="form" class="form" method="POST" action="" enctype="multipart/form-data">
+    <form role="form" class="form" id="form-alta" method="POST" action="" enctype="multipart/form-data">
      {% csrf_token %}    
         <div class="col-xs-12">
 	         <div class="row">
@@ -23,7 +23,8 @@
          </button>
         </div>
         <div class="col-xs-6">
-         <button  class="btn pull-right btn-sm btn-primary" id="Aceptar" type="submit">
+         <button  class="btn pull-right btn-sm btn-primary" id="Aceptar" type="button" 
+                onclick="this.disabled=true;$('#form-alta' ).submit();">
               <i class="fa fa-check"></i>{% trans 'Aceptar' %}</button>
         </div>
       

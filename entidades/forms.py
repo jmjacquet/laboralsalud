@@ -38,9 +38,9 @@ class EspecialidadForm(forms.ModelForm):
 
 class MedProfForm(forms.ModelForm):		
 	apellido_y_nombre = forms.CharField(widget=forms.TextInput(attrs={'autofocus': 'autofocus'}),required=True)
-	cuit = forms.IntegerField(label='CUIT',required = False,widget=PostPendWidgetBuscar(attrs={'class':'form-control','autofocus':'autofocus'},
+	cuit = forms.IntegerField(label='CUIT',required = False,widget=PostPendWidgetBuscar(attrs={'class':'form-control'},
 			base_widget=TextInput,data='<i class="fa fa-search" aria-hidden="true"></i>',tooltip=u"Buscar datos y validar CUIT en AFIP"))			
-	nro_doc = forms.IntegerField(label=u'Documento',required = True)		
+	nro_doc = forms.IntegerField(label=u'Documento',required = False)		
 	cod_postal = forms.IntegerField(label='CP',required = False)			
 	observaciones = forms.CharField(label='Observaciones / Datos adicionales',widget=forms.Textarea(attrs={'class':'form-control2', 'rows': 5}),required = False)	
 	tipo_form = forms.CharField(widget = forms.HiddenInput(), required = False)	
@@ -134,6 +134,11 @@ class EmpleadoForm(forms.ModelForm):
 		trab_fingreso = self.cleaned_data.get('trab_fingreso')	
 		trab_fbaja = self.cleaned_data.get('trab_fbaja')	
 		empr_fingreso = self.cleaned_data.get('empr_fingreso')	
+		fecha_nac = self.cleaned_data.get('fecha_nac')	
+
+		if fecha_nac:
+			if date.today() < fecha_nac:
+				self.add_error("fecha_nac",u'¡Verifique las Fechas!')
 
 		if trab_fingreso:
 			if date.today() < trab_fingreso:
@@ -147,6 +152,9 @@ class EmpleadoForm(forms.ModelForm):
 		if trab_fingreso and trab_fbaja:			
 			if trab_fingreso > trab_fbaja:
 				self.add_error("trab_fbaja",u'¡Verifique las Fechas!')
+
+		if self._errors:
+			raise forms.ValidationError("¡Existen errores en la carga!.<br>Por favor verifique los campos marcados en rojo.")
 						
 		return self.cleaned_data
 

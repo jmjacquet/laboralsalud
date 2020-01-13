@@ -208,50 +208,82 @@ var tabla = $('#ausentismos').DataTable({
         }
         });
 
-
-
-
-
 $("#checkall").click (function () {
      var checkedStatus = this.checked;
-    $("input[class='tildado stock']").each(function () {
+    $("input[class='tildado']").each(function () {
         $(this).prop("checked", checkedStatus);
         $(this).change();
      });
   });
 
-var lista = [];
+var listado = [];
 
-
-$("input[class='tildado stock']").change(function() {      
-      chk_precio();                     
-  });
-
-function chk_precio() {
-    lista = [];
-    cant = 0; 
-    str1 = '/productos/prod_stock_actualizar?'
-    str2 = ''
-    $("input[class='tildado stock']").each(function(index,checkbox){
-        if(checkbox.checked){               
-         id = document.getElementById(checkbox.id+"_id").value.replace('.', '');                        
-         lista.push(id);             
-         cant += 1;          
-         $(checkbox).closest('tr').toggleClass('selected', checkbox.checked);
-         if (str2==''){
-          str2= str2+'id='+id;
-         }else{
-          str2= str2+'&id='+id;
-         };
-      }
-      else {  
-          if($(checkbox).closest('tr').hasClass('selected')){
-            $(checkbox).closest('tr').removeClass('selected');}
-          };
-      $('#btnActualizar').val(str2)
-          
+$("input[class='tildado']" ,tabla.rows().nodes()).change(function() {                
+        str1 = 'ausentismos/generar_informe/?';
+        str2 = '';
+        checkbox=this;
+        id = checkbox.value;
+        if (checkbox.checked) {               
+                //Agrego al array de aus seleccionados
+                listado.push(id);                
+                $(checkbox).closest('tr').toggleClass('selected', checkbox.checked);                                
+        } else {
+            if ($(checkbox).closest('tr').hasClass('selected')) {
+                $(checkbox).closest('tr').removeClass('selected');
+            };
+            var listado2=[];
+            //Regenero el array de ids selecionados sin el que acabo de quitar
+            for( var i = 0; i < listado.length; i++){
+                if ( listado[i] != id) listado2.push(listado[i]);                    
+                };
+            listado=listado2;     
+        };
+        //Armo el String para los botones
+        for (var i = 0; i < listado.length; i++) {                
+                if (str2 == '') {
+                    str2 = str2 + 'id=' + listado[i];
+                } else {
+                    str2 = str2 + '&id=' + listado[i];
+                };
+        };
+        $('#informe').val(str1+str2)
+      $('#btnEliminar').val(str2);   
+               
     });
-   //console.log('CPBs:'+cpbs);
-};
+
+ $('#btnEliminar').click(function() {
+        if (listado.length == 0) {
+            alertify.errorAlert("¡Debe seleccionar algún Ausentismo!");
+        } else {
+            alerta = alertify.dialog('confirm').set({
+                'labels': {
+                    ok: 'Aceptar',
+                    cancel: 'Cancelar'
+                },
+                'message': '¿Desea Eliminar los Ausentismos seleccionados?',
+                transition: 'fade',
+                'onok': function() {
+                    $.ajax({
+                        url: "/ausentismos/ausentismo_eliminar_masivo?" + $('#btnEliminar').val(),
+                        type: "get",
+                        dataType: 'json',
+                        success: function(data) {
+                            window.location.href = window.location.href
+                        }
+                    });
+                },
+                'oncancel': function() {
+                    return true;
+                }
+            });
+            alerta.setting('modal', true);
+            alerta.setHeader('ELIMINAR AUSENTISMOS');
+            alerta.show();
+            return true;
+        }
+    });
+
+
+
 
 });
