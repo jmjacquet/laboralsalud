@@ -50,7 +50,10 @@ def tiene_empresa(usuario,empresa):
         if usuario.tipoUsr == 0:
             ok=True
         else:                        
-            ok=(empresa.id in usuario.empresas.values_list('id', flat=True).distinct())
+            if empresa:
+                ok=(empresa.id in usuario.empresas.values_list('id', flat=True).distinct())
+            else:
+                return False
     return ok
 
 # @login_required 
