@@ -174,7 +174,7 @@ textarea.form-control{height:auto}
 .tabla_cpbs > thead > tr > th, .tabla_cpbs > tbody > tr > th, .tabla_cpbs > tfoot > tr > th, .tabla_cpbs > thead > tr > td, .tabla_cpbs > tbody > tr > td, .tabla_cpbs > tfoot > tr > td{padding-left:10px;padding-right:10px;vertical-align:middle;border-top:none;border-bottom:none;font-size:10px;}
 @media (max-width:767px)
 .hidden-xs, tr.hidden-xs, th.hidden-xs, td.hidden-xs{display:none!important;}
-.icono_seguimiento{vertical-align:middle;color:#76b534;font-size:14px;}
+.icono_seguimiento{vertical-align:middle;color:#76b534;font-size:14px;    margin: 4px 0 0;}
 .total_seleccionados{float:right;font-size:14px;font-weight:bold;color:#213160;}
 
 #modalTareas .modal-header{border:0px;border-top:5px;font-size:11px;text-align:center;color:#ffffff;min-height:20px;font-weight:bold;font-family:'Ubuntu', sans-serif;
