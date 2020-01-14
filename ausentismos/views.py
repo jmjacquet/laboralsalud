@@ -710,7 +710,7 @@ def generarReporte(request,ausencias,pdf=None):
     context = Context()    
     fecha = hoy()    
         
-    template = 'ausentismos/informeAusentismos.html'                        
+    template = 'ausentismos/informe_ausentismos.html'                        
     if pdf:
         return render_to_pdf(template,locals())
     return render_to_pdf_response(request, template, locals())
@@ -733,7 +733,7 @@ def generarInforme(request):
             
             cant=len(ausencias)
 
-            response = {'cant': cant, 'message': "Se actualizaron exitosamente."} # for ok        
+            response = {'cant': cant, 'message': "¡El Informe fué generado/enviado con éxito!."} # for ok        
         else:
             response = {'cant': 0, 'message': "¡Verifique los datos ingresados!"} 
         # except:
@@ -742,5 +742,5 @@ def generarInforme(request):
         return HttpResponse(json.dumps(response,default=default), content_type='application/json')
     else:    
         form = InformeAusenciasForm(None)          
-        variables = RequestContext(request, {'form':form})        
-        return render_to_response("productos/actualizar_stock.html", variables)
+        variables = locals()     
+        return render(request,"ausentismos/informe_ausentismos_form.html", variables)

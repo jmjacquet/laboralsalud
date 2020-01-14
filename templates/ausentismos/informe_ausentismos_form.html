@@ -1,0 +1,47 @@
+{% load static from staticfiles %}
+{% load bootstrap3 %}
+{% load humanize %}
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/comprobantes.css'%}?{% now "Ymd"%}" type="text/css" >  
+{% endblock %}
+
+<div class="modal-dialog modal-content">
+               <div class="modal-wrapper">
+                 <div data-dismiss="modal" class="close-modal">
+                          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>        
+                        </div>
+                 <div class="modal-head">                        
+                        INFORME DE AUSENTISMOS
+                </div>
+                <div id="form-container">
+                <form role="form" class="form" method="POST" action="" id="form-informe">
+                {% csrf_token %}  
+                <div class="modal-body">                        
+                    <div class="col-xs-12">
+                      <div class="row">                    
+                        <div class="col-sm-2">{% bootstrap_field form.fecha %}</div>                      
+                        <div class="col-sm-4">{% bootstrap_field form.destinatario %}</div>                   
+                        <div class="col-sm-6">{% bootstrap_field form.asunto %}</div>                   
+                     </div>
+                     <div class="row">                    
+                        <div class="col-sm-12">{% bootstrap_field form.observaciones %}</div>                      
+                     </div>      
+                    </div>        
+                </div>
+                <div class="modal-buttons">
+                      <div class="row">
+                          <div class="col-xs-12"> 
+                            <button data-dismiss="modal" class="btn btn-sm pull-left btn btn-danger" type="button">
+                                <i class="fa fa-times"></i>Cancelar</button>
+                                <button id="AceptarSeleccion" type="button" data-dismiss="modal" class="btn pull-right btn-sm btn-primary"><i class="fa fa-check"></i>Aceptar</button>
+                          </div>
+                      </div>
+                 </div>
+                </form>
+                 </div>
+          </div>
+     <script src="{% static 'js/scripts/mandar_informe.js' %}" type="text/javascript"></script>
+
+    
+
+</div>

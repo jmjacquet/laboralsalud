@@ -288,9 +288,31 @@ $("#id_tipo_ausentismo").trigger("change");
 
 
 
-   $( "#Guardar" ).click(function() {        
-       $("#form-alta :disabled").removeAttr('disabled');      
-        $("#Guardar").prop("disabled", true);    
-        $( "#form-alta" ).submit();         
-      });
+$( "#Guardar" ).click(function() {        
+   $("#form-alta :disabled").removeAttr('disabled');      
+    $("#Guardar").prop("disabled", true);    
+    $( "#form-alta" ).submit();         
+  });
+
+
+$("#recargarEmpl").click(function () {      
+      
+    function recargarEmpleados(){
+    $.getJSON('/recargar_empleados/',{},
+    function (c) {
+    $("#id_empleado").empty().append('<option value="">---</option>');
+        $.each(c["empleados"], function (idx, item) {
+            jQuery("<option/>").text(item['nombre']).attr("value", item['id']).appendTo("#id_empleado");
+        })
+        $('#id_empleado').trigger("chosen:updated");            
+        console.log('see');
+    });      
+    };
+    $("#id_empresa").trigger("change");
+
+  });
+
+
+
+
  });

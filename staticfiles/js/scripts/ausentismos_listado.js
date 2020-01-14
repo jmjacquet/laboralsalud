@@ -284,6 +284,8 @@ $("input[class='tildado']" ,tabla.rows().nodes()).change(function() {
     });
 
 
-
+$('#btnInforme').click(function(){   
+      return abrir_modal('/ausentismos/generarInforme/');
+});
 
 });

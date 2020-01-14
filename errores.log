@@ -4042,3 +4042,79 @@ Traceback (most recent call last):
 ValueError: invalid literal for int() with base 10: '1.054'
 [13/Jan/2020 17:36:30] ERROR [django.server:124] "GET /buscarDatosEntidad/?id=1.054 HTTP/1.1" 500 18515
 [13/Jan/2020 18:38:23] ERROR [django.server:124] "POST /ausentismos/editar/652/ HTTP/1.1" 500 59
+[14/Jan/2020 12:30:10] ERROR [django.request:135] Internal Server Error: /ausentismos/generarInforme/
+Traceback (most recent call last):
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\GitHub\laboralsalud\ausentismos\views.py", line 746, in generarInforme
+    return render_to_response("ausentismos/informe_ausentismos_form.html", variables)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\shortcuts.py", line 21, in render_to_response
+    content = loader.render_to_string(template_name, context, using=using)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\loader.py", line 67, in render_to_string
+    template = get_template(template_name, using=using)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\loader.py", line 25, in get_template
+    raise TemplateDoesNotExist(template_name, chain=chain)
+TemplateDoesNotExist: ausentismos/informe_ausentismos_form.html
+[14/Jan/2020 12:30:10] ERROR [django.server:124] "GET /ausentismos/generarInforme/ HTTP/1.1" 500 18592
+[14/Jan/2020 12:30:17] ERROR [django.request:135] Internal Server Error: /ausentismos/generarInforme/
+Traceback (most recent call last):
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\GitHub\laboralsalud\ausentismos\views.py", line 746, in generarInforme
+    return render_to_response("ausentismos/informe_ausentismos_form.html", variables)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\shortcuts.py", line 21, in render_to_response
+    content = loader.render_to_string(template_name, context, using=using)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\loader.py", line 67, in render_to_string
+    template = get_template(template_name, using=using)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\loader.py", line 25, in get_template
+    raise TemplateDoesNotExist(template_name, chain=chain)
+TemplateDoesNotExist: ausentismos/informe_ausentismos_form.html
+[14/Jan/2020 12:30:17] ERROR [django.server:124] "GET /ausentismos/generarInforme/ HTTP/1.1" 500 90490
+[14/Jan/2020 12:41:23] ERROR [django.request:135] Internal Server Error: /ausentismos/generarInforme/
+Traceback (most recent call last):
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\GitHub\laboralsalud\ausentismos\views.py", line 746, in generarInforme
+    return render_to_response("ausentismos/informe_ausentismos_form.html", variables)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\shortcuts.py", line 21, in render_to_response
+    content = loader.render_to_string(template_name, context, using=using)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\loader.py", line 68, in render_to_string
+    return template.render(context, request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\backends\django.py", line 64, in render
+    context = make_context(context, request, autoescape=self.backend.engine.autoescape)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\context.py", line 287, in make_context
+    raise TypeError('context must be a dict rather than %s.' % context.__class__.__name__)
+TypeError: context must be a dict rather than RequestContext.
+[14/Jan/2020 12:41:23] ERROR [django.server:124] "GET /ausentismos/generarInforme/ HTTP/1.1" 500 90943
+[14/Jan/2020 13:01:32] ERROR [django.request:135] Internal Server Error: /ausentismos/generarInforme/
+Traceback (most recent call last):
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\GitHub\laboralsalud\ausentismos\views.py", line 726, in generarInforme
+    return HttpResponse(json.dumps(response,default=default), content_type='application/json')
+NameError: global name 'default' is not defined
+[14/Jan/2020 13:01:32] ERROR [django.server:124] "POST /ausentismos/generarInforme/ HTTP/1.1" 500 16989

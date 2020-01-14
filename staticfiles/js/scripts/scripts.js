@@ -72,6 +72,7 @@
                 jQuery("<option/>").text(item['nombre']).attr("value", item['id']).appendTo("#id_empleado");
             })
             $('#id_empleado').trigger("chosen:updated");            
+            console.log('see');
         });      
     };
 
@@ -116,7 +117,16 @@ function recargarMedicos(){
     };
    
 
-
+function abrir_modal(url) {
+    $('#popup').load(url, function() {
+        $(this).modal('show');
+    });
+    return false;
+}
+function cerrar_modal() {
+    $('#popup').modal('hide');
+    return false;
+}
     
 
 };  
