@@ -111,6 +111,7 @@ $.fn.datepicker.dates['es'] = {
        $("#form-ent :disabled").removeAttr('disabled');      
         $("#Aceptar").prop("disabled", true);    
         $( "#form-ent" ).submit();         
+        recargarMedicos();
       });
 
 });

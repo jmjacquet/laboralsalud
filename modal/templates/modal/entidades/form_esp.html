@@ -13,6 +13,11 @@
 					{{form.especialidad|as_crispy_field}}  
 			  	</div>								
 		</div>
+         {% if form.non_field_errors  %}
+          <script type="text/javascript">
+          alertify.errorAlert("{% for err in form.non_field_errors %}{{ err|safe }}{% endfor %}");
+          </script>
+        {% endif %}      
 <div class="modal-buttons">
     <div class="row">
         <div class="col-xs-6">
