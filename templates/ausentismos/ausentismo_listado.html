@@ -24,13 +24,14 @@
               <div class="panel-body">
                       <div class="col-md-12">
                        <form class="form" accept-charset="UTF-8" role="form" action="" method="post">
-                        {% csrf_token %}                                                                                     
+                        {% csrf_token %}  
+                          <div class="col-sm-1">{% bootstrap_field form.estado  %}</div>                     
                           <div class="col-sm-1">{% bootstrap_field form.fdesde  %}</div>                                
-                          <div class="col-sm-1">{% bootstrap_field form.fhasta  %}</div>                                    
-                          <div class="col-sm-3">{% bootstrap_field form.empresa  %}</div>                                    
-                          <div class="col-sm-2">{% bootstrap_field form.tipo_ausentismo  %}</div>                            
+                          <div class="col-sm-1">{% bootstrap_field form.fhasta  %}</div>
+                          <div class="col-sm-1">{% bootstrap_field form.fcontrol  %}</div>
+                          <div class="col-sm-3">{% bootstrap_field form.empresa  %}</div>
+                          <div class="col-sm-2">{% bootstrap_field form.tipo_ausentismo  %}</div>
                           <div class="col-sm-2">{% bootstrap_field form.empleado  %}</div>
-                          <div class="col-sm-1">{% bootstrap_field form.estado  %}</div>      
                           <div class="col-sm-1"><button class="btn btn-xs text-center" type="submit">Buscar</button></div>          
                         </form>             
                       </div>
@@ -47,12 +48,12 @@
                 <tr>
                     <th class="no-sort text-center" data-priority="1">#</th>
                     <th class="no-sort text-center" data-priority="2"><input type="checkbox" id="checkall" title="Seleccionar Todas"/></th>
-                    <th class="imprimir" data-priority="2">F.Desde</th>
-                    <th class="imprimir" data-priority="3">F.Hasta</th>
+                    <th class="imprimir" data-priority="2">F.Cron.Desde</th>
+                    <th class="imprimir" data-priority="3">F.Cron.Hasta</th>
                     <th class="imprimir" data-priority="4">Días Caídos</th>                    
                     <th class="imprimir" data-priority="5">Documento</th>
                     <th class="imprimir" data-priority="6">Apellido y Nombre</th>
-                    <th class="imprimir" data-priority="7">F.Control</th>
+                    <th class="imprimir" data-priority="7">F.Próx.Control</th>
                     <th class="imprimir" data-priority="8">Empresa</th>
                     <th class="imprimir" data-priority="9">Tipo Ausentismo</th>                    
                     <th class="imprimir" data-priority="10">Patología</th>

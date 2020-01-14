@@ -4118,3 +4118,212 @@ Traceback (most recent call last):
     return HttpResponse(json.dumps(response,default=default), content_type='application/json')
 NameError: global name 'default' is not defined
 [14/Jan/2020 13:01:32] ERROR [django.server:124] "POST /ausentismos/generarInforme/ HTTP/1.1" 500 16989
+[14/Jan/2020 15:47:54] ERROR [django.server:124] "GET /login/?next=/ HTTP/1.1" 500 59
+[14/Jan/2020 15:50:38] ERROR [django.request:135] Internal Server Error: /login/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Repo\laboralsalud\laboralsalud\views.py", line 35, in login
+    user =  authenticate(usuario=usuario, clave=clave,empresa=empresa)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\__init__.py", line 100, in authenticate
+    user = backend.authenticate(*args, **credentials)
+  File "D:\Repo\laboralsalud\usuarios\authentication.py", line 30, in authenticate
+    if not tiene_empresa(usr,empresa):
+  File "D:\Repo\laboralsalud\usuarios\views.py", line 53, in tiene_empresa
+    ok=(empresa.id in usuario.empresas.values_list('id', flat=True).distinct())
+AttributeError: 'NoneType' object has no attribute 'id'
+[14/Jan/2020 15:50:38] ERROR [django.server:124] "POST /login/ HTTP/1.1" 500 89407
+[14/Jan/2020 17:03:39] ERROR [django.request:135] Internal Server Error: /
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\views\generic\base.py", line 68, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\utils\decorators.py", line 67, in _wrapper
+    return bound_func(*args, **kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\utils\decorators.py", line 63, in bound_func
+    return func.__get__(self, type(self))(*args2, **kwargs2)
+  File "D:\Repo\laboralsalud\general\views.py", line 109, in dispatch
+    return super(PrincipalView, self).dispatch(*args, **kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\views\generic\base.py", line 88, in dispatch
+    return handler(request, *args, **kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\views\generic\base.py", line 155, in get
+    context = self.get_context_data(**kwargs)
+  File "D:\Repo\laboralsalud\general\views.py", line 126, in get_context_data
+    fechas_control = ausentismo.objects.filter(baja=False).filter(aus_frevision=fecha1,empleado__empresa__pk__in=empresas_habilitadas(self.request)).order_by('-aus_frevision')
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\db\models\query.py", line 781, in filter
+    return self._filter_or_exclude(False, *args, **kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\db\models\query.py", line 799, in _filter_or_exclude
+    clone.query.add_q(Q(*args, **kwargs))
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\db\models\sql\query.py", line 1260, in add_q
+    clause, _ = self._add_q(q_object, self.used_aliases)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\db\models\sql\query.py", line 1286, in _add_q
+    allow_joins=allow_joins, split_subq=split_subq,
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\db\models\sql\query.py", line 1164, in build_filter
+    lookups, parts, reffed_expression = self.solve_lookup_type(arg)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\db\models\sql\query.py", line 1044, in solve_lookup_type
+    _, field, _, lookup_parts = self.names_to_path(lookup_splitted, self.get_meta())
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\db\models\sql\query.py", line 1362, in names_to_path
+    "Choices are: %s" % (name, ", ".join(available)))
+FieldError: Cannot resolve keyword 'aus_frevision' into field. Choices are: art_faccidente, art_fdenuncia, art_ndenuncia, art_tipo_accidente, aus_certificado, aus_control, aus_diagn, aus_diagn_id, aus_diascaidos, aus_diasjustif, aus_falta, aus_fcertif, aus_fcontrol, aus_fcrondesde, aus_fcronhasta, aus_fentrega_certif, aus_freintegro, aus_grupop, aus_grupop_id, aus_medico, aus_medico_id, aus_tipo_alta, baja, control_ausentismo, descr_altaparc, detalle_acc_art, empleado, empleado_id, estudios_art, estudios_partic, fecha_creacion, fecha_modif, id, observaciones, recalificac_art, tipo_ausentismo, tipo_control, usuario_carga, usuario_carga_id
+[14/Jan/2020 17:03:39] ERROR [django.server:124] "GET / HTTP/1.1" 500 151123
+[14/Jan/2020 17:10:33] ERROR [django.request:135] Internal Server Error: /
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\views\generic\base.py", line 68, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\utils\decorators.py", line 67, in _wrapper
+    return bound_func(*args, **kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\utils\decorators.py", line 63, in bound_func
+    return func.__get__(self, type(self))(*args2, **kwargs2)
+  File "D:\Repo\laboralsalud\general\views.py", line 109, in dispatch
+    return super(PrincipalView, self).dispatch(*args, **kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\views\generic\base.py", line 88, in dispatch
+    return handler(request, *args, **kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\views\generic\base.py", line 155, in get
+    context = self.get_context_data(**kwargs)
+  File "D:\Repo\laboralsalud\general\views.py", line 126, in get_context_data
+    fechas_control = ausentismo.objects.filter(baja=False).filter(aus_frevision=fecha1,empleado__empresa__pk__in=empresas_habilitadas(self.request)).order_by('-aus_frevision')
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\db\models\query.py", line 781, in filter
+    return self._filter_or_exclude(False, *args, **kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\db\models\query.py", line 799, in _filter_or_exclude
+    clone.query.add_q(Q(*args, **kwargs))
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\db\models\sql\query.py", line 1260, in add_q
+    clause, _ = self._add_q(q_object, self.used_aliases)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\db\models\sql\query.py", line 1286, in _add_q
+    allow_joins=allow_joins, split_subq=split_subq,
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\db\models\sql\query.py", line 1164, in build_filter
+    lookups, parts, reffed_expression = self.solve_lookup_type(arg)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\db\models\sql\query.py", line 1044, in solve_lookup_type
+    _, field, _, lookup_parts = self.names_to_path(lookup_splitted, self.get_meta())
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\db\models\sql\query.py", line 1362, in names_to_path
+    "Choices are: %s" % (name, ", ".join(available)))
+FieldError: Cannot resolve keyword 'aus_frevision' into field. Choices are: art_faccidente, art_fdenuncia, art_ndenuncia, art_tipo_accidente, aus_certificado, aus_control, aus_diagn, aus_diagn_id, aus_diascaidos, aus_diasjustif, aus_falta, aus_fcertif, aus_fcontrol, aus_fcrondesde, aus_fcronhasta, aus_fentrega_certif, aus_freintegro, aus_grupop, aus_grupop_id, aus_medico, aus_medico_id, aus_tipo_alta, baja, control_ausentismo, descr_altaparc, detalle_acc_art, empleado, empleado_id, estudios_art, estudios_partic, fecha_creacion, fecha_modif, id, observaciones, recalificac_art, tipo_ausentismo, tipo_control, usuario_carga, usuario_carga_id
+[14/Jan/2020 17:10:33] ERROR [django.server:124] "GET / HTTP/1.1" 500 151123
+[14/Jan/2020 17:21:40] ERROR [django.request:135] Internal Server Error: /
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\views\generic\base.py", line 68, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\utils\decorators.py", line 67, in _wrapper
+    return bound_func(*args, **kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\utils\decorators.py", line 63, in bound_func
+    return func.__get__(self, type(self))(*args2, **kwargs2)
+  File "D:\Repo\laboralsalud\general\views.py", line 109, in dispatch
+    return super(PrincipalView, self).dispatch(*args, **kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\views\generic\base.py", line 88, in dispatch
+    return handler(request, *args, **kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\views\generic\base.py", line 155, in get
+    context = self.get_context_data(**kwargs)
+  File "D:\Repo\laboralsalud\general\views.py", line 126, in get_context_data
+    controles = ausentismo_controles
+NameError: global name 'ausentismo_controles' is not defined
+[14/Jan/2020 17:21:40] ERROR [django.server:124] "GET / HTTP/1.1" 500 107191
+[14/Jan/2020 17:31:26] ERROR [django.request:135] Internal Server Error: /
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\views\generic\base.py", line 68, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\utils\decorators.py", line 67, in _wrapper
+    return bound_func(*args, **kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\utils\decorators.py", line 63, in bound_func
+    return func.__get__(self, type(self))(*args2, **kwargs2)
+  File "D:\Repo\laboralsalud\general\views.py", line 109, in dispatch
+    return super(PrincipalView, self).dispatch(*args, **kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\views\generic\base.py", line 88, in dispatch
+    return handler(request, *args, **kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\views\generic\base.py", line 155, in get
+    context = self.get_context_data(**kwargs)
+  File "D:\Repo\laboralsalud\general\views.py", line 126, in get_context_data
+    print ausentismos_del_dia(self.request,fecha1)
+  File "D:\Repo\laboralsalud\ausentismos\models.py", line 164, in ausentismos_del_dia
+    .filter(Q(fecha_creacion=fecha)|(Q(id__in=controles)))
+NameError: global name 'Q' is not defined
+[14/Jan/2020 17:31:26] ERROR [django.server:124] "GET / HTTP/1.1" 500 110288
+[14/Jan/2020 19:06:12] ERROR [django.request:135] Internal Server Error: /ausentismos/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\views\generic\base.py", line 68, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\utils\decorators.py", line 67, in _wrapper
+    return bound_func(*args, **kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\utils\decorators.py", line 63, in bound_func
+    return func.__get__(self, type(self))(*args2, **kwargs2)
+  File "D:\Repo\laboralsalud\ausentismos\views.py", line 34, in dispatch
+    return super(AusentismoView, self).dispatch(*args, **kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\views\generic\base.py", line 88, in dispatch
+    return handler(request, *args, **kwargs)
+  File "D:\Repo\laboralsalud\ausentismos\views.py", line 86, in post
+    return self.get(*args, **kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\views\generic\list.py", line 174, in get
+    context = self.get_context_data()
+  File "D:\Repo\laboralsalud\ausentismos\views.py", line 65, in get_context_data
+    |Q(aus_fcrondesde__lt=fdesde,aus_fcronhasta__gt=fhasta))
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\db\models\query.py", line 781, in filter
+    return self._filter_or_exclude(False, *args, **kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\db\models\query.py", line 799, in _filter_or_exclude
+    clone.query.add_q(Q(*args, **kwargs))
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\db\models\sql\query.py", line 1260, in add_q
+    clause, _ = self._add_q(q_object, self.used_aliases)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\db\models\sql\query.py", line 1280, in _add_q
+    current_negated, allow_joins, split_subq)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\db\models\sql\query.py", line 1280, in _add_q
+    current_negated, allow_joins, split_subq)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\db\models\sql\query.py", line 1286, in _add_q
+    allow_joins=allow_joins, split_subq=split_subq,
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\db\models\sql\query.py", line 1170, in build_filter
+    value, lookups, used_joins = self.prepare_lookup_value(value, lookups, can_reuse, allow_joins)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\db\models\sql\query.py", line 999, in prepare_lookup_value
+    raise ValueError("Cannot use None as a query value")
+ValueError: Cannot use None as a query value
+[14/Jan/2020 19:06:13] ERROR [django.server:124] "POST /ausentismos/ HTTP/1.1" 500 164683

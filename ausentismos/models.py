@@ -49,7 +49,7 @@ class ausentismo(models.Model):
 	tipo_control = models.CharField('Tipo Control',choices=TIPO_CONTROL, max_length=1,blank=True, null=True)
 	
 	aus_control = models.CharField(u'¿Asistió a Control?',max_length=1,default='N')
-	aus_fcontrol = models.DateField(u'Fecha Control',blank=True, null=True)
+	aus_fcontrol = models.DateField(u'Fecha Próx.Control',blank=True, null=True)
 	aus_certificado = models.CharField(u'¿Presenta Certificado?',max_length=1,default='N')
 	aus_fcertif = models.DateField(u'Fecha Certificado',blank=True, null=True)
 	aus_fentrega_certif = models.DateField(u'Fecha Entrega Certif.',blank=True, null=True)
@@ -61,7 +61,7 @@ class ausentismo(models.Model):
 	aus_freintegro = models.DateField(u'F.Reintegro',blank=True, null=True)
 	aus_falta = models.DateField(u'Fecha Alta',blank=True, null=True)
 	aus_tipo_alta = models.IntegerField('Tipo Alta',choices=TIPO_ALTA, blank=True, null=True)
-	aus_frevision = models.DateField(u'Fecha Próx.Control',blank=True, null=True)
+	# aus_frevision = models.DateField(u'Fecha Próx.Control',blank=True, null=True)
 	aus_medico = models.ForeignKey('entidades.ent_medico_prof',verbose_name=u'Médico Tratante/ART',db_column='aus_medico',blank=True, null=True,related_name='aus_medico',on_delete=models.SET_NULL)
 	aus_grupop = models.ForeignKey(aus_patologia,verbose_name=u'Grupo Patológico',db_column='aus_grupop',blank=True, null=True,related_name='aus_grupop',on_delete=models.SET_NULL)
 	aus_diagn = models.ForeignKey(aus_diagnostico,verbose_name=u'Diagnóstico',db_column='aus_diagn',blank=True, null=True,related_name='aus_diagn',on_delete=models.SET_NULL)
@@ -117,7 +117,7 @@ class ausentismo(models.Model):
 		
 	@property
 	def get_proxcontrol(self):
-		return self.aus_frevision		
+		return self.aus_fcontrol		
 		
 	@property
 	def get_falta(self):
@@ -126,10 +126,17 @@ class ausentismo(models.Model):
 	@property
 	def get_tipo_alta(self):
 		return self.get_aus_tipo_alta_display()
-		
-	@property
-	def get_fcontrol(self):
-		return self.aus_fcontrol		
+			
+	# def get_fechas_control(self):
+	# 	lista = [self.fecha_creacion]		
+	# 	try:
+	# 		controles = ausentismo_controles.objects.filter(ausentismo=self,fecha=fecha)
+	# 	except:
+	# 		return None
+	# 	if controles.fecha:
+	# 		return controles.fecha
+	# 	else:
+	# 		return None
 		
 
 class ausentismo_controles(models.Model):
@@ -149,3 +156,12 @@ class ausentismo_controles(models.Model):
 
 
 
+from django.db.models import Q
+
+def ausentismos_del_dia(request,fecha):
+	 controles = ausentismo_controles.objects.filter(fecha=fecha).values_list('ausentismo__id', flat=True)
+	 print controles
+	 ausentismos = ausentismo.objects.filter(baja=False,empleado__empresa__pk__in=empresas_habilitadas(request))\
+	 	.filter(Q(fecha_creacion=fecha)|(Q(id__in=controles)))
+	 return ausentismos
+     

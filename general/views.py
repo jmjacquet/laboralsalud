@@ -14,7 +14,7 @@ from django.db.models import Q,Sum,Count,FloatField,Func
 
 from .forms import TurnosForm,ConsultaTurnos,ConsultaFechasInicio
 from .models import turnos
-from ausentismos.models import aus_patologia,aus_diagnostico,ausentismo
+from ausentismos.models import aus_patologia,aus_diagnostico,ausentismo,ausentismos_del_dia
 from entidades.models import ent_empleado,ent_empresa,ent_medico_prof
 from laboralsalud.utilidades import hoy,usuario_actual,empresa_actual,TIPO_AUSENCIA,empresas_habilitadas,URL_API,mobile
 from django.contrib import messages
@@ -122,8 +122,8 @@ class PrincipalView(VariablesMixin,TemplateView):
         if not fecha2:
             fecha2=hoy()            
            
-        ausentismos = ausentismo.objects.filter(baja=False).filter(fecha_creacion=fecha1,empleado__empresa__pk__in=empresas_habilitadas(self.request))
-        fechas_control = ausentismo.objects.filter(baja=False).filter(aus_frevision=fecha1,empleado__empresa__pk__in=empresas_habilitadas(self.request)).order_by('-aus_frevision')
+        ausentismos = ausentismos_del_dia(self.request,fecha1).order_by('-aus_fcontrol')
+        fechas_control = ausentismo.objects.filter(baja=False,aus_fcontrol=fecha1,empleado__empresa__pk__in=empresas_habilitadas(self.request)).order_by('-aus_fcontrol')
         prox_turnos = turnos.objects.filter(empresa__pk__in=empresas_habilitadas(self.request),fecha__gte=fecha2)
         
         context['form'] = form

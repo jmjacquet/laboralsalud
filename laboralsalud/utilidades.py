@@ -228,6 +228,11 @@ def ultimo_anio():
     fecha = hoy - timedelta(days=365)
     return fecha
 
+def proximo_anio():
+    hoy = date.today()
+    fecha = hoy + timedelta(days=365)
+    return fecha    
+
 import re
 
 def mobile(request):
@@ -351,3 +356,13 @@ def default(obj):
     if isinstance(obj, Decimal):
         return str(obj)
     raise TypeError("Object of type '%s' is not JSON serializable" % type(obj).__name__)    
+
+def popover_html(label, content):
+    return label + ' &nbsp;<i class="fa fa-question-circle" data-toggle="tooltip" data-placement="top" title="'+ content +'"></i>'
+
+
+def agregar_nuevo_html(label,id,title,url,callback,hint,icon):
+    return label + '<a id="%s" href="%s" data-modal-head="%s" '\
+    'class="agregarDatos modal-create" type="button" data-toggle="tooltip" data-modal-callback="%s" '\
+    'data-placement="top" title="%s"><i class="%s"></i></a>'%(id,url,title,callback,hint,icon)
+    

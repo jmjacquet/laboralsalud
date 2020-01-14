@@ -31,24 +31,23 @@
 			<form role="form" class="form abm" method="POST" action="" id="form-alta" enctype="multipart/form-data">
 				{% csrf_token %}
 							
-					<div class="row cerca">
+					<div class="row ">
 					  {% if form.tipo_form.value == 'ALTA' %}
-					  <div class="col-xs-12 col-sm-6">
+					  <div class="col-xs-12 col-sm-6 cerca">
 						<fieldset>
 							<legend>EMPRESA</legend>
 							<div class="col-xs-12">{% bootstrap_field form.empresa show_label=False  %}</div>							
 						</fieldset>						
 					  </div>
 					  {% endif %}		
-					  <div class="col-xs-12 col-sm-6">
+					  <div class="col-xs-12 col-sm-6 cerca">
 						<fieldset>
 							<legend>EMPLEADO</legend>
-							<div class="col-sm-11 col-xs-12">{% bootstrap_field form.empleado show_label=False  %}</div>
+							<div class="col-sm-10 col-xs-12">{% bootstrap_field form.empleado show_label=False  %}</div>
 							{% if form.tipo_form.value == 'ALTA' %}
 								{% if not sitio_mobile  %}
-									<div class="col-sm-1 hidden-xs">						                  
-						                  		<a id="nuevoEmpleado" href="{% url 'empleado_nuevo' %}" data-modal-head="AGREGAR EMPLEADO" class="recargarDatos modal-create" type="button" data-toggle="tooltip" data-modal-callback="recargarE" data-placement="top" title="Agregar Empleado"><i class="icon-users"></i></a>
-						                  		
+									<div class="col-sm-2 hidden-xs">						                  
+						                  		<a id="nuevoEmpleado" href="{% url 'empleado_nuevo' %}" data-modal-head="AGREGAR EMPLEADO" class="recargarDatos modal-create" type="button" data-toggle="tooltip" data-modal-callback="recargarE" data-placement="top" title="Agregar Empleado"><i class="icon-users"></i></a>			                  		
 					                </div>        				
 							    {% endif %}		
 						    {% endif %}
@@ -57,8 +56,8 @@
 					</div>
 					 
 					
-					<div class="row cerca">
-						<div class="col-xs-12 col-sm-6">
+					<div class="row ">
+						<div class="col-xs-12 col-sm-6 cerca">
 							<fieldset>
 								<legend>DATOS EMPLEADO</legend>
 								<table class="table table-striped table-hover table-condensed table-no-bordered">
@@ -93,7 +92,7 @@
 								</table>
 							</fieldset>
 						</div>
-						<div class="col-xs-12 col-sm-6">
+						<div class="col-xs-12 col-sm-6 cerca">
 							<fieldset>
 								<legend>DATOS LABORALES</legend>
 								<table class="table table-striped table-hover table-condensed table-no-bordered">
@@ -174,7 +173,7 @@
 														</div>																															
 													</div>				
 												</div>				
-												<div class="row cerca">
+												<div class="row cerca">													
 													<div class="col-sm-2">
 														{{form.aus_fcrondesde|as_crispy_field}}
 													</div>
@@ -187,9 +186,7 @@
 													<div class="col-sm-2">
 														{{form.aus_diasjustif|as_crispy_field}}
 													</div>
-													<div class="col-sm-2">
-															{{form.aus_fcontrol|as_crispy_field}}
-													</div>	
+													
 													<div class="col-sm-2">
 														{{form.aus_freintegro|as_crispy_field}}
 													</div>
@@ -201,23 +198,14 @@
 													</div>
 													<div class="col-sm-2">
 														{{form.aus_tipo_alta|as_crispy_field}}
-													</div>
-													<div class="col-sm-2">
-														{{form.aus_frevision|as_crispy_field}}
-													</div>
-													<div class="col-sm-4">
+													</div>													
+													<div class="col-sm-6">
 														{{form.aus_medico|as_crispy_field}}
 													</div>
-													{% if not sitio_mobile %}
-														<div class="col-sm-1 hidden-xs">						                  
-															<div id="div_id_aus_medico" class="form-group">
-																<label for="id_aus_medico" class="control-label "></label>
-																<div class="controls">
-																	<a id="nuevoMedicoAUS" href="{% url 'medico_prof_nuevo' %}" data-modal-head="AGREGAR MÉDICO" class="recargarDatos modal-create" type="button" data-toggle="tooltip" data-modal-callback="recargarM" data-placement="top" title="Agregar Médico"><i class="icon-users"></i></a>
-																</div>
-															</div>
-										                </div>        	    				
-												    {% endif %}	
+												    <div class="col-sm-2">
+														{{form.aus_fcontrol|as_crispy_field}}
+													</div>
+
 												</div>												
 										</fieldset>
 											
@@ -230,20 +218,11 @@
 						<fieldset>
 							<legend>OBSERVACIONES/ESTUDIOS/DETALLES</legend>
 								<div class="row cerca">
-									<div class="col-sm-{% if not sitio_mobile %}5{% else %}6{% endif %}">
+									<div class="col-sm-6">
 										{{form.aus_grupop|as_crispy_field}}
 									</div>
-									{% if not sitio_mobile %}
-										<div class="col-sm-1 hidden-xs">						                  
-											<div id="div_id_grupopo" class="form-group">
-												<label for="id_grupop" class="control-label "></label>
-												<div class="controls ">
-													<a id="nuevoGrupoP" href="{% url 'patologia_nuevo' %}" data-modal-head="AGREGAR PATOLOGÍA" class="recargarDatos modal-create" type="button" data-toggle="tooltip" data-modal-callback="recargarGP" data-placement="top" title="Agregar Patología"><i class="icon-magnifier-add"></i></a>
-												</div>
-											</div>
-						                </div>        	    				
-								    {% endif %}		
-									<div class="col-sm-{% if not sitio_mobile %}5{% else %}6{% endif %}">
+									
+									<div class="col-sm-6">
 										{{form.aus_diagn|as_crispy_field}}
 									</div>
 									{% if not sitio_mobile %}
@@ -292,7 +271,7 @@
 									<table id="id_forms_table" width="100%" class="table tabla table-condensed tabla_listado">
 					                    <thead>
 					                          <tr>
-					                              <th style="width: 20%;">Fecha Control</th>					                              
+					                              <th style="width: 20%;">Fecha Control &nbsp;<i class="fa fa-question-circle" data-toggle="tooltip" data-placement="top" title="Fechas/Historial de Control"></i></th>					                              
 					                              <th>Detalle</th>						                             
 					                              <th style="width: 10px;" class="remove-sorting"></th>
 					                          </tr>

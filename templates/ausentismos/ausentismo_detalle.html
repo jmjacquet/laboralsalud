@@ -38,8 +38,8 @@
                   {% if a.tipo_ausentismo == 1 %}                
                           <tr>
                             <td class="titulo">¿Asistió a Control?:</td><td id="empr_fingreso" class="dato">{{a.aus_control|default_if_none:'N'}}</td>
-                            <td class="titulo">Fecha Control:</td><td id="antig_empresa" class="dato">{{a.aus_fcontrol|date:'d/m/Y'}}</td>
-                            <td class="titulo" colspan="2"></td><td class="titulo" colspan="2"></td>                
+                            <td class="titulo">Fecha Próx.Control:</td><td id="antig_empresa" class="dato">{{a.get_proxcontrol|date:'d/m/Y'}}</td>
+                            <td class="titulo"></td><td class="dato"></td>                
                           </tr>
                           <tr>
                             <td class="titulo">¿Presenta Certificado?:</td><td id="empr_fingreso" class="dato">{{a.aus_certificado|default_if_none:'N'}}</td>      
@@ -57,11 +57,11 @@
                             <td class="titulo">Fecha Reintegro:</td><td id="antig_empresa" class="dato">{{a.aus_freintegro|date:'d/m/Y'}}</td>                    
                             <td class="titulo">Fecha Alta:</td><td id="antig_empresa" class="dato">{{a.aus_falta|date:'d/m/Y'}}</td>
                             <td class="titulo">Tipo Alta:</td><td id="antig_empresa" class="dato">{{a.get_aus_tipo_alta_display|default_if_none:''}}</td>
-                            <td class="titulo"></td><td class="titulo"></td>    
+                             
                           </tr>
                           <tr>
-                            <td class="titulo">Próxima Revisión:</td><td id="antig_empresa" class="dato">{{a.aus_frevision|date:'d/m/Y'}}</td>
-                            <td class="titulo">Médico Tratante:</td><td class="dato" colspan="5">{{a.aus_medico|default_if_none:''}}</td> 
+                           
+                            <td class="titulo">Médico Tratante:</td><td class="dato" colspan="7">{{a.aus_medico|default_if_none:''}}</td> 
                           </tr>
                   {% else %}
                          <tr>
@@ -76,19 +76,24 @@
                             <td class="titulo">Fecha Reintegro:</td><td id="antig_empresa" class="dato">{{a.aus_freintegro|date:'d/m/Y'}}</td> 
                           </tr>     
                           <tr>
-                            <td class="titulo">Fecha Control:</td><td id="antig_empresa" class="dato">{{a.aus_fcontrol|date:'d/m/Y'}}</td>                        
+                            <td class="titulo">Fecha Próx.Control:</td><td id="antig_empresa" class="dato">{{a.get_proxcontrol|date:'d/m/Y'}}</td>                        
                             <td class="titulo">Fecha Accidente:</td><td id="antig_empresa" class="dato">{{a.art_faccidente|date:'d/m/Y'}}</td>                    
                              <td class="titulo">Fecha Alta:</td><td id="antig_empresa" class="dato">{{a.aus_falta|date:'d/m/Y'}}</td>
                             <td class="titulo">Tipo Alta:</td><td id="antig_empresa" class="dato">{{a.aus_tipo_alta|default_if_none:''}}</td>
                           </tr>
-                          <tr>
-                            <td class="titulo">Próxima Revisión:</td><td id="antig_empresa" class="dato">{{a.aus_frevision|date:'d/m/Y'}}</td>
-                            <td class="titulo">Médico Tratante:</td><td class="dato" colspan="5">{{a.aus_medico|default_if_none:''}}</td> 
+                          <tr>                            
+                            <td class="titulo">Médico Tratante:</td><td class="dato" colspan="7">{{a.aus_medico|default_if_none:''}}</td> 
                           </tr>
                   {% endif %}
                   <tr>
                     <td class="titulo">Grupo Patológico:</td><td colspan="3" class="dato">{{a.aus_grupop|date:'d/m/Y'}}</td>
-                    <td class="titulo">Diagnóstico:</td><td class="dato" colspan="3">{{a.aus_diagn|default_if_none:''}}</td> 
+                    <td class="titulo">Diagnóstico:</td><td class="dato" colspan="3">{{a.aus_diagn|default_if_none:''}}</td>
+                  </tr>
+                  <tr>  
+                    <td class="titulo">Fecha Carga:</td><td id="antig_empresa" class="dato">{{a.fecha_creacion|date:'d/m/Y'}}</td>                    
+                    <td class="titulo">Usuario:</td><td id="antig_empresa" class="dato">{{a.usuario_carga|date:'d/m/Y'}}</td
+                      >
+                      <td class="titulo">Fecha Modificación:</td><td id="antig_empresa" class="dato">{{a.fecha_modif|date:'d/m/Y'}}</td>  
                   </tr>
                </tbody>
               </table>
