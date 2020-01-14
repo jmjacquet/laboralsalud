@@ -32,7 +32,7 @@ class TurnosForm(forms.ModelForm):
 		request = kwargs.pop('request', None)
 		super(TurnosForm, self).__init__(*args, **kwargs)						
 		self.fields['empleado'].queryset = ent_empleado.objects.filter(baja=False,empresa__pk__in=empresas_habilitadas(request))
-		self.fields['empresa'].queryset = ent_empresa.objects.filter(baja=False,pk__in=empresas_habilitadas(request))				
+		self.fields['empresa'].queryset = ent_empresa.objects.filter(baja=False,pk__in=empresas_habilitadas(request),casa_central__isnull=True)				
 			
 
 	# def clean(self):		
