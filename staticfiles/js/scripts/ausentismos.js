@@ -289,9 +289,9 @@ $("#id_tipo_ausentismo").trigger("change");
 
 
 $( "#Guardar" ).click(function() {        
-   $("#form-alta :disabled").removeAttr('disabled');      
+   $("#form-ausentismos :disabled").removeAttr('disabled');      
     $("#Guardar").prop("disabled", true);    
-    $( "#form-alta" ).submit();         
+    $( "#form-ausentismos" ).submit();         
   });
 
 

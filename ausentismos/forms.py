@@ -17,7 +17,7 @@ class MedicoModelChoiceField(forms.ModelChoiceField):
 
 class PatologiaForm(forms.ModelForm):
 	patologia = forms.CharField(widget=forms.TextInput(attrs={'autofocus': 'autofocus'}),required=True)	
-	codigo = forms.CharField(required=True)	
+	codigo = forms.CharField(required=False)	
 	class Meta:
 			model = aus_patologia
 			exclude = ['id','baja']
@@ -28,7 +28,7 @@ class PatologiaForm(forms.ModelForm):
 
 class DiagnosticoForm(forms.ModelForm):
 	diagnostico = forms.CharField(widget=forms.TextInput(attrs={'autofocus': 'autofocus'}),required=True)	
-	codigo = forms.CharField(required=True)	
+	codigo = forms.CharField(required=False)	
 	class Meta:
 			model = aus_diagnostico
 			exclude = ['id','baja']

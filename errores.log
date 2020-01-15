@@ -4327,3 +4327,101 @@ Traceback (most recent call last):
     raise ValueError("Cannot use None as a query value")
 ValueError: Cannot use None as a query value
 [14/Jan/2020 19:06:13] ERROR [django.server:124] "POST /ausentismos/ HTTP/1.1" 500 164683
+[15/Jan/2020 10:18:11] ERROR [django.request:135] Internal Server Error: /recargar_diagnosticos/
+Traceback (most recent call last):
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\GitHub\laboralsalud\general\views.py", line 223, in recargar_diagnosticos
+    lista.append({'id':e.pk,'nombre':e.get_diagnostico()})
+AttributeError: 'aus_diagnostico' object has no attribute 'get_diagnostico'
+[15/Jan/2020 10:18:12] ERROR [django.server:124] "GET /recargar_diagnosticos/ HTTP/1.1" 500 16681
+[15/Jan/2020 10:18:29] ERROR [django.request:135] Internal Server Error: /recargar_diagnosticos/
+Traceback (most recent call last):
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\GitHub\laboralsalud\general\views.py", line 223, in recargar_diagnosticos
+    lista.append({'id':e.pk,'nombre':e.get_diagnostico()})
+AttributeError: 'aus_diagnostico' object has no attribute 'get_diagnostico'
+[15/Jan/2020 10:18:29] ERROR [django.server:124] "GET /recargar_diagnosticos/ HTTP/1.1" 500 76085
+[15/Jan/2020 12:10:06] ERROR [django.request:135] Internal Server Error: /recargar_diagnosticos/
+Traceback (most recent call last):
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\GitHub\laboralsalud\general\views.py", line 223, in recargar_diagnosticos
+    lista.append({'id':e.pk,'nombre':e.get_diagnostico()})
+AttributeError: 'aus_diagnostico' object has no attribute 'get_diagnostico'
+[15/Jan/2020 12:10:06] ERROR [django.server:124] "GET /recargar_diagnosticos/ HTTP/1.1" 500 76349
+[15/Jan/2020 12:19:29] ERROR [django.request:135] Internal Server Error: /recargar_diagnosticos/
+Traceback (most recent call last):
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\GitHub\laboralsalud\general\views.py", line 223, in recargar_diagnosticos
+    lista.append({'id':e.pk,'nombre':e.get_diagnostico()})
+AttributeError: 'aus_diagnostico' object has no attribute 'get_diagnostico'
+[15/Jan/2020 12:19:29] ERROR [django.server:124] "GET /recargar_diagnosticos/ HTTP/1.1" 500 76214
+[15/Jan/2020 12:24:12] ERROR [django.request:135] Internal Server Error: /recargar_diagnosticos/
+Traceback (most recent call last):
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\GitHub\laboralsalud\general\views.py", line 223, in recargar_diagnosticos
+    lista.append({'id':e.pk,'nombre':e.get_diagnostico()})
+AttributeError: 'aus_diagnostico' object has no attribute 'get_diagnostico'
+[15/Jan/2020 12:24:12] ERROR [django.server:124] "GET /recargar_diagnosticos/ HTTP/1.1" 500 76349
+[15/Jan/2020 12:28:35] ERROR [django.request:135] Internal Server Error: /recargar_diagnosticos/
+Traceback (most recent call last):
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\GitHub\laboralsalud\general\views.py", line 223, in recargar_diagnosticos
+    lista.append({'id':e.pk,'nombre':e.get_diagnostico()})
+AttributeError: 'aus_diagnostico' object has no attribute 'get_diagnostico'
+[15/Jan/2020 12:28:35] ERROR [django.server:124] "GET /recargar_diagnosticos/ HTTP/1.1" 500 76349
+[15/Jan/2020 12:43:14] ERROR [django.request:135] Internal Server Error: /recargar_diagnosticos/
+Traceback (most recent call last):
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\GitHub\laboralsalud\general\views.py", line 223, in recargar_diagnosticos
+    lista.append({'id':e.pk,'nombre':e.get_diagnostico()})
+AttributeError: 'aus_diagnostico' object has no attribute 'get_diagnostico'
+[15/Jan/2020 12:43:14] ERROR [django.server:124] "GET /recargar_diagnosticos/ HTTP/1.1" 500 76349

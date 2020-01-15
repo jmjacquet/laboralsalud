@@ -115,6 +115,21 @@ function recargarMedicos(){
            
         });      
     };
+
+ function recargarEmpleadosEmpresa(id){        
+      if (id =='') {id=0;};
+      $('#cargando').show();
+      $.getJSON('/recargar_empleados_empresa/'+id,{},
+      function (c) {
+          $("#id_empleado").empty().append('<option value="">---</option>');
+          $.each(c["empleados"], function (idx, item) {
+              jQuery("<option/>").text(item['nombre']).attr("value", item['id']).appendTo("#id_empleado");
+          })
+          $('#id_empleado').trigger("chosen:updated");  
+          $("#id_empleado").trigger("change");          
+      });      
+      $('#cargando').hide();
+    };
    
 
 function abrir_modal(url) {

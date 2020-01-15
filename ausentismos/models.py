@@ -8,7 +8,7 @@ from entidades.models import ent_empleado,ent_medico_prof
 
 class aus_patologia(models.Model):
     id = models.AutoField(primary_key=True,db_index=True)    
-    codigo =  models.CharField(max_length=200)
+    codigo =  models.CharField(max_length=200,blank=True, null=True)
     patologia =  models.CharField(max_length=200)
     baja = models.BooleanField(default=False)
     class Meta:
@@ -26,7 +26,7 @@ class aus_patologia(models.Model):
 
 class aus_diagnostico(models.Model):
     id = models.AutoField(primary_key=True,db_index=True)    
-    codigo =  models.CharField(max_length=200)
+    codigo =  models.CharField(max_length=200,blank=True, null=True)
     diagnostico =  models.CharField(max_length=200)
     baja = models.BooleanField(default=False)
     class Meta:

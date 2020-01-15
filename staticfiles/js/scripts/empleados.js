@@ -67,7 +67,8 @@ $("#id_trab_fingreso").trigger("change");};
    $( "#Aceptar" ).click(function() {        
        $("#form-empl :disabled").removeAttr('disabled');      
         $("#Aceptar").prop("disabled", true);    
-        $( "#form-empl" ).submit();         
+        $( "#form-empl" ).submit();                 
+        recargarEmpleadosEmpresa($("#id_empresa").val());
       });
 
 });    
