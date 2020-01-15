@@ -225,16 +225,7 @@
 									<div class="col-sm-6">
 										{{form.aus_diagn|as_crispy_field}}
 									</div>
-									{% if not sitio_mobile %}
-										<div class="col-sm-1 hidden-xs">						                  
-											<div id="div_id_nuevoDiagn" class="form-group">
-												<label for="id_nuevoDiagn" class="control-label "></label>
-												<div class="controls ">
-													<a id="nuevoDiagn" href="{% url 'diagnostico_nuevo' %}" data-modal-head="AGREGAR DIAGNÓSTICO" class="recargarDatos modal-create" type="button" data-toggle="tooltip" data-modal-callback="recargarD" data-placement="top" title="Agregar Diagnóstico"><i class="icon-magnifier-add"></i></a>
-												</div>
-											</div>
-						                </div>        	    				
-								    {% endif %}	
+									
 								</div>
 								<div class="row cerca">
 									<div class="col-sm-12">
