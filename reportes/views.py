@@ -228,7 +228,7 @@ class ReporteResumenAnual(VariablesMixin,TemplateView):
         from dateutil.rrule import rrule, MONTHLY
         meses = [[int(dt.strftime("%m")),int(dt.strftime("%y"))] for dt in rrule(MONTHLY, dtstart=fdesde, until=fhasta)]
         import locale        
-        locale.setlocale(locale.LC_ALL, '')
+        locale.setlocale(locale.LC_TIME, "")
         listado_meses = ["%s%s" % (dt.strftime("%b").upper(),(dt.strftime("%y"))) for dt in rrule(MONTHLY, dtstart=fdesde, until=fhasta)]
         if ausentismos:                                                    
             for m in meses:                
