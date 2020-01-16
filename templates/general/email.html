@@ -2,5 +2,9 @@
 {% load humanize %}
 <html>
 <body>
-<strong>{{mensaje}}</strong>
+<strong>{{mensaje|default_if_none:''}}</strong>
+
+<p>
+	{{observaciones|default_if_none:''}}
+</p>
 </body>

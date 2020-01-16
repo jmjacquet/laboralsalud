@@ -21,9 +21,9 @@ DATABASES = {
 # DB_USER = "jumaja"
 # DB_PASS = "qwerty"
 # DB_HOST = "web603.webfaction.com"
-# EMAIL_HOST = str("smtp.webfaction.com")
-# EMAIL_HOST_USER = str("grupogua_errores")
-# EMAIL_HOST_PASSWORD = str("Sarasa1616")
+EMAIL_HOST = str("smtp.webfaction.com")
+EMAIL_HOST_USER = str("grupogua_errores")
+EMAIL_HOST_PASSWORD = str("Sarasa1616")
 
 # DATABASES = {
 #         'default': {

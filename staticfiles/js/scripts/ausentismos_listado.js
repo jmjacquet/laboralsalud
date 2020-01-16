@@ -219,7 +219,7 @@ $("#checkall").click (function () {
 var listado = [];
 
 $("input[class='tildado']" ,tabla.rows().nodes()).change(function() {                
-        str1 = 'ausentismos/generar_informe/?';
+        str1 = '/ausentismos/generar_informe/?';
         str2 = '';
         checkbox=this;
         id = checkbox.value;
@@ -246,7 +246,7 @@ $("input[class='tildado']" ,tabla.rows().nodes()).change(function() {
                     str2 = str2 + '&id=' + listado[i];
                 };
         };
-        $('#informe').val(str1+str2)
+      $('#btnInforme').val(str2)
       $('#btnEliminar').val(str2);   
                
     });
@@ -285,7 +285,12 @@ $("input[class='tildado']" ,tabla.rows().nodes()).change(function() {
 
 
 $('#btnInforme').click(function(){   
-      return abrir_modal('/ausentismos/generarInforme/');
+     if (listado.length == 0) {
+            alertify.errorAlert("¡Debe seleccionar algún Ausentismo!");
+        } else {
+           return abrir_modal('/ausentismos/generar_informe/?'+$('#btnInforme').val()); 
+        }
+         
 });
 
 });

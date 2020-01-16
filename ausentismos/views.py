@@ -109,6 +109,7 @@ class AusentismoCreateView(VariablesMixin,CreateView):
         self.object = None
         form_class = self.get_form_class()
         form = self.get_form(form_class)                               
+        form.fields['empleado'].label = agregar_nuevo_html(u'Empleado','nuevoEmpleado',u'AGREGAR EMPLEADO','/entidades/empleado/nuevo/','recargarE',u'Agregar Empleado','icon-users')
         return self.render_to_response(self.get_context_data(form=form))
 
     def post(self, request, *args, **kwargs):
@@ -134,7 +135,7 @@ class AusentismoCreateView(VariablesMixin,CreateView):
     def get_initial(self):    
         initial = super(AusentismoCreateView, self).get_initial()               
         initial['request'] = self.request        
-        initial['tipo_form'] = 'ALTA'
+        initial['tipo_form'] = 'ALTA'        
         return initial    
 
     def form_invalid(self, form):                                                       
@@ -630,119 +631,98 @@ def ausencias_importar(request):
     return render(request, 'ausentismos/importar_ausentismos.html',context)
 
 #************* EMAIL **************
-from django.core.mail import send_mail, EmailMessage
-from django.core.mail.backends.smtp import EmailBackend
+# from django.core.mail import send_mail, EmailMessage
+# from django.core.mail.backends.smtp import EmailBackend
+# from django.template.loader import get_template
+# @login_required 
+# def mandarEmail(request,ausencias,fecha,asunto,destinatario,observaciones):   
+#     try:        
+#         mail_destino = []       
+#         mail_destino.append(destinatario)
+#         # try:
+#         #     config = gral_empresa.objects.get(id=settings.ENTIDAD_ID)        
+#         # except gral_empresa.DoesNotExist:
+#         #      raise ValueError
 
-@login_required 
-def mandarEmail(request):   
-    try:
-        cpb = cpb_comprobante.objects.get(id=id)            
-        mail_destino = []
-        direccion = str(cpb.entidad.email)
-        if not direccion:
-            messages.error(request, 'El comprobante no pudo ser enviado! (verifique la dirección de correo del destinatario)')  
-            return HttpResponseRedirect(cpb.get_listado())
-        mail_destino.append(direccion)
-        try:
-            config = gral_empresa.objects.get(id=settings.ENTIDAD_ID)        
-        except gral_empresa.DoesNotExist:
-             raise ValueError
-
-        datos = config.get_datos_mail()      
-        mail_cuerpo = datos['mail_cuerpo']
-        mail_servidor = datos['mail_servidor']
-        mail_puerto = int(datos['mail_puerto'])
-        mail_usuario = datos['mail_usuario']
-        mail_password = str(datos['mail_password'])
-        mail_origen = datos['mail_origen']      
+#         datos = get_datos_mail()      
+#         mensaje_inicial = datos['mensaje_inicial']
+#         mail_cuerpo = observaciones or datos['observaciones']
+#         mail_servidor = datos['mail_servidor']
+#         mail_puerto = int(datos['mail_puerto'])
+#         mail_usuario = datos['mail_usuario']
+#         mail_password = str(datos['mail_password'])
+#         mail_origen = datos['mail_origen']      
        
-        if cpb.cpb_tipo.tipo == 4 or cpb.cpb_tipo.tipo == 7:
-            post_pdf = imprimirCobranza(request,id,True)              
-        elif cpb.cpb_tipo.tipo == 5:
-            post_pdf = imprimirRemito(request,id,True)          
-        elif cpb.cpb_tipo.tipo == 6:
-            post_pdf = imprimirPresupuesto(request,id,True)  
-        else:
-            post_pdf = imprimirFactura(request,id,True)  
-            
-        fecha = datetime.now()              
-        nombre = "%s" % cpb
-        image_url = request.build_absolute_uri(reverse("chequear_email",kwargs={'id': cpb.id}))
+#         post_pdf = generarReporte(request,ausencias,True)              
+                    
+#         fecha = fecha             
+#         nombre = "Informe"
         
-        html_content = get_template('general/varios/email.html').render({'mensaje': mail_cuerpo,'image_url':image_url})
+#         html_content = get_template('general/email.html').render({'mensaje_inicial': mensaje_inicial,'observaciones': mail_cuerpo})
                 
-        backend = EmailBackend(host=mail_servidor, port=mail_puerto, username=mail_usuario,password=mail_password,fail_silently=False)        
-        email = EmailMessage( subject=u'%s' % (cpb.get_cpb_tipo),body=html_content,from_email=mail_origen,to=mail_destino,connection=backend)                
-        email.attach(u'%s.pdf' %nombre,post_pdf, "application/pdf")
-        email.content_subtype = 'html'        
-        email.send()        
-        messages.success(request, 'El informe fué enviado con éxito!')
-        return HttpResponseRedirect(cpb.get_listado())
-    except Exception as e:
-        print e        
-        messages.error(request, 'El comprobante no pudo ser enviado! (verifique la dirección de correo del destinatario) '+str(e))  
-        return HttpResponseRedirect(cpb.get_listado())    
+#         backend = EmailBackend(host=mail_servidor, port=mail_puerto, username=mail_usuario,password=mail_password,fail_silently=False)        
+#         email = EmailMessage( subject=u'%s' % (asunto),body=html_content,from_email=mail_origen,to=mail_destino,connection=backend)                
+#         email.attach(u'%s.pdf' %nombre,post_pdf, "application/pdf")
+#         email.content_subtype = 'html'        
+#         email.send()        
+#         messages.success(request, 'El informe fué enviado con éxito!')
+#         return True
+#     except Exception as e:
+#         print e        
+#         messages.error(request, 'El informe no pudo ser enviado! (verifique la dirección de correo del destinatario) '+str(e))  
+#         return False
 
-@login_required 
-def generarReporte(request,ausencias,pdf=None):       
-    if not ausencias:
-      raise Http404    
-    # try:        
-    #     empresa = empresa_actual(request)
-    # except gral_empresa.DoesNotExist:
-    #     empresa = None 
-    
-    # c = empresa
-    
-    # tipo_logo_factura = c.tipo_logo_factura
-    # cuit = c.cuit
-    # ruta_logo = c.ruta_logo
-    # nombre_fantasia = c.nombre_fantasia
-    # domicilio = c.domicilio
-    # email = c.email
-    # telefono = c.telefono
-    # celular = c.celular
-    # iibb = c.iibb
-    # categ_fiscal = c.categ_fiscal
-    # fecha_inicio_activ = c.fecha_inicio_activ       
-    
-    # cobranzas = cpb_cobranza.objects.filter(cpb_comprobante=cpb)    
-    # retenciones = cpb_comprobante_retenciones.objects.filter(cpb_comprobante=cpb)    
-    # leyenda = u'DOCUMENTO NO VÁLIDO COMO FACTURA'
-    # pagos = cpb_comprobante_fp.objects.filter(cpb_comprobante=cpb)    
-    # codigo_letra = '000'
-    
-    context = Context()    
-    fecha = hoy()    
+# from easy_pdf.rendering import render_to_pdf_response,render_to_pdf 
+# from reportlab.lib import units
+# from reportlab.graphics import renderPM
+# from reportlab.graphics.barcode import createBarcodeDrawing
+# from reportlab.graphics.shapes import Drawing
+
+
+# @login_required 
+# def generarReporte(request,ausencias,pdf=None):       
+#     if not ausencias:
+#       raise Http404    
+   
+#     context = Context()    
+#     fecha = hoy()    
         
-    template = 'ausentismos/informe_ausentismos.html'                        
-    if pdf:
-        return render_to_pdf(template,locals())
-    return render_to_pdf_response(request, template, locals())
+#     template = 'ausentismos/informe_ausentismos.html'                        
+#     if pdf:
+#         return render_to_pdf(template,locals())
+#     return render_to_pdf_response(request, template, locals())
 
 def generarInforme(request):
-    if request.method == 'POST' and request.is_ajax():                                       
-        lista = request.POST.getlist('id')                        
-        form = InformeAusenciasForm(request.POST or None)     
-        if lista:
-            ausencias = ausentismo.objects.filter(id__in=lista)
-        else:
-            response = {'cant': 0, 'message': "¡Debe seleccionar al menos un Ausentismo!"}
-            return HttpResponse(json.dumps(response,default=default), content_type='application/json')
-        
-        if form.is_valid():                                   
-            fecha = form.cleaned_data['fecha']
-            asunto = form.cleaned_data['asunto']
-            destinatario = form.cleaned_data['destinatario']
-            observaciones = form.cleaned_data['observaciones']
+    if request.method == 'POST' and request.is_ajax():                                                       
+        # form = InformeAusenciasForm(request.POST or None)  
+        # lista = request.POST.getlist('id')                        
+        # print lista
+        # if form.is_valid():                                   
+        #     fecha = form.cleaned_data['fecha']
+        #     asunto = form.cleaned_data['asunto']
+        #     destinatario = form.cleaned_data['destinatario']
+        #     observaciones = form.cleaned_data['observaciones']            
             
-            cant=len(ausencias)
-
-            response = {'cant': cant, 'message': "¡El Informe fué generado/enviado con éxito!."} # for ok        
-        else:
-            response = {'cant': 0, 'message': "¡Verifique los datos ingresados!"} 
-        # except:
-        #     response = {'cant': 0, 'message': "¡No se actualizaron Precios!"} 
+        #     lista = request.POST.getlist('id')                        
+        #     print lista
+        #     ausencias = ausentismo.objects.filter(id__in=lista)
+        #     cant=len(ausencias)
+        #     if cant<=0:
+        #         response = {'cant': 0, 'message': "¡Debe seleccionar al menos un Ausentismo!"}
+        #         return HttpResponse(json.dumps(response,default=default), content_type='application/json')
+            
+        #     print ausencias
+        #     #blah blah blah
+        #     if not mandarEmail(request,ausencias,fecha,asunto,destinatario,observaciones):
+        #         response = {'cant': 0, 'message': "El informe no pudo ser enviado! (verifique la dirección de correo del destinatario)"}
+        #     else:
+        #         response = {'cant': cant, 'message': "¡El Informe fué generado/enviado con éxito!."} # for ok        
+        # else:           
+        #     errores=''
+        #     for err in form.errors:
+        #         errores +='<b>'+err+'</b><br>'
+        #     response = {'cant': 0, 'message': "¡Verifique los siguientes datos: <br>"+errores.strip()} 
+     
             
         return HttpResponse(json.dumps(response,default=default), content_type='application/json')
     else:    

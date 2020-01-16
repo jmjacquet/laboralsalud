@@ -38,8 +38,9 @@ class DiagnosticoForm(forms.ModelForm):
 		super(DiagnosticoForm, self).__init__(*args, **kwargs)					
 
 class AusentismoForm(forms.ModelForm):
-	empleado = EmpleadoModelChoiceField(label='',queryset=ent_empleado.objects.filter(baja=False),empty_label='---',required = True)		
+	empleado = EmpleadoModelChoiceField(label='Empleado',queryset=ent_empleado.objects.filter(baja=False),empty_label='---',required = True)		
 	tipo_ausentismo = forms.ChoiceField(label='',choices=TIPO_AUSENCIA,required=False,initial=1)
+	aus_tipo_alta = forms.ChoiceField(choices=TIPO_ALTA,required=True,initial=0)
 	tipo_control = forms.ChoiceField(label='',choices=TIPO_CONTROL,required=False,initial='C')
 	aus_control = forms.ChoiceField(label=u'¿Asistió a Control?',choices=SINO,required=False,initial='N')
 	aus_certificado = forms.ChoiceField(label=u'¿Presenta Certificado?',choices=SINO,required=False,initial='N')
@@ -176,7 +177,17 @@ class ImportarAusentismosForm(forms.Form):
 class InformeAusenciasForm(forms.Form):               	
 	fecha =  forms.DateField(label='Fecha',widget=forms.DateInput(attrs={'class': 'form-control datepicker'}),required = True,initial=hoy())
 	asunto = forms.CharField(required=False,label='Asunto')	
-	destinatario =  forms.EmailField(max_length=50,label='E-Mail',required = True)   
+	destinatario =  forms.EmailField(max_length=50,label='E-Mail Destinatario',required = True)   
 	observaciones = forms.CharField(label='Observaciones / Nota al Pie',widget=forms.Textarea(attrs={'class':'form-control2', 'rows': 5}),required = False)	
 	def __init__(self, *args, **kwargs):				
-		super(InformeAusenciasForm, self).__init__(*args, **kwargs)				
+		super(InformeAusenciasForm, self).__init__(*args, **kwargs)		
+
+	def clean(self):
+		fecha = self.cleaned_data.get('fecha')        
+		destinatario = self.cleaned_data.get('destinatario')    
+		if not fecha:
+				self.add_error("fecha",u'¡Debe cargar una Fecha!')            
+		if not destinatario:
+				self.add_error("destinatario",u'¡Debe cargar un Email de Destino válido!')      
+		
+		return self.cleaned_data		

@@ -31,26 +31,14 @@
 			<form role="form" class="form abm" method="POST" action="" id="form-ausentismos" enctype="multipart/form-data">
 				{% csrf_token %}
 							
-					<div class="row ">
-					  {% if form.tipo_form.value == 'ALTA' %}
-					  <div class="col-xs-12 col-sm-6 cerca">
+					<div class="row ">					  
+					  <div class="col-xs-12 cerca">
 						<fieldset>
-							<legend>EMPRESA</legend>
-							<div class="col-xs-12">{% bootstrap_field form.empresa show_label=False  %}</div>							
-						</fieldset>						
-					  </div>
-					  {% endif %}		
-					  <div class="col-xs-12 col-sm-6 cerca">
-						<fieldset>
-							<legend>EMPLEADO</legend>
-							<div class="col-sm-10 col-xs-12">{% bootstrap_field form.empleado show_label=False  %}</div>
 							{% if form.tipo_form.value == 'ALTA' %}
-								{% if not sitio_mobile  %}
-									<div class="col-sm-2 hidden-xs">						                  
-						                  		<a id="nuevoEmpleado" href="{% url 'empleado_nuevo' %}" data-modal-head="AGREGAR EMPLEADO" class="recargarDatos modal-create" type="button" data-toggle="tooltip" data-modal-callback="recargarE" data-placement="top" title="Agregar Empleado"><i class="icon-users"></i></a>			                  		
-					                </div>        				
-							    {% endif %}		
-						    {% endif %}
+							<div class="col-sm-6">{{ form.empresa|as_crispy_field }}</div>			
+					  		{% endif %}		
+							<div class="col-sm-{% if form.tipo_form.value == 'ALTA' %}6{% else %}12{% endif %}">
+							{{ form.empleado|as_crispy_field }}</div>    	
 						</fieldset>						
 					  </div>
 					</div>

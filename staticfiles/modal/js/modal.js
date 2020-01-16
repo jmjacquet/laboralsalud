@@ -132,7 +132,7 @@
                 }).done(function() {
                     modal_head.html(options.modal_head);
                     modal_loader.hide();
-                    console.log(global_callbacks);
+                    // console.log(global_callbacks);
                 });
             }
             function clear_modal() {
