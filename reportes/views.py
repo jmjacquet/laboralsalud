@@ -106,15 +106,17 @@ class ReporteResumenPeriodo(VariablesMixin,TemplateView):
             if ausentismos_inc:
                 empleados_tot = ausentismos_inc.values('empleado').distinct().count()
                 # empleados_tot = 77
-                dias_caidos_tot=dias_ausentes(fdesde,fhasta,ausentismos_inc) 
+                totales = tot_ausentes_inc(fdesde,fhasta,ausentismos_inc)
+                dias_caidos_tot=totales[0] 
                 # dias_caidos_tot = 67            
                 dias_trab_tot = (dias_laborables * empleados_tot)-dias_caidos_tot
 
                 tasa_ausentismo = calcular_tasa_ausentismo(dias_caidos_tot,dias_laborables,empleados_tot)                                      
                 
-                agudos = ausentismos_inc.filter(aus_diascaidos__lte=30).aggregate(dias_caidos=Sum(Coalesce('aus_diascaidos', 0)))['dias_caidos'] or 0
-                graves = ausentismos_inc.filter(aus_diascaidos__gt=30).aggregate(dias_caidos=Sum(Coalesce('aus_diascaidos', 0)))['dias_caidos'] or 0
-                
+                # agudos = ausentismos_inc.filter(aus_diascaidos__lte=30).aggregate(dias_caidos=Sum(Coalesce('aus_diascaidos', 0)))['dias_caidos'] or 0
+                # graves = ausentismos_inc.filter(aus_diascaidos__gt=30).aggregate(dias_caidos=Sum(Coalesce('aus_diascaidos', 0)))['dias_caidos'] or 0
+                agudos=totales[1] 
+                graves=totales[2]                 
                 
                 porc_agudos = (Decimal(agudos) / Decimal(dias_caidos_tot))*100 
                 porc_cronicos = (Decimal(graves) / Decimal(dias_caidos_tot))*100 
@@ -310,11 +312,12 @@ def dias_ausentes(fdesde,fhasta,ausentismos):
     for a in ausentismos:
         fini = a.aus_fcrondesde     
         ffin = a.aus_fcronhasta
+        
         if fdesde>=fini:
             fini=fdesde
         if fhasta<=ffin:
-            ffin =fhasta
-        tot+=(ffin-fini).days+1
+            ffin =fhasta        
+        tot+=(ffin-fini).days+1        
     return tot
 
 def dias_ausentes_mes(mes, anio,ausentismos):     
@@ -332,3 +335,26 @@ def dias_ausentes_mes(mes, anio,ausentismos):
             ffin =fhasta
         tot+=(ffin-fini).days+1
     return tot    
+
+
+
+def tot_ausentes_inc(fdesde,fhasta,ausentismos):         
+    parcial=0
+    agudos=0
+    graves=0
+    tot=0
+    for a in ausentismos:
+        fini = a.aus_fcrondesde     
+        ffin = a.aus_fcronhasta
+        
+        if fdesde>=fini:
+            fini=fdesde
+        if fhasta<=ffin:
+            ffin =fhasta        
+        parcial=(ffin-fini).days+1        
+        tot+=parcial
+        if parcial <= 30:
+            agudos+=parcial
+        else:
+            graves+=parcial
+    return [tot,agudos,graves]
