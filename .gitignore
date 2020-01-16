@@ -4,3 +4,5 @@ errores.log
 *.log
 !generarI25.pyc
 errores.log
+*.pyc
+errores.log
