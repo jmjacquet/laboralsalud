@@ -88,7 +88,7 @@ var tabla = $('#ausentismos').DataTable({
                     extend:    'excel',
                     text:      '<i class="fa fa-file-excel-o"></i>',
                     titleAttr: 'Excel',
-                    filename: 'AUSENTISMOS.',                    
+                    filename: 'AUSENTISMOS',                    
                     exportOptions: {  modifier: {
                                         page: 'current'
                                     }, 

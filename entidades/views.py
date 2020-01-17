@@ -14,6 +14,7 @@ from laboralsalud.utilidades import ultimoNroId,usuario_actual,empresa_actual,em
 from django.contrib.auth.decorators import login_required
 from usuarios.views import tiene_permiso
 from django.utils.decorators import method_decorator
+import json
 ############ ART ############################
 
 class ARTView(VariablesMixin,ListView):
@@ -654,7 +655,18 @@ def empleado_baja_alta(request,id):
     messages.success(request, u'¡Los datos se guardaron con éxito!')
     return HttpResponseRedirect(reverse("empleado_listado"))   
 
-
+@login_required 
+def empleado_eliminar_masivo(request):        
+    if not tiene_permiso(request,'empl_pantalla'):
+            return redirect(reverse('principal'))
+    listado = request.GET.getlist('id')    
+    try:
+        empleados = ent_empleado.objects.filter(id__in=listado).delete()   
+        messages.success(request, u'¡Los datos se eliminaron con éxito!')
+    except:
+        messages.error(request, u'¡El Empleado no debe tener cargado Ausentismos a su nombre!<br>(elimínelos y vuelva a intentar)')
+    
+    return HttpResponse(json.dumps(len(listado)), content_type = "application/json")
 
 import csv, io
 from .forms import ImportarEmpleadosForm   

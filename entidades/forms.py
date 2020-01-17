@@ -79,7 +79,7 @@ class EmpresaForm(forms.ModelForm):
 	observaciones = forms.CharField(label='Observaciones / Datos adicionales',widget=forms.Textarea(attrs={'class':'form-control2', 'rows': 5}),required = False)	
 	razon_social = forms.CharField(required=True)
 	codigo = forms.CharField(required=True)
-	# tipo_form = forms.CharField(widget = forms.HiddenInput(), required = False)	
+	tipo_form = forms.CharField(widget = forms.HiddenInput(), required = False)	
 	class Meta:
 			model = ent_empresa
 			exclude = ['id','fecha_creacion','fecha_modif','usuario_carga']
@@ -115,7 +115,7 @@ class EmpleadoForm(forms.ModelForm):
 	trab_preocupac = forms.ChoiceField(label='¿Preocupacional?',choices=SINO,required=True,initial='N')
 	empresa = forms.ModelChoiceField(label='Empresa',queryset=ent_empresa.objects.filter(baja=False),required=True)
 	trab_cargo = TrabajoModelChoiceField(label=u'Puesto de Trabajo',queryset=ent_cargo.objects.filter(baja=False),required=False,)
-					
+	tipo_form = forms.CharField(widget = forms.HiddenInput(), required = False)						
 	class Meta:
 			model = ent_empleado
 			exclude = ['id','fecha_creacion','fecha_modif','usuario_carga']
@@ -135,7 +135,7 @@ class EmpleadoForm(forms.ModelForm):
 		trab_fbaja = self.cleaned_data.get('trab_fbaja')	
 		empr_fingreso = self.cleaned_data.get('empr_fingreso')	
 		fecha_nac = self.cleaned_data.get('fecha_nac')	
-
+		
 		if fecha_nac:
 			if date.today() < fecha_nac:
 				self.add_error("fecha_nac",u'¡Verifique las Fechas!')
@@ -152,6 +152,15 @@ class EmpleadoForm(forms.ModelForm):
 		if trab_fingreso and trab_fbaja:			
 			if trab_fingreso > trab_fbaja:
 				self.add_error("trab_fbaja",u'¡Verifique las Fechas!')
+		
+		nro_doc	 = self.cleaned_data.get('nro_doc')	
+		tipo_form = self.cleaned_data.get('tipo_form')	
+		empresa = self.cleaned_data.get('empresa')	
+
+		if (tipo_form == 'ALTA'):			
+			cant=ent_empleado.objects.filter(nro_doc=nro_doc,empresa=empresa).count()						
+			if (cant > 0):
+				raise forms.ValidationError("¡El Empleado ya existe en el sistema!<br>(está asignado a la empresa %s) Verifique."%empresa)		
 
 		if self._errors:
 			raise forms.ValidationError("¡Existen errores en la carga!.<br>Por favor verifique los campos marcados en rojo.")

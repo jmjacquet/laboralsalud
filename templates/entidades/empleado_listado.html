@@ -36,12 +36,15 @@
           </div>                  
         </div>
 
-
-    <a class="btn btn-xs btn-primary modal-create" style="float:left;margin-right:20px;" href="{% url 'empleado_nuevo' %}" data-modal-head="AGREGAR EMPLEADO" data-modal-callback="reload">Nuevo Empleado</a>
+    <div class="btn-group " style="float:left;margin-right:20px;margin-bottom:10px;">
+        <a class="btn btn-xs btn-primary modal-create" style="float:left;margin-right:20px;" href="{% url 'empleado_nuevo' %}" data-modal-head="AGREGAR EMPLEADO" data-modal-callback="reload">Nuevo Empleado</a>
+        <button class="btn btn-xs btn-danger" value="" style="margin-right:10px;" id="btnEliminar">Eliminar</button>
+    </div> 
     <table width="100%" id="empleado" style="display:none;" class="table table-striped compact table-hover table-no-bordered tabla_nueva nowrap">         
         <thead >
             <tr>
-                <th data-priority="1">#</th>
+                <th class="no-sort text-center"data-priority="1">#</th>
+                <th class="no-sort text-center" data-priority="2"><input type="checkbox" id="checkall" title="Seleccionar Todos"/></th>
                 <th class="imprimir" data-priority="1">Legajo</th>
                 <th class="imprimir" data-priority="2">Apellido y Nombre</th>
                 <th class="imprimir" data-priority="3">Documento</th>
@@ -81,8 +84,10 @@
                         
                       </ul>                                      
                     </div>
-                </td>              
-                
+                </td> 
+                <td class="text-center">
+                        <input type="checkbox" class="tildado" id="chk_{{forloop.counter0}}" value="{{ a.pk|safe }}" aria-label="chk_{{forloop.counter0}}">                         
+                </td> 
                 <td>{{ a.legajo|default_if_none:'' }}</td>
                 <td title="{{ a.apellido_y_nombre}}">{{ a.apellido_y_nombre|default_if_none:''|truncatechars:60 }}</td>
                 <td>{{ a.nro_doc|default_if_none:'' }}</td>
@@ -103,6 +108,7 @@
         </tbody>
         <tfoot>
             <tr>
+                <th></th> 
                 <th></th> 
                 <th></th>
                 <th></th> 
@@ -196,7 +202,7 @@ var tabla = $('#empleado').DataTable({
                     extend:    'excel',
                     text:      '<i class="fa fa-file-excel-o"></i>',
                     titleAttr: 'Excel',
-                    filename: 'EMPRESAS.',                    
+                    filename: 'EMPLEADOS',                    
                     exportOptions: {  modifier: {
                                         page: 'current'
                                     }, 
@@ -257,7 +263,7 @@ var tabla = $('#empleado').DataTable({
             },
             initComplete: function () {
                // this.api().columns().every( function () {[0, 1, 9]
-                this.api().columns([6,8,11,12,13]).every( function () {
+                this.api().columns([7,9,12,13,14]).every( function () {
                     var column = this;
                     var select = $('<select class="form-control"><option value="">Todos</option></select>')
                         .appendTo( $(column.footer()).empty() )
@@ -284,7 +290,76 @@ var tabla = $('#empleado').DataTable({
 
 
 
+$("#checkall").click (function () {
+     var checkedStatus = this.checked;
+    $("input[class='tildado']").each(function () {
+        $(this).prop("checked", checkedStatus);
+        $(this).change();
+     });
+  });
 
+var listado = [];
+
+$("input[class='tildado']" ,tabla.rows().nodes()).change(function() {                        
+        str2 = '';
+        checkbox=this;
+        id = checkbox.value;
+        if (checkbox.checked) {               
+                //Agrego al array de aus seleccionados
+                listado.push(id);                
+                $(checkbox).closest('tr').toggleClass('selected', checkbox.checked);                                
+        } else {
+            if ($(checkbox).closest('tr').hasClass('selected')) {
+                $(checkbox).closest('tr').removeClass('selected');
+            };
+            var listado2=[];
+            //Regenero el array de ids selecionados sin el que acabo de quitar
+            for( var i = 0; i < listado.length; i++){
+                if ( listado[i] != id) listado2.push(listado[i]);                    
+                };
+            listado=listado2;     
+        };
+        //Armo el String para los botones
+        for (var i = 0; i < listado.length; i++) {                
+                if (str2 == '') {
+                    str2 = str2 + 'id=' + listado[i];
+                } else {
+                    str2 = str2 + '&id=' + listado[i];
+                };
+        };
+      $('#btnEliminar').val(str2);   
+    });
+ $('#btnEliminar').click(function() {
+        if (listado.length == 0) {
+            alertify.errorAlert("¡Debe seleccionar algún Empleado!");
+        } else {
+            alerta = alertify.dialog('confirm').set({
+                'labels': {
+                    ok: 'Aceptar',
+                    cancel: 'Cancelar'
+                },
+                'message': '¿Desea Eliminar los Empleados seleccionados?',
+                transition: 'fade',
+                'onok': function() {
+                    $.ajax({
+                        url: "/entidades/empleado_eliminar_masivo?" + $('#btnEliminar').val(),
+                        type: "get",
+                        dataType: 'json',
+                        success: function(data) {
+                            window.location.href = window.location.href
+                        }
+                    });
+                },
+                'oncancel': function() {
+                    return true;
+                }
+            });
+            alerta.setting('modal', true);
+            alerta.setHeader('ELIMINAR EMPLEADOS');
+            alerta.show();
+            return true;
+        }
+    });         
 });
 </script> 
 {% endblock scripts_js %}
