@@ -58,7 +58,8 @@ SINO = (
 
 ESTADO_ = (
  (0,'ACTIVOS'), 
- (1,'TODOS'), 
+ (1,'BAJA'),
+ (2,'TODOS'), 
 )
 
 TIPO_VIGENCIA = (
