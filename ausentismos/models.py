@@ -16,12 +16,10 @@ class aus_patologia(models.Model):
         ordering = ['patologia',]
     
     def __unicode__(self):
-        return u'%s' % (self.patologia)         
+        return u'%s' % (self.patologia.upper())         
 
     def get_patologia(self):
-		entidad=u'%s' % self.patologia.upper()
-		if self.codigo:
-			entidad = u'%s - ' % (self.codigo)+entidad				
+		entidad=u'%s' % self.patologia.upper()	
 		return entidad.upper()		
 
 class aus_diagnostico(models.Model):
@@ -34,12 +32,10 @@ class aus_diagnostico(models.Model):
         ordering = ['diagnostico',]
     
     def __unicode__(self):
-        return u'%s' % (self.diagnostico)  
+        return u'%s' % (self.diagnostico.upper())  
 	
 	def get_diagnostico(self):
-		entidad=u'%s' % self.diagnostico.upper()
-		if self.codigo:
-			entidad = u'%s - ' % (self.codigo)+entidad		
+		entidad=u'%s' % self.diagnostico.upper()		
 		return entidad.upper()		               
 
 #Tabla de la Base de Configuracion

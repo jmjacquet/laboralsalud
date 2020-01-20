@@ -182,6 +182,7 @@ class InformeAusenciasForm(forms.Form):
 	asunto = forms.CharField(required=False,label='Asunto')	
 	destinatario =  forms.EmailField(max_length=50,label='E-Mail Destinatario/s',required = True)   
 	observaciones = forms.CharField(label='Observaciones / Nota al Pie',widget=forms.Textarea(attrs={'class':'form-control2', 'rows': 5}),required = False)	
+	accion = forms.ChoiceField(label=u'Acción',choices=ACCIONES,required=True,initial=1)	
 	def __init__(self, *args, **kwargs):				
 		super(InformeAusenciasForm, self).__init__(*args, **kwargs)		
 

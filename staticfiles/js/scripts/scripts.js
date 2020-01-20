@@ -65,69 +65,182 @@
 
 
  function recargarEmpleados(){
-        $.getJSON('/recargar_empleados/',{},
-        function (c) {
-            $("#id_empleado").empty().append('<option value="">---</option>');
-            $.each(c["empleados"], function (idx, item) {
-                jQuery("<option/>").text(item['nombre']).attr("value", item['id']).appendTo("#id_empleado");
-            })
-            $('#id_empleado').trigger("chosen:updated");            
-            console.log('see');
+        // $.getJSON('/recargar_empleados/',{},
+        // function (c) {
+        //     $("#id_empleado").empty().append('<option value="">---</option>');
+        //     $.each(c["empleados"], function (idx, item) {
+        //         jQuery("<option/>").text(item['nombre']).attr("value", item['id']).appendTo("#id_empleado");
+        //     })
+        //     $('#id_empleado').trigger("chosen:updated");            
+        //     console.log('see');
+        // });
+        $.ajax({
+                dataType: 'json',
+                url: '/recargar_empleados/',
+                async: false,
+                type: 'get',
+                cache: true,          
+                beforeSend: function(){
+                $('#cargando').show();
+                },
+                complete: function(){
+                    $('#cargando').hide();
+                },
+                success : function(data) {
+                  $("#id_empleado").empty().append('<option value="">---</option>');
+                  $.each(data["empleados"], function (idx, item) {
+                      jQuery("<option/>").text(item['nombre']).attr("value", item['id']).appendTo("#id_empleado");
+                  })
+                  $('#id_empleado').trigger("chosen:updated");                    
+                },
+                error : function(message) {
+                  console.log(message);
+                   $('#cargando').hide();
+                }
         });      
+
     };
 
 function recargarDiagnosticos(){
-        $.getJSON('/recargar_diagnosticos/',{},
-        function (c) {
-            $("#id_aus_diagn").empty().append('<option value="">---</option>');
-            $.each(c["diagnosticos"], function (idx, item) {
-                jQuery("<option/>").text(item['nombre']).attr("value", item['id']).appendTo("#id_aus_diagn");
-            })
-            $('#id_aus_diagn').trigger("chosen:updated");            
-        });      
+        // $.getJSON('/recargar_diagnosticos/',{},
+        // function (c) {
+        //     $("#id_aus_diagn").empty().append('<option value="">---</option>');
+        //     $.each(c["diagnosticos"], function (idx, item) {
+        //         jQuery("<option/>").text(item['nombre']).attr("value", item['id']).appendTo("#id_aus_diagn");
+        //     })
+        //     $('#id_aus_diagn').trigger("chosen:updated");            
+        // });      
+        $.ajax({
+                dataType: 'json',
+                url: '/recargar_diagnosticos/',
+                async: false,
+                type: 'get',
+                cache: true,          
+                beforeSend: function(){
+                $('#cargando').show();
+                },
+                complete: function(){
+                    $('#cargando').hide();
+                },
+                success : function(data) {
+                  $("#id_aus_diagn").empty().append('<option value="">---</option>');
+                  $.each(data["diagnosticos"], function (idx, item) {
+                      jQuery("<option/>").text(item['nombre']).attr("value", item['id']).appendTo("#id_aus_diagn");
+                  })
+                  $('#id_aus_diagn').trigger("chosen:updated");                    
+                },
+                error : function(message) {
+                  console.log(message);
+                   $('#cargando').hide();
+                }
+        });
     };
     
 function recargarPatologias(){
-        $.getJSON('/recargar_patologias/',{},
-        function (c) {
-            $("#id_aus_grupop").empty().append('<option value="">---</option>');
-            $.each(c["patologias"], function (idx, item) {
-                jQuery("<option/>").text(item['nombre']).attr("value", item['id']).appendTo("#id_aus_grupop");
-            })
-            $('#id_aus_grupop').trigger("chosen:updated");            
+        // $.getJSON('/recargar_patologias/',{},
+        // function (c) {
+        //     $("#id_aus_grupop").empty().append('<option value="">---</option>');
+        //     $.each(c["patologias"], function (idx, item) {
+        //         jQuery("<option/>").text(item['nombre']).attr("value", item['id']).appendTo("#id_aus_grupop");
+        //     })
+        //     $('#id_aus_grupop').trigger("chosen:updated");            
+        // });
+        $.ajax({
+                dataType: 'json',
+                url: '/recargar_patologias/',
+                async: false,
+                type: 'get',
+                cache: true,          
+                beforeSend: function(){
+                $('#cargando').show();
+                },
+                complete: function(){
+                    $('#cargando').hide();
+                },
+                success : function(data) {
+                  $("#id_aus_grupop").empty().append('<option value="">---</option>');
+                  $.each(data["patologias"], function (idx, item) {
+                      jQuery("<option/>").text(item['nombre']).attr("value", item['id']).appendTo("#id_aus_grupop");
+                  })
+                  $('#id_aus_grupop').trigger("chosen:updated");                    
+                },
+                error : function(message) {
+                  console.log(message);
+                   $('#cargando').hide();
+                }
         });      
     };
 
 
 function recargarMedicos(){
-        $.getJSON('/recargar_medicos/',{},
-        function (c) {
-            $("#id_aus_medico").empty().append('<option value="">---</option>');
-            $.each(c["medicos"], function (idx, item) {
-                jQuery("<option/>").text(item['nombre']).attr("value", item['id']).appendTo("#id_aus_medico");
-            })
-            $('#id_aus_medico').trigger("chosen:updated");
-            $("#id_art_medico").empty().append('<option value="">---</option>');
-            $.each(c["medicos"], function (idx, item) {
-                jQuery("<option/>").text(item['nombre']).attr("value", item['id']).appendTo("#id_art_medico");
-            })
-            $('#id_art_medico').trigger("chosen:updated");
-           
-        });      
+        $.ajax({
+                dataType: 'json',
+                url: '/recargar_medicos/',
+                async: false,
+                type: 'get',
+                cache: true,          
+                beforeSend: function(){
+                $('#cargando').show();
+                },
+                complete: function(){
+                    $('#cargando').hide();
+                },
+                success : function(data) {
+                  $("#id_aus_medico").empty().append('<option value="">---</option>');
+                  $.each(data["medicos"], function (idx, item) {
+                      jQuery("<option/>").text(item['nombre']).attr("value", item['id']).appendTo("#id_aus_medico");
+                  })
+                  $('#id_aus_medico').trigger("chosen:updated");                    
+                  $("#id_art_medico").empty().append('<option value="">---</option>');
+                  $.each(data["medicos"], function (idx, item) {
+                      jQuery("<option/>").text(item['nombre']).attr("value", item['id']).appendTo("#id_art_medico");
+                  })
+                  $('#id_art_medico').trigger("chosen:updated");   
+                },
+                error : function(message) {
+                  console.log(message);
+                   $('#cargando').hide();
+                }
+        });            
     };
 
  function recargarEmpleadosEmpresa(id){        
       if (id =='') {id=0;};
       $('#cargando').show();
-      $.getJSON('/recargar_empleados_empresa/'+id,{},
-      function (c) {
-          $("#id_empleado").empty().append('<option value="">---</option>');
-          $.each(c["empleados"], function (idx, item) {
-              jQuery("<option/>").text(item['nombre']).attr("value", item['id']).appendTo("#id_empleado");
-          })
-          $('#id_empleado').trigger("chosen:updated");  
-          $("#id_empleado").trigger("change");          
-      });      
+      // $.getJSON('/recargar_empleados_empresa/'+id,{},
+      // function (c) {
+      //     $("#id_empleado").empty().append('<option value="">---</option>');
+      //     $.each(c["empleados"], function (idx, item) {
+      //         jQuery("<option/>").text(item['nombre']).attr("value", item['id']).appendTo("#id_empleado");
+      //     })
+      //     $('#id_empleado').trigger("chosen:updated");  
+      //     $("#id_empleado").trigger("change");          
+      // });
+      $.ajax({
+                dataType: 'json',
+                url: '/recargar_empleados_empresa/'+id,
+                async: false,
+                type: 'get',
+                cache: true,          
+                beforeSend: function(){
+                $('#cargando').show();
+                },
+                complete: function(){
+                    $('#cargando').hide();
+                },
+                success : function(data) {
+                  $("#id_empleado").empty().append('<option value="">---</option>');
+                  $.each(data["empleados"], function (idx, item) {
+                      jQuery("<option/>").text(item['nombre']).attr("value", item['id']).appendTo("#id_empleado");
+                  })
+                  $('#id_empleado').trigger("chosen:updated");                                     
+                  $("#id_empleado").trigger("change");       
+                },
+                error : function(message) {
+                  console.log(message);
+                   $('#cargando').hide();
+                }
+        });                  
       $('#cargando').hide();
     };
    

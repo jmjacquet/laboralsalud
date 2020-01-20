@@ -3,7 +3,7 @@
 {% load crispy_forms_tags %}
 
 <div id="form-container">
-    <form role="form" class="form " method="POST" action="" id="form-alta" enctype="multipart/form-data">
+    <form role="form" class="form " method="POST" action="" id="form-diag" enctype="multipart/form-data">
      {% csrf_token %}         
         {{ form.media }}
         <div class="col-xs-12">
@@ -26,7 +26,7 @@
         </div>
         <div class="col-xs-6">
          <button  class="btn pull-right btn-sm btn-primary" id="Aceptar" type="button" 
-                onclick="this.disabled=true;$('#form-alta' ).submit(); recargarDiagnosticos();">
+                onclick="this.disabled=true;$('#form-diag').submit(); recargarDiagnosticos();">
               <i class="fa fa-check"></i>{% trans 'Aceptar' %}</button>
         </div>
       

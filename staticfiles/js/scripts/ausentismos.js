@@ -256,15 +256,43 @@ if ($('#id_tipo_form').val()=='EDICION'){
       var id =  $("#id_empresa").val();
       if (id =='') {id=0;};
       $('#cargando').show();
-      $.getJSON('/recargar_empleados_empresa/'+id,{},
-      function (c) {
-          $("#id_empleado").empty().append('<option value="">---</option>');
-          $.each(c["empleados"], function (idx, item) {
-              jQuery("<option/>").text(item['nombre']).attr("value", item['id']).appendTo("#id_empleado");
-          })
-          $('#id_empleado').trigger("chosen:updated");  
-          $("#id_empleado").trigger("change");          
-      });      
+      
+       $.ajax({
+                dataType: 'json',
+                url: '/recargar_empleados_empresa/'+id,
+                async: false,
+                type: 'get',
+                cache: true,          
+                beforeSend: function(){
+                $('#cargando').show();
+                },
+                complete: function(){
+                    $('#cargando').hide();
+                },
+                success : function(data) {
+                  $("#id_empleado").empty().append('<option value="">---</option>');
+                  $.each(data["empleados"], function (idx, item) {
+                      jQuery("<option/>").text(item['nombre']).attr("value", item['id']).appendTo("#id_empleado");
+                  })
+                  $('#id_empleado').trigger("chosen:updated");  
+                  $("#id_empleado").trigger("change");      
+                },
+                error : function(message) {
+                  console.log(message);
+                   $('#cargando').hide();
+                }
+        });
+        $('#cargando').hide();
+
+      // $.getJSON('/recargar_empleados_empresa/'+id,{},
+      //     function (c) {
+      //     $("#id_empleado").empty().append('<option value="">---</option>');
+      //     $.each(c["empleados"], function (idx, item) {
+      //         jQuery("<option/>").text(item['nombre']).attr("value", item['id']).appendTo("#id_empleado");
+      //     })
+      //     $('#id_empleado').trigger("chosen:updated");  
+      //     $("#id_empleado").trigger("change");          
+      // });      
       $('#cargando').hide();
   }); 
 

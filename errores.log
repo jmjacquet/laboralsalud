@@ -4425,3 +4425,688 @@ Traceback (most recent call last):
     lista.append({'id':e.pk,'nombre':e.get_diagnostico()})
 AttributeError: 'aus_diagnostico' object has no attribute 'get_diagnostico'
 [15/Jan/2020 12:43:14] ERROR [django.server:124] "GET /recargar_diagnosticos/ HTTP/1.1" 500 76349
+[17/Jan/2020 11:16:22] ERROR [django.request:135] Internal Server Error: /login/
+Traceback (most recent call last):
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\GitHub\laboralsalud\laboralsalud\views.py", line 35, in login
+    user =  authenticate(usuario=usuario, clave=clave,empresa=empresa)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\__init__.py", line 100, in authenticate
+    user = backend.authenticate(*args, **credentials)
+  File "D:\GitHub\laboralsalud\usuarios\authentication.py", line 15, in authenticate
+    usr = UsuUsuario.objects.get(usuario=usuario)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\db\models\manager.py", line 85, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\db\models\query.py", line 379, in get
+    self.model._meta.object_name
+DoesNotExist: UsuUsuario matching query does not exist.
+[17/Jan/2020 11:16:23] ERROR [django.server:124] "POST /login/ HTTP/1.1" 500 93294
+[17/Jan/2020 12:05:57] ERROR [django.request:135] Internal Server Error: /entidades/empleado/nuevo/
+Traceback (most recent call last):
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\views\generic\base.py", line 68, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\utils\decorators.py", line 67, in _wrapper
+    return bound_func(*args, **kwargs)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\utils\decorators.py", line 63, in bound_func
+    return func.__get__(self, type(self))(*args2, **kwargs2)
+  File "D:\GitHub\laboralsalud\entidades\views.py", line 572, in dispatch
+    return super(EmpleadoCreateView, self).dispatch(*args, **kwargs)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\views\generic\base.py", line 88, in dispatch
+    return handler(request, *args, **kwargs)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\views\generic\edit.py", line 217, in post
+    return super(BaseCreateView, self).post(request, *args, **kwargs)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\views\generic\edit.py", line 182, in post
+    if form.is_valid():
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\forms\forms.py", line 183, in is_valid
+    return self.is_bound and not self.errors
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\forms\forms.py", line 175, in errors
+    self.full_clean()
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\forms\forms.py", line 385, in full_clean
+    self._clean_form()
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\forms\forms.py", line 412, in _clean_form
+    cleaned_data = self.clean()
+  File "D:\GitHub\laboralsalud\entidades\forms.py", line 163, in clean
+    cant=ent_empleado.objects.filter(nro_doc=nro_doc,empresa=empresa).count()
+NameError: global name 'nro_doc' is not defined
+[17/Jan/2020 12:05:57] ERROR [django.server:124] "POST /entidades/empleado/nuevo/ HTTP/1.1" 500 19376
+[17/Jan/2020 12:09:20] ERROR [django.request:135] Internal Server Error: /entidades/empleado/nuevo/
+Traceback (most recent call last):
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\views\generic\base.py", line 68, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\utils\decorators.py", line 67, in _wrapper
+    return bound_func(*args, **kwargs)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\utils\decorators.py", line 63, in bound_func
+    return func.__get__(self, type(self))(*args2, **kwargs2)
+  File "D:\GitHub\laboralsalud\entidades\views.py", line 572, in dispatch
+    return super(EmpleadoCreateView, self).dispatch(*args, **kwargs)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\views\generic\base.py", line 88, in dispatch
+    return handler(request, *args, **kwargs)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\views\generic\edit.py", line 217, in post
+    return super(BaseCreateView, self).post(request, *args, **kwargs)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\views\generic\edit.py", line 182, in post
+    if form.is_valid():
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\forms\forms.py", line 183, in is_valid
+    return self.is_bound and not self.errors
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\forms\forms.py", line 175, in errors
+    self.full_clean()
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\forms\forms.py", line 385, in full_clean
+    self._clean_form()
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\forms\forms.py", line 412, in _clean_form
+    cleaned_data = self.clean()
+  File "D:\GitHub\laboralsalud\entidades\forms.py", line 161, in clean
+    cant=ent_empleado.objects.filter(nro_doc=nro_doc,empresa=empresa).count()
+NameError: global name 'nro_doc' is not defined
+[17/Jan/2020 12:09:20] ERROR [django.server:124] "POST /entidades/empleado/nuevo/ HTTP/1.1" 500 19433
+[17/Jan/2020 12:29:56] ERROR [django.request:135] Internal Server Error: /entidades/empleado_eliminar_masivo/
+Traceback (most recent call last):
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "D:\GitHub\laboralsalud\entidades\views.py", line 668, in empleado_eliminar_masivo
+    return HttpResponse(json.dumps(len(listado)), content_type = "application/json")
+NameError: global name 'json' is not defined
+[17/Jan/2020 12:29:56] ERROR [django.server:124] "GET /entidades/empleado_eliminar_masivo/?id=1284&id=1067 HTTP/1.1" 500 16957
+[17/Jan/2020 12:30:02] ERROR [django.request:135] Internal Server Error: /entidades/empleado_eliminar_masivo/
+Traceback (most recent call last):
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "D:\GitHub\laboralsalud\entidades\views.py", line 668, in empleado_eliminar_masivo
+    return HttpResponse(json.dumps(len(listado)), content_type = "application/json")
+NameError: global name 'json' is not defined
+[17/Jan/2020 12:30:02] ERROR [django.server:124] "GET /entidades/empleado_eliminar_masivo/?id=1284&id=1067 HTTP/1.1" 500 80559
+[20/Jan/2020 08:33:07] ERROR [django.request:135] Internal Server Error: /ausentismos/generar_informe/
+Traceback (most recent call last):
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\GitHub\laboralsalud\ausentismos\views.py", line 728, in generarInforme
+    return render(request,"ausentismos/informe_ausentismos_form.html", variables)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\shortcuts.py", line 30, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\loader.py", line 68, in render_to_string
+    return template.render(context, request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\backends\django.py", line 66, in render
+    return self.template.render(context)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 207, in render
+    return self._render(context)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\test\utils.py", line 107, in instrumented_test_render
+    return self.nodelist.render(context)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 990, in render
+    bit = node.render_annotated(context)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 957, in render_annotated
+    return self.render(context)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\library.py", line 203, in render
+    output = self.func(*resolved_args, **resolved_kwargs)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\bootstrap3\templatetags\bootstrap3.py", line 517, in bootstrap_field
+    return render_field(*args, **kwargs)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\bootstrap3\forms.py", line 78, in render_field
+    return renderer_cls(field, **kwargs).render()
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\bootstrap3\renderers.py", line 254, in __init__
+    'Parameter "field" should contain a valid Django BoundField.'
+BootstrapError: Parameter "field" should contain a valid Django BoundField.
+[20/Jan/2020 08:33:07] ERROR [django.server:124] "GET /ausentismos/generar_informe/?id=652&id=660&id=666 HTTP/1.1" 500 20469
+[20/Jan/2020 08:39:58] ERROR [django.request:135] Internal Server Error: /ausentismos/generar_informe/
+Traceback (most recent call last):
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\GitHub\laboralsalud\ausentismos\views.py", line 728, in generarInforme
+    return render(request,"ausentismos/informe_ausentismos_form.html", variables)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\shortcuts.py", line 30, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\loader.py", line 68, in render_to_string
+    return template.render(context, request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\backends\django.py", line 66, in render
+    return self.template.render(context)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 207, in render
+    return self._render(context)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\test\utils.py", line 107, in instrumented_test_render
+    return self.nodelist.render(context)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 990, in render
+    bit = node.render_annotated(context)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 957, in render_annotated
+    return self.render(context)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\library.py", line 203, in render
+    output = self.func(*resolved_args, **resolved_kwargs)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\bootstrap3\templatetags\bootstrap3.py", line 517, in bootstrap_field
+    return render_field(*args, **kwargs)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\bootstrap3\forms.py", line 78, in render_field
+    return renderer_cls(field, **kwargs).render()
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\bootstrap3\renderers.py", line 254, in __init__
+    'Parameter "field" should contain a valid Django BoundField.'
+BootstrapError: Parameter "field" should contain a valid Django BoundField.
+[20/Jan/2020 08:39:58] ERROR [django.server:124] "GET /ausentismos/generar_informe/?id=652&id=660&id=666 HTTP/1.1" 500 20469
+[20/Jan/2020 08:40:07] ERROR [django.request:135] Internal Server Error: /ausentismos/generar_informe/
+Traceback (most recent call last):
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\GitHub\laboralsalud\ausentismos\views.py", line 728, in generarInforme
+    return render(request,"ausentismos/informe_ausentismos_form.html", variables)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\shortcuts.py", line 30, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\loader.py", line 68, in render_to_string
+    return template.render(context, request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\backends\django.py", line 66, in render
+    return self.template.render(context)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 207, in render
+    return self._render(context)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\test\utils.py", line 107, in instrumented_test_render
+    return self.nodelist.render(context)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 990, in render
+    bit = node.render_annotated(context)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 957, in render_annotated
+    return self.render(context)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\library.py", line 203, in render
+    output = self.func(*resolved_args, **resolved_kwargs)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\bootstrap3\templatetags\bootstrap3.py", line 517, in bootstrap_field
+    return render_field(*args, **kwargs)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\bootstrap3\forms.py", line 78, in render_field
+    return renderer_cls(field, **kwargs).render()
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\bootstrap3\renderers.py", line 254, in __init__
+    'Parameter "field" should contain a valid Django BoundField.'
+BootstrapError: Parameter "field" should contain a valid Django BoundField.
+[20/Jan/2020 08:40:07] ERROR [django.server:124] "GET /ausentismos/generar_informe/?id=652&id=660&id=666 HTTP/1.1" 500 20469
+[20/Jan/2020 08:40:16] ERROR [django.request:135] Internal Server Error: /ausentismos/generar_informe/
+Traceback (most recent call last):
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\GitHub\laboralsalud\ausentismos\views.py", line 728, in generarInforme
+    return render(request,"ausentismos/informe_ausentismos_form.html", variables)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\shortcuts.py", line 30, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\loader.py", line 68, in render_to_string
+    return template.render(context, request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\backends\django.py", line 66, in render
+    return self.template.render(context)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 207, in render
+    return self._render(context)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\test\utils.py", line 107, in instrumented_test_render
+    return self.nodelist.render(context)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 990, in render
+    bit = node.render_annotated(context)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 957, in render_annotated
+    return self.render(context)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\library.py", line 203, in render
+    output = self.func(*resolved_args, **resolved_kwargs)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\bootstrap3\templatetags\bootstrap3.py", line 517, in bootstrap_field
+    return render_field(*args, **kwargs)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\bootstrap3\forms.py", line 78, in render_field
+    return renderer_cls(field, **kwargs).render()
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\bootstrap3\renderers.py", line 254, in __init__
+    'Parameter "field" should contain a valid Django BoundField.'
+BootstrapError: Parameter "field" should contain a valid Django BoundField.
+[20/Jan/2020 08:40:17] ERROR [django.server:124] "GET /ausentismos/generar_informe/?id=652&id=660&id=666 HTTP/1.1" 500 133108
+[20/Jan/2020 08:42:18] ERROR [django.request:135] Internal Server Error: /ausentismos/generar_informe/
+Traceback (most recent call last):
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\GitHub\laboralsalud\ausentismos\views.py", line 728, in generarInforme
+    return render(request,"ausentismos/informe_ausentismos_form.html", variables)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\shortcuts.py", line 30, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\loader.py", line 68, in render_to_string
+    return template.render(context, request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\backends\django.py", line 66, in render
+    return self.template.render(context)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 207, in render
+    return self._render(context)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\test\utils.py", line 107, in instrumented_test_render
+    return self.nodelist.render(context)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 990, in render
+    bit = node.render_annotated(context)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 957, in render_annotated
+    return self.render(context)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\library.py", line 203, in render
+    output = self.func(*resolved_args, **resolved_kwargs)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\bootstrap3\templatetags\bootstrap3.py", line 517, in bootstrap_field
+    return render_field(*args, **kwargs)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\bootstrap3\forms.py", line 78, in render_field
+    return renderer_cls(field, **kwargs).render()
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\bootstrap3\renderers.py", line 254, in __init__
+    'Parameter "field" should contain a valid Django BoundField.'
+BootstrapError: Parameter "field" should contain a valid Django BoundField.
+[20/Jan/2020 08:42:18] ERROR [django.server:124] "GET /ausentismos/generar_informe/?id=652&id=660&id=666 HTTP/1.1" 500 133372
+[20/Jan/2020 08:51:18] ERROR [django.request:135] Internal Server Error: /ausentismos/generar_informe/
+Traceback (most recent call last):
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\GitHub\laboralsalud\ausentismos\views.py", line 713, in generarInforme
+    generarReporte(request,ausencias,True)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "D:\GitHub\laboralsalud\ausentismos\views.py", line 683, in generarReporte
+    return render_to_pdf(template,locals())
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\easy_pdf\rendering.py", line 137, in render_to_pdf
+    content = loader.render_to_string(template, context, request=request, using=using)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\loader.py", line 67, in render_to_string
+    template = get_template(template_name, using=using)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\loader.py", line 21, in get_template
+    return engine.get_template(template_name)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\backends\django.py", line 39, in get_template
+    return Template(self.engine.get_template(template_name), self)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\engine.py", line 162, in get_template
+    template, origin = self.find_template(template_name)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\engine.py", line 136, in find_template
+    name, template_dirs=dirs, skip=skip,
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\loaders\base.py", line 44, in get_template
+    contents, origin, origin.template_name, self.engine,
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 191, in __init__
+    self.nodelist = self.compile_nodelist()
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 230, in compile_nodelist
+    return parser.parse()
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 515, in parse
+    raise self.error(token, e)
+TemplateSyntaxError: 'comprobantes_filters' is not a registered tag library. Must be one of:
+admin_list
+admin_modify
+admin_static
+admin_urls
+bootstrap3
+cache
+crispy_forms_field
+crispy_forms_filters
+crispy_forms_tags
+crispy_forms_utils
+debugger_tags
+highlighting
+humanize
+i18n
+indent_text
+l10n
+log
+static
+staticfiles
+syntax_color
+truncate_letters
+tz
+widont
+[20/Jan/2020 08:51:18] ERROR [django.server:124] "POST /ausentismos/generar_informe/ HTTP/1.1" 500 20850
+[20/Jan/2020 09:03:57] ERROR [django.request:135] Internal Server Error: /ausentismos/generar_informe/
+Traceback (most recent call last):
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\GitHub\laboralsalud\ausentismos\views.py", line 713, in generarInforme
+    generarReporte(request,ausencias,True)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "D:\GitHub\laboralsalud\ausentismos\views.py", line 683, in generarReporte
+    return render_to_pdf(template,locals())
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\easy_pdf\rendering.py", line 137, in render_to_pdf
+    content = loader.render_to_string(template, context, request=request, using=using)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\loader.py", line 67, in render_to_string
+    template = get_template(template_name, using=using)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\loader.py", line 21, in get_template
+    return engine.get_template(template_name)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\backends\django.py", line 39, in get_template
+    return Template(self.engine.get_template(template_name), self)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\engine.py", line 162, in get_template
+    template, origin = self.find_template(template_name)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\engine.py", line 136, in find_template
+    name, template_dirs=dirs, skip=skip,
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\loaders\base.py", line 44, in get_template
+    contents, origin, origin.template_name, self.engine,
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 191, in __init__
+    self.nodelist = self.compile_nodelist()
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 230, in compile_nodelist
+    return parser.parse()
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 515, in parse
+    raise self.error(token, e)
+TemplateSyntaxError: Invalid filter: 'existe_img'
+[20/Jan/2020 09:03:57] ERROR [django.server:124] "POST /ausentismos/generar_informe/ HTTP/1.1" 500 20512
+[20/Jan/2020 09:04:36] ERROR [django.request:135] Internal Server Error: /ausentismos/generar_informe/
+Traceback (most recent call last):
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\GitHub\laboralsalud\ausentismos\views.py", line 721, in generarInforme
+    return HttpResponse(json.dumps(response,default=default), content_type='application/json')
+UnboundLocalError: local variable 'response' referenced before assignment
+[20/Jan/2020 09:04:36] ERROR [django.server:124] "POST /ausentismos/generar_informe/ HTTP/1.1" 500 17157
+[20/Jan/2020 10:31:27] ERROR [django.request:135] Internal Server Error: /ausentismos/generar_informe/
+Traceback (most recent call last):
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\GitHub\laboralsalud\ausentismos\views.py", line 713, in generarInforme
+    rep = generarReporte(request,ausentismo,True)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "D:\GitHub\laboralsalud\ausentismos\views.py", line 683, in generarReporte
+    return render_to_pdf(template,locals())
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\easy_pdf\rendering.py", line 137, in render_to_pdf
+    content = loader.render_to_string(template, context, request=request, using=using)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\loader.py", line 68, in render_to_string
+    return template.render(context, request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\backends\django.py", line 66, in render
+    return self.template.render(context)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 207, in render
+    return self._render(context)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\test\utils.py", line 107, in instrumented_test_render
+    return self.nodelist.render(context)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 990, in render
+    bit = node.render_annotated(context)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 957, in render_annotated
+    return self.render(context)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\defaulttags.py", line 172, in render
+    values = list(values)
+TypeError: 'ausentismo' object is not iterable
+[20/Jan/2020 10:31:27] ERROR [django.server:124] "POST /ausentismos/generar_informe/ HTTP/1.1" 500 20917
+[20/Jan/2020 10:45:01] ERROR [django.request:135] Internal Server Error: /ausentismos/generar_informe/
+Traceback (most recent call last):
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\GitHub\laboralsalud\ausentismos\views.py", line 697, in generarInforme
+    enviar = form.cleaned_data['enviar']
+KeyError: u'enviar'
+[20/Jan/2020 10:45:01] ERROR [django.server:124] "POST /ausentismos/generar_informe/ HTTP/1.1" 500 17002
+[20/Jan/2020 10:46:44] ERROR [django.request:135] Internal Server Error: /ausentismos/generar_informe/
+Traceback (most recent call last):
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\GitHub\laboralsalud\ausentismos\views.py", line 696, in generarInforme
+    enviar = form.cleaned_data['enviar']
+KeyError: u'enviar'
+[20/Jan/2020 10:46:44] ERROR [django.server:124] "POST /ausentismos/generar_informe/ HTTP/1.1" 500 17473
+[20/Jan/2020 10:46:53] ERROR [django.request:135] Internal Server Error: /ausentismos/generar_informe/
+Traceback (most recent call last):
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\GitHub\laboralsalud\ausentismos\views.py", line 696, in generarInforme
+    enviar = form.cleaned_data['enviar']
+KeyError: u'enviar'
+[20/Jan/2020 10:46:53] ERROR [django.server:124] "POST /ausentismos/generar_informe/ HTTP/1.1" 500 17473
+[20/Jan/2020 12:47:22] ERROR [django.request:135] Internal Server Error: /ausentismos/imprimir_informe/
+Traceback (most recent call last):
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "D:\GitHub\laboralsalud\ausentismos\views.py", line 687, in imprimir_informe
+    return render_to_pdf_response(request, template, context)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\easy_pdf\rendering.py", line 158, in render_to_pdf_response
+    pdf = render_to_pdf(template, context, using=using, encoding=encoding, **kwargs)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\easy_pdf\rendering.py", line 138, in render_to_pdf
+    return html_to_pdf(content, encoding, **kwargs)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\easy_pdf\rendering.py", line 65, in html_to_pdf
+    link_callback=link_callback, **kwargs)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\xhtml2pdf\document.py", line 97, in pisaDocument
+    encoding, context=context, xml_output=xml_output)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\xhtml2pdf\document.py", line 59, in pisaStory
+    pisaParser(src, context, default_css, xhtml, encoding, xml_output)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\xhtml2pdf\parser.py", line 759, in pisaParser
+    pisaLoop(document, context)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\xhtml2pdf\parser.py", line 700, in pisaLoop
+    pisaLoop(node, context, path, **kw)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\xhtml2pdf\parser.py", line 644, in pisaLoop
+    pisaLoop(nnode, context, path, **kw)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\xhtml2pdf\parser.py", line 644, in pisaLoop
+    pisaLoop(nnode, context, path, **kw)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\xhtml2pdf\parser.py", line 649, in pisaLoop
+    obj.end(context)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\xhtml2pdf\tables.py", line 210, in end
+    style=TableStyle(tdata.styles))
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\reportlab\platypus\tables.py", line 265, in __init__
+    raise ValueError("%s data error - %d rows in data but %d in row heights" % (self.identity(),nrows, len(rowHeights)))
+ValueError: <PmlTable@0x05123AD0 9 rows x 4 cols> with cell(0,0) containing
+'<PmlKeepInFrame at 0x5123d50> size=x' data error - 9 rows in data but 8 in row heights
+[20/Jan/2020 12:47:22] ERROR [django.server:124] "GET /ausentismos/imprimir_informe/?id=652&id=660&id=666 HTTP/1.1" 500 182442
+[20/Jan/2020 17:47:23] ERROR [django.request:135] Internal Server Error: /ausentismos/imprimir_informe/
+Traceback (most recent call last):
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "D:\GitHub\laboralsalud\ausentismos\views.py", line 687, in imprimir_informe
+    return render_to_pdf_response(request, template, context)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\easy_pdf\rendering.py", line 158, in render_to_pdf_response
+    pdf = render_to_pdf(template, context, using=using, encoding=encoding, **kwargs)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\easy_pdf\rendering.py", line 138, in render_to_pdf
+    return html_to_pdf(content, encoding, **kwargs)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\easy_pdf\rendering.py", line 65, in html_to_pdf
+    link_callback=link_callback, **kwargs)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\xhtml2pdf\document.py", line 97, in pisaDocument
+    encoding, context=context, xml_output=xml_output)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\xhtml2pdf\document.py", line 59, in pisaStory
+    pisaParser(src, context, default_css, xhtml, encoding, xml_output)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\xhtml2pdf\parser.py", line 759, in pisaParser
+    pisaLoop(document, context)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\xhtml2pdf\parser.py", line 700, in pisaLoop
+    pisaLoop(node, context, path, **kw)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\xhtml2pdf\parser.py", line 644, in pisaLoop
+    pisaLoop(nnode, context, path, **kw)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\xhtml2pdf\parser.py", line 644, in pisaLoop
+    pisaLoop(nnode, context, path, **kw)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\xhtml2pdf\parser.py", line 644, in pisaLoop
+    pisaLoop(nnode, context, path, **kw)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\xhtml2pdf\parser.py", line 644, in pisaLoop
+    pisaLoop(nnode, context, path, **kw)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\xhtml2pdf\parser.py", line 644, in pisaLoop
+    pisaLoop(nnode, context, path, **kw)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\xhtml2pdf\parser.py", line 514, in pisaLoop
+    attr = pisaGetAttributes(context, node.tagName, node.attributes)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\xhtml2pdf\parser.py", line 118, in pisaGetAttributes
+    nv = int(nv)
+ValueError: invalid literal for int() with base 10: ''
+[20/Jan/2020 17:47:23] ERROR [django.server:124] "GET /ausentismos/imprimir_informe/?id=660&id=652&id=666 HTTP/1.1" 500 183906
+[20/Jan/2020 18:51:39] ERROR [django.server:124] "GET /entidades/empleado/ HTTP/1.1" 500 59
+[20/Jan/2020 18:55:35] ERROR [django.server:124] "GET /ausentismos/ HTTP/1.1" 500 59
+[20/Jan/2020 19:09:52] ERROR [django.request:135] Internal Server Error: /ausentismos/imprimir_informe/
+Traceback (most recent call last):
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "D:\GitHub\laboralsalud\ausentismos\views.py", line 687, in imprimir_informe
+    return render_to_pdf_response(request, template, context)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\easy_pdf\rendering.py", line 158, in render_to_pdf_response
+    pdf = render_to_pdf(template, context, using=using, encoding=encoding, **kwargs)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\easy_pdf\rendering.py", line 137, in render_to_pdf
+    content = loader.render_to_string(template, context, request=request, using=using)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\loader.py", line 67, in render_to_string
+    template = get_template(template_name, using=using)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\loader.py", line 21, in get_template
+    return engine.get_template(template_name)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\backends\django.py", line 39, in get_template
+    return Template(self.engine.get_template(template_name), self)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\engine.py", line 162, in get_template
+    template, origin = self.find_template(template_name)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\engine.py", line 136, in find_template
+    name, template_dirs=dirs, skip=skip,
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\loaders\base.py", line 44, in get_template
+    contents, origin, origin.template_name, self.engine,
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 191, in __init__
+    self.nodelist = self.compile_nodelist()
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 230, in compile_nodelist
+    return parser.parse()
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 509, in parse
+    self.invalid_block_tag(token, command, parse_until)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 571, in invalid_block_tag
+    "or load this tag?" % (token.lineno, command)
+TemplateSyntaxError: Invalid block tag on line 44: 'endif'. Did you forget to register or load this tag?
+[20/Jan/2020 19:10:07] ERROR [django.server:124] "GET /ausentismos/imprimir_informe/?id=590&id=591&id=585&id=586&id=589&id=581&id=587 HTTP/1.1" 500 162771
+[20/Jan/2020 19:19:34] ERROR [django.server:124] "GET /ausentismos/imprimir_informe/?id=590&id=591&id=585&id=586&id=589&id=581&id=587 HTTP/1.1" 500 59
+[20/Jan/2020 19:55:12] ERROR [django.request:135] Internal Server Error: /recargar_diagnosticos/
+Traceback (most recent call last):
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\GitHub\laboralsalud\general\views.py", line 223, in recargar_diagnosticos
+    lista.append({'id':e.pk,'nombre':e.get_diagnostico()})
+AttributeError: 'aus_diagnostico' object has no attribute 'get_diagnostico'
+[20/Jan/2020 19:55:13] ERROR [django.server:124] "GET /recargar_diagnosticos/ HTTP/1.1" 500 16706
+[20/Jan/2020 19:56:17] ERROR [django.request:135] Internal Server Error: /recargar_diagnosticos/
+Traceback (most recent call last):
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\GitHub\laboralsalud\general\views.py", line 225, in recargar_diagnosticos
+    return HttpResponse(json.dumps(context))
+  File "c:\python27\Lib\json\__init__.py", line 244, in dumps
+    return _default_encoder.encode(obj)
+  File "c:\python27\Lib\json\encoder.py", line 207, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+  File "c:\python27\Lib\json\encoder.py", line 270, in iterencode
+    return _iterencode(o, 0)
+  File "c:\python27\Lib\json\encoder.py", line 184, in default
+    raise TypeError(repr(o) + " is not JSON serializable")
+TypeError: <aus_diagnostico: AAAAAAAAAAAAAAAAA> is not JSON serializable
+[20/Jan/2020 19:56:18] ERROR [django.server:124] "GET /recargar_diagnosticos/ HTTP/1.1" 500 17111
+[20/Jan/2020 20:18:53] ERROR [django.request:135] Internal Server Error: /ausentismos/nuevo/
+Traceback (most recent call last):
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\views\generic\base.py", line 68, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\utils\decorators.py", line 67, in _wrapper
+    return bound_func(*args, **kwargs)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\utils\decorators.py", line 63, in bound_func
+    return func.__get__(self, type(self))(*args2, **kwargs2)
+  File "D:\GitHub\laboralsalud\ausentismos\views.py", line 107, in dispatch
+    storage = messages.get_messages(request)
+NameError: global name 'request' is not defined
+[20/Jan/2020 20:18:53] ERROR [django.server:124] "POST /ausentismos/nuevo/ HTTP/1.1" 500 97783

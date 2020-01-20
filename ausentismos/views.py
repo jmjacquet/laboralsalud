@@ -103,7 +103,7 @@ class AusentismoCreateView(VariablesMixin,CreateView):
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs): 
         if not tiene_permiso(self.request,'aus_abm'):
-            return redirect(reverse('principal'))
+            return redirect(reverse('principal'))        
         return super(AusentismoCreateView, self).dispatch(*args, **kwargs)
 
     def get(self, request, *args, **kwargs):
@@ -678,10 +678,12 @@ from easy_pdf.rendering import render_to_pdf_response,render_to_pdf
 def imprimir_informe(request):       
     template = 'ausentismos/informe_ausentismos.html' 
     lista = request.GET.getlist('id')
-    ausencias = ausentismo.objects.filter(id__in=lista)
+    ausencias = ausentismo.objects.filter(id__in=lista).select_related('empleado','empleado__empresa','aus_diagn','empleado__trab_cargo')
+    cant = len(ausencias)
     context = {}
     context = getVariablesMixin(request)  
     context['ausencias'] = ausencias
+    context['cant'] = cant
     fecha = hoy()   
     context['fecha'] = fecha 
     return render_to_pdf_response(request, template, context)                           
@@ -696,19 +698,17 @@ def generarInforme(request):
             destinatario = form.cleaned_data['destinatario']
             observaciones = form.cleaned_data['observaciones']            
             
-            lista = request.POST.getlist('id')                        
-            
-            ausencias = ausentismo.objects.filter(id__in=lista)
+            ausencias = ausentismo.objects.filter(id__in=lista).select_related('empleado','empleado__empresa','aus_diagn','empleado__trab_cargo')
             cant=len(ausencias)
             if cant<=0:
                 response = {'cant': 0, 'message': "¡Debe seleccionar al menos un Ausentismo!"}
                 return HttpResponse(json.dumps(response,default=default), content_type='application/json')                     
-            #blah blah blah
+            #blah blah blah            
             try:
                 if not mandarEmail(request,ausencias,fecha,asunto,destinatario,observaciones):
                     response = {'cant': 0, 'message': "El informe no pudo ser enviado! (verifique la dirección de correo del destinatario)"}
                 else:
-                    response = {'cant': cant, 'message': "¡El Informe fué generado/enviado con éxito!."} # for ok                    
+                    response = {'cant': cant, 'message': "¡El Informe fué generado/enviado con éxito!."} # for ok                                    
             except:
                 response = {'cant': 0, 'message': "El informe no pudo ser enviado! (verifique la dirección de correo del destinatario)"}
                  
