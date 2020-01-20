@@ -24,6 +24,9 @@ urlpatterns = [
     
     url(r'^ausencias_importar/$', ausencias_importar,name="ausencias_importar"),
     url(r'^generar_informe/$',generarInforme,name="generar_informe"),
+
+    url(r'^imprimir_informe/$',imprimir_informe,name="imprimir_informe"),
+
     url(r'^ausentismo_eliminar_masivo/$',ausentismo_eliminar_masivo,name="ausentismo_eliminar_masivo"),
 
 ]

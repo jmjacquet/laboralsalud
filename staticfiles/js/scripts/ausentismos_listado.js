@@ -283,7 +283,7 @@ $("input[class='tildado']" ,tabla.rows().nodes()).change(function() {
         }
     });
 
-
+ $("#enviando").hide();
 $('#btnInforme').click(function(){   
      if (listado.length == 0) {
             alertify.errorAlert("¡Debe seleccionar algún Ausentismo!");
@@ -292,5 +292,30 @@ $('#btnInforme').click(function(){
         }
          
 });
+
+$('#btnImprInforme').click(function() {    
+         if (listado.length == 0) {
+            alertify.errorAlert("¡Debe seleccionar algún Ausentismo!");
+        } else {    
+            alerta = alertify.dialog('confirm').set({
+                'labels': {
+                    ok: 'Aceptar',
+                    cancel: 'Cancelar'
+                },
+                'message': '¿Desea Imprimir el Informe de los Ausentismo seleccionados?',
+                transition: 'fade',
+                'onok': function() {
+                    window.open('/ausentismos/imprimir_informe/?'+$('#btnInforme').val());
+                },
+                'oncancel': function() {
+                    return true;
+                }
+            });
+            alerta.setting('modal', true);
+            alerta.setHeader('IMPRIMIR AUSENTISMOS');
+            alerta.show();
+            return true;
+        }
+    });
 
 });

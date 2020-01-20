@@ -4,6 +4,11 @@
 {% block extra_css %}
   <link rel="stylesheet" href="{% static 'css/comprobantes.css'%}?{% now "Ymd"%}" type="text/css" >  
 {% endblock %}
+         
+  <div id="enviando" class="cargando" >
+    <span class="cargando-txt">ENVIANDO...</span>
+    <img class="cargando-img" src="{% static 'img/loading-bars.svg' %}">
+  </div>
 
 <div class="modal-dialog modal-content">
                <div class="modal-wrapper">
@@ -20,8 +25,8 @@
                     <div class="col-xs-12">
                       <div class="row">                    
                         <div class="col-sm-2">{% bootstrap_field form.fecha %}</div>                      
-                        <div class="col-sm-4">{% bootstrap_field form.destinatario %}</div>                   
-                        <div class="col-sm-6">{% bootstrap_field form.asunto %}</div>                   
+                        <div class="col-sm-4">{% bootstrap_field form.destinatario %}</div>                                  
+                        <div class="col-sm-6">{% bootstrap_field form.asunto %}</div> 
                      </div>
                      <div class="row">                    
                         <div class="col-sm-12">{% bootstrap_field form.observaciones %}</div>                      

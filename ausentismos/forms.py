@@ -172,12 +172,15 @@ class ImportarAusentismosForm(forms.Form):
 				self.add_error("archivo",u"El archivo es demasiado grande (%.2f MB)." % (archivo.size/(1000*1000),))
 		return self.cleaned_data		
 
-
+ACCIONES = (    
+    (1, u'Enviar por e-mail'),
+    (2, u'Sólo Generar'),    
+)
 
 class InformeAusenciasForm(forms.Form):               	
 	fecha =  forms.DateField(label='Fecha',widget=forms.DateInput(attrs={'class': 'form-control datepicker'}),required = True,initial=hoy())
 	asunto = forms.CharField(required=False,label='Asunto')	
-	destinatario =  forms.EmailField(max_length=50,label='E-Mail Destinatario',required = True)   
+	destinatario =  forms.EmailField(max_length=50,label='E-Mail Destinatario/s',required = True)   
 	observaciones = forms.CharField(label='Observaciones / Nota al Pie',widget=forms.Textarea(attrs={'class':'form-control2', 'rows': 5}),required = False)	
 	def __init__(self, *args, **kwargs):				
 		super(InformeAusenciasForm, self).__init__(*args, **kwargs)		

@@ -14,6 +14,7 @@ from modal.views import AjaxCreateView,AjaxUpdateView,AjaxDeleteView
 from django.db.models import Q,Sum,Count,FloatField,Func
 from django.forms.models import inlineformset_factory,BaseInlineFormSet,formset_factory
 from django.utils.functional import curry 
+from django.http import FileResponse
 
 from .models import *
 from entidades.models import ent_empleado
@@ -631,101 +632,97 @@ def ausencias_importar(request):
     return render(request, 'ausentismos/importar_ausentismos.html',context)
 
 #************* EMAIL **************
-# from django.core.mail import send_mail, EmailMessage
-# from django.core.mail.backends.smtp import EmailBackend
-# from django.template.loader import get_template
-# @login_required 
-# def mandarEmail(request,ausencias,fecha,asunto,destinatario,observaciones):   
-#     try:        
-#         mail_destino = []       
-#         mail_destino.append(destinatario)
-#         # try:
-#         #     config = gral_empresa.objects.get(id=settings.ENTIDAD_ID)        
-#         # except gral_empresa.DoesNotExist:
-#         #      raise ValueError
-
-#         datos = get_datos_mail()      
-#         mensaje_inicial = datos['mensaje_inicial']
-#         mail_cuerpo = observaciones or datos['observaciones']
-#         mail_servidor = datos['mail_servidor']
-#         mail_puerto = int(datos['mail_puerto'])
-#         mail_usuario = datos['mail_usuario']
-#         mail_password = str(datos['mail_password'])
-#         mail_origen = datos['mail_origen']      
+from django.core.mail import send_mail, EmailMessage
+from django.core.mail.backends.smtp import EmailBackend
+from django.template.loader import get_template
+@login_required 
+def mandarEmail(request,ausencias,fecha,asunto,destinatario,observaciones):   
+    try:        
+        mail_destino = []       
+        mail_destino.append(destinatario)
+     
+        datos = get_datos_mail()      
+        mensaje_inicial = datos['mensaje_inicial']
+        mail_cuerpo = observaciones or datos['observaciones']
+        mail_servidor = datos['mail_servidor']
+        mail_puerto = int(datos['mail_puerto'])
+        mail_usuario = datos['mail_usuario']
+        mail_password = str(datos['mail_password'])
+        mail_origen = datos['mail_origen']      
        
-#         post_pdf = generarReporte(request,ausencias,True)              
+        context = Context()    
+        
+        template = 'ausentismos/informe_ausentismos.html'                        
+        post_pdf = render_to_pdf(template,locals())       
                     
-#         fecha = fecha             
-#         nombre = "Informe"
+        fecha = fecha             
+        nombre = "Informe_%s" % fecha
         
-#         html_content = get_template('general/email.html').render({'mensaje_inicial': mensaje_inicial,'observaciones': mail_cuerpo})
+        html_content = get_template('general/email.html').render({'mensaje_inicial': mensaje_inicial,'observaciones': mail_cuerpo})
                 
-#         backend = EmailBackend(host=mail_servidor, port=mail_puerto, username=mail_usuario,password=mail_password,fail_silently=False)        
-#         email = EmailMessage( subject=u'%s' % (asunto),body=html_content,from_email=mail_origen,to=mail_destino,connection=backend)                
-#         email.attach(u'%s.pdf' %nombre,post_pdf, "application/pdf")
-#         email.content_subtype = 'html'        
-#         email.send()        
-#         messages.success(request, 'El informe fué enviado con éxito!')
-#         return True
-#     except Exception as e:
-#         print e        
-#         messages.error(request, 'El informe no pudo ser enviado! (verifique la dirección de correo del destinatario) '+str(e))  
-#         return False
+        backend = EmailBackend(host=mail_servidor, port=mail_puerto, username=mail_usuario,password=mail_password,fail_silently=False)        
+        email = EmailMessage( subject=u'%s' % (asunto),body=html_content,from_email=mail_origen,to=mail_destino,connection=backend)                
+        email.attach(u'%s.pdf' %nombre,post_pdf, "application/pdf")
+        email.content_subtype = 'html'        
+        email.send()        
+        messages.success(request, 'El informe fué enviado con éxito!')
+        return True
+    except Exception as e:
+        print e        
+        messages.error(request, 'El informe no pudo ser enviado! (verifique la dirección de correo del destinatario) '+str(e))  
+        return False
 
-# from easy_pdf.rendering import render_to_pdf_response,render_to_pdf 
-# from reportlab.lib import units
-# from reportlab.graphics import renderPM
-# from reportlab.graphics.barcode import createBarcodeDrawing
-# from reportlab.graphics.shapes import Drawing
+from easy_pdf.rendering import render_to_pdf_response,render_to_pdf 
 
-
-# @login_required 
-# def generarReporte(request,ausencias,pdf=None):       
-#     if not ausencias:
-#       raise Http404    
-   
-#     context = Context()    
-#     fecha = hoy()    
-        
-#     template = 'ausentismos/informe_ausentismos.html'                        
-#     if pdf:
-#         return render_to_pdf(template,locals())
-#     return render_to_pdf_response(request, template, locals())
+@login_required 
+def imprimir_informe(request):       
+    template = 'ausentismos/informe_ausentismos.html' 
+    lista = request.GET.getlist('id')
+    ausencias = ausentismo.objects.filter(id__in=lista)
+    context = {}
+    context = getVariablesMixin(request)  
+    context['ausencias'] = ausencias
+    fecha = hoy()   
+    context['fecha'] = fecha 
+    return render_to_pdf_response(request, template, context)                           
 
 def generarInforme(request):
     if request.method == 'POST' and request.is_ajax():                                                       
-        # form = InformeAusenciasForm(request.POST or None)  
-        # lista = request.POST.getlist('id')                        
-        # print lista
-        # if form.is_valid():                                   
-        #     fecha = form.cleaned_data['fecha']
-        #     asunto = form.cleaned_data['asunto']
-        #     destinatario = form.cleaned_data['destinatario']
-        #     observaciones = form.cleaned_data['observaciones']            
+        form = InformeAusenciasForm(request.POST or None)  
+        lista = request.POST.getlist('id')                        
+        if form.is_valid():                                   
+            fecha = form.cleaned_data['fecha']
+            asunto = form.cleaned_data['asunto']
+            destinatario = form.cleaned_data['destinatario']
+            observaciones = form.cleaned_data['observaciones']            
             
-        #     lista = request.POST.getlist('id')                        
-        #     print lista
-        #     ausencias = ausentismo.objects.filter(id__in=lista)
-        #     cant=len(ausencias)
-        #     if cant<=0:
-        #         response = {'cant': 0, 'message': "¡Debe seleccionar al menos un Ausentismo!"}
-        #         return HttpResponse(json.dumps(response,default=default), content_type='application/json')
+            lista = request.POST.getlist('id')                        
             
-        #     print ausencias
-        #     #blah blah blah
-        #     if not mandarEmail(request,ausencias,fecha,asunto,destinatario,observaciones):
-        #         response = {'cant': 0, 'message': "El informe no pudo ser enviado! (verifique la dirección de correo del destinatario)"}
-        #     else:
-        #         response = {'cant': cant, 'message': "¡El Informe fué generado/enviado con éxito!."} # for ok        
-        # else:           
-        #     errores=''
-        #     for err in form.errors:
-        #         errores +='<b>'+err+'</b><br>'
-        #     response = {'cant': 0, 'message': "¡Verifique los siguientes datos: <br>"+errores.strip()} 
+            ausencias = ausentismo.objects.filter(id__in=lista)
+            cant=len(ausencias)
+            if cant<=0:
+                response = {'cant': 0, 'message': "¡Debe seleccionar al menos un Ausentismo!"}
+                return HttpResponse(json.dumps(response,default=default), content_type='application/json')                     
+            #blah blah blah
+            try:
+                if not mandarEmail(request,ausencias,fecha,asunto,destinatario,observaciones):
+                    response = {'cant': 0, 'message': "El informe no pudo ser enviado! (verifique la dirección de correo del destinatario)"}
+                else:
+                    response = {'cant': cant, 'message': "¡El Informe fué generado/enviado con éxito!."} # for ok                    
+            except:
+                response = {'cant': 0, 'message': "El informe no pudo ser enviado! (verifique la dirección de correo del destinatario)"}
+                 
+        else:           
+            errores=''
+            for err in form.errors:
+                errores +='<b>'+err+'</b><br>'
+            response = {'cant': 0, 'message': "¡Verifique los siguientes datos: <br>"+errores.strip()} 
      
             
         return HttpResponse(json.dumps(response,default=default), content_type='application/json')
     else:    
         form = InformeAusenciasForm(None)          
+        lista = request.GET.getlist('id')
+        ausencias = ausentismo.objects.filter(id__in=lista)
         variables = locals()     
         return render(request,"ausentismos/informe_ausentismos_form.html", variables)
