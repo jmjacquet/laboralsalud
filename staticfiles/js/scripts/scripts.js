@@ -97,7 +97,8 @@
                   console.log(message);
                    $('#cargando').hide();
                 }
-        });      
+          });      
+         $('#id_empleado').trigger("chosen:updated");        
 
     };
 
@@ -110,6 +111,7 @@ function recargarDiagnosticos(){
         //     })
         //     $('#id_aus_diagn').trigger("chosen:updated");            
         // });      
+        $('#id_aus_diagn').trigger("chosen:updated");
         $.ajax({
                 dataType: 'json',
                 url: '/recargar_diagnosticos/',
@@ -134,6 +136,7 @@ function recargarDiagnosticos(){
                    $('#cargando').hide();
                 }
         });
+         $('#id_aus_diagn').trigger("chosen:updated");
     };
     
 function recargarPatologias(){
@@ -145,6 +148,7 @@ function recargarPatologias(){
         //     })
         //     $('#id_aus_grupop').trigger("chosen:updated");            
         // });
+        $('#id_aus_grupop').trigger("chosen:updated");     
         $.ajax({
                 dataType: 'json',
                 url: '/recargar_patologias/',
@@ -168,11 +172,13 @@ function recargarPatologias(){
                   console.log(message);
                    $('#cargando').hide();
                 }
-        });      
+           });     
+           $('#id_aus_grupop').trigger("chosen:updated");     
     };
 
 
 function recargarMedicos(){
+        $('#id_aus_medico').trigger("chosen:updated");  
         $.ajax({
                 dataType: 'json',
                 url: '/recargar_medicos/',
@@ -190,18 +196,14 @@ function recargarMedicos(){
                   $.each(data["medicos"], function (idx, item) {
                       jQuery("<option/>").text(item['nombre']).attr("value", item['id']).appendTo("#id_aus_medico");
                   })
-                  $('#id_aus_medico').trigger("chosen:updated");                    
-                  $("#id_art_medico").empty().append('<option value="">---</option>');
-                  $.each(data["medicos"], function (idx, item) {
-                      jQuery("<option/>").text(item['nombre']).attr("value", item['id']).appendTo("#id_art_medico");
-                  })
-                  $('#id_art_medico').trigger("chosen:updated");   
+                  $('#id_aus_medico').trigger("chosen:updated");                                     
                 },
                 error : function(message) {
                   console.log(message);
                    $('#cargando').hide();
                 }
-        });            
+          });              
+        $('#id_aus_medico').trigger("chosen:updated");                    
     };
 
  function recargarEmpleadosEmpresa(id){        
@@ -216,6 +218,7 @@ function recargarMedicos(){
       //     $('#id_empleado').trigger("chosen:updated");  
       //     $("#id_empleado").trigger("change");          
       // });
+      $('#id_empleado').trigger("chosen:updated"); 
       $.ajax({
                 dataType: 'json',
                 url: '/recargar_empleados_empresa/'+id,
@@ -241,6 +244,7 @@ function recargarMedicos(){
                    $('#cargando').hide();
                 }
         });                  
+      $('#id_empleado').trigger("chosen:updated");      
       $('#cargando').hide();
     };
    

@@ -25,8 +25,7 @@
          </button>
         </div>
         <div class="col-xs-6">
-         <button  class="btn pull-right btn-sm btn-primary" id="Aceptar" type="button" 
-                onclick="this.disabled=true;$('#form-diag').submit(); recargarDiagnosticos();">
+         <button  class="btn pull-right btn-sm btn-primary" id="AceptarDiag" type="button">
               <i class="fa fa-check"></i>{% trans 'Aceptar' %}</button>
         </div>
       
@@ -37,3 +36,7 @@
 
 </form>	
 </div>
+
+{% block extra_js %}
+ <script src="{% static 'js/scripts/diagnosticos.js' %}" type="text/javascript"></script>
+{% endblock %}

@@ -20,22 +20,7 @@ $("input[type=number]").click(function(){
             this.select()
           });
 
-  $.modal({        
-          custom_callbacks: {
-              "recargarE": function(data, options) {
-                 recargarEmpleados();
-                 },
-              "recargarM": function(data, options) {
-                 recargarMedicos();
-                 },
-              "recargarGP": function(data, options) {
-                 recargarPatologias();
-                 },
-              "recargarD": function(data, options) {
-                 recargarDiagnosticos();
-                 },
-              }
-    });
+
 
 
 $("#id_aus_grupop").chosen({
@@ -252,6 +237,7 @@ if ($('#id_tipo_form').val()=='EDICION'){
   $("#id_empleado").trigger("change");
 } else {
   
+
   $("#id_empresa").change(function(){
       var id =  $("#id_empresa").val();
       if (id =='') {id=0;};

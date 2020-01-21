@@ -221,7 +221,7 @@ def recargar_diagnosticos(request):
     diagnosticos = aus_diagnostico.objects.filter(baja=False)   
     for e in diagnosticos:
         lista.append({'id':e.pk,'nombre':e.diagnostico.upper()})
-    context["diagnosticos"]=lista
+    context["diagnosticos"]=lista    
     return HttpResponse(json.dumps(context))    
 
 def recargar_patologias(request):
