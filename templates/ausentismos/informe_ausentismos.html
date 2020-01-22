@@ -36,7 +36,7 @@
 <div id="page-header">
 <table width="100%" align="center" >
   <tr>
-      <td align="center" rowspan="3"   width="30%" valign="middle" class=" borde_abajo borde_izq borde_arriba"  >
+      <td align="center" rowspan="4"   width="30%" valign="middle" class=" borde_abajo borde_izq borde_arriba"  >
         <img src="{% static 'img/logo.jpg' %}" alt="logo" class="logo_reporte" />        
       </td>
       <td  colspan="2" width="70%" class="empresa borde_arriba borde_der">{{config.nombre|default_if_none:''|upper}}</td>         
@@ -48,13 +48,14 @@
     <td  colspan="2" class="texto_cpb  borde_der">{{config.datos_extra|default_if_none:''|upper}}</td>
   </tr>
   <tr>
-    <td class="texto_cpb borde_abajo " width="35%">CUIT: {{config.cuit|default_if_none:''|upper}}</td>
-    <td class="texto_cpb borde_abajo borde_der" width="35%">IIBB: {{config.iibb|default_if_none:''|upper}}</td>    
+    <td class="texto_cpb borde_abajo borde_der" colspan="2" width="35%">CUIT: {{config.cuit|default_if_none:''|upper}} {% if config.iibb %}IIBB: {{config.iibb|default_if_none:''|upper}}{% endif %}</td>    
+  </tr>
+   <tr>
+    <td  colspan="3" class="nombre_cpb">INFORME DE AUSENTISMOS</td>
   </tr>
 </table>
-
-<h2 class="nombre_cpb">INFORME DE AUSENTISMOS</h2>
 </div>
+
 <table class="tabla" width="100%" border="0" cellspacing="0" >
   
   {% for a in ausencias %}
@@ -67,12 +68,12 @@
       <td class="tabla_header texto_der borde_arriba borde_der">Fecha Cron.Hasta:</td><td class="borde_der borde_arriba">{{a.aus_fcronhasta|date:'d/m/Y'}}</td>
     </tr>   
     <tr class="" >
-      <td class="tabla_header texto_der borde_der borde_arriba borde_izq">Diagnóstico:</td><td class="borde_der borde_arriba" >{{a.aus_diagn|default_if_none:''|upper}} </td>      
+      <td class="tabla_header texto_der borde_der borde_arriba borde_izq">Diagnóstico:</td><td width="60%" class="borde_der borde_arriba" >{{a.aus_diagn|default_if_none:''|upper}} </td>      
       <td class="tabla_header texto_der borde_arriba borde_der">Días:</td><td width="10%" class="borde_der borde_arriba">{{a.aus_diascaidos|default_if_none:'0'}}</td>     
     </tr>
    
     <tr class="" >     
-     <td class="tabla_header texto_der borde_izq borde_arriba borde_der">Fecha Certificado:</td><td class="borde_der borde_arriba">{{a.aus_fcertif|date:'d/m/Y'}}</td>      
+     <td class="tabla_header texto_der borde_izq borde_arriba borde_der">Fecha Certificado:</td><td width="60%" class="borde_der borde_arriba">{{a.aus_fcertif|date:'d/m/Y'}}</td>      
      <td  class="tabla_header texto_der borde_arriba borde_der">Fecha Reintegro:</td><td width="10%" class="borde_der borde_arriba">{{a.aus_freintegro|date:'d/m/Y'}}</td>     
     </tr>
     <tr class="" >     

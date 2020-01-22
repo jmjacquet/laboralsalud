@@ -474,7 +474,7 @@ def ausencias_importar(request):
             reader = unicode_csv_reader(io_string)            
             
             # DNI;TIPO_AUSENCIA;aus_control;aus_fcontrol;aus_certificado;aus_fcertif;aus_fentrega_certif;aus_fcrondesde;aus_fcronhasta;aus_diascaidos;
-            # aus_diasjustif;aus_freintegro;aus_falta;TIPO_ALTA;aus_frevision;aus_medico;aus_grupop;aus_diagn;TIPO_ACCIDENTE;art_ndenuncia;art_faccidente;
+            # aus_diasjustif;aus_freintegro;aus_falta;TIPO_ALTA;aus_medico;aus_grupop;aus_diagn;TIPO_ACCIDENTE;art_ndenuncia;art_faccidente;
             # art_fdenuncia;observaciones;descr_altaparc;detalle_acc_art;estudios_partic;estudios_art;recalificac_art
             cant=0
             try:
@@ -561,75 +561,71 @@ def ausencias_importar(request):
                     else:
                         aus_tipo_alta=dict(TIPO_ALTA)        
                         aus_tipo_alta = [k for k, v in aus_tipo_alta.items() if v.upper() == austa.upper()][0]
+                   
 
-                    if campos[14]=='':
-                        aus_frevision = None
-                    else:
-                        aus_frevision = datetime.datetime.strptime(campos[14], "%d/%m/%Y").date()                
-
-                    aus_medico = campos[15].strip().upper()
+                    aus_medico = campos[14].strip().upper()
                   
                     if aus_medico=='':
                         aus_medico=None
                     else:
                         aus_medico = ent_medico_prof.objects.get_or_create(apellido_y_nombre=aus_medico)[0]                           
 
-                    aus_grupop = campos[16].strip().upper()
+                    aus_grupop = campos[15].strip().upper()
                     if aus_grupop=='':
                         aus_grupop=None
                     else:
                         aus_grupop = aus_patologia.objects.get_or_create(patologia=aus_grupop)[0]       
 
-                    aus_diagn = campos[17].strip().upper()
+                    aus_diagn = campos[16].strip().upper()
                     if aus_diagn=='':
                         aus_diagn=None
                     else:
                         aus_diagn = aus_diagnostico.objects.get_or_create(diagnostico=aus_diagn)[0]              
 
-                    tacc = campos[18].strip()
+                    tacc = campos[17].strip()
                     if tacc=='':
                         art_tipo_accidente = None
                     else:
                         art_tipo_accidente=dict(TIPO_ACCIDENTE)        
                         art_tipo_accidente = [k for k, v in art_tipo_accidente.items() if v.upper() == tacc.upper()][0]
 
-                    if campos[19]=='':
+                    if campos[18]=='':
                         art_ndenuncia = None
                     else:
-                        art_ndenuncia = campos[19].strip()
+                        art_ndenuncia = campos[20].strip()
 
-                    if campos[20]=='':
+                    if campos[19]=='':
                         art_faccidente = None
                     else:
-                        art_faccidente = datetime.datetime.strptime(campos[20], "%d/%m/%Y").date()                
+                        art_faccidente = datetime.datetime.strptime(campos[19], "%d/%m/%Y").date()                
 
-                    if campos[21]=='':
+                    if campos[20]=='':
                         art_fdenuncia = None
                     else:
-                        art_fdenuncia = datetime.datetime.strptime(campos[21], "%d/%m/%Y").date()    
+                        art_fdenuncia = datetime.datetime.strptime(campos[20], "%d/%m/%Y").date()    
                     
                     
                    
-                    observaciones = campos[22].strip()                
-                    descr_altaparc = campos[23].strip()                
-                    detalle_acc_art = campos[24].strip()                
-                    estudios_partic = campos[25].strip()                
-                    estudios_art =campos[26].strip()                
-                    recalificac_art =campos[27].strip()                
+                    observaciones = campos[21].strip()                
+                    descr_altaparc = campos[22].strip()                
+                    detalle_acc_art = campos[23].strip()                
+                    estudios_partic = campos[24].strip()                
+                    estudios_art =campos[25].strip()                
+                    recalificac_art =campos[26].strip()                
 
             
                     try:              
                        obj, created = ausentismo.objects.update_or_create(empleado=empl,tipo_ausentismo=tipoa,aus_fcrondesde=aus_fcrondesde,aus_fcronhasta=aus_fcronhasta,
                         defaults={'aus_control':aus_control,'aus_fcontrol':aus_fcontrol,'aus_certificado':aus_certificado,
                         'aus_fcertif':aus_fcertif,'aus_fentrega_certif':aus_fentrega_certif,'aus_diascaidos':aus_diascaidos,
-                        'aus_diasjustif':aus_diasjustif,'aus_freintegro':aus_freintegro,'aus_falta':aus_falta,'aus_tipo_alta':aus_tipo_alta,'aus_frevision':aus_frevision,
+                        'aus_diasjustif':aus_diasjustif,'aus_freintegro':aus_freintegro,'aus_falta':aus_falta,'aus_tipo_alta':aus_tipo_alta,
                         'aus_medico':aus_medico,'aus_grupop':aus_grupop,'aus_diagn':aus_diagn,'art_tipo_accidente':art_tipo_accidente,'art_ndenuncia':art_ndenuncia,
                         'art_faccidente':art_faccidente,'art_fdenuncia':art_fdenuncia,'observaciones':observaciones,'descr_altaparc':descr_altaparc,'detalle_acc_art':detalle_acc_art,
                         'estudios_partic':estudios_partic,'estudios_art':estudios_art,'recalificac_art':recalificac_art})                                                                            
                        if created:
                         cant+=1
                     except Exception as e:                                      
-                       error = u"Línea:%s -> %s DNI:" %(index,e,dni)                   
+                       error = u"Línea:%s -> %s " %(index,e)                   
                        messages.error(request,error)                                
                 
                 messages.success(request, u'Se importó el archivo con éxito!<br>(%s ausentismos creados)'% cant )
@@ -659,7 +655,7 @@ def mandarEmail(request,ausencias,fecha,asunto,destinatario,observaciones):
 
         datos = config.get_datos_mail()      
         mensaje_inicial = datos['mensaje_inicial']
-        mail_cuerpo = observaciones
+        mail_cuerpo = observaciones or datos['mail_cuerpo']
         mail_servidor = datos['mail_servidor']
         mail_puerto = int(datos['mail_puerto'])
         mail_usuario = datos['mail_usuario']
@@ -685,7 +681,7 @@ def mandarEmail(request,ausencias,fecha,asunto,destinatario,observaciones):
         return True
     except Exception as e:
         print e        
-        messages.error(request, 'El informe no pudo ser enviado! (verifique la dirección de correo del destinatario) '+str(e))  
+        messages.error(request, 'El informe no pudo ser enviado! (verifique la dirección de correo del destinatario y/o la configuraciónd e correo) '+str(e))  
         return False
 
 from easy_pdf.rendering import render_to_pdf_response,render_to_pdf 

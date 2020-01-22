@@ -5438,3 +5438,36 @@ Traceback (most recent call last):
 BootstrapError: Parameter "field" should contain a valid Django BoundField.
 [22/Jan/2020 13:14:13] ERROR [django.server:124] "GET /configuracion_editar/1/ HTTP/1.1" 500 229384
 [22/Jan/2020 13:20:55] ERROR [django.server:124] "GET /configuracion_editar/1/ HTTP/1.1" 500 59
+[22/Jan/2020 19:28:26] ERROR [django.server:124] "GET /login/?next=/ HTTP/1.1" 500 59
+[22/Jan/2020 20:19:44] ERROR [django.request:135] Internal Server Error: /ausentismos/ausencias_importar/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "D:\Repo\laboralsalud\ausentismos\views.py", line 632, in ausencias_importar
+    error = u"LÃ­nea:%s -> %s DNI:" %(index,e,dni)
+TypeError: not all arguments converted during string formatting
+[22/Jan/2020 20:19:45] ERROR [django.server:124] "POST /ausentismos/ausencias_importar/ HTTP/1.1" 500 95705
+[22/Jan/2020 20:30:49] ERROR [django.request:135] Internal Server Error: /ausentismos/ausencias_importar/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "D:\Repo\laboralsalud\ausentismos\views.py", line 613, in ausencias_importar
+    estudios_art =campos[27].strip()
+IndexError: list index out of range
+[22/Jan/2020 20:30:49] ERROR [django.server:124] "POST /ausentismos/ausencias_importar/ HTTP/1.1" 500 94072

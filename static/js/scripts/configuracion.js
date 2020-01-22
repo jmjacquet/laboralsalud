@@ -21,7 +21,7 @@ $( "#Buscar" ).click(function() {
       $('#id_cuit').trigger(e);
  });
 
-$('#cargando').hide();
+
 $("input[type=number]").click(function(){
             this.select()
           });
@@ -47,6 +47,7 @@ $("#id_cuit").keyup(function(e){
             $('#cargando').hide();
         },
         success : function(data) {
+             console.log(data['success']);
               if (data!='')
                 {
                     
@@ -55,7 +56,19 @@ $("#id_cuit").keyup(function(e){
                     }else{
                       $("#id_nombre").val(data['apellido']+' '+data['nombre']);                      
                     };
-                   
+                    $("#id_fact_razon_social").val( $("#id_apellido_y_nombre").val());
+                    if (data['categoria']!=''){
+                       $("#id_categ_fiscal").find('option[value="'+data['categoria']+'"]').attr("selected",true);
+                    };
+                    
+                    if (data['telefono']!= undefined ){ 
+                      $("#id_telefono").val(data['telefono']['numero']);
+                      $("#id_celular").val(data['telefono']['numero']);
+                    };
+
+                    if (data['email']!= undefined ){ 
+                      $("#id_email").val(data['email']['direccion']);
+                    };
 
                     if (data['fechaInscripcion']!= undefined ){ 
                       $("#id_fecha_inicio_activ").val(moment(data['fechaInscripcion']).format("DD/MM/YYYY"));                      
@@ -63,18 +76,27 @@ $("#id_cuit").keyup(function(e){
 
                     if (data['domicilio']!= undefined ){ 
                       $("#id_domicilio").val(data['domicilio'][0]['direccion']);                      
-                      $("#id_localidad").val(data['domicilio'][0]['localidad']);      
-                      }                                              
+                      $("#id_localidad").val(data['domicilio'][0]['localidad']);                                
+                      idProv = data['domicilio'][0]['idProvincia']                       
+                      $("#id_provincia").find('option[value="'+idProv+'"]').attr("selected",true);
+                      $("#id_cod_postal").val(data['domicilio'][0]['codPostal']);}
+
                     else{
                        $("#id_domicilio").val('');                       
-                    
+                       $("#id_localidad").val('');
+                       $("#id_cod_postal").val('');
                     };                   
                 }else
                 {                 
                   $("#id_fact_cuit").val('');
-                  $("#id_nombre").val('');                  
-                  $("#id_domicilio").val('');                  
-                  $("#id_cuit").focus();
+                  $("#id_apellido_y_nombre").val('');
+                  $("#id_fact_nro_doc").val('');
+                  $("#id_fact_tipo_doc").val('');
+                  $("#id_domicilio").val('');
+                  $("#id_fact_direccion").val('');          
+                  $("#id_localidad").val('');
+                  $("#id_cod_postal").val('');   
+                  $("#id_fact_cuit").focus();
                   alertify.alert('Búsqueda por CUIT','No se encontraron contribuyentes con el CUIT '+consulta+'. <br>El servicio de consulta de CUIT ONline (AFIP) puede estar momentáneamente interrumpido. Vuelva a intentarlo mas tarde.');
                 }
         },
