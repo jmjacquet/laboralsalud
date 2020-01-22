@@ -44,7 +44,7 @@ class AusentismoForm(forms.ModelForm):
 	tipo_control = forms.ChoiceField(label='',choices=TIPO_CONTROL,required=False,initial='C')
 	aus_control = forms.ChoiceField(label=u'¿Asistió a Control?',choices=SINO,required=False,initial='N')
 	aus_certificado = forms.ChoiceField(label=u'¿Presenta Certificado?',choices=SINO,required=False,initial='N')
-	observaciones = forms.CharField(label='Observaciones Generales',widget=forms.Textarea(attrs={'class':'form-control2', 'rows': 2}),required = False)	
+	observaciones = forms.CharField(label='Observaciones Generales',widget=forms.Textarea(attrs={'class':'form-control2', 'rows': 4}),required = False)	
 	descr_altaparc = forms.CharField(label=u'Características de Alta con Restricción',widget=forms.Textarea(attrs={'class':'form-control2', 'rows': 2}),required = False)	
 	detalle_acc_art = forms.CharField(label='Detalle Accidente ART',widget=forms.Textarea(attrs={'class':'form-control2', 'rows': 2}),required = False)	
 	estudios_partic = forms.CharField(label=u'Estudios Particulares',widget=forms.Textarea(attrs={'class':'form-control2', 'rows': 2}),required = False)	

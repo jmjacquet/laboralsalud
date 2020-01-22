@@ -100,10 +100,16 @@
 
 {% include "modal/modal.html" %}     
  
-<script type="text/javascript">
-    
+<script type="text/javascript">    
      jQuery(document).ready(function() {      
-        $.modal({debug: false});
+        $.modal({
+          debug: true,
+          custom_callbacks: {
+            "recargarD": function(data, options) {
+                recargarDiagnosticos();                
+                toastr.success('¡Se actualizaron los datos con éxito!');  
+            }
+        }});
         {% if messages %}
           {% for message in messages %}                                                
                       toastr.{{ message.tags }}('{{ message|safe }}');                                        

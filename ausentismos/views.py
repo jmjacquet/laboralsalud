@@ -372,14 +372,8 @@ class DiagnosticoCreateView(VariablesMixin,AjaxCreateView):
             return redirect(reverse('principal'))
         return super(DiagnosticoCreateView, self).dispatch(*args, **kwargs)
 
-    # def form_valid(self, form):                        
-    #     messages.success(self.request, u'Los datos se guardaron con éxito!')
-    #     return super(DiagnosticoCreateView, self).form_valid(form)
-
-    def form_valid(self, form):                                
-        self.object = form.save(commit=False)                                       
-        self.object.save()      
-        print aus_diagnostico.objects.filter(baja=False)
+    def form_valid(self, form):                        
+        messages.success(self.request, u'Los datos se guardaron con éxito!')
         return super(DiagnosticoCreateView, self).form_valid(form)
 
     def get_form_kwargs(self):
