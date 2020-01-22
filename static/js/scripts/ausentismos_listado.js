@@ -88,7 +88,7 @@ var tabla = $('#ausentismos').DataTable({
                     extend:    'excel',
                     text:      '<i class="fa fa-file-excel-o"></i>',
                     titleAttr: 'Excel',
-                    filename: 'AUSENTISMOS.',                    
+                    filename: 'AUSENTISMOS',                    
                     exportOptions: {  modifier: {
                                         page: 'current'
                                     }, 
@@ -219,7 +219,7 @@ $("#checkall").click (function () {
 var listado = [];
 
 $("input[class='tildado']" ,tabla.rows().nodes()).change(function() {                
-        str1 = 'ausentismos/generar_informe/?';
+        str1 = '/ausentismos/generar_informe/?';
         str2 = '';
         checkbox=this;
         id = checkbox.value;
@@ -246,7 +246,7 @@ $("input[class='tildado']" ,tabla.rows().nodes()).change(function() {
                     str2 = str2 + '&id=' + listado[i];
                 };
         };
-        $('#informe').val(str1+str2)
+      $('#btnInforme').val(str2)
       $('#btnEliminar').val(str2);   
                
     });
@@ -283,7 +283,39 @@ $("input[class='tildado']" ,tabla.rows().nodes()).change(function() {
         }
     });
 
+ $("#enviando").hide();
+$('#btnInforme').click(function(){   
+     if (listado.length == 0) {
+            alertify.errorAlert("¡Debe seleccionar algún Ausentismo!");
+        } else {
+           return abrir_modal('/ausentismos/generar_informe/?'+$('#btnInforme').val()); 
+        }
+         
+});
 
-
+$('#btnImprInforme').click(function() {    
+         if (listado.length == 0) {
+            alertify.errorAlert("¡Debe seleccionar algún Ausentismo!");
+        } else {    
+            alerta = alertify.dialog('confirm').set({
+                'labels': {
+                    ok: 'Aceptar',
+                    cancel: 'Cancelar'
+                },
+                'message': '¿Desea Imprimir el Informe de los Ausentismo seleccionados?',
+                transition: 'fade',
+                'onok': function() {
+                    window.open('/ausentismos/imprimir_informe/?'+$('#btnInforme').val());
+                },
+                'oncancel': function() {
+                    return true;
+                }
+            });
+            alerta.setting('modal', true);
+            alerta.setHeader('IMPRIMIR AUSENTISMOS');
+            alerta.show();
+            return true;
+        }
+    });
 
 });

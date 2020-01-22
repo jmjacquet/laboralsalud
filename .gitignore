@@ -1,6 +1,5 @@
 errores.log
-/static/*.*
-*.pyc
+static/*.*
 *.log
 !generarI25.pyc
 errores.log

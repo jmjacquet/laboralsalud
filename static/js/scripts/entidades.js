@@ -9,7 +9,7 @@ $( "#Buscar" ).click(function() {
       var e = $.Event( "keyup", { which: 13 } );
       $('#id_cuit').trigger(e);
  });
-
+$("#AceptarEnt").prop("disabled", false);   
 
 $("#id_cuit").keyup(function(e){  
   if(e.which === 13) {
@@ -107,10 +107,11 @@ $.fn.datepicker.dates['es'] = {
         $(this).datepicker();
     });
 
-       $( "#Aceptar" ).click(function() {        
+       $( "#AceptarEnt" ).click(function() {        
        $("#form-ent :disabled").removeAttr('disabled');      
-        $("#Aceptar").prop("disabled", true);    
+        $("#AceptarEnt").prop("disabled", true);    
         $( "#form-ent" ).submit();         
+        recargarMedicos();
       });
 
 });

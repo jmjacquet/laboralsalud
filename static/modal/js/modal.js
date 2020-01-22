@@ -79,13 +79,20 @@
                 return cookieValue;
             }
             function sameOrigin(url) {
-                var host = document.location.host;
+                // test that a given url is a same-origin URL
+                // url could be relative or scheme relative or absolute
+                var host = document.location.host; // host + port
                 var protocol = document.location.protocol;
                 var sr_origin = '//' + host;
                 var origin = protocol + sr_origin;
-                return (url == origin || url.slice(0, origin.length + 1) == origin + '/') || (url == sr_origin || url.slice(0, sr_origin.length + 1) == sr_origin + '/') || !(/^(\/\/|http:|https:).*/.test(url));
+                // Allow absolute or scheme relative URLs to same origin
+                return (url == origin || url.slice(0, origin.length + 1) == origin + '/') ||
+                    (url == sr_origin || url.slice(0, sr_origin.length + 1) == sr_origin + '/') ||
+                    // or any other URL that isn't scheme relative or absolute i.e relative.
+                    !(/^(\/\/|http:|https:).*/.test(url));
             }
-            $.ajaxPrefilter(function(options, originalOptions, jqXHR) {
+
+            $.ajaxPrefilter(function(options, originalOptions, jqXHR){
                 var request_method = options['type'].toLowerCase();
                 if ((request_method === "post" || request_method === "delete") && sameOrigin(options.url)) {
                     jqXHR.setRequestHeader('X-CSRFToken', getCookie('csrftoken'));
@@ -125,6 +132,7 @@
                 }).done(function() {
                     modal_head.html(options.modal_head);
                     modal_loader.hide();
+                    // console.log(global_callbacks);
                 });
             }
             function clear_modal() {
@@ -203,7 +211,6 @@
                 if (data.status === 'ok') {
                     modal.modal("hide");
                     var callback = options.modal_callback;
-                    console.log(callback);
                     if (options.modal_callback === null || options.modal_callback === undefined) {
                         $.noop();
                     } else if (callback in global_callbacks) {
