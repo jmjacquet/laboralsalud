@@ -18,5 +18,7 @@ urlpatterns = [
     url(r'^turnos/eliminar/(?P<id>\d+)/$', turno_eliminar, name='turnos_eliminar'),
     url(r'^turnos/estado/(?P<id>\d+)/(?P<estado>\d+)$', turno_estado, name='turnos_estado'),
     url(r'^turnos/detalles/(?P<id>\d+)/$', TurnosVerView.as_view(), name="turnos_detalles"),    
+
+    url(r'^configuracion_editar/(?P<id>\d+)/$', ConfiguracionEditView.as_view(), name="configuracion_editar"),
     
 ]

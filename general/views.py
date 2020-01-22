@@ -12,11 +12,11 @@ from django.views.generic import TemplateView,ListView,CreateView,UpdateView,For
 from modal.views import AjaxCreateView,AjaxUpdateView,AjaxDeleteView
 from django.db.models import Q,Sum,Count,FloatField,Func
 
-from .forms import TurnosForm,ConsultaTurnos,ConsultaFechasInicio
-from .models import turnos
+from .forms import TurnosForm,ConsultaTurnos,ConsultaFechasInicio,ConfiguracionForm
+from .models import turnos,configuracion
 from ausentismos.models import aus_patologia,aus_diagnostico,ausentismo,ausentismos_del_dia
 from entidades.models import ent_empleado,ent_empresa,ent_medico_prof
-from laboralsalud.utilidades import hoy,usuario_actual,empresa_actual,TIPO_AUSENCIA,empresas_habilitadas,URL_API,mobile
+from laboralsalud.utilidades import hoy,usuario_actual,empresa_actual,TIPO_AUSENCIA,empresas_habilitadas,URL_API,mobile,esAdmin
 from django.contrib import messages
 import locale
 
@@ -392,3 +392,32 @@ def turno_estado(request,id,estado):
     ent.save()       
     messages.success(request, u'¡Los datos se guardaron con éxito!')
     return HttpResponseRedirect(reverse("turnos_listado"))  
+
+
+class ConfiguracionEditView(VariablesMixin,UpdateView):
+    form_class = ConfiguracionForm
+    model = configuracion
+    pk_url_kwarg = 'id'
+    template_name = 'general/configuracion_form.html'
+    success_url = '/'
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs): 
+        if not esAdmin(self.request):
+             return redirect(reverse('principal'))
+        return super(ConfiguracionEditView, self).dispatch(*args, **kwargs)
+
+    def form_valid(self, form):        
+        messages.success(self.request, u'Los datos se guardaron con éxito!')
+        return super(ConfiguracionEditView, self).form_valid(form)
+
+    def get_form_kwargs(self):
+        kwargs = super(ConfiguracionEditView, self).get_form_kwargs()        
+        return kwargs
+
+    def form_invalid(self, form):         
+        return self.render_to_response(self.get_context_data(form=form))
+
+    def get_initial(self):    
+        initial = super(ConfiguracionEditView, self).get_initial()
+        return initial     

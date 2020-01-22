@@ -22,6 +22,7 @@ from entidades.models import ent_empleado
 from general.views import VariablesMixin
 from usuarios.views import tiene_permiso
 from .forms import AusentismoForm,PatologiaForm,DiagnosticoForm,ConsultaAusentismos,ControlesDetalleForm
+from general.models import configuracion
 ############ AUSENTISMOS ############################
 
 class AusentismoView(VariablesMixin,ListView):
@@ -644,15 +645,21 @@ def ausencias_importar(request):
 from django.core.mail import send_mail, EmailMessage
 from django.core.mail.backends.smtp import EmailBackend
 from django.template.loader import get_template
+
 @login_required 
 def mandarEmail(request,ausencias,fecha,asunto,destinatario,observaciones):   
     try:        
         mail_destino = []       
         mail_destino.append(destinatario)
      
-        datos = get_datos_mail()      
+        try:
+          config = configuracion.objects.all().first()
+        except configuracion.DoesNotExist:
+             raise ValueError
+
+        datos = config.get_datos_mail()      
         mensaje_inicial = datos['mensaje_inicial']
-        mail_cuerpo = observaciones or datos['observaciones']
+        mail_cuerpo = observaciones
         mail_servidor = datos['mail_servidor']
         mail_puerto = int(datos['mail_puerto'])
         mail_usuario = datos['mail_usuario']
@@ -691,8 +698,13 @@ def imprimir_informe(request):
     cant = len(ausencias)
     context = {}
     context = getVariablesMixin(request)  
+    try:
+      config = configuracion.objects.all().first()
+    except configuracion.DoesNotExist:
+         raise ValueError
     context['ausencias'] = ausencias
     context['cant'] = cant
+    context['config'] = config
     fecha = hoy()   
     context['fecha'] = fecha 
     return render_to_pdf_response(request, template, context)                           

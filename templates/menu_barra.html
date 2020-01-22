@@ -92,8 +92,11 @@
             <li><a class="modal-update" data-modal-callback="reload" data-modal-head="CAMBIAR CONTRASEÑA" href="{% url 'cambiar_password' id=usuario.pk %}"><i class="icon-key"></i> Cambiar Contraseña</a></li>
             <li class="divider"></li>
             {% if esAdmin %}
-            <li><a href="{% url 'usuarios' %}"><i class="icon-users"> </i> Configurar Usuarios</a></li>                           
-            <li class="divider"></li>            
+            <li><a href="{% url 'usuarios' %}"><i class="icon-users"> </i> Configurar Usuarios</a></li>                                       
+            <li>
+              <a href="{% url 'configuracion_editar' id=1 %}"><i class="icon-settings"></i>Configuración General</a>
+            </li>               
+            <li class="divider"></li>
             {% endif %}
             <li><a href="{% url 'logout' %}"><i class="icon-logout"> </i> Salir</a></li>
           </ul>

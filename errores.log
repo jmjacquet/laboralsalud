@@ -5205,3 +5205,236 @@ Traceback (most recent call last):
 AttributeError: 'NoneType' object has no attribute 'save'
 [21/Jan/2020 21:22:41] ERROR [django.server:124] "POST /ausentismos/patologia/nuevo/ HTTP/1.1" 500 18307
 [22/Jan/2020 08:15:13] ERROR [django.server:124] "GET /ausentismos/nuevo/ HTTP/1.1" 500 59
+[22/Jan/2020 13:07:13] ERROR [django.request:135] Internal Server Error: /configuracion_editar/
+Traceback (most recent call last):
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\views\generic\base.py", line 68, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\utils\decorators.py", line 67, in _wrapper
+    return bound_func(*args, **kwargs)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\utils\decorators.py", line 63, in bound_func
+    return func.__get__(self, type(self))(*args2, **kwargs2)
+  File "D:\GitHub\laboralsalud\general\views.py", line 406, in dispatch
+    if not esAdmin(request):
+NameError: global name 'esAdmin' is not defined
+[22/Jan/2020 13:07:13] ERROR [django.server:124] "GET /configuracion_editar/ HTTP/1.1" 500 92986
+[22/Jan/2020 13:07:59] ERROR [django.request:135] Internal Server Error: /configuracion_editar/
+Traceback (most recent call last):
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\views\generic\base.py", line 68, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\utils\decorators.py", line 67, in _wrapper
+    return bound_func(*args, **kwargs)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\utils\decorators.py", line 63, in bound_func
+    return func.__get__(self, type(self))(*args2, **kwargs2)
+  File "D:\GitHub\laboralsalud\general\views.py", line 406, in dispatch
+    if not esAdmin(request):
+NameError: global name 'request' is not defined
+[22/Jan/2020 13:07:59] ERROR [django.server:124] "GET /configuracion_editar/ HTTP/1.1" 500 93121
+[22/Jan/2020 13:09:26] ERROR [django.request:135] Internal Server Error: /configuracion_editar/
+Traceback (most recent call last):
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\views\generic\base.py", line 68, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\utils\decorators.py", line 67, in _wrapper
+    return bound_func(*args, **kwargs)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\utils\decorators.py", line 63, in bound_func
+    return func.__get__(self, type(self))(*args2, **kwargs2)
+  File "D:\GitHub\laboralsalud\general\views.py", line 406, in dispatch
+    if not esAdmin(request):
+NameError: global name 'request' is not defined
+[22/Jan/2020 13:09:26] ERROR [django.server:124] "GET /configuracion_editar/ HTTP/1.1" 500 93121
+[22/Jan/2020 13:10:01] ERROR [django.request:135] Internal Server Error: /configuracion_editar/
+Traceback (most recent call last):
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\views\generic\base.py", line 68, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\utils\decorators.py", line 67, in _wrapper
+    return bound_func(*args, **kwargs)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\utils\decorators.py", line 63, in bound_func
+    return func.__get__(self, type(self))(*args2, **kwargs2)
+  File "D:\GitHub\laboralsalud\general\views.py", line 406, in dispatch
+    if not esAdmin(request):
+NameError: global name 'request' is not defined
+[22/Jan/2020 13:10:01] ERROR [django.server:124] "GET /configuracion_editar/ HTTP/1.1" 500 93121
+[22/Jan/2020 13:10:21] ERROR [django.request:135] Internal Server Error: /configuracion_editar/
+Traceback (most recent call last):
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\views\generic\base.py", line 68, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\utils\decorators.py", line 67, in _wrapper
+    return bound_func(*args, **kwargs)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\utils\decorators.py", line 63, in bound_func
+    return func.__get__(self, type(self))(*args2, **kwargs2)
+  File "D:\GitHub\laboralsalud\general\views.py", line 408, in dispatch
+    return super(ConfiguracionEditView, self).dispatch(*args, **kwargs)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\views\generic\base.py", line 88, in dispatch
+    return handler(request, *args, **kwargs)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\views\generic\edit.py", line 235, in get
+    self.object = self.get_object()
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\views\generic\detail.py", line 49, in get_object
+    % self.__class__.__name__)
+AttributeError: Generic detail view ConfiguracionEditView must be called with either an object pk or a slug.
+[22/Jan/2020 13:10:22] ERROR [django.server:124] "GET /configuracion_editar/ HTTP/1.1" 500 106169
+[22/Jan/2020 13:11:04] ERROR [django.request:135] Internal Server Error: /
+Traceback (most recent call last):
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 217, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 215, in _get_response
+    response = response.render()
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\response.py", line 107, in render
+    self.content = self.rendered_content
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\response.py", line 84, in rendered_content
+    content = template.render(context, self._request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\backends\django.py", line 66, in render
+    return self.template.render(context)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 207, in render
+    return self._render(context)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\test\utils.py", line 107, in instrumented_test_render
+    return self.nodelist.render(context)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 990, in render
+    bit = node.render_annotated(context)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 957, in render_annotated
+    return self.render(context)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\loader_tags.py", line 177, in render
+    return compiled_parent._render(context)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\test\utils.py", line 107, in instrumented_test_render
+    return self.nodelist.render(context)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 990, in render
+    bit = node.render_annotated(context)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 957, in render_annotated
+    return self.render(context)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\loader_tags.py", line 72, in render
+    result = block.nodelist.render(context)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 990, in render
+    bit = node.render_annotated(context)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 957, in render_annotated
+    return self.render(context)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\loader_tags.py", line 216, in render
+    return template.render(context)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 209, in render
+    return self._render(context)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\test\utils.py", line 107, in instrumented_test_render
+    return self.nodelist.render(context)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 990, in render
+    bit = node.render_annotated(context)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 957, in render_annotated
+    return self.render(context)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\defaulttags.py", line 322, in render
+    return nodelist.render(context)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 990, in render
+    bit = node.render_annotated(context)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 957, in render_annotated
+    return self.render(context)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\defaulttags.py", line 458, in render
+    url = reverse(view_name, args=args, kwargs=kwargs, current_app=current_app)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\urls\base.py", line 91, in reverse
+    return force_text(iri_to_uri(resolver._reverse_with_prefix(view, prefix, *args, **kwargs)))
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\urls\resolvers.py", line 497, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+NoReverseMatch: Reverse for 'configuracion_editar' with no arguments not found. 1 pattern(s) tried: ['configuracion_editar/(?P<id>\\d+)/$']
+[22/Jan/2020 13:11:23] ERROR [django.server:124] "GET / HTTP/1.1" 500 255974
+[22/Jan/2020 13:14:10] ERROR [django.request:135] Internal Server Error: /configuracion_editar/1/
+Traceback (most recent call last):
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 217, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 215, in _get_response
+    response = response.render()
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\response.py", line 107, in render
+    self.content = self.rendered_content
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\response.py", line 84, in rendered_content
+    content = template.render(context, self._request)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\backends\django.py", line 66, in render
+    return self.template.render(context)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 207, in render
+    return self._render(context)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\test\utils.py", line 107, in instrumented_test_render
+    return self.nodelist.render(context)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 990, in render
+    bit = node.render_annotated(context)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 957, in render_annotated
+    return self.render(context)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\loader_tags.py", line 177, in render
+    return compiled_parent._render(context)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\test\utils.py", line 107, in instrumented_test_render
+    return self.nodelist.render(context)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 990, in render
+    bit = node.render_annotated(context)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 957, in render_annotated
+    return self.render(context)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\loader_tags.py", line 72, in render
+    result = block.nodelist.render(context)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 990, in render
+    bit = node.render_annotated(context)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 957, in render_annotated
+    return self.render(context)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\loader_tags.py", line 72, in render
+    result = block.nodelist.render(context)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 990, in render
+    bit = node.render_annotated(context)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 957, in render_annotated
+    return self.render(context)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\django\template\library.py", line 203, in render
+    output = self.func(*resolved_args, **resolved_kwargs)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\bootstrap3\templatetags\bootstrap3.py", line 517, in bootstrap_field
+    return render_field(*args, **kwargs)
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\bootstrap3\forms.py", line 78, in render_field
+    return renderer_cls(field, **kwargs).render()
+  File "C:\Users\Juanma\Envs\laboralsalud\lib\site-packages\bootstrap3\renderers.py", line 254, in __init__
+    'Parameter "field" should contain a valid Django BoundField.'
+BootstrapError: Parameter "field" should contain a valid Django BoundField.
+[22/Jan/2020 13:14:13] ERROR [django.server:124] "GET /configuracion_editar/1/ HTTP/1.1" 500 229384
+[22/Jan/2020 13:20:55] ERROR [django.server:124] "GET /configuracion_editar/1/ HTTP/1.1" 500 59

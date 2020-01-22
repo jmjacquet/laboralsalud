@@ -368,14 +368,3 @@ def agregar_nuevo_html(label,id,title,url,callback,hint,icon):
     'class="agregarDatos modal-create" type="button" data-toggle="tooltip" data-modal-callback="%s" '\
     'data-placement="top" title="%s"><i class="%s"></i></a>'%(id,url,title,callback,hint,icon)
     
-from django.conf import settings
-def get_datos_mail():
-        d= {}
-        d['mensaje_inicial']= u'Estimado/as les envío por este medio el informe correspondiente.'
-        d['mail_servidor']= settings.EMAIL_HOST
-        d['mail_puerto']= int(settings.EMAIL_PORT)
-        d['mail_usuario']= settings.EMAIL_HOST_USER
-        d['mail_password']=settings.EMAIL_HOST_PASSWORD  
-        d['mail_origen']= 'contacto@sistemaslaboralsalud.com.ar'
-            
-        return d    

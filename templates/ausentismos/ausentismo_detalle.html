@@ -86,12 +86,12 @@
                           </tr>
                   {% endif %}
                   <tr>
-                    <td class="titulo">Grupo Patológico:</td><td colspan="3" class="dato">{{a.aus_grupop|date:'d/m/Y'}}</td>
+                    <td class="titulo">Grupo Patológico:</td><td colspan="3" class="dato">{{a.aus_grupop|default_if_none:''}}</td>
                     <td class="titulo">Diagnóstico:</td><td class="dato" colspan="3">{{a.aus_diagn|default_if_none:''}}</td>
                   </tr>
                   <tr>  
                     <td class="titulo">Fecha Carga:</td><td id="antig_empresa" class="dato">{{a.fecha_creacion|date:'d/m/Y'}}</td>                    
-                    <td class="titulo">Usuario:</td><td id="antig_empresa" class="dato">{{a.usuario_carga|date:'d/m/Y'}}</td
+                    <td class="titulo">Usuario:</td><td id="antig_empresa" class="dato">{{a.usuario_carga|default_if_none:''}}</td
                       >
                       <td class="titulo">Fecha Modificación:</td><td id="antig_empresa" class="dato">{{a.fecha_modif|date:'d/m/Y'}}</td>  
                   </tr>

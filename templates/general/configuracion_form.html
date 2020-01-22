@@ -1,0 +1,120 @@
+{% extends "base.html" %}
+{% load static from staticfiles %}
+{% load bootstrap3 %}
+{% load i18n %}
+{% load crispy_forms_tags %}
+{% load humanize %}
+
+{% block extra_css %}
+ 	<link rel="stylesheet" href="{% static 'css/abms.css'%}?{% now "Ymd"%}" type="text/css" >  
+{% endblock %}
+{% block extra_js %}        
+ <script src="{% static 'js/scripts/usuarios.js'%}?{% now "Ymd"%}" type="text/javascript"></script>
+{% endblock %}
+
+{% block breadcrumbs %}              
+        <div class="breadcrumbs">
+            CONFIGURACIÓN/PERMISOS DE USUARIO
+        </div>
+{% endblock breadcrumbs %}
+{% block cargando %}            
+  <div id="cargando" class="cargando" >
+    <span class="cargando-txt">CARGANDO...</span>
+    <img class="cargando-img" src="{% static 'img/loading-bars.svg' %}">
+  </div>
+{% endblock cargando %}
+
+{% block principal %}  
+<div class="col-md-12 col-xs-12">      
+    <div class="panel panel-body panel-primary panel_centrado">      	
+          <div class="col-sm-12">	
+            
+		    <form role="form" class="form abm form-horizontal " method="POST" action="" id="form-alta" enctype="multipart/form-data">
+		     {% csrf_token %}         				        		       
+		        <div class="row ">							       	
+				    <div class="col-sm-12">
+				       	<div class="row">										       											       		
+			       			<fieldset>
+					       		<legend>DATOS GENERALES</legend>
+							       <div class="col-xs-12">
+					                <div class="row cerca">
+								       	<div class="col-sm-3">{% bootstrap_field form.cuit %}</div>
+								       	<div class="col-sm-9">{% bootstrap_field form.nombre %}</div>							       									       	
+								     </div>
+									 <div class="row cerca">
+								       	<div class="col-sm-6">{% bootstrap_field form.domicilio %}</div>								       	
+								       	<div class="col-sm-6">{% bootstrap_field form.datos_extra %}</div>
+								     </div>
+								     <div class="row cerca">
+								       	<div class="col-sm-2">{% bootstrap_field form.fecha_inicio_activ %}</div>													       
+								       	<div class="col-sm-3">{% bootstrap_field form.iibb %}</div>				
+								       	<div class="col-sm-7">{% bootstrap_field form.ruta_logo  %}</div>		
+								    </div>
+								     
+					               </div>                                       						         
+					       		</fieldset>	
+					       		<fieldset>
+				       			<legend>CONFIGURACIÓN CORREO</legend>                        						
+					       		   <div class="col-xs-12">
+						       		   	<div class="row cerca">									       		   		
+							       		   		<div class="col-sm-4">{% bootstrap_field form.mail_servidor %}</div>
+							       		   		<div class="col-sm-2">{% bootstrap_field form.mail_puerto %}</div>										       		   		
+							       		   		<div class="col-sm-3">{% bootstrap_field form.mail_usuario %}</div>
+							       		   		<div class="col-sm-3">{% bootstrap_field form.mail_password %}</div>										       		   		
+										</div>
+										<div class="row cerca">									       		   		
+							       		   		<div class="col-sm-12">{% bootstrap_field form.mail_cuerpo %}</div>										       		   		
+										</div>
+					       		   </div>
+					       		</fieldset>																       	
+					    </div>									   
+				      
+		              </div> 
+		              
+				</div>
+
+				{% if form.non_field_errors  %}
+			     	<script type="text/javascript">
+			     	alertify.errorAlert("{% for err in form.non_field_errors %}{{ err }}{% endfor %}");
+			     	</script>
+			    {% endif %}       
+		        {% for hidden in form.hidden_fields %} {{ hidden }} {% endfor %}
+		     	<br>		                 
+                
+                <div class="row">
+					<div class="col-xs-6">
+						<a href="{% url 'usuarios' %}" class="btn btn-sm pull-left btn btn-danger" type="button">
+						<i class="fa fa-times"></i> Cancelar
+						</a>
+					</div>
+					<div class="col-xs-6">
+						<button class="btn pull-right btn-sm btn-primary" id="Guardar" type="submit"><i class="fa fa-check"></i> Guardar</button>
+					</div>
+				</div>
+		    </form>
+
+		  </div>      	
+    </div>
+</div>	
+
+
+
+<script type="text/javascript">
+  $.fn.datepicker.dates['es'] = {
+    days: ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"],
+    daysShort: ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb", "Dom"],
+    daysMin: ["Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa", "Do"],
+    months: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"],
+    monthsShort: ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"],
+    today: "Hoy"
+  };
+  
+  $('.datepicker').datepicker({
+          format: "dd/mm/yyyy",
+          language: "es",
+          autoclose: true,
+          todayHighlight: true
+    });
+
+</script>
+{% endblock principal %}

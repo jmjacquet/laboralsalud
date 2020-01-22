@@ -2,10 +2,9 @@
 from django import forms
 from django.forms import ModelForm
 from django.forms.widgets import TextInput,NumberInput,Select
-from .models import ent_art,ent_cargo,ent_especialidad,ent_medico_prof,ent_empresa,ent_empleado,turnos
+from .models import ent_art,ent_cargo,ent_especialidad,ent_medico_prof,ent_empresa,ent_empleado,turnos,configuracion
 from datetime import datetime, timedelta,date
 from laboralsalud.utilidades import *
-
 
 class LoginForm(forms.Form):
 	usuario = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','text-transform': 'uppercase','autofocus':'autofocus'}),required = True)
@@ -73,4 +72,16 @@ class ConsultaFechasInicio(forms.Form):
 	
 
 	
+class ConfiguracionForm(forms.ModelForm):	
+	cuit = forms.CharField(label='CUIT',required = False,widget=PostPendWidgetBuscar(attrs={'class':'form-control','autofocus':'autofocus'},
+			base_widget=NumberInput,data='<i class="fa fa-search" aria-hidden="true"></i>',tooltip=u"Buscar datos y validar CUIT en AFIP"))		
+	fecha_inicio_activ = forms.DateField(label='Inicio Actividades',required = True,widget=forms.DateInput(attrs={'class': 'form-control datepicker'}),initial=inicioMes())	
+	mail_cuerpo = forms.CharField(label=u'Cuerpo Email (envío de Comprobantes)',widget=forms.Textarea(attrs={ 'class':'form-control2','rows': 3}),required = False)				
+	mail_password = forms.CharField(widget=forms.PasswordInput(render_value = True),max_length=20,label=u'Contraseña')     	
+	class Meta:
+			model = configuracion
+			exclude = ['id']	
+
+	def __init__(self, *args, **kwargs):
+		super(ConfiguracionForm, self).__init__(*args, **kwargs)		
 		
