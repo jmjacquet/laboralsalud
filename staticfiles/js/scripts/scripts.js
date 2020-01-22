@@ -77,9 +77,9 @@
         $.ajax({
                 dataType: 'json',
                 url: '/recargar_empleados/',
-                async: false,
+               
                 type: 'get',
-                cache: true,          
+               
                 beforeSend: function(){
                 $('#cargando').show();
                 },
@@ -115,9 +115,7 @@ function recargarDiagnosticos(){
         $.ajax({
                 dataType: 'json',
                 url: '/recargar_diagnosticos/',
-                async: false,
-                type: 'get',
-                cache: true,          
+                type: 'get',      
                 beforeSend: function(){
                 $('#cargando').show();
                 },
@@ -152,9 +150,7 @@ function recargarPatologias(){
         $.ajax({
                 dataType: 'json',
                 url: '/recargar_patologias/',
-                async: false,
-                type: 'get',
-                cache: true,          
+                type: 'get',        
                 beforeSend: function(){
                 $('#cargando').show();
                 },
@@ -182,9 +178,9 @@ function recargarMedicos(){
         $.ajax({
                 dataType: 'json',
                 url: '/recargar_medicos/',
-                async: false,
+                
                 type: 'get',
-                cache: true,          
+                
                 beforeSend: function(){
                 $('#cargando').show();
                 },
@@ -222,9 +218,9 @@ function recargarMedicos(){
       $.ajax({
                 dataType: 'json',
                 url: '/recargar_empleados_empresa/'+id,
-                async: false,
+               
                 type: 'get',
-                cache: true,          
+               
                 beforeSend: function(){
                 $('#cargando').show();
                 },

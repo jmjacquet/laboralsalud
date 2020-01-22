@@ -66,8 +66,7 @@ class AjaxFormMixin(JSONResponseMixin):
         self.object.save()
         if hasattr(form, 'save_m2m'):
             form.save_m2m()
-        self.post_save()
-        self.object.refresh_from_db()
+        self.post_save()        
         if self.request.is_ajax():
             return self.render_json_response(self.get_success_result())
         return HttpResponseRedirect(self.get_success_url())

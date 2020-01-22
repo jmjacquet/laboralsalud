@@ -5204,3 +5204,4 @@ Traceback (most recent call last):
     self.object.save()
 AttributeError: 'NoneType' object has no attribute 'save'
 [21/Jan/2020 21:22:41] ERROR [django.server:124] "POST /ausentismos/patologia/nuevo/ HTTP/1.1" 500 18307
+[22/Jan/2020 08:15:13] ERROR [django.server:124] "GET /ausentismos/nuevo/ HTTP/1.1" 500 59

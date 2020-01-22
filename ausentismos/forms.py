@@ -54,7 +54,7 @@ class AusentismoForm(forms.ModelForm):
 	aus_diagn = forms.ModelChoiceField(label=agregar_nuevo_html(u'Diagnóstico','nuevoDiagn',u'AGREGAR DIAGNÓSTICO','/ausentismos/diagnostico/nuevo/','recargarD',u'Agregar Diagnóstico','icon-magnifier-add'),queryset=aus_diagnostico.objects.filter(baja=False),required=False)
 	aus_medico = MedicoModelChoiceField(label=agregar_nuevo_html(u'Médico Tratante/ART','nuevoMedicoAUS',u'AGREGAR MÉDICO','/entidades/medico_prof/nuevo/','recargarM',u'Agregar Médico','icon-users'),queryset=ent_medico_prof.objects.filter(baja=False),required=False)
 	empresa = forms.ModelChoiceField(label='Empresa',queryset=ent_empresa.objects.filter(baja=False),required=False)
-	aus_fcontrol = forms.DateField(label=popover_html(u'Fecha Próx.Control', u'Actualizar a fecha de próximo Control Programado'),required = False,widget=forms.DateInput(attrs={'class': 'datepicker'}),initial=hoy())
+	aus_fcontrol = forms.DateField(label=popover_html(u'Fecha Próx.Control', u'Actualizar a Fecha de próximo Control Programado'),required = False,widget=forms.DateInput(attrs={'class': 'datepicker'}),initial=hoy())
 	aus_fcertif = forms.DateField(label='Fecha Certificado',required = False,widget=forms.DateInput(attrs={'class': 'datepicker'}))
 	aus_fentrega_certif = forms.DateField(label='Fecha Entrega Certif.',required = False,widget=forms.DateInput(attrs={'class': 'datepicker'}))
 	aus_fcrondesde = forms.DateField(label='Fecha Desde',required = False,widget=forms.DateInput(attrs={'class': 'datepicker'}))
