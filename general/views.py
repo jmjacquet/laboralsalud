@@ -200,7 +200,7 @@ def recargar_empleados(request):
 def recargar_empleados_empresa(request,id):
     context={}
     lista = []
-    empleados = ent_empleado.objects.filter(empresa__pk=id,baja=False).order_by('apellido_y_nombre')    
+    empleados = ent_empleado.objects.filter(empresa__pk=id,baja=False).order_by('apellido_y_nombre')        
     for e in empleados:
         lista.append({'id':e.pk,'nombre':e.get_empleado()})
     context["empleados"]=lista
@@ -218,7 +218,7 @@ def recargar_medicos(request):
 def recargar_diagnosticos(request):
     context={}
     lista = []
-    diagnosticos = aus_diagnostico.objects.filter(baja=False)   
+    diagnosticos = aus_diagnostico.objects.filter(baja=False)           
     for e in diagnosticos:
         lista.append({'id':e.pk,'nombre':e.diagnostico.upper()})
     context["diagnosticos"]=lista    
@@ -227,7 +227,8 @@ def recargar_diagnosticos(request):
 def recargar_patologias(request):
     context={}
     lista = []
-    patologias = aus_patologia.objects.filter(baja=False)
+    patologias = aus_patologia.objects.filter(baja=False)   
+    print patologias
     for e in patologias:
         lista.append({'id':e.pk,'nombre':e.get_patologia()})
     context["patologias"]=lista

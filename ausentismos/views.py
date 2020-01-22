@@ -15,6 +15,7 @@ from django.db.models import Q,Sum,Count,FloatField,Func
 from django.forms.models import inlineformset_factory,BaseInlineFormSet,formset_factory
 from django.utils.functional import curry 
 from django.http import FileResponse
+from django.db import transaction
 
 from .models import *
 from entidades.models import ent_empleado
@@ -270,18 +271,22 @@ class PatologiaView(VariablesMixin,ListView):
             return redirect(reverse('principal'))
         return super(PatologiaView, self).dispatch(*args, **kwargs)
     
+from django.views.decorators.csrf import csrf_protect
+
 
 class PatologiaCreateView(VariablesMixin,AjaxCreateView):
     form_class = PatologiaForm
     template_name = 'modal/entidades/form_patologia.html'
 
     @method_decorator(login_required)
+    @method_decorator(csrf_protect)
     def dispatch(self, *args, **kwargs): 
         if not tiene_permiso(self.request,'pat_pantalla'):
             return redirect(reverse('principal'))
         return super(PatologiaCreateView, self).dispatch(*args, **kwargs)
+   
 
-    def form_valid(self, form):                        
+    def form_valid(self, form):                                        
         messages.success(self.request, u'Los datos se guardaron con éxito!')
         return super(PatologiaCreateView, self).form_valid(form)
 
@@ -308,6 +313,7 @@ class PatologiaEditView(VariablesMixin,AjaxUpdateView):
     
 
     @method_decorator(login_required)
+    @method_decorator(csrf_protect)
     def dispatch(self, *args, **kwargs): 
         if not tiene_permiso(self.request,'pat_pantalla'):
             return redirect(reverse('principal'))
@@ -359,6 +365,7 @@ class DiagnosticoCreateView(VariablesMixin,AjaxCreateView):
     template_name = 'modal/entidades/form_diagnostico.html'
 
     @method_decorator(login_required)
+    @method_decorator(csrf_protect)
     def dispatch(self, *args, **kwargs): 
         if not tiene_permiso(self.request,'diag_pantalla'):
             return redirect(reverse('principal'))
@@ -391,6 +398,7 @@ class DiagnosticoEditView(VariablesMixin,AjaxUpdateView):
     
 
     @method_decorator(login_required)
+    @method_decorator(csrf_protect)
     def dispatch(self, *args, **kwargs): 
         if not tiene_permiso(self.request,'diag_pantalla'):
             return redirect(reverse('principal'))

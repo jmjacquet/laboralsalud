@@ -23,5 +23,3 @@ DATABASES = {
         },
     }
 
-
-TEMPLATE_DEBUG = DEBUG

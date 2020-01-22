@@ -126,7 +126,7 @@ function recargarDiagnosticos(){
                 },
                 success : function(data) {
                   $("#id_aus_diagn").empty().append('<option value="">---</option>');
-                  $.each(data["diagnosticos"], function (idx, item) {
+                  $.each(data["diagnosticos"], function (idx, item) {                      
                       jQuery("<option/>").text(item['nombre']).attr("value", item['id']).appendTo("#id_aus_diagn");
                   })
                   $('#id_aus_diagn').trigger("chosen:updated");                    

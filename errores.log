@@ -5110,3 +5110,97 @@ Traceback (most recent call last):
     storage = messages.get_messages(request)
 NameError: global name 'request' is not defined
 [20/Jan/2020 20:18:53] ERROR [django.server:124] "POST /ausentismos/nuevo/ HTTP/1.1" 500 97783
+[21/Jan/2020 21:02:43] ERROR [django.request:135] Internal Server Error: /login/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Repo\laboralsalud\laboralsalud\views.py", line 35, in login
+    user =  authenticate(usuario=usuario, clave=clave,empresa=empresa)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\__init__.py", line 100, in authenticate
+    user = backend.authenticate(*args, **credentials)
+  File "D:\Repo\laboralsalud\usuarios\authentication.py", line 15, in authenticate
+    usr = UsuUsuario.objects.get(usuario=usuario)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\db\models\manager.py", line 85, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\db\models\query.py", line 379, in get
+    self.model._meta.object_name
+DoesNotExist: UsuUsuario matching query does not exist.
+[21/Jan/2020 21:02:43] ERROR [django.server:124] "POST /login/ HTTP/1.1" 500 94593
+[21/Jan/2020 21:16:22] ERROR [django.request:135] Internal Server Error: /recargar_empleados_empresa/0/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Repo\laboralsalud\general\views.py", line 204, in recargar_empleados_empresa
+    empleados.refresh_from_db()
+AttributeError: 'QuerySet' object has no attribute 'refresh_from_db'
+[21/Jan/2020 21:16:23] ERROR [django.server:124] "GET /recargar_empleados_empresa/0/ HTTP/1.1" 500 16704
+[21/Jan/2020 21:16:24] ERROR [django.request:135] Internal Server Error: /recargar_empleados_empresa/3/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Repo\laboralsalud\general\views.py", line 204, in recargar_empleados_empresa
+    empleados.refresh_from_db()
+AttributeError: 'QuerySet' object has no attribute 'refresh_from_db'
+[21/Jan/2020 21:16:24] ERROR [django.server:124] "GET /recargar_empleados_empresa/3/ HTTP/1.1" 500 16704
+[21/Jan/2020 21:16:41] ERROR [django.request:135] Internal Server Error: /recargar_patologias/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Repo\laboralsalud\general\views.py", line 233, in recargar_patologias
+    patologias.refresh_from_db()
+AttributeError: 'QuerySet' object has no attribute 'refresh_from_db'
+[21/Jan/2020 21:16:41] ERROR [django.server:124] "GET /recargar_patologias/ HTTP/1.1" 500 16662
+[21/Jan/2020 21:22:41] ERROR [django.request:135] Internal Server Error: /ausentismos/patologia/nuevo/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\views\generic\base.py", line 68, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\utils\decorators.py", line 67, in _wrapper
+    return bound_func(*args, **kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\utils\decorators.py", line 63, in bound_func
+    return func.__get__(self, type(self))(*args2, **kwargs2)
+  File "D:\Repo\laboralsalud\ausentismos\views.py", line 282, in dispatch
+    return super(PatologiaCreateView, self).dispatch(*args, **kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\views\generic\base.py", line 88, in dispatch
+    return handler(request, *args, **kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\views\generic\edit.py", line 217, in post
+    return super(BaseCreateView, self).post(request, *args, **kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\views\generic\edit.py", line 183, in post
+    return self.form_valid(form)
+  File "D:\Repo\laboralsalud\ausentismos\views.py", line 286, in form_valid
+    self.object.save()
+AttributeError: 'NoneType' object has no attribute 'save'
+[21/Jan/2020 21:22:41] ERROR [django.server:124] "POST /ausentismos/patologia/nuevo/ HTTP/1.1" 500 18307

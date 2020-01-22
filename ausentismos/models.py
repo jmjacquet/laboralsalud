@@ -155,8 +155,7 @@ class ausentismo_controles(models.Model):
 from django.db.models import Q
 
 def ausentismos_del_dia(request,fecha):
-	 controles = ausentismo_controles.objects.filter(fecha=fecha).values_list('ausentismo__id', flat=True)
-	 print controles
+	 controles = ausentismo_controles.objects.filter(fecha=fecha).values_list('ausentismo__id', flat=True)	
 	 ausentismos = ausentismo.objects.filter(baja=False,empleado__empresa__pk__in=empresas_habilitadas(request))\
 	 	.filter(Q(fecha_creacion=fecha)|(Q(id__in=controles)))
 	 return ausentismos

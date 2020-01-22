@@ -15,6 +15,8 @@ from django.contrib.auth.decorators import login_required
 from usuarios.views import tiene_permiso
 from django.utils.decorators import method_decorator
 import json
+from django.views.decorators.csrf import csrf_protect
+
 ############ ART ############################
 
 class ARTView(VariablesMixin,ListView):
@@ -34,6 +36,7 @@ class ARTCreateView(VariablesMixin,AjaxCreateView):
     template_name = 'modal/entidades/form_art.html'
 
     @method_decorator(login_required)
+    @method_decorator(csrf_protect)
     def dispatch(self, *args, **kwargs): 
         if not tiene_permiso(self.request,'art_pantalla'):
             return redirect(reverse('principal'))
@@ -69,6 +72,7 @@ class ARTEditView(VariablesMixin,AjaxUpdateView):
     
 
     @method_decorator(login_required)
+    @method_decorator(csrf_protect)
     def dispatch(self, *args, **kwargs): 
         if not tiene_permiso(self.request,'art_pantalla'):
             return redirect(reverse('principal'))
@@ -132,6 +136,7 @@ class CargoCreateView(VariablesMixin,AjaxCreateView):
     template_name = 'modal/entidades/form_cargo.html'
 
     @method_decorator(login_required)
+    @method_decorator(csrf_protect)
     def dispatch(self, *args, **kwargs): 
         if not tiene_permiso(self.request,'ptrab_pantalla'):
             return redirect(reverse('principal'))
@@ -166,6 +171,7 @@ class CargoEditView(VariablesMixin,AjaxUpdateView):
     
 
     @method_decorator(login_required)
+    @method_decorator(csrf_protect)
     def dispatch(self, *args, **kwargs): 
         if not tiene_permiso(self.request,'ptrab_pantalla'):
             return redirect(reverse('principal'))
@@ -229,6 +235,7 @@ class EspecialidadCreateView(VariablesMixin,AjaxCreateView):
     template_name = 'modal/entidades/form_esp.html'
 
     @method_decorator(login_required)
+    @method_decorator(csrf_protect)
     def dispatch(self, *args, **kwargs): 
         if not tiene_permiso(self.request,'esp_pantalla'):
             return redirect(reverse('principal'))
@@ -263,6 +270,7 @@ class EspecialidadEditView(VariablesMixin,AjaxUpdateView):
     
 
     @method_decorator(login_required)
+    @method_decorator(csrf_protect)
     def dispatch(self, *args, **kwargs): 
         if not tiene_permiso(self.request,'esp_pantalla'):
             return redirect(reverse('principal'))
@@ -327,6 +335,7 @@ class MedProfCreateView(VariablesMixin,AjaxCreateView):
     template_name = 'modal/entidades/form_med_prof.html'
 
     @method_decorator(login_required)
+    @method_decorator(csrf_protect)
     def dispatch(self, *args, **kwargs): 
         if not tiene_permiso(self.request,'med_pantalla'):
             return redirect(reverse('principal'))
@@ -362,6 +371,7 @@ class MedProfEditView(VariablesMixin,AjaxUpdateView):
     
 
     @method_decorator(login_required)
+    @method_decorator(csrf_protect)
     def dispatch(self, *args, **kwargs): 
         if not tiene_permiso(self.request,'med_pantalla'):
             return redirect(reverse('principal'))
@@ -570,6 +580,7 @@ class EmpleadoCreateView(VariablesMixin,AjaxCreateView):
     template_name = 'modal/entidades/form_empleado.html'
 
     @method_decorator(login_required)
+    @method_decorator(csrf_protect)
     def dispatch(self, *args, **kwargs): 
         if not tiene_permiso(self.request,'empl_pantalla'):
             return redirect(reverse('principal'))
@@ -610,6 +621,7 @@ class EmpleadoEditView(VariablesMixin,AjaxUpdateView):
     
 
     @method_decorator(login_required)
+    @method_decorator(csrf_protect)
     def dispatch(self, *args, **kwargs): 
         if not tiene_permiso(self.request,'empl_pantalla'):
             return redirect(reverse('principal'))
