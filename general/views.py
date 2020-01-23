@@ -228,7 +228,6 @@ def recargar_patologias(request):
     context={}
     lista = []
     patologias = aus_patologia.objects.filter(baja=False)   
-    print patologias
     for e in patologias:
         lista.append({'id':e.pk,'nombre':e.get_patologia()})
     context["patologias"]=lista
