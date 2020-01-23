@@ -60,33 +60,35 @@
   
   {% for a in ausencias %}
     <tr class="" >     
-     <td  width="15%" class="tabla_header texto_der borde_izq borde_arriba borde_der">Apellido y Nombre:</td><td  width="60%"class="borde_der borde_arriba"><strong>{{a.empleado|default_if_none:''|upper}}</strong></td> 
+     <td  width="15%" class="tabla_header texto_der borde_izq borde_arriba borde_der">Apellido y Nombre:</td><td colspan="3" width="60%"class="borde_der borde_arriba"><strong>{{a.empleado|default_if_none:''|upper}}</strong></td> 
      <td width="15%" class="tabla_header texto_der borde_arriba borde_der">Fecha Cron.Desde:</td><td width="10%" class="borde_der borde_arriba">{{a.aus_fcrondesde|date:'d/m/Y'}}</td>          
     </tr>
     <tr class="" >
-      <td class="tabla_header texto_der borde_der borde_izq borde_arriba">Sector:</td><td class="borde_der borde_arriba" >{{a.empleado.empresa|default_if_none:''|upper}} {% if a.empleado.trab_cargo %} ({{a.empleado.trab_cargo}}){% endif %}</td>
+      <td class="tabla_header texto_der borde_der borde_izq borde_arriba">Sector:</td><td colspan="3" class="borde_der borde_arriba" >{{a.empleado.empresa|default_if_none:''|upper}} {% if a.empleado.trab_cargo %} ({{a.empleado.trab_cargo}}){% endif %}</td>
       <td class="tabla_header texto_der borde_arriba borde_der">Fecha Cron.Hasta:</td><td class="borde_der borde_arriba">{{a.aus_fcronhasta|date:'d/m/Y'}}</td>
     </tr>   
     <tr class="" >
-      <td class="tabla_header texto_der borde_der borde_arriba borde_izq">Diagnóstico:</td><td width="60%" class="borde_der borde_arriba" >{{a.aus_diagn|default_if_none:''|upper}} </td>      
+      <td class="tabla_header texto_der borde_der borde_arriba borde_izq">Diagnóstico:</td><td colspan="3" width="60%" class="borde_der borde_arriba" >{{a.aus_diagn|default_if_none:''|upper}} </td>      
       <td class="tabla_header texto_der borde_arriba borde_der">Días:</td><td width="10%" class="borde_der borde_arriba">{{a.aus_diascaidos|default_if_none:'0'}}</td>     
     </tr>
    
     <tr class="" >     
-     <td class="tabla_header texto_der borde_izq borde_arriba borde_der">Fecha Certificado:</td><td width="60%" class="borde_der borde_arriba">{{a.aus_fcertif|date:'d/m/Y'}}</td>      
-     <td  class="tabla_header texto_der borde_arriba borde_der">Fecha Reintegro:</td><td width="10%" class="borde_der borde_arriba">{{a.aus_freintegro|date:'d/m/Y'}}</td>     
+     <td class="tabla_header texto_der borde_izq borde_arriba borde_der">Fecha Certificado:</td><td width="40%" class="borde_der borde_arriba">{{a.aus_fcertif|date:'d/m/Y'}}</td>      
+     <td  width="15%" class="tabla_header texto_der borde_arriba borde_der">Fecha Reintegro:</td><td width="10%" class="borde_der borde_arriba">{{a.aus_freintegro|date:'d/m/Y'}}</td>
+     <td  class="tabla_header texto_der borde_arriba borde_der">Fecha Próx.Control:</td><td width="10%" class="borde_der borde_arriba">{{a.aus_fcontrol|date:'d/m/Y'}}</td>     
     </tr>
+    {% if a.get_ultimo_control %}
     <tr class="" >     
-     <td class="tabla_header texto_der borde_izq borde_arriba borde_der borde_abajo">Observaciones:</td><td colspan="3" class="borde_der borde_arriba borde_abajo">{{a.observaciones|default_if_none:''}}</td>      
+     <td class="tabla_header texto_der borde_izq borde_arriba borde_der borde_abajo">Detalles Control:</td><td colspan="5" class="borde_der borde_arriba borde_abajo"><b>Fecha: {{a.get_ultimo_control.fecha|date:'d/m/Y'}}</b> - {{a.get_ultimo_control.detalle|default_if_none:''}}</td>      
     </tr>
-
+    {% endif %}
     <tr class="" >
-     <td width="100%" colspan="4"class=""></td>      
+     <td width="100%" colspan="6"class=""></td>      
     </tr>   
   
   {% endfor %}
   <tr class="" >
-     <td width="100%" colspan="4 " class="texto_der"><strong>{{cant}}</strong> Ausentismos en total.</td>      
+     <td width="100%" colspan="6" class="texto_der"><strong>{{cant}}</strong> Ausentismos en total.</td>      
   </tr>      
 </table>
 

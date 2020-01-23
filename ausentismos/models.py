@@ -122,24 +122,21 @@ class ausentismo(models.Model):
 	@property
 	def get_tipo_alta(self):
 		return self.get_aus_tipo_alta_display()
-			
-	# def get_fechas_control(self):
-	# 	lista = [self.fecha_creacion]		
-	# 	try:
-	# 		controles = ausentismo_controles.objects.filter(ausentismo=self,fecha=fecha)
-	# 	except:
-	# 		return None
-	# 	if controles.fecha:
-	# 		return controles.fecha
-	# 	else:
-	# 		return None
+	
+	@property		
+	def get_ultimo_control(self):
+		try:
+			ultimo = ausentismo_controles.objects.filter(ausentismo=self)[0]
+		except:
+			return None
+		return ultimo
 		
 
 class ausentismo_controles(models.Model):
 	id = models.AutoField(primary_key=True,db_index=True)
 	ausentismo = models.ForeignKey('ausentismo',db_column='ausentismo',related_name='control_ausentismo',blank=True, null=True,on_delete=models.CASCADE)
 	fecha = models.DateField(blank=True, null=True)
-	detalle = models.TextField(max_length=500,blank=True, null=True) # Field name made lowercase.   
+	detalle = models.TextField(max_length=1000,blank=True, null=True) # Field name made lowercase.   
 	fecha_creacion = models.DateField(auto_now_add = True)
 	fecha_modif = models.DateField(auto_now = True)			
 	usuario_carga = models.ForeignKey('usuarios.UsuUsuario',db_column='usuario_carga',blank=True, null=True,related_name='control_usuario_carga',on_delete=models.SET_NULL)    
@@ -148,7 +145,7 @@ class ausentismo_controles(models.Model):
 	    ordering = ['fecha','id']
 
 	def __unicode__(self):
-	    return u'%s - %s - %s' % (self.ausentismo.pk,self.fecha,self.detalle)
+	    return u'%s - %s' % (self.fecha,self.detalle)
 
 
 

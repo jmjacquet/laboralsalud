@@ -44,15 +44,15 @@ class AusentismoForm(forms.ModelForm):
 	tipo_control = forms.ChoiceField(label='',choices=TIPO_CONTROL,required=False,initial='C')
 	aus_control = forms.ChoiceField(label=u'¿Asistió a Control?',choices=SINO,required=False,initial='N')
 	aus_certificado = forms.ChoiceField(label=u'¿Presenta Certificado?',choices=SINO,required=False,initial='N')
-	observaciones = forms.CharField(label='Observaciones Generales',widget=forms.Textarea(attrs={'class':'form-control2', 'rows': 4}),required = False)	
+	observaciones = forms.CharField(label=u'Información Adicional',widget=forms.Textarea(attrs={'class':'form-control2', 'rows': 2}),required = False)	
 	descr_altaparc = forms.CharField(label=u'Características de Alta con Restricción',widget=forms.Textarea(attrs={'class':'form-control2', 'rows': 2}),required = False)	
 	detalle_acc_art = forms.CharField(label='Detalle Accidente ART',widget=forms.Textarea(attrs={'class':'form-control2', 'rows': 2}),required = False)	
 	estudios_partic = forms.CharField(label=u'Estudios Particulares',widget=forms.Textarea(attrs={'class':'form-control2', 'rows': 2}),required = False)	
 	estudios_art = forms.CharField(label='Estudios ART',widget=forms.Textarea(attrs={'class':'form-control2', 'rows': 2}),required = False)	
 	recalificac_art = forms.CharField(label=u'Recalificación ART',widget=forms.Textarea(attrs={'class':'form-control2', 'rows': 2}),required = False)	
-	aus_grupop = forms.ModelChoiceField(label=agregar_nuevo_html(u'Grupo Patológico','nuevoGrupoP',u'AGREGAR PATOLOGÍA','/ausentismos/patologia/nuevo/','recargarGP',u'Agregar Patología','icon-magnifier-add'),queryset=aus_patologia.objects.filter(baja=False),required=False)
-	aus_diagn = forms.ModelChoiceField(label=agregar_nuevo_html(u'Diagnóstico','nuevoDiagn',u'AGREGAR DIAGNÓSTICO','/ausentismos/diagnostico/nuevo/','recargarD',u'Agregar Diagnóstico','icon-magnifier-add'),queryset=aus_diagnostico.objects.filter(baja=False),required=False)
-	aus_medico = MedicoModelChoiceField(label=agregar_nuevo_html(u'Médico Tratante/ART','nuevoMedicoAUS',u'AGREGAR MÉDICO','/entidades/medico_prof/nuevo/','recargarM',u'Agregar Médico','icon-users'),queryset=ent_medico_prof.objects.filter(baja=False),required=False)
+	aus_grupop = forms.ModelChoiceField(label=agregar_nuevo_html(u'Grupo Patológico','nuevoGrupoP',u'AGREGAR PATOLOGÍA','/ausentismos/patologia/nuevo/','recargarGP',u'Crear nueva Patología','icon-magnifier-add'),queryset=aus_patologia.objects.filter(baja=False),required=False)
+	aus_diagn = forms.ModelChoiceField(label=agregar_nuevo_html(u'Diagnóstico','nuevoDiagn',u'AGREGAR DIAGNÓSTICO','/ausentismos/diagnostico/nuevo/','recargarD',u'Crear nuevo Diagnóstico','icon-magnifier-add'),queryset=aus_diagnostico.objects.filter(baja=False),required=False)
+	aus_medico = MedicoModelChoiceField(label=agregar_nuevo_html(u'Médico Tratante/ART','nuevoMedicoAUS',u'AGREGAR MÉDICO','/entidades/medico_prof/nuevo/','recargarM',u'Crear nuevo Médico','icon-users'),queryset=ent_medico_prof.objects.filter(baja=False),required=False)
 	empresa = forms.ModelChoiceField(label='Empresa',queryset=ent_empresa.objects.filter(baja=False),required=False)
 	aus_fcontrol = forms.DateField(label=popover_html(u'Fecha Próx.Control', u'Actualizar a Fecha de próximo Control Programado'),required = False,widget=forms.DateInput(attrs={'class': 'datepicker'}),initial=hoy())
 	aus_fcertif = forms.DateField(label='Fecha Certificado',required = False,widget=forms.DateInput(attrs={'class': 'datepicker'}))
@@ -128,8 +128,8 @@ class AusentismoForm(forms.ModelForm):
 
 class ControlesDetalleForm(forms.ModelForm):	
 	ausentismo = forms.IntegerField(widget = forms.HiddenInput(), required = False)
-	detalle = forms.CharField(label='Detalle',widget=forms.Textarea(attrs={ 'class':'form-control','rows': 2}),required = False)				
-	fecha = forms.DateField(required = False,widget=forms.DateInput(attrs={'class': 'datepicker'}))	
+	detalle = forms.CharField(label='',widget=forms.Textarea(attrs={ 'class':'form-control2','rows': 3}),required = False)				
+	fecha = forms.DateField(label='',required = False,widget=forms.DateInput(attrs={'class': 'datepicker'}))	
 	class Meta:
 			model = ausentismo_controles
 			exclude = ['id','fecha_creacion','fecha_modif','usuario_carga']
