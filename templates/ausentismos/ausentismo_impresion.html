@@ -1,0 +1,159 @@
+{% load static from staticfiles %}
+{% load humanize %} 
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>INFORME AUENTISMOS</title>
+<link rel="stylesheet" href="{% static 'css/reportes_factura.css' %}" type="text/css" />
+<style type="text/css">
+
+ @page {
+         margin: 0.5cm 0.5cm 1cm 0.5cm;
+         padding: 0;         
+         @frame footer {
+                        -pdf-frame-content: page-footer;
+                        bottom: 0cm;
+                        height: 1 cm;
+                        margin-right: 0.5cm;                        
+                        margin-left: 0.5cm;                        
+                    }
+        
+         }
+          @frame header_frame  {
+                        -pdf-frame-content: page-header;
+                        margin-top: 0cm;
+                        margin-right: 1cm;                        
+                        margin-left: 1cm;
+                        margin-bottom: 1cm;
+                        height: 4cm;                      
+                    }
+</style>
+<link href="../../staticfiles/css/reportes_factura.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>  
+<div id="page-header">
+<table width="100%" align="center" >
+  <tr>
+      <td align="center" rowspan="4"   width="30%" valign="middle" class=" borde_abajo borde_izq borde_arriba"  >
+        <img src="{% static 'img/logo.jpg' %}" alt="logo" class="logo_reporte" />        
+      </td>
+      <td  colspan="2" width="70%" class="empresa borde_arriba borde_der">{{config.nombre|default_if_none:''}}</td>         
+  </tr>
+  <tr>
+    <td  colspan="2" class="texto_cpb  borde_der">{{config.domicilio|default_if_none:''}}</td>
+  </tr>
+  <tr>
+    <td  colspan="2" class="texto_cpb  borde_der">{{config.datos_extra|default_if_none:''}}</td>
+  </tr>
+  <tr>
+    <td class="texto_cpb borde_abajo borde_der" colspan="2" width="35%">CUIT: {{config.cuit|default_if_none:''|upper}} {% if config.iibb %}IIBB: {{config.iibb|default_if_none:''|upper}}{% endif %}</td>    
+  </tr>
+   <tr>
+    <td  colspan="3" class="nombre_cpb"><p>&nbsp;</p>
+      <p>DETALLE AUSENTISMO</p>
+      <p>&nbsp;</p></td>
+  </tr>
+</table>
+</div>
+
+<table class="tabla" width="100%" border="0" cellspacing="0">
+    <tr>
+      <td width="27%"  class="tabla_footer borde_abajo borde_arriba borde_der borde_izq">Apellido y Nombre</td>
+      <td colspan="3" class="dato borde_abajo borde_arriba borde_der borde_izq" id="apellido_y_nombre">{{a.empleado.apellido_y_nombre|default_if_none:''|upper}}</td>
+      <td width="15%" class="tabla_footer borde_abajo borde_arriba borde_der borde_izq">Documento</td><td width="25%" class="dato borde_abajo borde_arriba borde_der borde_izq" id="nro_doc">{{a.empleado.nro_doc|default_if_none:''}}</td>
+  </tr>
+    <tr>      
+      <td width="27%" class="tabla_footer borde_abajo borde_arriba borde_der borde_izq">Nº Legajo</td><td width="25%" class="dato borde_abajo borde_arriba borde_der borde_izq" id="legajo">{{a.empleado.legajo|default_if_none:''}}</td>    
+      <td width="20%" class="tabla_footer borde_abajo borde_arriba borde_der borde_izq">Fecha Nacimiento</td><td width="10%" class="dato borde_abajo borde_arriba borde_der borde_izq" id="fecha_nac">{{a.empleado.fecha_nac|date:'d/m/Y'}}</td>
+      <td width="15%" class="tabla_footer borde_abajo borde_arriba borde_der borde_izq">Edad</td><td width="25%" class="dato borde_abajo borde_arriba borde_der borde_izq" id="edad">{{a.empleado.get_edad|default_if_none:0}} años</td>
+  </tr>
+    <tr>
+      <td width="27%"  class="tabla_footer borde_abajo borde_arriba borde_der borde_izq">Empresa</td><td width="25%" class="dato borde_abajo borde_arriba borde_der borde_izq" id="empresa">{{a.empleado.empresa|default_if_none:''|upper}}</td>    
+      <td width="20%" class="tabla_footer borde_abajo borde_arriba borde_der borde_izq">Fecha Ingreso</td><td width="10%" class="dato borde_abajo borde_arriba borde_der borde_izq" id="empr_fingreso">{{a.empleado.empr_fingreso|date:'d/m/Y'}}</td>
+      <td width="15%" class="tabla_footer borde_abajo borde_arriba borde_der borde_izq">Antig. Laboral</td><td width="25%" class="dato borde_abajo borde_arriba borde_der borde_izq" id="antig_empresa">{{a.empleado.get_antiguedad_empr|default_if_none:0}} años</td>
+  </tr>
+    <tr>
+      <td width="27%"  class="tabla_footer borde_abajo borde_arriba borde_der borde_izq">Puesto/Cargo</td><td colspan="5" id="trab_cargo" class="dato borde_abajo borde_arriba borde_der borde_izq">{{a.empleado.trab_cargo|default_if_none:''|upper}}</td>
+  </tr>
+  </tbody>
+</table>
+<br>
+<table class="tabla" width="100%" border="0" cellspacing="0">
+    <tbody> 
+                   <tr>
+                            <td class="tabla_footer borde_izq borde_abajo borde_arriba borde_der">Tipo Ausentismo</td>
+                            <td colspan="2" class="dato borde_abajo borde_arriba borde_der borde_izq" id="empr_fingreso2">{{a.get_tipo_ausentismo_display|upper}}</td>
+                            <td class="tabla_footer borde_abajo borde_arriba borde_der borde_izq" id="antig_empresa3">Tipo Control</td>
+                            <td colspan="2" class="borde_abajo borde_arriba borde_der borde_izq">{{a.get_tipo_control_display|upper}}</td>
+      </tr>
+                  {% if a.tipo_ausentismo == 1 %}                
+                         
+                          <tr>
+                            <td width="25%" class="tabla_footer borde_izq borde_abajo borde_arriba borde_der">¿Asistió a Control?</td><td width="10%" class="dato borde_abajo borde_arriba borde_der borde_izq" id="empr_fingreso">{{a.aus_control|default_if_none:'N'}}</td>
+                            <td width="20%" class="tabla_footer borde_abajo borde_arriba borde_der borde_izq">Fecha Próx.Control</td><td colspan="3" class="borde_abajo borde_arriba borde_der borde_izq" id="antig_empresa">{{a.get_proxcontrol|date:'d/m/Y'}}</td>
+  </tr>
+                          <tr>
+                            <td width="25%" class="tabla_footer borde_izq borde_abajo borde_arriba borde_der">¿Presenta Certificado?</td><td width="10%" class="dato borde_abajo borde_arriba borde_der borde_izq" id="empr_fingreso">{{a.aus_certificado|default_if_none:'N'}}</td>      
+                            <td width="20%" class="tabla_footer borde_abajo borde_arriba borde_der borde_izq">Fecha Certificado</td><td width="20%" class="borde_abajo borde_arriba borde_der borde_izq" id="antig_empresa">{{a.aus_fcertif|date:'d/m/Y'}}</td>                    
+                            <td width="20%" class="borde_abajo borde_arriba borde_der borde_izq tabla_footer">Fecha Entrega Certif.</td><td width="15%" class="borde_abajo borde_arriba borde_der borde_izq" id="antig_empresa">{{a.aus_fentrega_certif|date:'d/m/Y'}}</td>
+                               
+  </tr>
+                  {% else %}
+                          <tr>
+                            <td width="25%" class="tabla_footer borde_izq borde_abajo borde_arriba borde_der">Tipo Accidente/Enferm.</td><td id="empr_fingreso" colspan="3" class="dato borde_abajo borde_arriba borde_der borde_izq">{{a.get_art_tipo_accidente_display|default_if_none:'N'|upper}}</td>
+                            <td width="20%" class="borde_abajo borde_arriba borde_der borde_izq tabla_footer">Fecha Accidente</td><td width="15%" class="borde_abajo borde_arriba borde_der borde_izq" id="antig_empresa">{{a.art_faccidente|date:'d/m/Y'}}</td>                        
+  </tr>
+                            
+                  {% endif %}
+                          <tr>
+                            <td width="25%" class="tabla_footer borde_izq borde_abajo borde_arriba borde_der">Nº Denuncia</td>
+                            <td width="10%" class="dato borde_abajo borde_arriba borde_der borde_izq" id="antig_empresa2">{{a.art_ndenuncia|default_if_none:''}}</td>
+                            <td width="20%" class="tabla_footer borde_abajo borde_arriba borde_der borde_izq">Fecha Denuncia</td>
+                            <td width="20%" class="borde_abajo borde_arriba borde_der borde_izq" id="antig_empresa2">{{a.art_fdenuncia|date:'d/m/Y'}}</td>
+                            <td width="20%" class="borde_abajo borde_arriba borde_der borde_izq tabla_footer">Días Justificados</td>
+                            <td width="15%" class="borde_abajo borde_arriba borde_der borde_izq" id="antig_empresa2">{{a.aus_diasjustif|default_if_none:'0'}} días</td>
+  </tr>
+                          <tr>
+                            <td width="25%" class="tabla_footer borde_izq borde_abajo borde_arriba borde_der">Fecha Desde</td>
+                            <td width="10%" class="dato borde_abajo borde_arriba borde_der borde_izq" id="antig_empresa">{{a.aus_fcrondesde|date:'d/m/Y'}}</td>
+                            <td width="20%" class="tabla_footer borde_abajo borde_arriba borde_der borde_izq">Fecha Hasta</td>
+                            <td width="20%" class="borde_abajo borde_arriba borde_der borde_izq" id="antig_empresa">{{a.aus_fcronhasta|date:'d/m/Y'}}</td>
+                            <td width="20%" class="borde_abajo borde_arriba borde_der borde_izq tabla_footer">Días Caídos</td>
+                            <td width="15%" class="borde_abajo borde_arriba borde_der borde_izq" id="antig_empresa">{{a.aus_diascaidos|default_if_none:'0'}} días</td>
+  </tr>                 
+                          <tr>
+                            <td width="25%" class="tabla_footer borde_izq borde_abajo borde_arriba borde_der">Fecha Reintegro</td>
+                            <td width="10%" class="dato borde_abajo borde_arriba borde_der borde_izq" id="antig_empresa">{{a.aus_freintegro|date:'d/m/Y'}}</td>
+                            <td width="20%" class="tabla_footer borde_abajo borde_arriba borde_der borde_izq">Fecha Alta</td>
+                            <td width="20%" class="borde_abajo borde_arriba borde_der borde_izq" id="antig_empresa">{{a.aus_falta|date:'d/m/Y'}}</td>
+                            <td width="20%" class="borde_abajo borde_arriba borde_der borde_izq tabla_footer">Tipo Alta</td>
+                            <td width="15%" class="borde_abajo borde_arriba borde_der borde_izq" id="antig_empresa">{{a.get_aus_tipo_alta_display|default_if_none:''|upper}}</td>
+                             
+  </tr>
+                          <tr>
+                            <td width="25%" class="tabla_footer borde_izq borde_abajo borde_arriba borde_der">Médico Tratante</td>
+                            <td class="dato borde_abajo borde_arriba borde_der borde_izq" colspan="5">{{a.aus_medico|default_if_none:''|upper}}</td> 
+  </tr>
+                  
+                                             
+                
+                  <tr>
+                    <td width="25%" class="tabla_footer borde_izq borde_abajo borde_arriba borde_der">Grupo Patológico</td><td colspan="2" class="dato borde_abajo borde_arriba borde_der borde_izq">{{a.aus_grupop|default_if_none:''|upper}}</td>
+                    <td width="20%" class="borde_abajo borde_arriba borde_der borde_izq tabla_footer">Diagnóstico</td><td class="borde_abajo borde_arriba borde_der borde_izq" colspan="2">{{a.aus_diagn|default_if_none:''|upper}}</td>
+  </tr>
+                  </tbody>
+</table>
+<div id="page-footer">
+  <table class="tabla" width="100%" border="0" cellspacing="0">
+    <tr>
+      <td width="90%" class="pie_sistema"><img alt="" class="pie_logo" src="{% static 'img/loguito.jpg' %}"/>&nbsp;&nbsp;Laboral Salud - {{fecha|date:'d/m/Y'}} </td>
+      <td width="10%" class="pie_texto"><pdf:pagenumber /> de <pdf:pagecount/> </td>
+    </tr>
+  </table>    
+</div>
+
+</body>
+</html>

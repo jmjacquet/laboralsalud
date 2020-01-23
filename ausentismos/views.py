@@ -713,6 +713,50 @@ def imprimir_informe(request):
     context['fecha'] = fecha 
     return render_to_pdf_response(request, template, context)                           
 
+@login_required 
+def imprimir_ausentismo(request,id):       
+    template = 'ausentismos/ausentismo_impresion.html'     
+    try:
+        ausencia = ausentismo.objects.get(pk=id)
+        controles = ausentismo_controles.objects.filter(ausentismo=ausencia)
+    except:
+        raise ValueError
+    
+    context = {}
+    context = getVariablesMixin(request)  
+    try:
+      config = configuracion.objects.all().first()
+    except configuracion.DoesNotExist:
+         raise ValueError
+    context['a'] = ausencia
+    context['controles'] = controles
+    context['config'] = config
+    fecha = hoy()   
+    context['fecha'] = fecha 
+    return render_to_pdf_response(request, template, context)     
+
+@login_required 
+def imprimir_historial(request,id):       
+    template = 'ausentismos/historia_clinica_impresion.html'     
+    try:
+        empleado =  empleado.objects.get(pk=id)
+        historial =  ausentismo.objects.filter(empleado=empleado)
+    except:
+        raise ValueError
+    
+    context = {}
+    context = getVariablesMixin(request)  
+    try:
+      config = configuracion.objects.all().first()
+    except configuracion.DoesNotExist:
+         raise ValueError
+    context['empleado'] = empleado
+    context['historial'] = historial
+    context['config'] = config
+    fecha = hoy()   
+    context['fecha'] = fecha 
+    return render_to_pdf_response(request, template, context)
+
 def generarInforme(request):
     if request.method == 'POST' and request.is_ajax():                                                       
         form = InformeAusenciasForm(request.POST or None)  
