@@ -126,7 +126,7 @@ class ausentismo(models.Model):
 	@property		
 	def get_ultimo_control(self):
 		try:
-			ultimo = ausentismo_controles.objects.filter(ausentismo=self)[0]
+			ultimo = ausentismo_controles.objects.filter(ausentismo=self).order_by('-fecha')[0]
 		except:
 			return None
 		return ultimo

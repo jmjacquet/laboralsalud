@@ -134,8 +134,8 @@
                     {% endif %}
                     {% for c in controles %}                    
                     <tr>
-                      <td class="titulo">Fecha Control:</td><td class="dato">{{c.fecha|date:'d/m/Y'}}</td>
-                      <td class="titulo">Detalle:</td><td class="dato">{{c.detalle|default_if_none:''}}</td>
+                      <td class="titulo" width="15%">Fecha Control:</td><td class="dato">{{c.fecha|date:'d/m/Y'}}</td>
+                      <td colspan="2" class="dato">{{c.detalle|default_if_none:''}}</td>
                     </tr>
                     {% endfor %}
                     
