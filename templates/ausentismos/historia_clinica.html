@@ -71,8 +71,8 @@
          </button>
         </div>
         <div class="col-xs-6">
-         <button  class="btn pull-right btn-sm btn-primary" id="ImprimirAus" type="button">
-              <i class="fa fa-check"></i>Imprimir</button>
+         <a  class="btn pull-right btn-sm btn-primary" target="_blank" href="{% url 'imprimir_historial' id=empleado.pk %}" type="button">         
+              <i class="fa fa-check"></i>Imprimir</a>
         </div>
       
       </div>    

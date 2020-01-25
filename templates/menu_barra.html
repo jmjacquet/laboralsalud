@@ -1,90 +1,88 @@
 {% load static from staticfiles %}
 {% load i18n %}
 <nav class="navbar navbar-default" role="navigation">
-
-    <!-- Brand and toggle get grouped for better mobile display -->
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-     <a class="navbar-brand" href="{% url 'principal' %}">
-        <img src="{% static 'img/logo.jpg' %}"class=" img-circle brand-image">
-        <span>Laboral Salud</span></a>
+  <!-- Brand and toggle get grouped for better mobile display -->
+  <div class="navbar-header">
+    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+    <span class="sr-only">Toggle navigation</span>
+    <span class="icon-bar"></span>
+    <span class="icon-bar"></span>
+    <span class="icon-bar"></span>
+    </button>
+    <a class="navbar-brand" href="{% url 'principal' %}">
+      <img src="{% static 'img/logo.jpg' %}"class=" img-circle brand-image">
+      <span>Laboral Salud</span></a>
     </div>
-
     <!-- Group the nav links, forms, drop-down menus and other elements for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav ">
-        <li class="active"><a href="{% url 'principal' %}"><i class="icon-home"></i> Inicio</a></li>        
+        <li class="active"><a href="{% url 'principal' %}"><i class="icon-home"></i> Inicio</a></li>
         {% if permisos_empelados %}
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Gestión Empleados<b class="caret"></b></a>
-          <ul class="dropdown-menu">
-            {% if 'empl_pantalla' in permisos_grupo %}
-            <li><a href="{% url 'empleado_listado' %}"><i class="icon-users"> </i>Empleados</a></li>
-            <li><a href="{% url 'importar_empleados' %}"><i class="icon-user-follow"> </i>Importar Empleados</a></li>
-            <li class="divider"></li>
-            {% endif %}
-            {% if 'aus_pantalla' in permisos_grupo %}
-            <li><a href="{% url 'ausentismo_listado' %}"><i class="icon-list"> </i>Ausentismos</a></li>
-            <li><a href="{% url 'ausencias_importar' %}"><i class="icon-book-open"> </i>Importar Ausentismos</a></li>
-            <li class="divider"></li>
-            {% endif %}
-            {% if 'turnos_pantalla' in permisos_grupo %}
-            <li><a href="{% url 'turnos_listado' %}"><i class="icon-calendar"> </i>Gestión Turnos</a></li>
-            {% endif %}
-          </ul>
-        </li>
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Gestión Empleados<b class="caret"></b></a>
+            <ul class="dropdown-menu">
+              {% if 'empl_pantalla' in permisos_grupo %}
+                <li><a href="{% url 'empleado_listado' %}"><i class="icon-users"> </i>Empleados</a></li>
+                <li><a href="{% url 'importar_empleados' %}"><i class="icon-user-follow"> </i>Importar Empleados</a></li>
+                <li class="divider"></li>
+              {% endif %}
+              {% if 'aus_pantalla' in permisos_grupo %}
+                <li><a href="{% url 'ausentismo_listado' %}"><i class="icon-list"> </i>Ausentismos</a></li>
+                {% if 'aus_abm' in permisos_grupo %}<li><a href="{% url 'ausencias_importar' %}"><i class="icon-book-open"> </i>Importar Ausentismos</a></li>{% endif %}
+                <li class="divider"></li>
+              {% endif %}
+              {% if 'turnos_pantalla' in permisos_grupo %}
+                <li><a href="{% url 'turnos_listado' %}"><i class="icon-calendar"> </i>Gestión Turnos</a></li>
+              {% endif %}
+            </ul>
+          </li>
         {% endif %}
         {% if permisos_indicadores %}
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Indicadores <b class="caret"></b></a>
-          <ul class="dropdown-menu">
-            {% if 'indic_pantalla' in permisos_grupo %}
-            <li><a href="{% url 'reporte_resumen_periodo' %}"><i class="icon-pie-chart"> </i> Resúmen Período</a></li>
-            <li class="divider"></li>
-            <li><a href="{% url 'reporte_resumen_anual' %}"><i class="icon-graph"> </i> Resúmen Anual</a></li>
-            {% endif %}
-          </ul>
-        </li>
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Indicadores <b class="caret"></b></a>
+            <ul class="dropdown-menu">
+              {% if 'indic_pantalla' in permisos_grupo %}
+                <li><a href="{% url 'reporte_resumen_periodo' %}"><i class="icon-pie-chart"> </i> Resúmen Período</a></li>
+                <li class="divider"></li>
+                <li><a href="{% url 'reporte_resumen_anual' %}"><i class="icon-graph"> </i> Resúmen Anual</a></li>
+              {% endif %}
+            </ul>
+          </li>
         {% endif %}
         {% if permisos_configuracion %}
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Configuración <b class="caret"></b></a>
-          <ul class="dropdown-menu">
-            {% if 'art_pantalla' in permisos_grupo %}
-            <li><a href="{% url 'art_listado' %}"><i class="icon-briefcase"> </i> ARTs</a></li>
-            {% endif %}
-            {% if 'emp_pantalla' in permisos_grupo %}
-            <li><a href="{% url 'empresa_listado' %}"><i class="icon-grid"> </i> Empresas</a></li>
-            {% endif %}
-            {% if 'med_pantalla' in permisos_grupo %}
-            <li><a href="{% url 'medico_prof_listado' %}"><i class="icon-users"> </i> Médicos/Profesionales</a></li>
-            {% endif %}
-            {% if 'pat_pantalla' in permisos_grupo %}
-            <li class="divider"></li>
-            <li><a href="{% url 'patologia_listado' %}"><i class="icon-eyeglasses"> </i> Patologías</a></li>
-            {% endif %}
-            {% if 'diag_pantalla' in permisos_grupo %}
-            <li><a href="{% url 'diagnostico_listado' %}"><i class="icon-eyeglasses"> </i> Diagnósticos</a></li>
-            <li class="divider"></li>
-            {% endif %}
-            {% if 'ptrab_pantalla' in permisos_grupo %}
-            <li><a href="{% url 'cargo_listado' %}"><i class="icon-briefcase"> </i> Cargos/Puestos de Trabajo</a></li>
-            {% endif %}
-            {% if 'esp_pantalla' in permisos_grupo %}
-            <li><a href="{% url 'especialidad_listado' %}"><i class="icon-tag"> </i> Especialidades</a></li>            
-            {% endif %}
-            
-          </ul>
-        </li>
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Configuración <b class="caret"></b></a>
+            <ul class="dropdown-menu">
+              {% if 'art_pantalla' in permisos_grupo %}
+                <li><a href="{% url 'art_listado' %}"><i class="icon-briefcase"> </i> ARTs</a></li>
+              {% endif %}
+              {% if 'emp_pantalla' in permisos_grupo %}
+                <li><a href="{% url 'empresa_listado' %}"><i class="icon-grid"> </i> Empresas</a></li>
+              {% endif %}
+              {% if 'med_pantalla' in permisos_grupo %}
+                <li><a href="{% url 'medico_prof_listado' %}"><i class="icon-users"> </i> Médicos/Profesionales</a></li>
+              {% endif %}
+              {% if 'pat_pantalla' in permisos_grupo %}
+                <li class="divider"></li>
+                <li><a href="{% url 'patologia_listado' %}"><i class="icon-eyeglasses"> </i> Patologías</a></li>
+              {% endif %}
+              {% if 'diag_pantalla' in permisos_grupo %}
+                <li><a href="{% url 'diagnostico_listado' %}"><i class="icon-eyeglasses"> </i> Diagnósticos</a></li>
+                <li class="divider"></li>
+              {% endif %}
+              {% if 'ptrab_pantalla' in permisos_grupo %}
+                <li><a href="{% url 'cargo_listado' %}"><i class="icon-briefcase"> </i> Cargos/Puestos de Trabajo</a></li>
+              {% endif %}
+              {% if 'esp_pantalla' in permisos_grupo %}
+                <li><a href="{% url 'especialidad_listado' %}"><i class="icon-tag"> </i> Especialidades</a></li>
+              {% endif %}
+              
+            </ul>
+          </li>
         {% endif %}
       </ul>
       
-        
+      
       <ul class="nav navbar-nav navbar-right">
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown"> {{usuario}}  <i class="icon-user"></i> <b class="caret"></b></a>
@@ -92,11 +90,11 @@
             <li><a class="modal-update" data-modal-callback="reload" data-modal-head="CAMBIAR CONTRASEÑA" href="{% url 'cambiar_password' id=usuario.pk %}"><i class="icon-key"></i> Cambiar Contraseña</a></li>
             <li class="divider"></li>
             {% if esAdmin %}
-            <li><a href="{% url 'usuarios' %}"><i class="icon-users"> </i> Configurar Usuarios</a></li>                                       
-            <li>
-              <a href="{% url 'configuracion_editar' id=1 %}"><i class="icon-settings"></i>Configuración General</a>
-            </li>               
-            <li class="divider"></li>
+              <li><a href="{% url 'usuarios' %}"><i class="icon-users"> </i> Configurar Usuarios</a></li>
+              <li>
+                <a href="{% url 'configuracion_editar' id=1 %}"><i class="icon-settings"></i>Configuración General</a>
+              </li>
+              <li class="divider"></li>
             {% endif %}
             <li><a href="{% url 'logout' %}"><i class="icon-logout"> </i> Salir</a></li>
           </ul>
@@ -105,7 +103,5 @@
       <div class="navbar-header navbar-right">
         <span class="titulo_empresa">{% if esAdmin %}ADMIN{% else %}{{empresa}} {% endif %}</span>
       </div>
-    </div><!-- /.navbar-collapse -->
-
-</nav>
-  
+      </div><!-- /.navbar-collapse -->
+    </nav>

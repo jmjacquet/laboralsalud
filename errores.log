@@ -5699,3 +5699,127 @@ Traceback (most recent call last):
     raise NoReverseMatch(msg)
 NoReverseMatch: Reverse for 'imprimirAusentismo' not found. 'imprimirAusentismo' is not a valid view function or pattern name.
 [23/Jan/2020 18:37:41] ERROR [django.server:124] "GET /ausentismos/detalles/843/ HTTP/1.1" 500 178659
+[24/Jan/2020 19:47:31] ERROR [django.request:135] Internal Server Error: /ausentismos/historial/1535/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 217, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 215, in _get_response
+    response = response.render()
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\response.py", line 107, in render
+    self.content = self.rendered_content
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\response.py", line 84, in rendered_content
+    content = template.render(context, self._request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\backends\django.py", line 66, in render
+    return self.template.render(context)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 207, in render
+    return self._render(context)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\test\utils.py", line 107, in instrumented_test_render
+    return self.nodelist.render(context)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 990, in render
+    bit = node.render_annotated(context)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 957, in render_annotated
+    return self.render(context)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\loader_tags.py", line 63, in render
+    result = self.nodelist.render(context)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 990, in render
+    bit = node.render_annotated(context)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 957, in render_annotated
+    return self.render(context)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\defaulttags.py", line 458, in render
+    url = reverse(view_name, args=args, kwargs=kwargs, current_app=current_app)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\urls\base.py", line 91, in reverse
+    return force_text(iri_to_uri(resolver._reverse_with_prefix(view, prefix, *args, **kwargs)))
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\urls\resolvers.py", line 497, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+NoReverseMatch: Reverse for 'imprimir_ausentismo' with keyword arguments '{u'id': ''}' not found. 1 pattern(s) tried: ['ausentismos/imprimir_ausentismo/(?P<id>\\d+)/$']
+[24/Jan/2020 19:47:32] ERROR [django.server:124] "GET /ausentismos/historial/1535/ HTTP/1.1" 500 20183
+[24/Jan/2020 19:47:52] ERROR [django.request:135] Internal Server Error: /ausentismos/historial/1535/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 217, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 215, in _get_response
+    response = response.render()
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\response.py", line 107, in render
+    self.content = self.rendered_content
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\response.py", line 84, in rendered_content
+    content = template.render(context, self._request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\backends\django.py", line 66, in render
+    return self.template.render(context)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 207, in render
+    return self._render(context)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\test\utils.py", line 107, in instrumented_test_render
+    return self.nodelist.render(context)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 990, in render
+    bit = node.render_annotated(context)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 957, in render_annotated
+    return self.render(context)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\loader_tags.py", line 63, in render
+    result = self.nodelist.render(context)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 990, in render
+    bit = node.render_annotated(context)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 957, in render_annotated
+    return self.render(context)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\defaulttags.py", line 458, in render
+    url = reverse(view_name, args=args, kwargs=kwargs, current_app=current_app)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\urls\base.py", line 91, in reverse
+    return force_text(iri_to_uri(resolver._reverse_with_prefix(view, prefix, *args, **kwargs)))
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\urls\resolvers.py", line 497, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+NoReverseMatch: Reverse for 'imprimir_ausentismo' with keyword arguments '{u'id': ''}' not found. 1 pattern(s) tried: ['ausentismos/imprimir_ausentismo/(?P<id>\\d+)/$']
+[24/Jan/2020 19:47:52] ERROR [django.server:124] "GET /ausentismos/historial/1535/ HTTP/1.1" 500 20183
+[24/Jan/2020 19:49:51] ERROR [django.request:135] Internal Server Error: /ausentismos/imprimir_historial/1535/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "D:\Repo\laboralsalud\ausentismos\views.py", line 745, in imprimir_historial
+    raise ValueError
+ValueError
+[24/Jan/2020 19:49:51] ERROR [django.server:124] "GET /ausentismos/imprimir_historial/1535/ HTTP/1.1" 500 79641
+[24/Jan/2020 19:52:24] ERROR [django.request:135] Internal Server Error: /ausentismos/imprimir_historial/1535/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "D:\Repo\laboralsalud\ausentismos\views.py", line 753, in imprimir_historial
+    context['empleado'] = empleado
+UnboundLocalError: local variable 'empleado' referenced before assignment
+[24/Jan/2020 19:52:29] ERROR [django.server:124] "GET /ausentismos/imprimir_historial/1535/ HTTP/1.1" 500 81990
+[24/Jan/2020 19:53:47] ERROR [django.request:135] Internal Server Error: /ausentismos/imprimir_historial/1535/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "D:\Repo\laboralsalud\ausentismos\views.py", line 741, in imprimir_historial
+    empleado =  empleado.objects.get(pk=id)
+UnboundLocalError: local variable 'empleado' referenced before assignment
+[24/Jan/2020 19:53:47] ERROR [django.server:124] "GET /ausentismos/imprimir_historial/1535/ HTTP/1.1" 500 80987

@@ -112,7 +112,7 @@ class AusentismoCreateView(VariablesMixin,CreateView):
         self.object = None
         form_class = self.get_form_class()
         form = self.get_form(form_class)                               
-        form.fields['empleado'].label = agregar_nuevo_html(u'Empleado','nuevoEmpleado',u'AGREGAR EMPLEADO','/entidades/empleado/nuevo/','recargarE',u'Agregar Empleado','icon-users')
+        form.fields['empleado'].label = agregar_nuevo_html(u'Empleado','nuevoEmpleado',u'AGREGAR EMPLEADO','/entidades/empleado/nuevo/','recargarE',u'Crear Nuevo Empleado','icon-users')
         controles_detalle = ControlDetalleFormSet(prefix='formDetalle')                                
         return self.render_to_response(self.get_context_data(form=form,controles_detalle = controles_detalle))
     def post(self, request, *args, **kwargs):
@@ -256,7 +256,7 @@ class AusentismoHistorialView(VariablesMixin,DetailView):
 def ausentismo_eliminar(request,id):
     if not tiene_permiso(request,'aus_abm'):
             return redirect(reverse('principal'))
-    aus = ausentismo.objects.get(pk=id).delete()         
+    aus = ausentismo.objects.get(pk=id,empleado__empresa__pk__in=empresas_habilitadas(request)).delete()         
     messages.success(request, u'¡Los datos se eliminaron con éxito!')
     return HttpResponseRedirect(reverse("ausentismo_listado"))     
 
@@ -265,7 +265,7 @@ def ausentismo_eliminar_masivo(request):
     if not tiene_permiso(request,'aus_abm'):
             return redirect(reverse('principal'))
     listado = request.GET.getlist('id')    
-    ausentismos = ausentismo.objects.filter(id__in=listado).delete()   
+    ausentismos = ausentismo.objects.filter(id__in=listado,empleado__empresa__pk__in=empresas_habilitadas(request)).delete()   
     messages.success(request, u'¡Los datos se eliminaron con éxito!')
     return HttpResponse(json.dumps(len(listado)), content_type = "application/json")
 ############ PATOLOGIAS ############################
@@ -698,7 +698,7 @@ from easy_pdf.rendering import render_to_pdf_response,render_to_pdf
 def imprimir_informe(request):       
     template = 'ausentismos/informe_ausentismos.html' 
     lista = request.GET.getlist('id')
-    ausencias = ausentismo.objects.filter(id__in=lista).select_related('empleado','empleado__empresa','aus_diagn','empleado__trab_cargo')
+    ausencias = ausentismo.objects.filter(id__in=lista,empleado__empresa__pk__in=empresas_habilitadas(request)).select_related('empleado','empleado__empresa','aus_diagn','empleado__trab_cargo')
     cant = len(ausencias)
     context = {}
     context = getVariablesMixin(request)  
@@ -719,15 +719,15 @@ def imprimir_ausentismo(request,id):
     try:
         ausencia = ausentismo.objects.get(pk=id)
         controles = ausentismo_controles.objects.filter(ausentismo=ausencia)
-    except:
-        raise ValueError
+    except Exception as e:                                                      
+           messages.error(request,e) 
     
     context = {}
     context = getVariablesMixin(request)  
     try:
       config = configuracion.objects.all().first()
-    except configuracion.DoesNotExist:
-         raise ValueError
+    except Exception as e:                                                      
+           messages.error(request,e) 
     context['a'] = ausencia
     context['controles'] = controles
     context['config'] = config
@@ -738,18 +738,21 @@ def imprimir_ausentismo(request,id):
 @login_required 
 def imprimir_historial(request,id):       
     template = 'ausentismos/historia_clinica_impresion.html'     
-    try:
-        empleado =  empleado.objects.get(pk=id)
-        historial =  ausentismo.objects.filter(empleado=empleado)
-    except:
-        raise ValueError
+    empleado =  ent_empleado.objects.get(pk=id)
+    historial =  ausentismo.objects.filter(empleado=empleado,empleado__empresa__pk__in=empresas_habilitadas(request))
+    # try:
+    #     empleado =  ent_empleado.objects.get(pk=id)
+    #     historial =  ausentismo.objects.filter(empleado=empleado,empleado__empresa__pk__in=empresas_habilitadas(request))
+    # except Exception as e:                                                      
+    #        raise Htt
     
     context = {}
     context = getVariablesMixin(request)  
     try:
       config = configuracion.objects.all().first()
-    except configuracion.DoesNotExist:
-         raise ValueError
+    except Exception as e:                                                      
+           messages.error(request,e) 
+    
     context['empleado'] = empleado
     context['historial'] = historial
     context['config'] = config
@@ -767,7 +770,7 @@ def generarInforme(request):
             destinatario = form.cleaned_data['destinatario']
             observaciones = form.cleaned_data['observaciones']            
             
-            ausencias = ausentismo.objects.filter(id__in=lista).select_related('empleado','empleado__empresa','aus_diagn','empleado__trab_cargo')
+            ausencias = ausentismo.objects.filter(id__in=lista,empleado__empresa__pk__in=empresas_habilitadas(request)).select_related('empleado','empleado__empresa','aus_diagn','empleado__trab_cargo')
             cant=len(ausencias)
             if cant<=0:
                 response = {'cant': 0, 'message': "¡Debe seleccionar al menos un Ausentismo!"}
@@ -792,6 +795,6 @@ def generarInforme(request):
     else:    
         form = InformeAusenciasForm(None)          
         lista = request.GET.getlist('id')
-        ausencias = ausentismo.objects.filter(id__in=lista)
+        ausencias = ausentismo.objects.filter(id__in=lista,empleado__empresa__pk__in=empresas_habilitadas(request))
         variables = locals()     
         return render(request,"ausentismos/informe_ausentismos_form.html", variables)

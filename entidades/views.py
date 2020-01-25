@@ -701,6 +701,8 @@ def utf_8_encoder(unicode_csv_data):
         
 @login_required 
 def importar_empleados(request):           
+    if not tiene_permiso(request,'empl_pantalla'):
+            return redirect(reverse('principal'))
     context = {}
     context = getVariablesMixin(request) 
     if request.method == 'POST':
