@@ -181,9 +181,11 @@
       <tr>
           <td colspan="6"></td>         
       </tr>
+      {% if controles %}
       <tr>
           <td colspan="6" class="borde_izq borde_abajo borde_arriba borde_der nombre_cpb">CONTROLES REALIZADOS</td>         
       </tr>
+      {% endif %}
       {% for c in controles %}
         <tr>          
           <td width="20%" class="tabla_footer borde_izq borde_abajo borde_arriba borde_der">Fecha Control:</td>
