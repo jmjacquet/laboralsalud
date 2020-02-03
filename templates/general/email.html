@@ -2,9 +2,9 @@
 {% load humanize %}
 <html>
 <body>
-<strong>{{mensaje|default_if_none:''}}</strong>
+<strong>{{mensaje_inicial|default_if_none:''}}</strong>
 
 <p>
-	{{observaciones|default_if_none:''}}
+	{{mail_cuerpo|default_if_none:''}}
 </p>
 </body>

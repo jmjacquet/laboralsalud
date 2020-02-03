@@ -293,29 +293,38 @@ $('#btnInforme').click(function(){
          
 });
 
-$('#btnImprInforme').click(function() {    
-         if (listado.length == 0) {
+$('#btnImprimirInforme').click(function(){   
+     if (listado.length == 0) {
             alertify.errorAlert("¡Debe seleccionar algún Ausentismo!");
-        } else {    
-            alerta = alertify.dialog('confirm').set({
-                'labels': {
-                    ok: 'Aceptar',
-                    cancel: 'Cancelar'
-                },
-                'message': '¿Desea Imprimir el Informe de los Ausentismo seleccionados?',
-                transition: 'fade',
-                'onok': function() {
-                    window.open('/ausentismos/imprimir_informe/?'+$('#btnInforme').val());
-                },
-                'oncancel': function() {
-                    return true;
-                }
-            });
-            alerta.setting('modal', true);
-            alerta.setHeader('IMPRIMIR AUSENTISMOS');
-            alerta.show();
-            return true;
+        } else {
+           return abrir_modal('/ausentismos/imprimir_informe/?'+$('#btnInforme').val()); 
         }
-    });
+         
+});
+
+// $('#btnImprInforme').click(function() {    
+//          if (listado.length == 0) {
+//             alertify.errorAlert("¡Debe seleccionar algún Ausentismo!");
+//         } else {    
+//             alerta = alertify.dialog('confirm').set({
+//                 'labels': {
+//                     ok: 'Aceptar',
+//                     cancel: 'Cancelar'
+//                 },
+//                 'message': '¿Desea Imprimir el Informe de los Ausentismo seleccionados?',
+//                 transition: 'fade',
+//                 'onok': function() {
+//                     window.open('/ausentismos/imprimir_informe/?'+$('#btnInforme').val());
+//                 },
+//                 'oncancel': function() {
+//                     return true;
+//                 }
+//             });
+//             alerta.setting('modal', true);
+//             alerta.setHeader('IMPRIMIR AUSENTISMOS');
+//             alerta.show();
+//             return true;
+//         }
+//     });
 
 });

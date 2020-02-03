@@ -440,7 +440,7 @@ def diagnostico_baja_alta(request,id):
 
 
 import csv, io
-from .forms import ImportarAusentismosForm,InformeAusenciasForm   
+from .forms import ImportarAusentismosForm,InformeAusenciasForm,ImprimirInformeAusenciasForm
 from general.views import getVariablesMixin
 import datetime
 import random
@@ -663,13 +663,13 @@ def mandarEmail(request,ausencias,fecha,asunto,destinatario,observaciones):
 
         datos = config.get_datos_mail()      
         mensaje_inicial = datos['mensaje_inicial']
-        mail_cuerpo = observaciones or datos['mail_cuerpo']
+        mail_cuerpo = datos['mail_cuerpo']
         mail_servidor = datos['mail_servidor']
         mail_puerto = int(datos['mail_puerto'])
         mail_usuario = datos['mail_usuario']
         mail_password = str(datos['mail_password'])
         mail_origen = datos['mail_origen']      
-       
+        observaciones_finales = observaciones     
         context = Context()    
         
         template = 'ausentismos/informe_ausentismos.html'                        
@@ -678,40 +678,20 @@ def mandarEmail(request,ausencias,fecha,asunto,destinatario,observaciones):
         fecha = fecha             
         nombre = "Informe_%s" % fecha
         
-        html_content = get_template('general/email.html').render({'mensaje_inicial': mensaje_inicial,'observaciones': mail_cuerpo})
+        html_content = get_template('general/email.html').render({'mensaje_inicial': mensaje_inicial,'mail_cuerpo': mail_cuerpo})
                 
         backend = EmailBackend(host=mail_servidor, port=mail_puerto, username=mail_usuario,password=mail_password,fail_silently=False)        
         email = EmailMessage( subject=u'%s' % (asunto),body=html_content,from_email=mail_origen,to=mail_destino,connection=backend)                
         email.attach(u'%s.pdf' %nombre,post_pdf, "application/pdf")
         email.content_subtype = 'html'        
-        email.send()        
-        messages.success(request, 'El informe fué enviado con éxito!')
+        email.send()                
         return True
     except Exception as e:
-        print e        
-        messages.error(request, 'El informe no pudo ser enviado! (verifique la dirección de correo del destinatario y/o la configuraciónd e correo) '+str(e))  
+        print e                
         return False
 
 from easy_pdf.rendering import render_to_pdf_response,render_to_pdf 
 
-@login_required 
-def imprimir_informe(request):       
-    template = 'ausentismos/informe_ausentismos.html' 
-    lista = request.GET.getlist('id')
-    ausencias = ausentismo.objects.filter(id__in=lista,empleado__empresa__pk__in=empresas_habilitadas(request)).select_related('empleado','empleado__empresa','aus_diagn','empleado__trab_cargo')
-    cant = len(ausencias)
-    context = {}
-    context = getVariablesMixin(request)  
-    try:
-      config = configuracion.objects.all().first()
-    except configuracion.DoesNotExist:
-         raise ValueError
-    context['ausencias'] = ausencias
-    context['cant'] = cant
-    context['config'] = config
-    fecha = hoy()   
-    context['fecha'] = fecha 
-    return render_to_pdf_response(request, template, context)                           
 
 @login_required 
 def imprimir_ausentismo(request,id):       
@@ -760,6 +740,39 @@ def imprimir_historial(request,id):
     context['fecha'] = fecha 
     return render_to_pdf_response(request, template, context)
 
+@login_required 
+def imprimir_informe(request):       
+    if request.method == 'POST':
+        form = ImprimirInformeAusenciasForm(request.POST or None)  
+                                
+        if form.is_valid():                       
+            template = 'ausentismos/informe_ausentismos.html' 
+            fecha = form.cleaned_data['fecha']
+            lista = request.session.get('lista_ausentismos', None)   
+            observaciones_finales = form.cleaned_data['observaciones']          
+            ausencias = ausentismo.objects.filter(id__in=lista,empleado__empresa__pk__in=empresas_habilitadas(request))\
+            .order_by('fecha_creacion','aus_fcrondesde','aus_fcronhasta','empleado__empresa').select_related('empleado','empleado__empresa','aus_diagn','empleado__trab_cargo')
+            cant = len(ausencias)
+            
+            context = {}
+            context = getVariablesMixin(request)  
+            try:
+              config = configuracion.objects.all().first()
+            except configuracion.DoesNotExist:
+                 raise ValueError
+            context['ausencias'] = ausencias
+            context['observaciones_finales'] = observaciones_finales
+            context['cant'] = cant
+            context['config'] = config        
+            context['fecha'] = fecha 
+            return render_to_pdf_response(request,template, context)                                   
+    else:            
+        lista = request.GET.getlist('id')
+        request.session['lista_ausentismos'] = lista
+        form = ImprimirInformeAusenciasForm(initial={'lista':lista})
+        variables = locals()
+        return render(request,"ausentismos/imprimir_informe_ausentismos_form.html", variables)
+
 def generarInforme(request):
     if request.method == 'POST' and request.is_ajax():                                                       
         form = InformeAusenciasForm(request.POST or None)  
@@ -770,7 +783,8 @@ def generarInforme(request):
             destinatario = form.cleaned_data['destinatario']
             observaciones = form.cleaned_data['observaciones']            
             
-            ausencias = ausentismo.objects.filter(id__in=lista,empleado__empresa__pk__in=empresas_habilitadas(request)).select_related('empleado','empleado__empresa','aus_diagn','empleado__trab_cargo')
+            ausencias = ausentismo.objects.filter(id__in=lista,empleado__empresa__pk__in=empresas_habilitadas(request))\
+            .order_by('fecha_creacion','aus_fcrondesde','aus_fcronhasta','empleado__empresa').select_related('empleado','empleado__empresa','aus_diagn','empleado__trab_cargo')
             cant=len(ausencias)
             if cant<=0:
                 response = {'cant': 0, 'message': "¡Debe seleccionar al menos un Ausentismo!"}

@@ -181,8 +181,7 @@ class InformeAusenciasForm(forms.Form):
 	fecha =  forms.DateField(label='Fecha',widget=forms.DateInput(attrs={'class': 'form-control datepicker'}),required = True,initial=hoy())
 	asunto = forms.CharField(required=False,label='Asunto')	
 	destinatario =  forms.EmailField(max_length=50,label='E-Mail Destinatario/s',required = True)   
-	observaciones = forms.CharField(label='Observaciones / Nota al Pie',widget=forms.Textarea(attrs={'class':'form-control2', 'rows': 5}),required = False)	
-	accion = forms.ChoiceField(label=u'Acción',choices=ACCIONES,required=True,initial=1)	
+	observaciones = forms.CharField(label='Observaciones Informe',widget=forms.Textarea(attrs={'class':'form-control2', 'rows': 5}),required = False)		
 	def __init__(self, *args, **kwargs):				
 		super(InformeAusenciasForm, self).__init__(*args, **kwargs)		
 
@@ -195,3 +194,10 @@ class InformeAusenciasForm(forms.Form):
 				self.add_error("destinatario",u'¡Debe cargar un Email de Destino válido!')      
 		
 		return self.cleaned_data		
+
+class ImprimirInformeAusenciasForm(forms.Form):               	
+	fecha =  forms.DateField(label='Fecha',widget=forms.DateInput(attrs={'class': 'form-control datepicker'}),required = True,initial=hoy())	
+	observaciones = forms.CharField(label='Observaciones Informe',widget=forms.Textarea(attrs={'class':'form-control2', 'rows': 9}),required = False)		
+	lista = forms.CharField(widget = forms.HiddenInput(), required = False)	
+	def __init__(self, *args, **kwargs):				
+		super(ImprimirInformeAusenciasForm, self).__init__(*args, **kwargs)		

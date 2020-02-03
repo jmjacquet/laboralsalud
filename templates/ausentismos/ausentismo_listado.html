@@ -22,7 +22,7 @@
       <div class="panel-heading"> PARÁMETROS DE BÚSQUEDA</div>
       <div class="panel-body">
         <div class="col-md-12">
-          <form class="form" accept-charset="UTF-8" role="form" action="" method="post">
+          <form class="form" accept-charset="UTF-8" role="form" id="formBusqueda" action="" method="post">
             {% csrf_token %}
             <div class="col-sm-1">{% bootstrap_field form.estado  %}</div>
             <div class="col-sm-1">{% bootstrap_field form.fdesde  %}</div>
@@ -41,7 +41,8 @@
     <div class="btn-group " style="float:left;margin-right:20px;margin-bottom:10px;">
       <a class="btn btn-xs btn-primary" style="float:left;margin-right:20px;" href="{% url 'ausentismo_nuevo' %}" >Nuevo Ausentismo</a>
       <button class="btn btn-xs btn-danger" value="" style="float:left;margin-right:10px;" id="btnEliminar">Eliminar</button>
-      <button class="btn btn-xs btn-primary" id="btnInforme" style="float:left;margin-right:20px;" >Generar/Enviar Informe</button>
+      <button class="btn btn-xs btn-primary" id="btnImprimirInforme" style="float:left;margin-right:20px;" ><i class="icon-file"></i> Generar Informe</button>
+      <button class="btn btn-xs btn-primary" id="btnInforme" style="float:left;margin-right:20px;" ><i class="icon-mail"></i> Enviar Informe</button>
     </div>
   {% endif %}
   <table width="100%" id="ausentismos" style="display:none;" class="table table-striped compact table-hover table-no-bordered tabla_nueva text-nowrap">
@@ -57,9 +58,9 @@
         <th class="imprimir" data-priority="7">F.Próx.Control</th>
         <th class="imprimir" data-priority="8">Empresa</th>
         <th class="imprimir" data-priority="9">Tipo Ausentismo</th>
-        <th class="imprimir" data-priority="10">Grupo Patologico</th>
-        <th class="imprimir" data-priority="11">Diagnóstico</th>
-        <th class="imprimir" data-priority="12">F.Carga</th>
+        <th class="imprimir" data-priority="11">Grupo Patologico</th>
+        <th class="imprimir" data-priority="10">Diagnóstico</th>
+        <th class="imprimir" data-priority="6">F.Carga</th>
       </tr>
     </thead>
     <tbody>

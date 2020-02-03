@@ -89,8 +89,20 @@
   {% endfor %}
   <tr class="" >
      <td width="100%" colspan="6" class="texto_der"><strong>{{cant}}</strong> Ausentismos en total.</td>      
-  </tr>      
-</table>
+  </tr>    
+  </table>  
+  {% if observaciones_finales %}
+  <table class="tabla" width="100%" border="0" cellspacing="0">
+  <tr class="" >
+     <td width="100%" colspan="2"class=""></td>      
+  </tr>   
+  <tr class="" >
+     <td width="17%" class="tabla_header texto_der borde_izq borde_arriba borde_abajo borde_der">Observaciones Informe:</td>      
+     <td width="83%" class="borde_der borde_arriba borde_abajo">{{observaciones_finales|default_if_none:''}}</td>      
+  </tr>   
+  </table>
+  {% endif %}
+
 
 <div id="page-footer">
   <table class="tabla" width="100%" border="0" cellspacing="0">
