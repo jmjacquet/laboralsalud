@@ -254,7 +254,7 @@ class TurnosView(VariablesMixin,ListView):
     def get_context_data(self, **kwargs):
         context = super(TurnosView, self).get_context_data(**kwargs)
         form = ConsultaTurnos(self.request.POST or None,request=self.request)   
-        listado = turnos.objects.filter(empresa__pk__in=empresas_habilitadas(self.request))[:20]          
+        listado = turnos.objects.filter(empresa__pk__in=empresas_habilitadas(self.request))
         if form.is_valid():                                                        
             fdesde = form.cleaned_data['fdesde']   
             fhasta = form.cleaned_data['fhasta']                                                 
