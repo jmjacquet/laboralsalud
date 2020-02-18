@@ -34,8 +34,12 @@
                           <div class="col-sm-3">{% bootstrap_field form.empresa  %}</div>                                    
                           <div class="col-sm-2">{% bootstrap_field form.tipo_ausentismo  %}</div>                            
                           <div class="col-sm-2">{% bootstrap_field form.trab_cargo  %}</div>                            
-                          <div class="col-sm-3">{% bootstrap_field form.empleado  %}</div>                                            
-                          <div class="col-sm-12"><button class="btn btn-xs btn-primary text-center pull-right" type="submit">Buscar</button></div>
+                          <div class="col-sm-3">{% bootstrap_field form.empleado  %}</div>
+                         
+                          <div class="col-sm-12">
+                         
+                            <button class="btn btn-xs btn-primary text-center pull-right" type="submit">Buscar</button></div>
+                          
                   </div>     
                   </form>         
               </div>
@@ -84,7 +88,21 @@
           </div>
           
       </div>
-      {% endif %}                                                                           
+      {% else %}
+        <div class="col-sm-12">
+            <div class="panel panel-primary">
+              <div class="panel-heading text-center">AUSENTISMO TOTAL</div>
+              <div class="panel-body">
+                <div class="row">
+                  <div class="col-sm-12 text-center">
+                    <h4>No se encontraron ausentismos.</h4>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </div>
+      {% endif %}
+
       {% if aus_inc %}
       <div class="col-sm-6">
           <div class="panel panel-primary">
@@ -242,22 +260,6 @@ $.fn.datepicker.dates['es'] = {
       allow_single_deselect: true,
   });
 
-
-    $("#id_empresa").change(function(){
-        var id =  $("#id_empresa").val();
-        if (id =='') {id=0;};
-        $('#cargando').show();
-        $.getJSON('/recargar_empleados_empresa/'+id,{},
-        function (c) {
-            $("#id_empleado").empty().append('<option value="">Todos</option>');
-            $.each(c["empleados"], function (idx, item) {
-                jQuery("<option/>").text(item['nombre']).attr("value", item['id']).appendTo("#id_empleado");
-            })
-            $('#id_empleado').trigger("chosen:updated");  
-            $("#id_empleado").trigger("change");          
-        });      
-        $('#cargando').hide();
-    }); 
 
   
 });      

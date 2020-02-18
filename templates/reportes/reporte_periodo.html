@@ -1,0 +1,243 @@
+{% load static from staticfiles %}
+{% load humanize %} 
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>INFORME AUENTISMOS</title>
+<link rel="stylesheet" href="{% static 'css/reportes_factura.css' %}" type="text/css" />
+<style type="text/css">
+
+ @page {
+         margin: 0.5cm 0.5cm 1cm 0.5cm;
+         padding: 0;         
+         @frame footer {
+                        -pdf-frame-content: page-footer;
+                        bottom: 0cm;
+                        height: 1 cm;
+                        margin-right: 0.5cm;                        
+                        margin-left: 0.5cm;                        
+                    }
+        
+         }
+          @frame header_frame  {
+                        -pdf-frame-content: page-header;
+                        margin-top: 0cm;
+                        margin-right: 1cm;                        
+                        margin-left: 1cm;
+                        margin-bottom: 1cm;
+                        height: 4cm;                      
+                    }
+</style>
+</head>
+
+<body>  
+<div id="page-header">
+<table width="100%" align="center" >
+  <tr>
+      <td align="center" rowspan="4"   width="30%" valign="middle" class=" borde_abajo borde_izq borde_arriba"  >
+        <img src="{% static 'img/logo.jpg' %}" alt="logo" class="logo_reporte" />        
+      </td>
+      <td  colspan="2" width="70%" class="empresa borde_arriba borde_der">{{config.nombre|default_if_none:''}}</td>         
+  </tr>
+  <tr>
+    <td  colspan="2" class="texto_cpb  borde_der">{{config.domicilio|default_if_none:''}}</td>
+  </tr>
+  <tr>
+    <td  colspan="2" class="texto_cpb  borde_der">{{config.datos_extra|default_if_none:''}}</td>
+  </tr>
+  <tr>
+    <td class="texto_cpb borde_abajo borde_der" colspan="2" width="35%">CUIT: {{config.cuit|default_if_none:''|upper}} {% if config.iibb %}IIBB: {{config.iibb|default_if_none:''|upper}}{% endif %}</td>    
+  </tr>
+   <tr>
+    <td  colspan="3" class="nombre_cpb">INFORME DE AUSENTISMOS</td>
+  </tr>
+</table>
+</div>
+
+<div class="col-sm-12">
+          <div class="panel panel-primary">
+            <div class="panel-heading text-center">AUSENTISMO TOTAL</div>
+            <div class="panel-body">
+              <div class="row">
+                <div class="col-sm-12">
+                  <table class="table table-striped table-hover table-condensed table-no-bordered">
+                    <tbody>
+                      <tr>
+                        <td  class="titulo" width="50%">Días caídos</td><td class="dato" width="50%">{{aus_total.dias_caidos_tot|default_if_none:0}}</td>
+                      </tr>
+                      <tr>
+                        <td class="titulo">Cantidad de Empleados</td><td class="dato">{{aus_total.empleados_tot|default_if_none:0}}</td>                
+                      </tr>
+                      <tr>
+                        <td  class="titulo">Días laborables del período</td><td class="dato">{{aus_total.dias_laborables|default_if_none:0}}</td>
+                      </tr>
+                      <tr>
+                        <td class="titulo">Tasa de Ausentismo</td><td class="dato">{{aus_total.tasa_ausentismo|default_if_none:0}}%</td>                
+                      </tr>
+                      <tr>
+                        <td class="titulo">Días trabajados</td><td class="dato">{{aus_total.dias_trab_tot|default_if_none:0}}</td>                
+                      </tr>                  
+                    </tbody>
+                  </table>
+                </div>
+               </div>
+               <div class="row">
+                <div class="col-sm-12">
+                     <div class="chart" style="width: 100%; height: 100%; margin: 0 auto;padding: 0px; position: relative;"> 
+                                <div id="ausentismo_tot" style="width: 100%; height: 100%; margin: 0 auto"></div>
+                      </div>    
+                </div>  
+              </div>
+                
+            </div>
+          </div>
+          
+      </div>
+  
+
+
+<div id="page-footer">
+  <table class="tabla" width="100%" border="0" cellspacing="0">
+    <tr>
+      <td width="90%" class="pie_sistema"><img alt="" class="pie_logo" src="{% static 'img/loguito.jpg' %}"/>&nbsp;&nbsp;Laboral Salud - {{fecha|date:'d/m/Y'}} </td>
+      <td width="10%" class="pie_texto"><pdf:pagenumber /> de <pdf:pagecount/> </td>
+    </tr>
+  </table>    
+</div>
+
+<script type="text/javascript">
+  
+
+jQuery(document).ready(function($) {       
+    Highcharts.setOptions({
+    
+    spacingBottom: 0,
+    spacingTop: 0,
+    spacingLeft: 0,
+    spacingRight: 0,    
+    colors: [ '#f7a35c','#7798BF','#55BF3B','#7cb5ec','#90ee7e', '#7798BF', '#aaeeee', '#ff0066',
+        '#eeaaee',  '#DF5353',  '#aaeeee'],
+    chart: {
+        plotBackgroundColor: null,
+        plotBorderWidth: null,
+        plotShadow: false,
+        type: 'pie'
+    },   
+    tooltip: {
+        pointFormat: '{series.name}: <b>{point.y:.2f}%</b>'
+    },
+    credits: {
+                  enabled: false
+                },
+    title: {
+            text : null,
+          },
+    plotOptions: {
+        pie: {
+            
+            innerSize:'50%' ,
+            allowPointSelect: true,
+            cursor: 'pointer',
+            dataLabels: {
+                enabled: false,
+                format: '<b>{point.name}</b>: {point.percentage:.2f} %',
+                style: {
+                    color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black',
+                    fontSize: "8px",
+                },
+                connectorColor: 'silver',                 
+            },
+            showInLegend: true
+        }
+    },
+
+  });
+    {% if aus_total %}
+    Highcharts.chart('ausentismo_tot', {
+        legend: {
+            labelFormat:'<b>{name}</b>: {percentage:.2f}%',
+        },
+        series: [{
+            name: 'AUSENTISMO TOTAL',
+            data: [                
+                    { name: 'Tasa Ausentismo', y: {{aus_total.tasa_ausentismo|safe}},sliced: true,  selected: true  },           
+                    { name: 'Tasa Asistencia', y: {{aus_total.porc_dias_trab_tot|safe}} },                           
+            ]
+        }]
+    });
+     {% endif %}
+    {% if aus_inc %}
+    Highcharts.chart('ausentismo_inc', {
+        legend: {
+            labelFormat:'<b>{name}</b>: {percentage:.2f}%',
+        },
+        series: [{
+            type: 'pie',
+            name: 'Días Caídos/Trabajados',
+            size: '90%',
+            innerSize: '60%',
+            data: [                
+                    { name: 'Tasa Ausentismo', y: {{aus_inc.tasa_ausentismo|safe}},sliced: true,  selected: true },           
+                    { name: 'Tasa Asistencia', y: {{aus_inc.porc_dias_trab_tot|safe}} },                           
+            ]            
+        }, {
+            type: 'pie',
+            name: 'Tipo Ausentismo',
+            size: '40%',
+            innerSize: '50%',
+            data: [{ name: 'Agudos',color:'#2ec363', y: {{aus_inc.porc_agudos|safe}}  },           
+                    { name: 'Crónicos',color:'#DF5353', y: {{aus_inc.porc_cronicos|safe}} },  
+            ]
+        }]
+
+    });
+     {% endif %}
+    {% if aus_acc %}
+    Highcharts.chart('ausentismo_acc', {
+        legend: {
+            labelFormat:'<b>{name}</b>: {percentage:.2f}%',
+        },
+        series: [{
+            name: 'AUSENTISMO ACCIDENTES',
+            data: [                
+                    { name: 'Tasa Ausentismo', y: {{aus_acc.tasa_ausentismo|safe}},sliced: true,  selected: true  },           
+                    { name: 'Tasa Asistencia', y: {{aus_acc.porc_dias_trab_tot|safe}} },                           
+            ]
+        }]
+    });
+    Highcharts.chart('ausentismo_acc2', {
+        legend: {
+            labelFormat:'<b>{name}</b>: {percentage:.2f}%',
+        },
+        series: [{
+            type: 'pie',
+            name: 'Denuncias',
+            size: '90%',
+            innerSize: '60%',
+            data: [                
+                    { name: 'Denunciados', y: {{aus_acc.acc_denunciados|safe}},sliced: true,  selected: true },           
+                    { name: 'No Denunciados', y: {{aus_acc.acc_sin_denunciar|safe}} },                           
+            ]            
+        }, {
+            type: 'pie',
+            name: 'Tipo Accidente',
+            size: '40%',
+            innerSize: '50%',
+            data: [{ name: 'In Itínere',color:'#2ec363', y: {{aus_acc.acc_itinere|safe}}  },           
+                    { name: 'En Ocasión de Trabajo',color:'#DF5353', y: {{aus_acc.acc_trabajo|safe}} },  
+            ]
+        }]
+
+    });
+    {% endif %}
+
+
+
+});
+
+
+</script>
+</body>
+</html>

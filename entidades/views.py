@@ -590,6 +590,7 @@ class EmpleadoCreateView(VariablesMixin,AjaxCreateView):
         self.object = form.save(commit=False)                           
         self.object.usuario_carga = usuario_actual(self.request)             
         self.object.save()  
+        recalcular_cantidad_empleados(self.object.empresa)
         messages.success(self.request, u'Los datos se guardaron con éxito!')
         return super(EmpleadoCreateView, self).form_valid(form)
 
@@ -667,6 +668,7 @@ def empleado_baja_alta(request,id):
     else:
         ent.trab_fbaja=None
     ent.save()       
+    recalcular_cantidad_empleados(ent.empresa)
     messages.success(request, u'¡Los datos se guardaron con éxito!')
     return HttpResponseRedirect(reverse("empleado_listado"))   
 
@@ -678,6 +680,7 @@ def empleado_eliminar_masivo(request):
     try:
         empleados = ent_empleado.objects.filter(id__in=listado).delete()   
         messages.success(request, u'¡Los datos se eliminaron con éxito!')
+        recalcular_cantidad_empleados(self.object.empresa)
     except:
         messages.error(request, u'¡El Empleado no debe tener cargado Ausentismos a su nombre!<br>(elimínelos y vuelva a intentar)')
     
@@ -773,6 +776,7 @@ def importar_empleados(request):
                     except Exception as e:
                        error = u"Línea:%s -> %s" %(index,e)
                        messages.error(request,error)                                
+                recalcular_cantidad_empleados(self.object.empresa)
                 messages.success(request, u'Se importó el archivo con éxito!<br>(%s empleados creados/actualizados)'% cant )
             except Exception as e:
                 messages.error(request,u"Línea:%s -> %s" %(index,e)) 
@@ -781,3 +785,8 @@ def importar_empleados(request):
     context['form'] = form    
     return render(request, 'entidades/importar_empleados.html',context)
   
+
+def recalcular_cantidad_empleados(empresa):
+        cant = ent_empleado.objects.filter(empresa=empresa,baja=False).filter(Q(trab_fbaja__isnull=True)|Q(trab_fbaja__lt=hoy())).distinct().count()        
+        empresa.cant_empleados = cant
+        empresa.save()

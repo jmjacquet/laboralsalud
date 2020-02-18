@@ -105,14 +105,13 @@ class ent_empresa(models.Model):
 	    return u'%s' % unicode(self.razon_social)
 
 	def cantidad_empleados(self):
-		empls = ent_empleado.objects.filter(baja=False).filter(Q(trab_fbaja=False)|Q(trab_fbaja__lt=hoy()))		
+		empls = ent_empleado.objects.filter(baja=False).filter(Q(trab_fbaja__isnull=True)|Q(trab_fbaja__lt=hoy()))		
 		cant = 0
 		#Si es sucursal
 		if self.casa_central:
-			cant = empls.filter(empresa__id=self.id).distinct().count()  			
+			cant = empls.filter(empresa=self).distinct().count()  			
 		else:			
-			cant = empls.filter(Q(empresa=self)|Q(empresa__casa_central=self)).distinct().count()
-			print cant
+			cant = empls.filter(Q(empresa=self)|Q(empresa__casa_central=self)).distinct().count()			
 		return cant
 		
 
