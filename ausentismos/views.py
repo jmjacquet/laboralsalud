@@ -61,6 +61,7 @@ class AusentismoView(VariablesMixin,ListView):
                     fdesde=ultimo_anio()
             if not fhasta:
                 fhasta=proximo_anio()
+            
             ausentismos = ausentismo.objects.filter(empleado__empresa__pk__in=empresas_habilitadas(self.request))
 
             if int(estado) == 1:  

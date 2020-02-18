@@ -6,6 +6,7 @@ from laboralsalud.utilidades import *
 # from usuarios.models import *
 import datetime
 from dateutil.relativedelta import relativedelta
+from django.db.models import Q
 
 class ent_cargo(models.Model):
     id = models.AutoField(primary_key=True,db_index=True)    
@@ -102,6 +103,20 @@ class ent_empresa(models.Model):
 
 	def __unicode__(self):
 	    return u'%s' % unicode(self.razon_social)
+
+	def cantidad_empleados(self):
+		empls = ent_empleado.objects.filter(baja=False).filter(Q(trab_fbaja=False)|Q(trab_fbaja__lt=hoy()))		
+		cant = 0
+		#Si es sucursal
+		if self.casa_central:
+			cant = empls.filter(empresa__id=self.id).distinct().count()  			
+		else:			
+			cant = empls.filter(Q(empresa=self)|Q(empresa__casa_central=self)).distinct().count()
+			print cant
+		return cant
+		
+
+
 	
 class ent_art(models.Model):    
 	codigo = models.CharField(u'Código',max_length=50,blank=True, null=True)   

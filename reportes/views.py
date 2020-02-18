@@ -38,12 +38,11 @@ class ReporteResumenPeriodo(VariablesMixin,TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(ReporteResumenPeriodo, self).get_context_data(**kwargs)
-
         form = ConsultaPeriodo(self.request.POST or None,request=self.request)            
         fecha = date.today()        
-               
         fdesde = ultimo_anio()
         fhasta = hoy()
+        empresa = None
         if form.is_valid():                                                        
             fdesde = form.cleaned_data['fdesde']   
             fhasta = form.cleaned_data['fhasta']                                                 
@@ -55,7 +54,13 @@ class ReporteResumenPeriodo(VariablesMixin,TemplateView):
             ausentismos = ausentismo.objects.filter(baja=False)                      
                      
             if empresa:
-                ausentismos= ausentismos.filter(empleado__empresa=empresa)            
+                if empresa.casa_central:
+                    ausentismos= ausentismos.filter(empleado__empresa=empresa)
+                else:
+                    ausentismos= ausentismos.filter(Q(empleado__empresa=empresa)|Q(empleado__empresa__casa_central=empresa))
+            else:
+                ausentismos= ausentismos.filter(empleado__empresa__pk__in=empresas_habilitadas(self.request))
+
             if empleado:
                 ausentismos= ausentismos.filter(Q(empleado__apellido_y_nombre__icontains=empleado)|Q(empleado__nro_doc__icontains=empleado))
             if trab_cargo:
@@ -67,9 +72,7 @@ class ReporteResumenPeriodo(VariablesMixin,TemplateView):
             ausentismos = ausentismos.filter(Q(aus_fcrondesde__range=[fdesde,fhasta])|Q(aus_fcronhasta__range=[fdesde,fhasta])
                 |Q(aus_fcrondesde__lt=fdesde,aus_fcronhasta__gt=fhasta))  
 
-
         else:
-            
             ausentismos = None            
 
         context['form'] = form
@@ -87,11 +90,13 @@ class ReporteResumenPeriodo(VariablesMixin,TemplateView):
         aus_acc = None
         dias_laborables = int((fhasta-fdesde).days+1)   
         porc_dias_trab_tot = 100
-
-        if ausentismos:
+        if empresa:
+            empleados_tot = empresa.cantidad_empleados()
+        if ausentismos and (empleados_tot>0):
             
             #AUSENTISMO TOTAL            
-            empleados_tot = ausentismos.values('empleado').distinct().count()            
+            #empleados_tot = ausentismos.values('empleado').distinct().count()            
+            
             # dias_caidos_tot = ausentismos.aggregate(dias_caidos=Sum(Coalesce('aus_diascaidos', 0)))['dias_caidos'] or 0            
             dias_caidos_tot=dias_ausentes(fdesde,fhasta,ausentismos)               
             dias_trab_tot = (dias_laborables * empleados_tot)-dias_caidos_tot
@@ -104,7 +109,7 @@ class ReporteResumenPeriodo(VariablesMixin,TemplateView):
             #AUSENTISMO INCULPABLE
             ausentismos_inc = ausentismos.filter(tipo_ausentismo=1)
             if ausentismos_inc:
-                empleados_tot = ausentismos_inc.values('empleado').distinct().count()
+                #empleados_tot = ausentismos_inc.values('empleado').distinct().count()
                 # empleados_tot = 77
                 totales = tot_ausentes_inc(fdesde,fhasta,ausentismos_inc)
                 dias_caidos_tot=totales[0] 
@@ -131,7 +136,7 @@ class ReporteResumenPeriodo(VariablesMixin,TemplateView):
             #AUSENTISMO ACCIDENTES
             ausentismos_acc = ausentismos.filter(tipo_ausentismo=2)
             if ausentismos_acc:
-                empleados_tot = ausentismos_acc.values('empleado').distinct().count()
+                #empleados_tot = ausentismos_acc.values('empleado').distinct().count()
                 # empleados_tot = 77
                 dias_caidos_tot=dias_ausentes(fdesde,fhasta,ausentismos_acc) 
                 # dias_caidos_tot = 67            
@@ -193,7 +198,13 @@ class ReporteResumenAnual(VariablesMixin,TemplateView):
             if fdesde:                
                 ausencias = ausentismos.filter(aus_fcrondesde__gte=fdesde)            
             if empresa:
-                ausentismos= ausentismos.filter(empleado__empresa=empresa)            
+                if empresa.casa_central:
+                    ausentismos= ausentismos.filter(empleado__empresa=empresa)
+                else:
+                    ausentismos= ausentismos.filter(Q(empleado__empresa=empresa)|Q(empleado__empresa__casa_central=empresa))
+            else:
+                ausentismos= ausentismos.filter(empleado__empresa__pk__in=empresas_habilitadas(self.request))
+
             if empleado:
                 ausentismos= ausentismos.filter(Q(empleado__apellido_y_nombre__icontains=empleado)|Q(empleado__nro_doc__icontains=empleado))
             if trab_cargo:
