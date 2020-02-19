@@ -101,7 +101,8 @@ ControlDetalleFormSet = inlineformset_factory(ausentismo, ausentismo_controles,f
 
 class AusentismoCreateView(VariablesMixin,CreateView):
     form_class = AusentismoForm
-    template_name = 'ausentismos/ausentismo_form.html'
+    template_name = 'ausentismos/ausentismo_form.html'    
+    model = ausentismo
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs): 
@@ -136,10 +137,7 @@ class AusentismoCreateView(VariablesMixin,CreateView):
         controles_detalle.save()   
         return HttpResponseRedirect(reverse('ausentismo_listado'))
 
-    def form_invalid(self, form,controles_detalle):        
-        self.object = self.get_object()
-        form_class = self.get_form_class()
-        form = self.get_form(form_class)              
+    def form_invalid(self, form,controles_detalle):                
         return self.render_to_response(self.get_context_data(form=form,controles_detalle = controles_detalle)) 
    
 

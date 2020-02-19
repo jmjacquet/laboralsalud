@@ -138,12 +138,10 @@ DEBUG_TOOLBAR_CONFIG = {
     'SHOW_TOOLBAR_CALLBACK': lambda x: True
 }
 
+EMAIL_HOST = str("smtp.webfaction.com")
+EMAIL_HOST_USER = str("grupogua_errores")
 EMAIL_HOST_PASSWORD = str("Sarasa1616")
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', 'grupogua_errores')
-# EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', None)
-
-
 
 SERVER_EMAIL = 'errores_web@grupoguadalupe.com.ar'
 DEFAULT_FROM_EMAIL = 'errores_web@grupoguadalupe.com.ar'
