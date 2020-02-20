@@ -140,9 +140,6 @@ INTERNAL_IPS = [
     # ...
 ]
 
-DEBUG_TOOLBAR_CONFIG = {
-    'SHOW_TOOLBAR_CALLBACK': lambda x: True
-}
 
 EMAIL_HOST = str("smtp.webfaction.com")
 EMAIL_HOST_USER = str("grupogua_errores")

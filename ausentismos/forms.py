@@ -144,7 +144,7 @@ class ConsultaAusentismos(forms.Form):
 	fcontrol =  forms.DateField(label='F.Próx.Control',widget=forms.DateInput(attrs={'class': 'form-control datepicker'}),required = False)
 	fdesde =  forms.DateField(label='F.Cron.Desde',widget=forms.DateInput(attrs={'class': 'form-control datepicker'}),required = False)
 	fhasta =  forms.DateField(label='F.Cron.Hasta',widget=forms.DateInput(attrs={'class': 'form-control datepicker'}),required = False)    	
-	empresa = forms.ModelChoiceField(label='Empresa',queryset=ent_empresa.objects.filter(baja=False),empty_label='Todas',required=False)
+	empresa = forms.ModelChoiceField(label='Empresa',queryset=ent_empresa.objects.filter(baja=False),empty_label='Todas',required=False)	 
 	empleado = forms.CharField(required=False,label='Empleado')	
 	tipo_ausentismo = forms.ChoiceField(label='Tipo Ausentismo',choices=TIPO_AUSENCIA_,required=False,initial=0)	
 	estado = forms.ChoiceField(label='Vigencia',choices=TIPO_VIGENCIA,required=False,initial=1)	
