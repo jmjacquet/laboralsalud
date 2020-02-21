@@ -18,7 +18,7 @@
 .cpb .chosen-container{display:inline-block;font-size:11px;position:relative;vertical-align:middle;}
 .cpb .table-borderless td,
 .table-borderless th{border:0;}
-.cpb .tabla_listado > thead > tr > th, .tabla_listado > tbody > tr > th, .tabla_listado > tfoot > tr > th, .tabla_listado > thead > tr > td, .tabla_listado > tbody > tr > td, .tabla_listado > tfoot > tr > td{padding:1px;vertical-align:middle;border-top:none;border-bottom:none;font-size:10px;}
+.cpb .tabla_listado > thead > tr > th, .tabla_listado > tbody > tr > th, .tabla_listado > tfoot > tr > th, .tabla_listado > thead > tr > td, .tabla_listado > tbody > tr > td, .tabla_listado > tfoot > tr > td{padding:1px;vertical-align:top;border-top:none;border-bottom:none;font-size:10px;}
 .cpb .btn_buscar{height:25px;font-size:10px;margin-bottom:5px;margin-left:-2px;color:#fff;background:#4f5a67}
 .cpb .fp{padding:1px;padding-right:5px;vertical-align:middle;font-size:10px;margin:5px;background-color:#67809f40;border:2px solid #67809f63 !important;}
 .cerca{padding-left:5px;padding-right:5px;}

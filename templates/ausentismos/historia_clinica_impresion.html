@@ -78,19 +78,19 @@
     </tbody>
   </table>
   <br>
-  <table class="tabla" width="100%" border="0" cellspacing="0">
+  <table class="tabla" border="0" >
     <tbody>
       <tr>
-        <td width="15%" class="tabla_header borde_izq borde_abajo borde_arriba borde_der">Tipo Ausentismo</td>
-        <td width="7%" class="tabla_header borde_izq borde_abajo borde_arriba borde_der">F.Desde</td>
-        <td width="7%" class="tabla_header borde_izq borde_abajo borde_arriba borde_der">F.Hasta</td>
-        <td width="4%" class="tabla_header borde_izq borde_abajo borde_arriba borde_der">Días</td>
-        <td width="7%" class="tabla_header borde_izq borde_abajo borde_arriba borde_der">F.Reintegro</td>
-        <td width="7%" class="tabla_header borde_izq borde_abajo borde_arriba borde_der">F.Alta</td>        
-        <td width="15%" class="tabla_header borde_izq borde_abajo borde_arriba borde_der">Tipo Alta</td>
-        <td width="8%" class="tabla_header borde_izq borde_abajo borde_arriba borde_der">Próx.Control</td>
-        <td width="25%" class="tabla_header borde_izq borde_abajo borde_arriba borde_der">Grupo Patológico</td>
-        <td width="25%" class="tabla_header borde_izq borde_abajo borde_arriba borde_der">Diagnóstico</td>
+        <td width="100" class="tabla_header borde_izq borde_abajo borde_arriba borde_der">Tipo Ausentismo</td>
+        <td width="50" class="tabla_header borde_izq borde_abajo borde_arriba borde_der">F.Desde</td>
+        <td width="50" class="tabla_header borde_izq borde_abajo borde_arriba borde_der">F.Hasta</td>
+        <td width="25" class="tabla_header borde_izq borde_abajo borde_arriba borde_der">Días</td>
+        <td width="50" class="tabla_header borde_izq borde_abajo borde_arriba borde_der">F.Reintegro</td>
+        <td width="50" class="tabla_header borde_izq borde_abajo borde_arriba borde_der">F.Alta</td>        
+        <td width="90" class="tabla_header borde_izq borde_abajo borde_arriba borde_der">Tipo Alta</td>
+        <td width="50" class="tabla_header borde_izq borde_abajo borde_arriba borde_der">Próx.Control</td>
+        <td width="200" class="tabla_header borde_izq borde_abajo borde_arriba borde_der">Grupo Patológico</td>
+        <td width="200" class="tabla_header borde_izq borde_abajo borde_arriba borde_der">Diagnóstico</td>
       </tr>
    
       {% for h in historial %}
@@ -99,7 +99,7 @@
               <td class="dato borde_abajo borde_arriba borde_der borde_izq">{{ h.get_fcrondesde|date:'d/m/Y' }}</td>               
               <td class="dato borde_abajo borde_arriba borde_der borde_izq">{{ h.get_fcronhasta|date:'d/m/Y' }}</td>
               <td class="dato borde_abajo borde_arriba borde_der borde_izq">{{ h.get_dias_caidos|default_if_none:'0' }}</td> 
-              <td class="dato borde_abajo borde_arriba borde_der borde_izq">{{ h.get_fcronhasta|date:'d/m/Y'|default_if_none:'' }}</td>
+              <td class="dato borde_abajo borde_arriba borde_der borde_izq">{{ h.aus_freintegro|date:'d/m/Y'|default_if_none:'' }}</td>
               <td class="dato borde_abajo borde_arriba borde_der borde_izq">{{ h.aus_falta|date:'d/m/Y'|default_if_none:'' }}</td>
               <td class="dato borde_abajo borde_arriba borde_der borde_izq">{{ h.get_tipo_alta|default_if_none:'' }}</td>
               <td class="dato borde_abajo borde_arriba borde_der borde_izq">{{ h.get_proxcontrol|date:'d/m/Y'|default_if_none:'' }}</td>
