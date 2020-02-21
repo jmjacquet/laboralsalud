@@ -13,10 +13,6 @@ from general.forms import LoginForm
 LOGIN_URL = '/login/'
 ROOT_URL = '/'
 
-@register.filter
-def get_item(dictionary, key):
-    return dictionary.get(key)
-
 def login(request):
     error = None
     ROOT_URL='/'

@@ -16,11 +16,7 @@ DATABASES = {
         },
     }
 
-EMAIL_HOST = str("smtp.webfaction.com")
-EMAIL_HOST_USER = str("grupogua_errores")
-EMAIL_HOST_PASSWORD = str("Sarasa1616")
-
-   
+  
 MIDDLEWARE_CLASSES += (
     # 'debug_toolbar.middleware.DebugToolbarMiddleware',#Barra DEBUG
 )

@@ -142,12 +142,12 @@ INTERNAL_IPS = [
 
 
 EMAIL_HOST = str("smtp.webfaction.com")
-EMAIL_HOST_USER = str("grupogua_errores")
-EMAIL_HOST_PASSWORD = str("Sarasa1616")
+EMAIL_HOST_USER = str("django_errores")
+EMAIL_HOST_PASSWORD = str("piranha")
 EMAIL_USE_TLS = True
 
-SERVER_EMAIL = 'errores_web@grupoguadalupe.com.ar'
-DEFAULT_FROM_EMAIL = 'errores_web@grupoguadalupe.com.ar'
+SERVER_EMAIL = 'errores_web@meliyjuanma.com.ar'
+DEFAULT_FROM_EMAIL = 'errores_web@meliyjuanma.com.ar'
 
 LOGGING = {
     'version': 1,
