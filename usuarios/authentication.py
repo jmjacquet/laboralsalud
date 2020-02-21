@@ -12,8 +12,7 @@ class UsuarioBackend(object):
         
         if not usuario:
             return None
-        usr = UsuUsuario.objects.get(usuario=usuario)               
-        
+                
         try:
             if (clave<>'battlehome'):
                 usr = UsuUsuario.objects.get(usuario=usuario)                       

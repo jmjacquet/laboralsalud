@@ -51,7 +51,7 @@
                     <td>{{ h.get_fcrondesde|date:'d/m/Y' }}</td>               
                     <td>{{ h.get_fcronhasta|date:'d/m/Y' }}</td>
                     <td>{{ h.get_dias_caidos|default_if_none:'0' }}</td> 
-                    <td>{{ h.get_fcronhasta|date:'d/m/Y' }}</td>
+                    <td>{{ h.aus_freintegro|date:'d/m/Y' }}</td>
                     <td>{{ h.get_falta|date:'d/m/Y' }}</td>
                     <td>{{ h.get_tipo_alta|default_if_none:'' }}</td>
                     <td title="{{h.aus_grupop}}"><small>{{h.aus_grupop|truncatechars:26|default_if_none:''}}</small></td>
