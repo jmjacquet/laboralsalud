@@ -132,16 +132,15 @@
       <tr>
         <td width="20%" class="tabla_footer borde_izq borde_abajo borde_arriba borde_der">Médico Tratante</td>
         <td class="dato borde_abajo borde_arriba borde_der borde_izq" colspan="5">{{a.aus_medico|default_if_none:''|upper}}</td>
-      </tr>      
+      </tr>
       <tr>
         <td width="20%" class="tabla_footer borde_izq borde_abajo borde_arriba borde_der">Grupo Patológico</td>
         <td colspan="5" class="dato borde_abajo borde_arriba borde_der borde_izq">{{a.aus_grupop|default_if_none:''|upper}}</td>
-      </tr>  
-      <tr>        
+      </tr>
+      <tr>
         <td width="20%" class="borde_abajo borde_arriba borde_der borde_izq tabla_footer">Diagnóstico</td>
         <td class="borde_abajo borde_arriba borde_der borde_izq" colspan="5">{{a.aus_diagn|default_if_none:''|upper}}</td>
-      </tr>     
-
+      </tr>
       {% if a.descr_altaparc %}
         <tr>
           <td width="20%" class="tabla_footer borde_izq borde_abajo borde_arriba borde_der">Descr.Alta Parcial:</td>
@@ -149,13 +148,13 @@
         </tr>
       {% endif %}
       {% if a.detalle_acc_art %}
-        <tr>          
+        <tr>
           <td width="20%" class="tabla_footer borde_izq borde_abajo borde_arriba borde_der">Descr.Acc.ART:</td>
           <td class="dato borde_abajo borde_arriba borde_der borde_izq" colspan="5">{{a.detalle_acc_art|default_if_none:''}}</td>
         </tr>
       {% endif %}
       {% if a.estudios_partic %}
-        <tr>          
+        <tr>
           <td width="20%" class="tabla_footer borde_izq borde_abajo borde_arriba borde_der">Estudios Particulares:</td>
           <td class="dato borde_abajo borde_arriba borde_der borde_izq" colspan="5">{{a.estudios_partic|default_if_none:''}}</td>
         </tr>
@@ -163,38 +162,39 @@
       {% if a.estudios_art %}
         <tr>
           <td width="20%" class="tabla_footer borde_izq borde_abajo borde_arriba borde_der">Estudios ART:</td>
-          <td class="dato borde_abajo borde_arriba borde_der borde_izq" colspan="5">{{a.estudios_art|default_if_none:''}}</td>          
+          <td class="dato borde_abajo borde_arriba borde_der borde_izq" colspan="5">{{a.estudios_art|default_if_none:''}}</td>
         </tr>
       {% endif %}
       {% if a.recalificac_art %}
         <tr>
           <td width="20%" class="tabla_footer borde_izq borde_abajo borde_arriba borde_der">Recalificación ART:</td>
-          <td class="dato borde_abajo borde_arriba borde_der borde_izq" colspan="5">{{a.recalificac_art|default_if_none:''}}</td>               
+          <td class="dato borde_abajo borde_arriba borde_der borde_izq" colspan="5">{{a.recalificac_art|default_if_none:''}}</td>
         </tr>
       {% endif %}
-       {% if a.observaciones %}
-        <tr>          
+      {% if a.observaciones %}
+        <tr>
           <td width="20%" class="tabla_footer borde_izq borde_abajo borde_arriba borde_der">Información Adicional:</td>
-          <td class="dato borde_abajo borde_arriba borde_der borde_izq" colspan="5">{{a.observaciones|default_if_none:''}}</td>   
+          <td class="dato borde_abajo borde_arriba borde_der borde_izq" colspan="5">{{a.observaciones|default_if_none:''}}</td>
         </tr>
       {% endif %}
-      <tr>
-          <td colspan="6"></td>         
-      </tr>
+        </tbody>
+      </table>
+      <br>
       {% if controles %}
-      <tr>
-          <td colspan="6" class="borde_izq borde_abajo borde_arriba borde_der nombre_cpb">CONTROLES REALIZADOS</td>         
-      </tr>
-      {% endif %}
-      {% for c in controles %}
-        <tr>          
-          <td width="20%" class="tabla_footer borde_izq borde_abajo borde_arriba borde_der">Fecha Control:</td>
-          <td width="8%" class="dato borde_abajo borde_arriba borde_der borde_izq texto_cen">{{c.fecha|date:'d/m/Y'}}</td>
-          <td class="dato borde_abajo borde_arriba borde_der borde_izq" colspan="4">{{c.detalle|default_if_none:''}}</td>
+      <table>
+        <tr>
+          <td colspan="3" class="borde_izq borde_abajo borde_arriba borde_der nombre_cpb">CONTROLES REALIZADOS</td>
         </tr>
-      {% endfor %}
-    <td width="20%"></tbody>
-  </table>
+        {% for c in controles %}
+          <tr>
+            <td width="15%" class="tabla_footer borde_izq borde_abajo borde_arriba borde_der">Fecha Control</td>
+            <td width="10%" class="dato borde_abajo borde_arriba borde_der borde_izq texto_cen">{{c.fecha|date:'d/m/Y'}}</td>
+            <td class="dato borde_abajo borde_arriba borde_der borde_izq">{{c.detalle|default_if_none:''}}</td>
+          </tr>
+        {% endfor %}    
+      </table>
+      {% endif %}   
+  
   <div id="page-footer">
     <table class="tabla" width="100%" border="0" cellspacing="0">
       <tr>

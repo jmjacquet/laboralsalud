@@ -735,7 +735,7 @@ div.breadcrumbs a:focus, div.breadcrumbs a:hover {
 }
 
 .nav-tabs {
-    border-bottom:none;
+    /*border-bottom:none;*/
 }
 
 .dropdown:hover .dropdown-menu {
@@ -800,4 +800,19 @@ div.breadcrumbs a:focus, div.breadcrumbs a:hover {
       color: $color;
     }
   }
+}
+
+.nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {
+    color: #ffffff;
+    cursor: default;
+    background-color: #79aec8;
+    border: 1px solid #ecf0f1;
+    border-bottom-color: transparent;
+}
+
+.nav-tabs > li > a {
+    margin-right: 2px;
+    line-height: 1.42857143;
+    border: 1px solid #d8d8d8;
+    border-radius: 4px 4px 0 0;
 }
