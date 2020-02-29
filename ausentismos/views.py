@@ -190,9 +190,8 @@ class AusentismoEditView(VariablesMixin,UpdateView):
     def form_valid(self, form,controles_detalle):                                
         self.object.save()
         controles_detalle.instance = self.object
-        controles_detalle.ausentismo = self.object.id        
-        controles_detalle.usuario_carga = usuario_actual(self.request)        
-        controles_detalle.save()   
+        controles_detalle.ausentismo = self.object.id                
+        controles_detalle.save()  
         return HttpResponseRedirect(reverse('ausentismo_listado'))
 
     def form_invalid(self, form,controles_detalle):        
@@ -234,6 +233,7 @@ class AusentismoVerView(VariablesMixin,DetailView):
         context['controles'] = ausentismo_controles.objects.filter(ausentismo=a)
         return context
 
+
 class AusentismoHistorialView(VariablesMixin,DetailView):
     model = ent_empleado
     pk_url_kwarg = 'id'
@@ -267,6 +267,7 @@ def ausentismo_eliminar_masivo(request):
     ausentismos = ausentismo.objects.filter(id__in=listado,empleado__empresa__pk__in=empresas_habilitadas(request)).delete()   
     messages.success(request, u'¡Los datos se eliminaron con éxito!')
     return HttpResponse(json.dumps(len(listado)), content_type = "application/json")
+
 ############ PATOLOGIAS ############################
 
 class PatologiaView(VariablesMixin,ListView):

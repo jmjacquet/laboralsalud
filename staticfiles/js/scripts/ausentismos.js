@@ -221,26 +221,14 @@ $('#id_aus_fcronhasta').change(function()
 // };
 
 // $('.formDetalle').formset({
-//           addText: 'Agregar Control',
-//           addCssClass: 'add-row btn blue-hoki ',       
+//           addText: '',
+//           addCssClass: '',       
 //           deleteCssClass: 'delete-row1',     
 //           deleteText: 'Eliminar',
 //           prefix: 'formDetalle',
 //           formCssClass: 'dynamic-form',
 //           keepFieldValues:'',
-//           added: function (row) {
-//             var i = $('#id_formDetalle-TOTAL_FORMS').val()-1;             
-//             $(row).attr("id", "formDetalle-"+i);
-//             $('#id_formDetalle-'+i+'-fecha').removeClass('datepicker');
-//             $('#id_formDetalle-'+i+'-fecha').datepicker({
-//                     format: "dd/mm/yyyy",
-//                     language: "es",
-//                     autoclose: true,
-//                     todayHighlight: true
-//               });
-            
-
-//           },
+          
 //           removed: function (row) {
 //             renovarCalendarios();
 //           }

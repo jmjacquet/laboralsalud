@@ -2,7 +2,7 @@
 from .settings import *
 
 
-DEBUG = False
+DEBUG = True
 # DEBUG = False
 
 DB_USER = "jumaja"
@@ -21,11 +21,11 @@ DATABASES = {
     }
     
 MIDDLEWARE_CLASSES += (
-    # 'debug_toolbar.middleware.DebugToolbarMiddleware',#Barra DEBUG
+    'debug_toolbar.middleware.DebugToolbarMiddleware',#Barra DEBUG
 )
 
 
 
 INSTALLED_APPS += (
-    # 'debug_toolbar',    
+    'debug_toolbar',    
 )

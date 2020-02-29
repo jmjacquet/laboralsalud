@@ -157,3 +157,17 @@ def ausentismos_del_dia(request,fecha):
 	 	.filter(Q(fecha_creacion=fecha)|(Q(id__in=controles)))
 	 return ausentismos
      
+
+
+from django.db.models.signals import post_save,post_delete
+from django.dispatch import receiver
+
+@receiver(post_save, sender=ausentismo,dispatch_uid="eliminar_controles_vacios")
+def eliminar_controles_vacios(sender, instance,created, **kwargs):
+   if instance:
+   	controles = ausentismo_controles.objects.filter(ausentismo=instance)\
+   	.filter(Q(fecha__isnull=True,detalle__isnull=True)|Q(fecha__isnull=True,detalle=''))
+   	print controles.query
+   	controles.delete()
+   	# if (not instance.fecha)and(not instance.detalle):
+   	# 	instance.delete()
