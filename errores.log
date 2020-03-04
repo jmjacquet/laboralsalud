@@ -6853,3 +6853,239 @@ NameError: global name 'time' is not defined
 [20/Feb/2020 18:40:37] ERROR [django.server:124] "GET /login/?next=/ HTTP/1.1" 500 59
 [20/Feb/2020 19:17:09] ERROR [django.server:124] "GET /ausentismos/imprimir_historial/1535/ HTTP/1.1" 500 59
 [20/Feb/2020 19:17:16] ERROR [django.server:124] "GET /ausentismos/imprimir_historial/1535/ HTTP/1.1" 500 59
+[21/Feb/2020 18:27:51] ERROR [django.server:124] "GET /login/?next=/ HTTP/1.1" 500 59
+[26/Feb/2020 20:04:41] ERROR [django.server:124] "GET /login/?next=/ HTTP/1.1" 500 59
+[28/Feb/2020 18:09:45] ERROR [django.server:124] "GET /static/DataTables/Buttons-1.5.1/css/buttons.bootstrap.min.css HTTP/1.1" 500 59
+[28/Feb/2020 18:09:45] ERROR [django.server:124] "GET /static/DataTables/FixedHeader-3.1.2/css/fixedHeader.bootstrap.min.css HTTP/1.1" 500 59
+[28/Feb/2020 18:09:47] ERROR [django.server:124] "GET /static/DataTables/Buttons-1.5.1/css/buttons.dataTables.min.css HTTP/1.1" 500 59
+[28/Feb/2020 18:09:47] ERROR [django.server:124] "GET /static/DataTables/FixedHeader-3.1.2/css/fixedHeader.dataTables.min.css HTTP/1.1" 500 59
+[28/Feb/2020 18:09:47] ERROR [django.server:124] "GET /static/modal/css/modal.css HTTP/1.1" 500 59
+[28/Feb/2020 18:12:54] ERROR [django.server:124] "GET / HTTP/1.1" 500 59
+[28/Feb/2020 18:12:54] ERROR [django.server:124] "GET /static/DataTables/Buttons-1.5.1/js/buttons.bootstrap.min.js HTTP/1.1" 500 59
+[28/Feb/2020 18:12:54] ERROR [django.server:124] "GET /static/css/comprobantes.css HTTP/1.1" 500 59
+[28/Feb/2020 18:12:54] ERROR [django.server:124] "GET /static/DataTables/Buttons-1.5.1/js/buttons.colVis.min.js HTTP/1.1" 500 59
+[28/Feb/2020 18:12:54] ERROR [django.server:124] "GET /static/DataTables/FixedHeader-3.1.3/js/dataTables.fixedHeader.min.js HTTP/1.1" 500 59
+[28/Feb/2020 18:14:03] ERROR [django.server:124] "GET /static/DataTables/Buttons-1.5.1/js/buttons.colVis.min.js HTTP/1.1" 500 59
+[28/Feb/2020 18:14:03] ERROR [django.server:124] "GET /static/DataTables/Buttons-1.5.1/js/buttons.bootstrap.min.js HTTP/1.1" 500 59
+[28/Feb/2020 18:14:03] ERROR [django.server:124] "GET /static/DataTables/datatables.js HTTP/1.1" 500 59
+[29/Feb/2020 12:02:29] ERROR [django.request:135] Internal Server Error: /ausentismos/nuevo/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 217, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 215, in _get_response
+    response = response.render()
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\response.py", line 107, in render
+    self.content = self.rendered_content
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\response.py", line 84, in rendered_content
+    content = template.render(context, self._request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\backends\django.py", line 68, in render
+    reraise(exc, self.backend)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\backends\django.py", line 89, in reraise
+    six.reraise(exc.__class__, new, sys.exc_info()[2])
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\backends\django.py", line 66, in render
+    return self.template.render(context)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 207, in render
+    return self._render(context)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\test\utils.py", line 107, in instrumented_test_render
+    return self.nodelist.render(context)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 990, in render
+    bit = node.render_annotated(context)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 957, in render_annotated
+    return self.render(context)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\loader_tags.py", line 177, in render
+    return compiled_parent._render(context)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\test\utils.py", line 107, in instrumented_test_render
+    return self.nodelist.render(context)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 990, in render
+    bit = node.render_annotated(context)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 957, in render_annotated
+    return self.render(context)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\loader_tags.py", line 72, in render
+    result = block.nodelist.render(context)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 990, in render
+    bit = node.render_annotated(context)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 957, in render_annotated
+    return self.render(context)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\loader_tags.py", line 72, in render
+    result = block.nodelist.render(context)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 990, in render
+    bit = node.render_annotated(context)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 957, in render_annotated
+    return self.render(context)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\defaulttags.py", line 322, in render
+    return nodelist.render(context)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 990, in render
+    bit = node.render_annotated(context)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 957, in render_annotated
+    return self.render(context)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 1040, in render
+    output = self.filter_expression.resolve(context)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 736, in resolve
+    new_obj = func(obj, *arg_vals)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\crispy_forms\templatetags\crispy_forms_filters.py", line 121, in as_crispy_field
+    template = get_template(template_path)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\loader.py", line 25, in get_template
+    raise TemplateDoesNotExist(template_name, chain=chain)
+TemplateDoesNotExist: bootstrap3/field.html
+[29/Feb/2020 12:02:29] ERROR [django.server:124] "GET /ausentismos/nuevo/ HTTP/1.1" 500 263893
+[29/Feb/2020 12:02:31] ERROR [django.request:135] Internal Server Error: /ausentismos/nuevo/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 217, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 215, in _get_response
+    response = response.render()
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\response.py", line 107, in render
+    self.content = self.rendered_content
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\response.py", line 84, in rendered_content
+    content = template.render(context, self._request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\backends\django.py", line 68, in render
+    reraise(exc, self.backend)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\backends\django.py", line 89, in reraise
+    six.reraise(exc.__class__, new, sys.exc_info()[2])
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\backends\django.py", line 66, in render
+    return self.template.render(context)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 207, in render
+    return self._render(context)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\test\utils.py", line 107, in instrumented_test_render
+    return self.nodelist.render(context)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 990, in render
+    bit = node.render_annotated(context)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 957, in render_annotated
+    return self.render(context)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\loader_tags.py", line 177, in render
+    return compiled_parent._render(context)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\test\utils.py", line 107, in instrumented_test_render
+    return self.nodelist.render(context)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 990, in render
+    bit = node.render_annotated(context)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 957, in render_annotated
+    return self.render(context)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\loader_tags.py", line 72, in render
+    result = block.nodelist.render(context)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 990, in render
+    bit = node.render_annotated(context)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 957, in render_annotated
+    return self.render(context)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\loader_tags.py", line 72, in render
+    result = block.nodelist.render(context)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 990, in render
+    bit = node.render_annotated(context)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 957, in render_annotated
+    return self.render(context)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\defaulttags.py", line 322, in render
+    return nodelist.render(context)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 990, in render
+    bit = node.render_annotated(context)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 957, in render_annotated
+    return self.render(context)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 1040, in render
+    output = self.filter_expression.resolve(context)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\base.py", line 736, in resolve
+    new_obj = func(obj, *arg_vals)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\crispy_forms\templatetags\crispy_forms_filters.py", line 121, in as_crispy_field
+    template = get_template(template_path)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\template\loader.py", line 25, in get_template
+    raise TemplateDoesNotExist(template_name, chain=chain)
+TemplateDoesNotExist: bootstrap3/field.html
+[29/Feb/2020 12:02:32] ERROR [django.server:124] "GET /ausentismos/nuevo/ HTTP/1.1" 500 263893
+[29/Feb/2020 14:18:31] ERROR [django.request:135] Internal Server Error: /ausentismos/editar/843/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\views\generic\base.py", line 68, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\utils\decorators.py", line 67, in _wrapper
+    return bound_func(*args, **kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\utils\decorators.py", line 63, in bound_func
+    return func.__get__(self, type(self))(*args2, **kwargs2)
+  File "D:\Repo\laboralsalud\ausentismos\views.py", line 170, in dispatch
+    return super(AusentismoEditView, self).dispatch(*args, **kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\views\generic\base.py", line 88, in dispatch
+    return handler(request, *args, **kwargs)
+  File "D:\Repo\laboralsalud\ausentismos\views.py", line 186, in post
+    return self.form_valid(form, controles_detalle)
+  File "D:\Repo\laboralsalud\ausentismos\views.py", line 197, in form_valid
+    if (form.cleaned_data['detalle'].strip() == '') and (form.cleaned_data['fecha'].strip() == ''):
+AttributeError: 'NoneType' object has no attribute 'strip'
+[29/Feb/2020 14:18:31] ERROR [django.server:124] "POST /ausentismos/editar/843/ HTTP/1.1" 500 127618
+[03/Mar/2020 18:20:12] ERROR [django.server:124] "POST /login/ HTTP/1.1" 500 59
+[03/Mar/2020 18:20:58] ERROR [django.server:124] "POST /login/ HTTP/1.1" 500 59
+[03/Mar/2020 18:21:19] ERROR [django.server:124] "GET / HTTP/1.1" 500 59
+[03/Mar/2020 19:31:01] ERROR [django.server:124] "GET /recargar_empleados_empresa/3/ HTTP/1.1" 500 59
+[03/Mar/2020 19:40:45] ERROR [django.server:124] "GET /turnos/nuevo/ HTTP/1.1" 500 59
+[03/Mar/2020 19:42:53] ERROR [django.server:124] "GET /turnos/nuevo/ HTTP/1.1" 500 59
+[03/Mar/2020 19:43:15] ERROR [django.request:135] Internal Server Error: /turnos/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\views\generic\base.py", line 68, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\views\generic\base.py", line 88, in dispatch
+    return handler(request, *args, **kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\views\generic\list.py", line 174, in get
+    context = self.get_context_data()
+  File "D:\Repo\laboralsalud\general\views.py", line 256, in get_context_data
+    form = ConsultaTurnos(self.request.POST or None,request=self.request)
+  File "D:\Repo\laboralsalud\general\forms.py", line 66, in __init__
+    self.fields['qempresa'].queryset = ent_empresa.objects.filter(baja=False,pk__in=empresas_habilitadas(request))
+  File "D:\Repo\laboralsalud\laboralsalud\utilidades.py", line 299, in empresas_habilitadas
+    usu = usuario_actual(request)
+  File "D:\Repo\laboralsalud\laboralsalud\utilidades.py", line 280, in usuario_actual
+    return request.user.userprofile.id_usuario
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\utils\functional.py", line 239, in inner
+    return func(self._wrapped, *args)
+AttributeError: 'AnonymousUser' object has no attribute 'userprofile'
+[03/Mar/2020 19:43:16] ERROR [django.server:124] "GET /turnos/ HTTP/1.1" 500 104799
+[03/Mar/2020 19:43:31] ERROR [django.request:135] Internal Server Error: /turnos/
+Traceback (most recent call last):
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\views\generic\base.py", line 68, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\views\generic\base.py", line 88, in dispatch
+    return handler(request, *args, **kwargs)
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\views\generic\list.py", line 174, in get
+    context = self.get_context_data()
+  File "D:\Repo\laboralsalud\general\views.py", line 256, in get_context_data
+    form = ConsultaTurnos(self.request.POST or None,request=self.request)
+  File "D:\Repo\laboralsalud\general\forms.py", line 66, in __init__
+    self.fields['qempresa'].queryset = ent_empresa.objects.filter(baja=False,pk__in=empresas_habilitadas(request))
+  File "D:\Repo\laboralsalud\laboralsalud\utilidades.py", line 299, in empresas_habilitadas
+    usu = usuario_actual(request)
+  File "D:\Repo\laboralsalud\laboralsalud\utilidades.py", line 280, in usuario_actual
+    return request.user.userprofile.id_usuario
+  File "C:\Users\juanma\Envs\laboralsalud\lib\site-packages\django\utils\functional.py", line 239, in inner
+    return func(self._wrapped, *args)
+AttributeError: 'AnonymousUser' object has no attribute 'userprofile'
+[03/Mar/2020 19:43:32] ERROR [django.server:124] "GET /turnos/ HTTP/1.1" 500 104988
+[03/Mar/2020 19:58:58] ERROR [django.server:124] "GET /turnos/nuevo/ HTTP/1.1" 500 59
+[03/Mar/2020 20:32:47] ERROR [django.server:124] "GET /recargar_empleados_empresa/3/ HTTP/1.1" 500 59
+[03/Mar/2020 21:38:26] ERROR [django.server:124] "POST /turnos/nuevo/ HTTP/1.1" 500 59

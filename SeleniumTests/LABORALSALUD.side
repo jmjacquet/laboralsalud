@@ -1,0 +1,360 @@
+{
+  "id": "d567ad1e-22b0-45ac-923a-2493f67d2279",
+  "version": "2.0",
+  "name": "LABORALSALUD",
+  "url": "http://localhost:8000/",
+  "tests": [{
+    "id": "2e0362fa-d026-48bd-8bff-70a3fbb3b226",
+    "name": "1_Logueo",
+    "commands": [{
+      "id": "f7fec0d4-0c46-4c68-b0b6-db9b6a968c64",
+      "comment": "",
+      "command": "open",
+      "target": "/login/?next=/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "966caef5-ae53-40e1-8e88-429aad6e1758",
+      "comment": "",
+      "command": "type",
+      "target": "id=id_usuario",
+      "targets": [
+        ["id=id_usuario", "id"],
+        ["name=usuario", "name"],
+        ["css=#id_usuario", "css:finder"],
+        ["xpath=//input[@id='id_usuario']", "xpath:attributes"],
+        ["xpath=//div/input", "xpath:position"]
+      ],
+      "value": "admin"
+    }, {
+      "id": "6f4b5fd3-2d5a-47d5-984d-067eac52c7c1",
+      "comment": "",
+      "command": "type",
+      "target": "id=id_password",
+      "targets": [
+        ["id=id_password", "id"],
+        ["name=password", "name"],
+        ["css=#id_password", "css:finder"],
+        ["xpath=//input[@id='id_password']", "xpath:attributes"],
+        ["xpath=//div[2]/div/input", "xpath:position"]
+      ],
+      "value": "battlehome"
+    }, {
+      "id": "23f4a55d-8b19-430e-9034-2cc8e2d5c239",
+      "comment": "",
+      "command": "click",
+      "target": "name=login",
+      "targets": [
+        ["name=login", "name"],
+        ["css=.btn", "css:finder"],
+        ["xpath=//input[@name='login']", "xpath:attributes"],
+        ["xpath=//div[4]/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "ce3eb585-9a0d-40b4-8bb8-506237ff867c",
+      "comment": "",
+      "command": "click",
+      "target": "css=.icon-home",
+      "targets": [
+        ["css=.icon-home", "css:finder"],
+        ["xpath=//div[@id='bs-example-navbar-collapse-1']/ul/li/a/i", "xpath:idRelative"],
+        ["xpath=//i", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "c7a4583b-9e1d-4f5c-a000-2afaec2a0430",
+      "comment": "",
+      "command": "assertElementPresent",
+      "target": "css=.titulo_empresa",
+      "targets": [
+        ["css=.titulo_empresa", "css:finder"],
+        ["xpath=//div[@id='bs-example-navbar-collapse-1']/div/span", "xpath:idRelative"],
+        ["xpath=//div[2]/div/span", "xpath:position"],
+        ["xpath=//span[contains(.,'ADMIN')]", "xpath:innerText"]
+      ],
+      "value": "ADMIN"
+    }]
+  }, {
+    "id": "e4c4896d-5018-474c-9b0a-37f6a26c32a4",
+    "name": "2_AusentismosListado",
+    "commands": [{
+      "id": "733b2b3e-c32b-4a10-b8ef-85761d762edf",
+      "comment": "",
+      "command": "open",
+      "target": "/login/?next=/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "5759bb91-c0ea-4827-9314-96f506763ac2",
+      "comment": "",
+      "command": "type",
+      "target": "id=id_usuario",
+      "targets": [
+        ["id=id_usuario", "id"],
+        ["name=usuario", "name"],
+        ["css=#id_usuario", "css:finder"],
+        ["xpath=//input[@id='id_usuario']", "xpath:attributes"],
+        ["xpath=//div/input", "xpath:position"]
+      ],
+      "value": "admin"
+    }, {
+      "id": "9a139b8f-4ef8-48af-ae4c-9616265cdf84",
+      "comment": "",
+      "command": "type",
+      "target": "id=id_password",
+      "targets": [
+        ["id=id_password", "id"],
+        ["name=password", "name"],
+        ["css=#id_password", "css:finder"],
+        ["xpath=//input[@id='id_password']", "xpath:attributes"],
+        ["xpath=//div[2]/div/input", "xpath:position"]
+      ],
+      "value": "battlehome"
+    }, {
+      "id": "30f11c49-a86d-499d-8718-523fb2a6bde8",
+      "comment": "",
+      "command": "click",
+      "target": "name=login",
+      "targets": [
+        ["name=login", "name"],
+        ["css=.btn", "css:finder"],
+        ["xpath=//input[@name='login']", "xpath:attributes"],
+        ["xpath=//div[4]/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "edefd203-a4d0-4fdb-b3ce-10f2738b5e69",
+      "comment": "",
+      "command": "open",
+      "target": "/ausentismos/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "ed615a3f-f3dd-4ba8-afe0-3513fbc318b7",
+      "comment": "",
+      "command": "click",
+      "target": "css=.btn-circle",
+      "targets": [
+        ["css=.btn-circle", "css:finder"],
+        ["xpath=//div[3]/div/button", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "0773a3c2-1aae-4303-80bd-fc299fbbab39",
+      "comment": "",
+      "command": "click",
+      "target": "id=id_estado",
+      "targets": [
+        ["id=id_estado", "id"],
+        ["name=estado", "name"],
+        ["css=#id_estado", "css:finder"],
+        ["xpath=//select[@id='id_estado']", "xpath:attributes"],
+        ["xpath=//form[@id='formBusqueda']/div/div/select", "xpath:idRelative"],
+        ["xpath=//select", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "7be32df5-6f22-49ef-a142-44dde6f2647d",
+      "comment": "",
+      "command": "select",
+      "target": "id=id_estado",
+      "targets": [],
+      "value": "label=TODOS"
+    }, {
+      "id": "9a8ebf45-6f2e-49ca-b4c4-cc7de3070e37",
+      "comment": "",
+      "command": "click",
+      "target": "id=id_estado",
+      "targets": [
+        ["id=id_estado", "id"],
+        ["name=estado", "name"],
+        ["css=#id_estado", "css:finder"],
+        ["xpath=//select[@id='id_estado']", "xpath:attributes"],
+        ["xpath=//form[@id='formBusqueda']/div/div/select", "xpath:idRelative"],
+        ["xpath=//select", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "0aff1d3d-1d84-4e62-8a9b-b41b5723973b",
+      "comment": "",
+      "command": "click",
+      "target": "css=.col-sm-1 > .btn",
+      "targets": [
+        ["css=.col-sm-1 > .btn", "css:finder"],
+        ["xpath=//button[@type='submit']", "xpath:attributes"],
+        ["xpath=//form[@id='formBusqueda']/div[8]/button", "xpath:idRelative"],
+        ["xpath=//div[8]/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Buscar')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "42eabd36-6b77-4286-b82b-c6365e2e78e3",
+      "comment": "",
+      "command": "assertElementPresent",
+      "target": "id=ausentismos_info",
+      "targets": [
+        ["id=ausentismos_info", "id"],
+        ["css=#ausentismos_info", "css:finder"],
+        ["xpath=//div[@id='ausentismos_info']", "xpath:attributes"],
+        ["xpath=//div[@id='ausentismos_wrapper']/div[4]", "xpath:idRelative"],
+        ["xpath=//div[3]/div[4]", "xpath:position"]
+      ],
+      "value": ""
+    }]
+  }, {
+    "id": "5bac7b43-a519-4149-a007-9d3a03021908",
+    "name": "2_EmpleadosListado",
+    "commands": [{
+      "id": "aa936d9d-a3bf-421f-940d-ea434273414b",
+      "comment": "",
+      "command": "open",
+      "target": "/entidades/empleado/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "71fcbb20-bfe9-4111-9c9d-0e5dec255933",
+      "comment": "",
+      "command": "click",
+      "target": "css=.btn-circle",
+      "targets": [
+        ["css=.btn-circle", "css:finder"],
+        ["xpath=//div[3]/div/button", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "5fb68d5c-8f2e-4bea-b864-f81e0a2879a7",
+      "comment": "",
+      "command": "click",
+      "target": "id=id_estado",
+      "targets": [
+        ["id=id_estado", "id"],
+        ["name=estado", "name"],
+        ["css=#id_estado", "css:finder"],
+        ["xpath=//select[@id='id_estado']", "xpath:attributes"],
+        ["xpath=//form[@id='formBusqueda']/div/div/select", "xpath:idRelative"],
+        ["xpath=//select", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "8770fb18-5356-4798-bf32-0e7205b0c965",
+      "comment": "",
+      "command": "select",
+      "target": "id=id_estado",
+      "targets": [
+        ["id=id_estado", "id"],
+        ["name=estado", "name"],
+        ["css=#id_estado", "css:finder"],
+        ["xpath=//select[@id='id_estado']", "xpath:attributes"],
+        ["xpath=//div[@id='barra_busqueda']/div/div[2]/div/form/div[3]/div/select", "xpath:idRelative"],
+        ["xpath=//div[3]/div/select", "xpath:position"]
+      ],
+      "value": "label=TODOS"
+    }, {
+      "id": "38b988b1-530a-44d3-ad31-1b68a18d3842",
+      "comment": "",
+      "command": "click",
+      "target": "id=id_estado",
+      "targets": [
+        ["id=id_estado", "id"],
+        ["name=estado", "name"],
+        ["css=#id_estado", "css:finder"],
+        ["xpath=//select[@id='id_estado']", "xpath:attributes"],
+        ["xpath=//form[@id='formBusqueda']/div/div/select", "xpath:idRelative"],
+        ["xpath=//select", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "cef7a2a8-1473-4585-969d-a199f5f10e5c",
+      "comment": "",
+      "command": "click",
+      "target": "css=.col-sm-1 > .btn",
+      "targets": [
+        ["css=.col-sm-1 > .btn", "css:finder"],
+        ["xpath=//button[@type='submit']", "xpath:attributes"],
+        ["xpath=//div[@id='barra_busqueda']/div/div[2]/div/form/div[4]/button", "xpath:idRelative"],
+        ["xpath=//div[4]/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Buscar')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "aee4b730-dc08-4f19-abec-95c27e66a50e",
+      "comment": "",
+      "command": "assertElementPresent",
+      "target": "css=.odd:nth-child(1) .caret",
+      "targets": [
+        ["css=.odd:nth-child(1) .caret", "css:finder"],
+        ["xpath=//table[@id='empleado']/tbody/tr/td/div/button/span", "xpath:idRelative"],
+        ["xpath=//td/div/button/span", "xpath:position"]
+      ],
+      "value": ""
+    }]
+  }, {
+    "id": "206d0760-8cd3-4d37-bcf9-1d5d671c83a1",
+    "name": "3_TurnosListado",
+    "commands": [{
+      "id": "372eff17-0ee7-43f8-876e-feb6e9e9b693",
+      "comment": "",
+      "command": "open",
+      "target": "/turnos/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "007d39ea-62ad-47c1-a38a-9a042e3ad636",
+      "comment": "",
+      "command": "click",
+      "target": "css=.glyphicon-search",
+      "targets": [
+        ["css=.glyphicon-search", "css:finder"],
+        ["xpath=//button/i", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "710cce40-1c81-4817-98c6-bab1fc173566",
+      "comment": "",
+      "command": "type",
+      "target": "id=id_fdesde",
+      "targets": [
+        ["id=id_fdesde", "id"],
+        ["name=fdesde", "name"],
+        ["css=#id_fdesde", "css:finder"],
+        ["xpath=//input[@id='id_fdesde']", "xpath:attributes"],
+        ["xpath=//div[@id='barra_busqueda']/div/div[2]/div/form/div/div/input", "xpath:idRelative"],
+        ["xpath=//div/input", "xpath:position"]
+      ],
+      "value": "01/01/2019"
+    }, {
+      "id": "9291723e-0ec0-469a-998a-bcf946aff97c",
+      "comment": "",
+      "command": "click",
+      "target": "css=.btn-circle",
+      "targets": [
+        ["css=.btn-circle", "css:finder"],
+        ["xpath=//div[5]/div/button", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "7f6660f7-f9c2-45a0-bda8-65dd8dc1cba2",
+      "comment": "",
+      "command": "assertElementPresent",
+      "target": "css=.odd > td:nth-child(1)",
+      "targets": [
+        ["css=.odd > td:nth-child(1)", "css:finder"],
+        ["xpath=//table[@id='turnos']/tbody/tr/td", "xpath:idRelative"],
+        ["xpath=//td", "xpath:position"],
+        ["xpath=//td[contains(.,' ')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }]
+  }],
+  "suites": [{
+    "id": "4f8f614b-173b-4d4a-9968-bffabe11eaea",
+    "name": "Default Suite",
+    "persistSession": false,
+    "parallel": false,
+    "timeout": 300,
+    "tests": ["2e0362fa-d026-48bd-8bff-70a3fbb3b226"]
+  }],
+  "urls": ["http://sistemaslaboralsalud.com.ar/", "http://localhost:8000/"],
+  "plugins": []
+}
