@@ -87,20 +87,7 @@
             </div>
           </div>
           
-      </div>
-      {% else %}
-        <div class="col-sm-12">
-            <div class="panel panel-primary">
-              <div class="panel-heading text-center">AUSENTISMO TOTAL</div>
-              <div class="panel-body">
-                <div class="row">
-                  <div class="col-sm-12 text-center">
-                    <h4>No se encontraron ausentismos.</h4>
-                  </div>
-                </div>
-              </div>
-            </div>
-        </div>
+      </div>      
       {% endif %}
 
       {% if aus_inc %}
@@ -224,6 +211,24 @@
           
       </div>
       {% endif %}                     
+      {% if aus_x_grupop %}
+      <div class="col-sm-6">
+          <div class="panel panel-primary">
+            <div class="panel-heading text-center">AUSENTISMO x GRUPO PATOLÓGICO</div>
+            <div class="panel-body">
+               <div class="row">
+                <div class="col-sm-12">
+                     <div class="chart" style="padding: 0px; position: relative;"> 
+                                <div id="aus_grupop" style="width: 100%; height: 100%; margin: 0 auto"></div>
+                      </div>    
+                </div>  
+              </div>
+                
+            </div>
+          </div>
+          
+      </div>
+      {% endif %}          
   </div>
            
 </div>
@@ -265,7 +270,6 @@ $.fn.datepicker.dates['es'] = {
 });      
 jQuery(document).ready(function($) {       
     Highcharts.setOptions({
-    
     spacingBottom: 0,
     spacingTop: 0,
     spacingLeft: 0,
@@ -288,8 +292,7 @@ jQuery(document).ready(function($) {
             text : null,
           },
     plotOptions: {
-        pie: {
-            
+        pie: {            
             innerSize:'50%' ,
             allowPointSelect: true,
             cursor: 'pointer',
@@ -385,6 +388,77 @@ jQuery(document).ready(function($) {
 
     });
     {% endif %}
+    {% if aus_x_grupop %}
+          colors: ['#04ff00','#147b50', '#ff0000', '#9c1918', '#DDDF00', '#24CBE5', '#64E572', '#FF9655', '#FFF263', '#6AF9C4'],
+          Highcharts.setOptions({
+          colors: Highcharts.map(Highcharts.getOptions().colors, function (color) {
+              return {
+                  radialGradient: {
+                      cx: 0.5,
+                      cy: 0.3,
+                      r: 0.7
+                  },
+                  stops: [
+                      [0, color],
+                      [1, Highcharts.Color(color).brighten(-0.3).get('rgb')] // darken
+                  ]
+              };
+          })
+      });
+      Highcharts.chart('aus_grupop', {
+            
+            chart: {
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false,
+                type: 'pie',
+                spacingBottom: 5,
+                spacingTop: 0,
+                spacingLeft: 0,
+                spacingRight: 0, 
+            },   
+          
+            tooltip: {
+                pointFormat: '<b>{point.percentage:.2f}% (cant:{point.y})</b>'
+            },
+            credits: {
+                          enabled: false
+                        },
+            title: {
+                    text : null,
+                  },
+            plotOptions: {
+                pie: {
+                    innerSize:'0%' ,
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {            
+                         enabled: true,
+                         format: '<b>{point.name}</b>: {point.percentage:.2f} %',
+                         style: {
+                             color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black',
+                             fontSize: "8px",
+                         },
+                         connectorColor: 'silver',                    
+                    },
+                    showInLegend:false,
+
+                  }
+                            
+            },
+            series: [{
+                name: 'Grupo Patológico',
+                data: [
+                    {% for p in aus_x_grupop %}                
+                        { name: '{{p.aus_grupop__patologia|safe}}', y: {{p.total|safe}}                        
+                    },           
+                    {% endfor %}
+                ]
+            }]
+        });
+    
+    {% endif %}
+
 
 
 

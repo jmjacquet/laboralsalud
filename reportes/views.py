@@ -12,7 +12,7 @@ from django.views.generic import TemplateView,ListView,CreateView,UpdateView,For
 from django.db.models import DateTimeField, ExpressionWrapper, F,DecimalField,IntegerField
 import json
 from decimal import Decimal
-from django.db.models import Q,Sum,Count,FloatField,Func
+from django.db.models import Q,Sum,Count,FloatField,Func,Avg
 from django.db.models.functions import Coalesce
 import decimal
 from easy_pdf.rendering import render_to_pdf_response,render_to_pdf 
@@ -94,6 +94,7 @@ class ReporteResumenPeriodo(VariablesMixin,TemplateView):
         aus_total = None
         aus_inc = None
         aus_acc = None
+        aus_x_grupop = None 
         dias_laborables = int((fhasta-fdesde).days+1)   
         porc_dias_trab_tot = 100
         if empresa:
@@ -160,11 +161,14 @@ class ReporteResumenPeriodo(VariablesMixin,TemplateView):
                 aus_acc = {'dias_caidos_tot':dias_caidos_tot,'empleados_tot':empleados_tot,'dias_trab_tot':dias_trab_tot,'tasa_ausentismo':tasa_ausentismo,
                 'dias_laborables':dias_laborables,'porc_dias_trab_tot':porc_dias_trab_tot,'tot_accidentes':tot_accidentes,'acc_denunciados':acc_denunciados,
                 'acc_sin_denunciar':acc_sin_denunciar,'acc_itinere':acc_itinere,'acc_trabajo':acc_trabajo}
-                
+
+            aus_x_grupop = ausentismos.values('aus_grupop__patologia').annotate(total=Count('aus_grupop')).order_by('total')
+                            
 
         context['aus_total']=  aus_total
         context['aus_inc']=  aus_inc
         context['aus_acc']=  aus_acc
+        context['aus_x_grupop']=  aus_x_grupop
         context['dias_laborables']=  dias_laborables     
         
         return context
