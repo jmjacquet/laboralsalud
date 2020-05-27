@@ -5,3 +5,4 @@ static/*.*
 errores.log
 *.pyc
 errores.log
+*.ini
