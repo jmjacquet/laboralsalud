@@ -6,3 +6,4 @@ errores.log
 *.pyc
 errores.log
 *.ini
+/varios/
