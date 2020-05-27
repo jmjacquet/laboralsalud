@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 import os,sys
+from decouple import config
 PROJECT_ROOT = os.path.join(os.path.dirname(__file__), '..') #every dot represent the location of the folder so when you try to delete one dot, the path will be change
 
 SITE_ROOT = PROJECT_ROOT
@@ -12,7 +13,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '0pemhta=9#vc5_&1em6_lc04x^(6*(7^qzhns^t$+$mj7!c149'
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
 
@@ -122,7 +123,7 @@ LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL='/'
 AUTHENTICATION_BACKENDS = ('django.contrib.auth.backends.ModelBackend','usuarios.authentication.UsuarioBackend',)
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
-SESSION_COOKIE_NAME = "grupogua"
+
 
 from django.contrib.messages import constants as message_constants
 MESSAGE_TAGS = {message_constants.DEBUG: 'debug',
@@ -141,13 +142,18 @@ INTERNAL_IPS = [
 ]
 
 
-EMAIL_HOST = str("smtp.webfaction.com")
-EMAIL_HOST_USER = str("django_errores")
-EMAIL_HOST_PASSWORD = str("piranha")
-EMAIL_USE_TLS = True
 
-SERVER_EMAIL = 'errores_web@meliyjuanma.com.ar'
-DEFAULT_FROM_EMAIL = 'errores_web@meliyjuanma.com.ar'
+EMAIL_USE_TLS = True
+EMAIL_HOST = config('EMAIL_HOST', default='localhost')
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD', default='')
+EMAIL_HOST_USER = config('EMAIL_HOST_USER', default='')
+
+SERVER_EMAIL = config('SERVER_EMAIL')
+DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL')
+SESSION_COOKIE_NAME = config('SESSION_COOKIE_NAME')
+SECRET_KEY = config('SECRET_KEY')
+
+
 
 LOGGING = {
     'version': 1,
