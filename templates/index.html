@@ -16,7 +16,7 @@
 
 {% block principal %}	
 <br>
-<form class="form" accept-charset="UTF-8" role="form" action="" method="post">{% csrf_token %}
+<form class="form" accept-charset="UTF-8" role="form" autocomplete="off" action="" method="post">{% csrf_token %}
   {% if inicio_ausentismos %}
   <div class="col-sm-{% if 'inicio_turnos' in permisos_grupo %}7{% else %}12{% endif %} cerca"> 
     <div class="panel  panel-primary">

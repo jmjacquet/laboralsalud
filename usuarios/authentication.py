@@ -22,14 +22,14 @@ class UsuarioBackend(object):
                 pwd_valid = usr<>None                   
         except:           
             return None                              
-                
+        
         if usr.baja:
             return None
 
         if not tiene_empresa(usr,empresa):
             return None
 
-        if pwd_valid:
+        if pwd_valid:      
             try:
                 ID = usr.id_usuario
                 user = User.objects.get(username=ID)

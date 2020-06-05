@@ -22,7 +22,7 @@
       <div class="panel-heading"> PARÁMETROS DE BÚSQUEDA</div>
       <div class="panel-body">
         <div class="col-md-12">
-          <form class="form" accept-charset="UTF-8" role="form" id="formBusqueda" action="" method="post">
+          <form class="form" accept-charset="UTF-8" role="form" autocomplete="off" id="formBusqueda" action="" method="post">
             {% csrf_token %}
             <div class="col-sm-1">{% bootstrap_field form.estado  %}</div>
             <div class="col-sm-1">{% bootstrap_field form.fdesde  %}</div>

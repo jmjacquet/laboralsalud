@@ -129,7 +129,7 @@ class AusentismoForm(forms.ModelForm):
 class ControlesDetalleForm(forms.ModelForm):	
 	ausentismo = forms.IntegerField(widget = forms.HiddenInput(), required = False)
 	detalle = forms.CharField(label='',widget=forms.Textarea(attrs={ 'class':'form-control2','rows': 3}),required = False)				
-	fecha = forms.DateField(label='',required = False,widget=forms.DateInput(attrs={'class': 'form-control datepicker'}))	
+	fecha = forms.DateField(label='',required = False,widget=forms.DateInput(attrs={'class': 'form-control datepicker','autocomplete':'off'}))	
 	class Meta:
 			model = ausentismo_controles
 			exclude = ['id','fecha_creacion','fecha_modif','usuario_carga']
@@ -141,13 +141,13 @@ class ControlesDetalleForm(forms.ModelForm):
 
 
 class ConsultaAusentismos(forms.Form):               	
-	fcontrol =  forms.DateField(label='F.Próx.Control',widget=forms.DateInput(attrs={'class': 'form-control datepicker'}),required = False)
-	fdesde =  forms.DateField(label='F.Cron.Desde',widget=forms.DateInput(attrs={'class': 'form-control datepicker'}),required = False)
-	fhasta =  forms.DateField(label='F.Cron.Hasta',widget=forms.DateInput(attrs={'class': 'form-control datepicker'}),required = False)    	
+	fcontrol =  forms.DateField(label='F.Próx.Control',widget=forms.DateInput(attrs={'class': 'form-control datepicker','autocomplete':'off'}),required = False)
+	fdesde =  forms.DateField(label='F.Cron.Desde',widget=forms.DateInput(attrs={'class': 'form-control datepicker','autocomplete':'off'}),required = False)
+	fhasta =  forms.DateField(label='F.Cron.Hasta',widget=forms.DateInput(attrs={'class': 'form-control datepicker','autocomplete':'off'}),required = False)    	
 	empresa = forms.ModelChoiceField(label='Empresa',queryset=ent_empresa.objects.filter(baja=False),empty_label='Todas',required=False)	 
 	empleado = forms.CharField(required=False,label='Empleado')	
 	tipo_ausentismo = forms.ChoiceField(label='Tipo Ausentismo',choices=TIPO_AUSENCIA_,required=False,initial=0)	
-	estado = forms.ChoiceField(label='Vigencia',choices=TIPO_VIGENCIA,required=False,initial=1)	
+	estado = forms.ChoiceField(label='Vigencia',choices=TIPO_VIGENCIA,required=False,initial=0)	
 	def __init__(self, *args, **kwargs):		
 		request = kwargs.pop('request', None) 
 		super(ConsultaAusentismos, self).__init__(*args, **kwargs)			
@@ -178,7 +178,7 @@ ACCIONES = (
 )
 
 class InformeAusenciasForm(forms.Form):               	
-	fecha =  forms.DateField(label='Fecha',widget=forms.DateInput(attrs={'class': 'form-control datepicker'}),required = True,initial=hoy())
+	fecha =  forms.DateField(label='Fecha',widget=forms.DateInput(attrs={'class': 'form-control datepicker','autocomplete':'off'}),required = True,initial=hoy())
 	asunto = forms.CharField(required=False,label='Asunto')	
 	destinatario =  forms.EmailField(max_length=50,label='E-Mail Destinatario/s',required = True)   
 	observaciones = forms.CharField(label='Observaciones Informe',widget=forms.Textarea(attrs={'class':'form-control2', 'rows': 5}),required = False)		
@@ -196,7 +196,7 @@ class InformeAusenciasForm(forms.Form):
 		return self.cleaned_data		
 
 class ImprimirInformeAusenciasForm(forms.Form):               	
-	fecha =  forms.DateField(label='Fecha',widget=forms.DateInput(attrs={'class': 'form-control datepicker'}),required = True,initial=hoy())	
+	fecha =  forms.DateField(label='Fecha',widget=forms.DateInput(attrs={'class': 'form-control datepicker','autocomplete':'off'}),required = True,initial=hoy())	
 	observaciones = forms.CharField(label='Observaciones Informe',widget=forms.Textarea(attrs={'class':'form-control2', 'rows': 9}),required = False)		
 	lista = forms.CharField(widget = forms.HiddenInput(), required = False)	
 	def __init__(self, *args, **kwargs):				
