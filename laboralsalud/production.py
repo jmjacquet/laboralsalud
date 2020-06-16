@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 from .settings import *
-
+from decouple import config
 
 DEBUG = False
 # DEBUG = False
+DB_USER = config('DB_USER')
+DB_PASS = config('DB_PASS')
+DB_HOST = config('DB_HOST')
 
-DB_USER = "jumaja"
-DB_PASS = "qwerty"
-DB_HOST = "web603.webfaction.com"
 
 
 DATABASES = {
