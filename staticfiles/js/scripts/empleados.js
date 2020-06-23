@@ -5,7 +5,13 @@ $("input[type=number]").click(function(){
             this.select()
           });
 
-
+  $("#id_empresa").chosen({
+      no_results_text: "Empresa inexistente...",
+      placeholder_text_single:"Seleccione una Empresa",
+      allow_single_deselect: true,
+  });
+  
+  
 $.fn.datepicker.dates['es'] = {
     days: ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"],
     daysShort: ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb", "Dom"],

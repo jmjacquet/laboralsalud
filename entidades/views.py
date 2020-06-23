@@ -545,7 +545,7 @@ class EmpleadoView(VariablesMixin,ListView):
         form = ConsultaEmpleados(busq or None,request=self.request)           
         empleados = ent_empleado.objects.filter(baja=False,empresa__pk__in=empresas_habilitadas(self.request)).select_related('empresa','trab_cargo','art','usuario_carga')[:1000]         
         if form.is_valid():                                                        
-            empresa = form.cleaned_data['empresa']                                       
+            qempresa = form.cleaned_data['qempresa']                                       
             estado = form.cleaned_data['estado']
             art = form.cleaned_data['art']
             empleados = ent_empleado.objects.filter(empresa__pk__in=empresas_habilitadas(self.request)).select_related('empresa','trab_cargo','art','usuario_carga')                                   
@@ -555,8 +555,8 @@ class EmpleadoView(VariablesMixin,ListView):
             elif int(estado) == 1:  
                 empleados = empleados.filter(baja=True)
                 
-            if empresa:
-                empleados= empleados.filter(Q(empresa=empresa)|Q(empresa__casa_central=empresa))                        
+            if qempresa:
+                empleados= empleados.filter(Q(empresa=qempresa)|Q(empresa__casa_central=qempresa))                        
             if art:
                 empleados= empleados.filter(art=art) 
 

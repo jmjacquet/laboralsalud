@@ -26,9 +26,9 @@
                       <div class="col-md-12">
                        <form class="form" accept-charset="UTF-8" autocomplete="off" role="form" action="" method="post">
                         {% csrf_token %}                                                                                                               
-                          <div class="col-sm-3">{% bootstrap_field form.empresa  %}</div>                                                              
-                          <div class="col-sm-3">{% bootstrap_field form.art  %}</div>  
-                          <div class="col-sm-1">{% bootstrap_field form.estado  %}</div>                                            
+                          <div class="col-sm-4">{% bootstrap_field form.qempresa  %}</div>                                                              
+                          <div class="col-sm-4">{% bootstrap_field form.art  %}</div>  
+                          <div class="col-sm-2">{% bootstrap_field form.estado  %}</div>                                            
                           <div class="col-sm-1"><button class="btn btn-xs text-center" type="submit">Buscar</button></div>                      
                         </form>             
                       </div>
@@ -135,7 +135,13 @@
 <script type="text/javascript">
 
 $(document).ready(function() { 
-   
+
+  $("#id_qempresa").chosen({
+      no_results_text: "Empresa inexistente...",
+      placeholder_text_single:"Seleccione una Empresa",
+      allow_single_deselect: true,
+  });
+
 moment.locale('es');
 $.fn.dataTable.moment('DD/MM/YYYY'); 
 var tabla = $('#empleado').DataTable({
