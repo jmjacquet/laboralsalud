@@ -245,11 +245,11 @@ class TurnosView(VariablesMixin,ListView):
     template_name = 'general/turnos_listado.html'
     context_object_name = 'turnos'
 
-    # @method_decorator(login_required)
-    # def dispatch(self, *args, **kwargs): 
-    #     if not tiene_permiso(self.request,'turnos_pantalla'):
-    #         return redirect(reverse('principal'))
-    #     return super(TurnosView, self).dispatch(*args, **kwargs)    
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs): 
+        if not tiene_permiso(self.request,'turnos_pantalla'):
+            return redirect(reverse('principal'))
+        return super(TurnosView, self).dispatch(*args, **kwargs)    
 
     def get_context_data(self, **kwargs):
         context = super(TurnosView, self).get_context_data(**kwargs)
@@ -269,7 +269,7 @@ class TurnosView(VariablesMixin,ListView):
             if fhasta:                
                 listado = listado.filter(fecha__lte=fhasta)                         
             if empresa:
-                listado= listado.filter(empresa=empresa)            
+                listado= listado.filter(Q(empresa=empresa)|Q(empresa__casa_central=empresa))            
             if empleado:
                 listado= listado.filter(Q(empleado__apellido_y_nombre__icontains=empleado)|Q(empleado__nro_doc__icontains=empleado))
 

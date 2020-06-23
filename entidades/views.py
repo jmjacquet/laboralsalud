@@ -556,7 +556,7 @@ class EmpleadoView(VariablesMixin,ListView):
                 empleados = empleados.filter(baja=True)
                 
             if empresa:
-                empleados= empleados.filter(empresa=empresa)                        
+                empleados= empleados.filter(Q(empresa=empresa)|Q(empresa__casa_central=empresa))                        
             if art:
                 empleados= empleados.filter(art=art) 
 
@@ -661,15 +661,18 @@ class EmpleadoVerView(VariablesMixin,DetailView):
 def empleado_baja_alta(request,id):
     if not tiene_permiso(request,'empl_pantalla'):
             return redirect(reverse('principal'))
-    ent = ent_empleado.objects.get(pk=id)     
-    ent.baja = not ent.baja
-    if ent.baja:
-        ent.trab_fbaja=hoy()
-    else:
-        ent.trab_fbaja=None
-    ent.save()       
-    recalcular_cantidad_empleados(ent.empresa)
-    messages.success(request, u'¡Los datos se guardaron con éxito!')
+    try:
+        ent = ent_empleado.objects.get(pk=id)     
+        ent.baja = not ent.baja
+        if ent.baja:
+            ent.trab_fbaja=hoy()
+        else:
+            ent.trab_fbaja=None
+        ent.save()       
+        recalcular_cantidad_empleados(ent.empresa)
+        messages.success(request, u'¡Los datos se guardaron con éxito!')
+    except:
+        pass
     return HttpResponseRedirect(reverse("empleado_listado"))   
 
 @login_required 

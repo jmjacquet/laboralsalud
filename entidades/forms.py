@@ -167,9 +167,12 @@ class EmpleadoForm(forms.ModelForm):
 						
 		return self.cleaned_data
 
-
+class EmpresaModelChoiceField(forms.ModelChoiceField):
+    def label_from_instance(self, obj):		
+		return obj.get_empresa()
+		
 class ConsultaEmpleados(forms.Form):               		
-	empresa = forms.ModelChoiceField(label='Empresa',queryset=ent_empresa.objects.filter(baja=False),empty_label='Todas',required=False)
+	empresa = EmpresaModelChoiceField(label='Empresa',queryset=ent_empresa.objects.filter(baja=False),empty_label='Todas',required=False)
 	estado = forms.ChoiceField(label='Estado',choices=ESTADO_,required=False,initial=0)	
 	art = forms.ModelChoiceField(label='ART',queryset=ent_art.objects.filter(baja=False),empty_label='Todas',required=False)
 	def __init__(self, *args, **kwargs):		
@@ -179,7 +182,7 @@ class ConsultaEmpleados(forms.Form):
 
 
 class ImportarEmpleadosForm(forms.Form):
-	empresa = forms.ModelChoiceField(label='Empresa',queryset=ent_empresa.objects.filter(baja=False),empty_label='----',required=True)
+	empresa = EmpresaModelChoiceField(label='Empresa',queryset=ent_empresa.objects.filter(baja=False),empty_label='----',required=True)
 	archivo = forms.FileField(label='Seleccione un archivo',required=True)  
 	sobreescribir = forms.ChoiceField(label=u'',choices=SINO,required=True,initial='N')
 	def __init__(self, *args, **kwargs):		

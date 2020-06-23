@@ -71,8 +71,8 @@ class AusentismoView(VariablesMixin,ListView):
             elif int(estado) == 0:                 
                 ausentismos = ausentismos.filter(Q(aus_fcrondesde__range=[fdesde,fhasta])|Q(aus_fcronhasta__range=[fdesde,fhasta])
                 |Q(aus_fcrondesde__lt=fdesde,aus_fcronhasta__gt=fhasta)) 
-            if empresa:
-                ausentismos= ausentismos.filter(empleado__empresa=empresa)            
+            if empresa:                
+                ausentismos= ausentismos.filter(Q(empleado__empresa=empresa)|Q(empleado__empresa__casa_central=empresa))            
             if empleado:
                 ausentismos= ausentismos.filter(Q(empleado__apellido_y_nombre__icontains=empleado)|Q(empleado__nro_doc__icontains=empleado))
             if fcontrol:

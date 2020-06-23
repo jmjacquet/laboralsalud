@@ -113,6 +113,12 @@ class ent_empresa(models.Model):
 		else:			
 			cant = empls.filter(Q(empresa=self)|Q(empresa__casa_central=self)).distinct().count()			
 		return cant
+
+	def get_empresa(self):
+		entidad=u'%s' % self.razon_social.upper()
+		if not self.casa_central:
+			entidad = u'%s (EMPRESA/CASA CENTRAL)'% entidad
+		return unicode(entidad.upper())		
 		
 
 
