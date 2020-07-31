@@ -41,12 +41,14 @@
                             <button class="btn btn-xs btn-primary text-center pull-right" type="submit">Buscar</button></div>
                           
                   </div>     
-                  </form>         
+                          
               </div>
       </div>  
   </div>
   </div>
-                                                     
+  
+     <button class="btn btn-xs btn-primary text-center pull-right" value="Imprimir" name="submit" id="exportar" target="_blank">Exportar</button>
+  </form> 
   <div class="row">  
       {% if aus_total %}
       <div class="col-sm-6">
@@ -311,7 +313,7 @@ jQuery(document).ready(function($) {
 
   });
     {% if aus_total %}
-    Highcharts.chart('ausentismo_tot', {
+    var h1 = Highcharts.chart('ausentismo_tot', {
         legend: {
             labelFormat:'<b>{name}</b>: {percentage:.2f}%',
         },
@@ -463,6 +465,7 @@ jQuery(document).ready(function($) {
 
 
 });
+
 
 
 </script>

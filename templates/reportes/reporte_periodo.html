@@ -7,6 +7,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>INFORME AUENTISMOS</title>
 <link rel="stylesheet" href="{% static 'css/reportes_factura.css' %}" type="text/css" />
+<script src="{% static 'js/highcharts.js' %}" type="text/javascript"></script>
+<script src="{% static 'js/exporting.js' %}" type="text/javascript"></script>
 <style type="text/css">
 
  @page {
@@ -87,6 +89,7 @@
                 <div class="col-sm-12">
                      <div class="chart" style="width: 100%; height: 100%; margin: 0 auto;padding: 0px; position: relative;"> 
                                 <div id="ausentismo_tot" style="width: 100%; height: 100%; margin: 0 auto"></div>
+                                <img id="image"/>
                       </div>    
                 </div>  
               </div>
@@ -110,8 +113,10 @@
 <script type="text/javascript">
   
 
-jQuery(document).ready(function($) {       
-    Highcharts.setOptions({
+window.onload = function() {
+    
+
+   Highcharts.setOptions({
     
     spacingBottom: 0,
     spacingTop: 0,
@@ -149,13 +154,14 @@ jQuery(document).ready(function($) {
                 },
                 connectorColor: 'silver',                 
             },
-            showInLegend: true
+            showInLegend: true,
+            animation: false,
         }
     },
 
   });
-    {% if aus_total %}
-    Highcharts.chart('ausentismo_tot', {
+   
+   var chart =  Highcharts.chart('ausentismo_tot', {
         legend: {
             labelFormat:'<b>{name}</b>: {percentage:.2f}%',
         },
@@ -167,75 +173,29 @@ jQuery(document).ready(function($) {
             ]
         }]
     });
-     {% endif %}
-    {% if aus_inc %}
-    Highcharts.chart('ausentismo_inc', {
-        legend: {
-            labelFormat:'<b>{name}</b>: {percentage:.2f}%',
-        },
-        series: [{
-            type: 'pie',
-            name: 'Días Caídos/Trabajados',
-            size: '90%',
-            innerSize: '60%',
-            data: [                
-                    { name: 'Tasa Ausentismo', y: {{aus_inc.tasa_ausentismo|safe}},sliced: true,  selected: true },           
-                    { name: 'Tasa Asistencia', y: {{aus_inc.porc_dias_trab_tot|safe}} },                           
-            ]            
-        }, {
-            type: 'pie',
-            name: 'Tipo Ausentismo',
-            size: '40%',
-            innerSize: '50%',
-            data: [{ name: 'Agudos',color:'#2ec363', y: {{aus_inc.porc_agudos|safe}}  },           
-                    { name: 'Crónicos',color:'#DF5353', y: {{aus_inc.porc_cronicos|safe}} },  
-            ]
-        }]
+    var data = {
+    type: 'POST',
+    options: JSON.stringify(options),
+    filename: 'test.png',
+    type: 'image/png',
+    async: true
+};
 
-    });
-     {% endif %}
-    {% if aus_acc %}
-    Highcharts.chart('ausentismo_acc', {
-        legend: {
-            labelFormat:'<b>{name}</b>: {percentage:.2f}%',
-        },
-        series: [{
-            name: 'AUSENTISMO ACCIDENTES',
-            data: [                
-                    { name: 'Tasa Ausentismo', y: {{aus_acc.tasa_ausentismo|safe}},sliced: true,  selected: true  },           
-                    { name: 'Tasa Asistencia', y: {{aus_acc.porc_dias_trab_tot|safe}} },                           
-            ]
-        }]
-    });
-    Highcharts.chart('ausentismo_acc2', {
-        legend: {
-            labelFormat:'<b>{name}</b>: {percentage:.2f}%',
-        },
-        series: [{
-            type: 'pie',
-            name: 'Denuncias',
-            size: '90%',
-            innerSize: '60%',
-            data: [                
-                    { name: 'Denunciados', y: {{aus_acc.acc_denunciados|safe}},sliced: true,  selected: true },           
-                    { name: 'No Denunciados', y: {{aus_acc.acc_sin_denunciar|safe}} },                           
-            ]            
-        }, {
-            type: 'pie',
-            name: 'Tipo Accidente',
-            size: '40%',
-            innerSize: '50%',
-            data: [{ name: 'In Itínere',color:'#2ec363', y: {{aus_acc.acc_itinere|safe}}  },           
-                    { name: 'En Ocasión de Trabajo',color:'#DF5353', y: {{aus_acc.acc_trabajo|safe}} },  
-            ]
-        }]
-
-    });
-    {% endif %}
+var exportUrl = 'https://export.highcharts.com/'
+$.post(exportUrl, data, function(data) {
+    var imageUrl = exportUrl + data
+    var urlCreator = window.URL || window.webkitURL
+    document.querySelector("#image").src = imageUrl
+    fetch(imageUrl).then(response => response.blob()).then(data => {
+      // You have access to chart data here
+      //console.log(data)
+    })
+})
+    
 
 
 
-});
+};
 
 
 </script>

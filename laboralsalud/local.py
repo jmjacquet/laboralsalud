@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from .settings import *
-
+from decouple import config
 
 DEBUG = True
 # DEBUG = False
