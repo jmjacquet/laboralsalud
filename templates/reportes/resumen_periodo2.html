@@ -146,9 +146,15 @@ $('#exportar').click(function(event) {
       onrendered: function(canvas) {
          var img = canvas.toDataURL(); //image data of canvas
          var doc = new jsPDF();
+         var divHeight = $("reporte").height();
+         var divWidth = $("reporte").width();
+         var ratio = divHeight / divWidth;
          doc.setFontSize(15);
-         doc.text("Reporte Ausentismos Totales", 5, 5);
-         doc.addImage(img, 5, 25);
+         doc.text("Reporte Ausentismos Totales", 25, 10);
+         doc.text($("#id_empresa").val(), 90, 10);
+
+
+         doc.addImage(img,  'JPEG', 5,25, divWidth, divHeight);
          doc.save('test.pdf');
       }
    });

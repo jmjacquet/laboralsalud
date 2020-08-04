@@ -314,7 +314,7 @@ class ReporteResumenAnual(VariablesMixin,TemplateView):
 
 @login_required 
 def reporte_periodo(request):           
-    template_name = 'reportes/resumen_periodo2.html'
+    template_name = 'reportes/resumen_periodo.html'
     context = {}
     context = getVariablesMixin(request) 
     form = ConsultaPeriodo(request.POST or None,request=request)            
@@ -459,18 +459,13 @@ def reporte_periodo(request):
             context['fhasta'] = fhasta
             context['ausentismos'] = ausentismos            
             
-            template_name = 'reportes/reporte_periodo.html'            
+            # template_name = 'reportes/reporte_periodo.html'            
             html_template = get_template(template_name)
             rendered_html = html_template.render({'aus_total':aus_total}).encode(encoding="UTF-8")            
             
-            return render_to_pdf_response(request, template_name, context) 
+            # return render_to_pdf_response(request, template_name, context) 
             return render(request,template_name, context) 
     return render(request,template_name, context) 
-
-def reporte_mostrar_img(request):
-    # Construct the graph
-   
-    return HttpResponse(buffer.getvalue(), content_type="image/png")
 
 
 

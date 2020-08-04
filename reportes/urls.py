@@ -7,7 +7,5 @@ urlpatterns = [
     url(r'^reporte_resumen_periodo/$', reporte_periodo, name='reporte_resumen_periodo'),
     url(r'^reporte_resumen_anual/$', ReporteResumenAnual.as_view(), name='reporte_resumen_anual'),
 
-    url(r'^reporte_mostrar_img/$', reporte_mostrar_img, name='reporte_mostrar_img'),
-
 
 ]
