@@ -53,7 +53,7 @@
   <button class="btn btn-xs btn-primary text-center pull-right" id="exportar" target="_blank">Exportar</button>
   <div class="row">  
       {% if aus_total %}
-      <div class="col-sm-6">
+      <div class="col-sm-6 col-lg-4">
           <div class="graficos panel panel-primary">
             <div  class="panel-heading text-center">AUSENTISMO TOTAL</div>
             <div class="panel-body">
@@ -95,7 +95,7 @@
       {% endif %}
 
       {% if aus_inc %}
-      <div class="col-sm-6">
+      <div class="col-sm-6 col-lg-4">
           <div class="panel panel-primary graficos">
             <div class="panel-heading text-center">AUSENTISMO INCULPABLE</div>
             <div class="panel-body">
@@ -142,7 +142,7 @@
       </div>
       {% endif %}                     
       {% if aus_acc %}
-      <div class="col-sm-6">
+      <div class="col-sm-6 col-lg-4">
           <div class="panel panel-primary graficos">
             <div class="panel-heading text-center">AUSENTISMO ART</div>
             <div class="panel-body">
@@ -181,7 +181,7 @@
           </div>
           
       </div>
-      <div class="col-sm-6">
+      <div class="col-sm-6 col-lg-4">
           <div class="panel panel-primary graficos">
             <div class="panel-heading text-center">DENUNCIA Y TIPO DE ACCIDENTE</div>
             <div class="panel-body">
@@ -216,14 +216,14 @@
       </div>
       {% endif %}                     
       {% if aus_x_grupop %}
-      <div class="col-sm-6">
+      <div class="col-sm-6 col-lg-4">
           <div class="panel panel-primary graficos">
             <div class="panel-heading text-center">AUSENTISMO x GRUPO PATOLÓGICO</div>
             <div class="panel-body">
                <div class="row">
                 <div class="col-sm-12">
-                     <div class="chart" style="padding: 0px; position: relative;"> 
-                                <div id="aus_grupop" style="width: 100%; height: 100%; margin: 0 auto"></div>
+                     <div id="tabla_aus_grupop"  style="padding: 0px; position: relative;"> 
+                                <div id="aus_grupop" class="chart" style="width: 100%; height: 100%; margin: 0 auto"></div>
                       </div>    
                 </div>  
               </div>
@@ -505,32 +505,49 @@ jQuery(document).ready(function($) {
     }
 }(Highcharts));
 
-
-//$('#exportar').click(function () {
-    var doc = new jsPDF({orientation: 'p', unit: 'mm', format: 'a4',});
-    function agregar_linea(texto,ltexto,h,idtabla,idgrafico)
+function agregar_linea(texto,ltexto,htexto,h,idtabla,idgrafico,marginleft)
     {
-    doc.text(texto,ltexto,h);
+    doc.text(texto,ltexto,h+htexto,'center');
     //doc.text("AUSENTISMOS TOTALES", 14, 33, null, null, "center");
-    // doc.line(20,35,90, 35);
+    // doc.line(20,35,90, 35);    
+
     var table = doc.autoTable(
       {
-        startY: h+3, 
+        startY: h+3+htexto, 
         html: idtabla, 
         styles: {fontSize: 7,cellwidth: 'wrap',overflow: 'linebreak'},
-        tableWidth: 90,    
-      }
+        columnStyles: { 0: { halign: 'right' },2: { halign: 'right' } },
+        tableWidth: 'wrap',
+        tableLineWidth:0.5,   
+        margin: {left: marginleft}
+       }
     );            
     var imageData = $(idgrafico).highcharts().createCanvas();
-    doc.addImage(imageData, 'JPEG', 100,h-7,chartWidth, chartHeight);
+    doc.addImage(imageData, 'JPEG', 105,h-7,chartWidth, chartHeight);
     //addImage(imagedata, type, x, y, width, height)
     //save with name
     };
+
+//$('#exportar').click(function () {
+    var doc = new jsPDF({orientation: 'p', unit: 'mm', format: 'a4',});
+
+    var logo = new Image();
+    logo.src  = "{% static 'img/logo.jpg' %}";
+    var pagewidth = doc.internal.pageSize.width;
+    var pageheight = doc.internal.pageSize.height;
+    doc.addImage(logo, 'JPEG', 5,5,10, 10);
+    doc.setFontSize(15);    
+    doc.setFontType('bold');    
+    doc.text('{{titulo_reporte}}', 110, 10, 'center');
+    doc.setFontSize(10);  
+    doc.text('{{filtro}}', 110, 15, 'center');
+   
+    //doc.text('REPORTE INDICADORES "{{empresa}}"',30,10);
     // chart height defined here so each chart can be palced
     // in a different position
-    var pagewidth = doc.internal.pageSize.width;
-    var chartHeight = 70;
-    var chartWidth = 105;
+    
+    var chartHeight = 65;
+    var chartWidth = 95;
     specialElementHandlers = {
             // element with id of "bypass" - jQuery style selector
             '#bypassme': function (element, renderer) {
@@ -541,12 +558,33 @@ jQuery(document).ready(function($) {
     // All units are in the set measurement for the document
     // This can be changed to "pt" (points), "mm" (Default), "cm", "in"
     doc.setFontSize(10);    
-    agregar_linea("AUSENTISMO TOTAL",40,30,'#tabla_ausentismo_tot',"#ausentismo_tot");
-    agregar_linea("AUSENTISMO INCULPABLE",32,95,'#tabla_ausentismo_inc',"#ausentismo_inc");
-    agregar_linea("AUSENTISMO ART",40,165,'#tabla_ausentismo_acc',"#ausentismo_acc");
-    agregar_linea("DENUNCIA Y TIPO DE ACCIDENTE",30,230,'#tabla_ausentismo_acc2',"#ausentismo_acc2");
+    doc.setFontType('bold');    
+    var altura = 30;
+    {% if aus_total %}
+      agregar_linea("AUSENTISMO TOTAL",58,0,altura,'#tabla_ausentismo_tot',"#ausentismo_tot",35);      
+    {% endif %}
+    {% if aus_inc %}
+      altura=altura+chartHeight;
+      agregar_linea("AUSENTISMO INCULPABLE",59,0,altura,'#tabla_ausentismo_inc',"#ausentismo_inc",35);
+    {% endif %}
+    {% if aus_acc %}
+      altura=altura+chartHeight;
+      agregar_linea("AUSENTISMO ART",58,0,altura+5,'#tabla_ausentismo_acc',"#ausentismo_acc",35);
+    {% endif %}
+    {% if aus_acc %}
+      altura=altura+chartHeight;
+      agregar_linea("DENUNCIA Y TIPO DE ACCIDENTE",65,10,altura+5,'#tabla_ausentismo_acc2',"#ausentismo_acc2",30);
+    {% endif %}
+    {% if aus_x_grupop %}
+      altura=altura+chartHeight;      
+      var imageData = $("#aus_grupop").highcharts().createCanvas();
+      doc.addImage(imageData, 'JPEG', 105,h-7,chartWidth, chartHeight);
+    {% endif %}
     
-        
+    doc.setFontSize(5);
+    doc.setFontType('italic');            
+    doc.text('{{pie_pagina}}', 15, 293, 'left');
+    doc.addImage(logo, 'JPEG', 5,290,5, 5);
     doc.save('reporte_ausentismos.pdf');
     // doc.autoPrint();
 //});

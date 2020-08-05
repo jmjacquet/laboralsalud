@@ -33,147 +33,156 @@ def calcular_tasa_ausentismo(dias_caidos_tot,dias_laborables,empleados_tot):
         return 0
     return tasa_ausentismo
 
-# class ReporteResumenPeriodo(VariablesMixin,TemplateView):
-#     template_name = 'reportes/resumen_periodo.html'
+class ReporteResumenPeriodo(VariablesMixin,TemplateView):
+    template_name = 'reportes/resumen_periodo.html'
 
-#     @method_decorator(login_required)
-#     def dispatch(self, *args, **kwargs):                 
-#         if not tiene_permiso(self.request,'indic_pantalla'):
-#             return redirect(reverse('principal'))  
-#         return super(ReporteResumenPeriodo, self).dispatch(*args,**kwargs)
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):                 
+        if not tiene_permiso(self.request,'indic_pantalla'):
+            return redirect(reverse('principal'))  
+        return super(ReporteResumenPeriodo, self).dispatch(*args,**kwargs)
 
-#     def get_context_data(self, **kwargs):
-#         context = super(ReporteResumenPeriodo, self).get_context_data(**kwargs)
-#         form = ConsultaPeriodo(self.request.POST or None,request=self.request)            
-#         fecha = date.today()        
-#         fdesde = ultimo_anio()
-#         fhasta = hoy()
-#         empresa = None
-#         if form.is_valid():                                                        
-#             fdesde = form.cleaned_data['fdesde']   
-#             fhasta = form.cleaned_data['fhasta']                                                 
-#             empresa = form.cleaned_data['empresa']                           
-#             empleado= form.cleaned_data['empleado']                           
-#             tipo_ausentismo = form.cleaned_data['tipo_ausentismo']     
-#             trab_cargo= form.cleaned_data['trab_cargo']                           
+    def get_context_data(self, **kwargs):
+        context = super(ReporteResumenPeriodo, self).get_context_data(**kwargs)
+        form = ConsultaPeriodo(self.request.POST or None,request=self.request)            
+        fecha = date.today()        
+        fdesde = ultimo_anio()
+        fhasta = hoy()
+        empresa = None
+        filtro = u""
+        if form.is_valid():                                                        
+            fdesde = form.cleaned_data['fdesde']   
+            fhasta = form.cleaned_data['fhasta']                                                 
+            empresa = form.cleaned_data['empresa']                           
+            empleado= form.cleaned_data['empleado']                           
+            tipo_ausentismo = form.cleaned_data['tipo_ausentismo']     
+            trab_cargo= form.cleaned_data['trab_cargo']                           
 
-#             ausentismos = ausentismo.objects.filter(baja=False)                      
-                     
-#             if empresa:
-#                 if empresa.casa_central:
-#                     ausentismos= ausentismos.filter(empleado__empresa=empresa)
-#                 else:
-#                     ausentismos= ausentismos.filter(Q(empleado__empresa=empresa)|Q(empleado__empresa__casa_central=empresa))
-#             else:
-#                 ausentismos= ausentismos.filter(empleado__empresa__pk__in=empresas_habilitadas(self.request))
+            ausentismos = ausentismo.objects.filter(baja=False)                      
+            filtro = u"Fecha Desde: %s - Fecha Hasta: %s" % (fdesde.strftime("%d/%m/%Y"),fhasta.strftime("%d/%m/%Y"))
 
-#             if empleado:
-#                 ausentismos= ausentismos.filter(Q(empleado__apellido_y_nombre__icontains=empleado)|Q(empleado__nro_doc__icontains=empleado))
-#             if trab_cargo:
-#                 ausentismos= ausentismos.filter(empleado__trab_cargo=trab_cargo)            
+            if empresa:
+                if empresa.casa_central:
+                    ausentismos= ausentismos.filter(empleado__empresa=empresa)
+                else:
+                    ausentismos= ausentismos.filter(Q(empleado__empresa=empresa)|Q(empleado__empresa__casa_central=empresa))
+            else:
+                ausentismos= ausentismos.filter(empleado__empresa__pk__in=empresas_habilitadas(self.request))
 
-#             if int(tipo_ausentismo) > 0: 
-#                 ausentismos = ausentismos.filter(tipo_ausentismo=int(tipo_ausentismo))
+            if empleado:
+                ausentismos= ausentismos.filter(Q(empleado__apellido_y_nombre__icontains=empleado)|Q(empleado__nro_doc__icontains=empleado))
+                filtro = filtro+u" - Empleado: %s" % (empleado)
+            if trab_cargo:
+                ausentismos= ausentismos.filter(empleado__trab_cargo=trab_cargo)            
+                filtro = filtro+u" - Puesto de Trabajo: %s" % (trab_cargo)
 
-#             ausentismos = ausentismos.filter(Q(aus_fcrondesde__range=[fdesde,fhasta])|Q(aus_fcronhasta__range=[fdesde,fhasta])
-#                 |Q(aus_fcrondesde__lt=fdesde,aus_fcronhasta__gt=fhasta))  
+            if int(tipo_ausentismo) > 0: 
+                ausentismos = ausentismos.filter(tipo_ausentismo=int(tipo_ausentismo))
 
-#         else:
-#             ausentismos = None            
+            ausentismos = ausentismos.filter(Q(aus_fcrondesde__range=[fdesde,fhasta])|Q(aus_fcronhasta__range=[fdesde,fhasta])
+                |Q(aus_fcrondesde__lt=fdesde,aus_fcronhasta__gt=fhasta))  
 
-#         context['form'] = form
-#         context['fecha'] = fecha        
-#         context['fdesde'] = fdesde
-#         context['fhasta'] = fhasta
-#         context['ausentismos'] = ausentismos
-#         dias_laborales = 0
-#         dias_caidos_tot = 0
-#         empleados_tot = 0
-#         dias_trab_tot = 0
-#         tasa_ausentismo = 0
-#         aus_total = None
-#         aus_inc = None
-#         aus_acc = None
-#         aus_x_grupop = None 
-#         dias_laborables = int((fhasta-fdesde).days+1)   
-#         porc_dias_trab_tot = 100
-#         if empresa:
-#             empleados_tot = empresa.cantidad_empleados()
-#         if ausentismos:
+        else:
+            ausentismos = None            
+
+        context['form'] = form
+        context['fecha'] = fecha        
+        context['fdesde'] = fdesde
+        context['fhasta'] = fhasta
+        context['ausentismos'] = ausentismos
+        context['empresa'] = empresa
+        context['titulo_reporte'] = u"REPORTE INDICADORES: %s "%(empresa)
+                  
+        context['filtro'] = filtro
+        context['pie_pagina'] = "Sistemas Laboral Salud - %s" % (fecha.strftime("%d/%m/%Y"))
+        dias_laborales = 0
+        dias_caidos_tot = 0
+        empleados_tot = 0
+        dias_trab_tot = 0
+        tasa_ausentismo = 0
+        aus_total = None
+        aus_inc = None
+        aus_acc = None
+        aus_x_grupop = None 
+        dias_laborables = int((fhasta-fdesde).days+1)   
+        porc_dias_trab_tot = 100
+        if empresa:
+            empleados_tot = empresa.cantidad_empleados()
+        if ausentismos:
             
-#             #AUSENTISMO TOTAL            
-#             #empleados_tot = ausentismos.values('empleado').distinct().count()            
+            #AUSENTISMO TOTAL            
+            #empleados_tot = ausentismos.values('empleado').distinct().count()            
             
-#             # dias_caidos_tot = ausentismos.aggregate(dias_caidos=Sum(Coalesce('aus_diascaidos', 0)))['dias_caidos'] or 0            
-#             dias_caidos_tot=dias_ausentes(fdesde,fhasta,ausentismos)               
-#             dias_trab_tot = (dias_laborables * empleados_tot)-dias_caidos_tot
-#             tasa_ausentismo = calcular_tasa_ausentismo(dias_caidos_tot,dias_laborables,empleados_tot)        
-#             porc_dias_trab_tot = 100 - tasa_ausentismo        
+            # dias_caidos_tot = ausentismos.aggregate(dias_caidos=Sum(Coalesce('aus_diascaidos', 0)))['dias_caidos'] or 0            
+            dias_caidos_tot=dias_ausentes(fdesde,fhasta,ausentismos)               
+            dias_trab_tot = (dias_laborables * empleados_tot)-dias_caidos_tot
+            tasa_ausentismo = calcular_tasa_ausentismo(dias_caidos_tot,dias_laborables,empleados_tot)        
+            porc_dias_trab_tot = 100 - tasa_ausentismo        
             
-#             aus_total = {'dias_caidos_tot':dias_caidos_tot,'empleados_tot':empleados_tot,'dias_trab_tot':dias_trab_tot,'tasa_ausentismo':tasa_ausentismo,
-#             'dias_laborables':dias_laborables,'porc_dias_trab_tot':porc_dias_trab_tot}
-#             #F('college_start_date') - F('school_passout_date')
-#             #AUSENTISMO INCULPABLE
-#             ausentismos_inc = ausentismos.filter(tipo_ausentismo=1)
-#             if ausentismos_inc:
-#                 #empleados_tot = ausentismos_inc.values('empleado').distinct().count()
-#                 # empleados_tot = 77
-#                 totales = tot_ausentes_inc(fdesde,fhasta,ausentismos_inc)
-#                 dias_caidos_tot=totales[0] 
-#                 # dias_caidos_tot = 67            
-#                 dias_trab_tot = (dias_laborables * empleados_tot)-dias_caidos_tot
+            aus_total = {'dias_caidos_tot':dias_caidos_tot,'empleados_tot':empleados_tot,'dias_trab_tot':dias_trab_tot,'tasa_ausentismo':tasa_ausentismo,
+            'dias_laborables':dias_laborables,'porc_dias_trab_tot':porc_dias_trab_tot}
+            #F('college_start_date') - F('school_passout_date')
+            #AUSENTISMO INCULPABLE
+            ausentismos_inc = ausentismos.filter(tipo_ausentismo=1)
+            if ausentismos_inc:
+                #empleados_tot = ausentismos_inc.values('empleado').distinct().count()
+                # empleados_tot = 77
+                totales = tot_ausentes_inc(fdesde,fhasta,ausentismos_inc)
+                dias_caidos_tot=totales[0] 
+                # dias_caidos_tot = 67            
+                dias_trab_tot = (dias_laborables * empleados_tot)-dias_caidos_tot
 
-#                 tasa_ausentismo = calcular_tasa_ausentismo(dias_caidos_tot,dias_laborables,empleados_tot)                                      
+                tasa_ausentismo = calcular_tasa_ausentismo(dias_caidos_tot,dias_laborables,empleados_tot)                                      
                 
-#                 # agudos = ausentismos_inc.filter(aus_diascaidos__lte=30).aggregate(dias_caidos=Sum(Coalesce('aus_diascaidos', 0)))['dias_caidos'] or 0
-#                 # graves = ausentismos_inc.filter(aus_diascaidos__gt=30).aggregate(dias_caidos=Sum(Coalesce('aus_diascaidos', 0)))['dias_caidos'] or 0
-#                 agudos=totales[1] 
-#                 graves=totales[2]                 
+                # agudos = ausentismos_inc.filter(aus_diascaidos__lte=30).aggregate(dias_caidos=Sum(Coalesce('aus_diascaidos', 0)))['dias_caidos'] or 0
+                # graves = ausentismos_inc.filter(aus_diascaidos__gt=30).aggregate(dias_caidos=Sum(Coalesce('aus_diascaidos', 0)))['dias_caidos'] or 0
+                agudos=totales[1] 
+                graves=totales[2]                 
                 
-#                 porc_agudos = (Decimal(agudos) / Decimal(dias_caidos_tot))*100 
-#                 porc_cronicos = (Decimal(graves) / Decimal(dias_caidos_tot))*100 
+                porc_agudos = (Decimal(agudos) / Decimal(dias_caidos_tot))*100 
+                porc_cronicos = (Decimal(graves) / Decimal(dias_caidos_tot))*100 
 
-#                 porc_agudos = Decimal(porc_agudos).quantize(Decimal("0.01"), decimal.ROUND_HALF_UP)
-#                 porc_cronicos = Decimal(porc_cronicos).quantize(Decimal("0.01"), decimal.ROUND_HALF_UP)
-#                 porc_dias_trab_tot = 100 - tasa_ausentismo        
+                porc_agudos = Decimal(porc_agudos).quantize(Decimal("0.01"), decimal.ROUND_HALF_UP)
+                porc_cronicos = Decimal(porc_cronicos).quantize(Decimal("0.01"), decimal.ROUND_HALF_UP)
+                porc_dias_trab_tot = 100 - tasa_ausentismo        
 
-#                 aus_inc = {'dias_caidos_tot':dias_caidos_tot,'empleados_tot':empleados_tot,'dias_trab_tot':dias_trab_tot,'tasa_ausentismo':tasa_ausentismo,
-#                 'dias_laborables':dias_laborables,'porc_dias_trab_tot':porc_dias_trab_tot,'porc_agudos':porc_agudos,'porc_cronicos':porc_cronicos}
+                aus_inc = {'dias_caidos_tot':dias_caidos_tot,'empleados_tot':empleados_tot,'dias_trab_tot':dias_trab_tot,'tasa_ausentismo':tasa_ausentismo,
+                'dias_laborables':dias_laborables,'porc_dias_trab_tot':porc_dias_trab_tot,'porc_agudos':porc_agudos,'porc_cronicos':porc_cronicos}
 
-#             #AUSENTISMO ACCIDENTES
-#             ausentismos_acc = ausentismos.filter(tipo_ausentismo=2)
-#             if ausentismos_acc:
-#                 #empleados_tot = ausentismos_acc.values('empleado').distinct().count()
-#                 # empleados_tot = 77
-#                 dias_caidos_tot=dias_ausentes(fdesde,fhasta,ausentismos_acc) 
-#                 # dias_caidos_tot = 67            
-#                 dias_trab_tot = (dias_laborables * empleados_tot)-dias_caidos_tot
-#                 tasa_ausentismo = calcular_tasa_ausentismo(dias_caidos_tot,dias_laborables,empleados_tot)                       
-#                 porc_dias_trab_tot = 100 - tasa_ausentismo        
+            #AUSENTISMO ACCIDENTES
+            ausentismos_acc = ausentismos.filter(tipo_ausentismo=2)
+            if ausentismos_acc:
+                #empleados_tot = ausentismos_acc.values('empleado').distinct().count()
+                # empleados_tot = 77
+                dias_caidos_tot=dias_ausentes(fdesde,fhasta,ausentismos_acc) 
+                # dias_caidos_tot = 67            
+                dias_trab_tot = (dias_laborables * empleados_tot)-dias_caidos_tot
+                tasa_ausentismo = calcular_tasa_ausentismo(dias_caidos_tot,dias_laborables,empleados_tot)                       
+                porc_dias_trab_tot = 100 - tasa_ausentismo        
 
-#                 tot_accidentes = ausentismos_acc.count()
+                tot_accidentes = ausentismos_acc.count()
                 
-#                 acc_denunciados = (Decimal(ausentismos_acc.exclude(Q(art_ndenuncia__isnull=True)|Q(art_ndenuncia__exact='')).count()) / Decimal(tot_accidentes))*100 
-#                 acc_sin_denunciar = (Decimal(ausentismos_acc.filter(Q(art_ndenuncia__isnull=True)|Q(art_ndenuncia__exact='')).count()) / Decimal(tot_accidentes))*100 
-#                 acc_itinere = (Decimal(ausentismos_acc.filter(art_tipo_accidente=2).count()) / Decimal(tot_accidentes))*100 
-#                 acc_trabajo = (Decimal(ausentismos_acc.filter(art_tipo_accidente=1).count()) / Decimal(tot_accidentes))*100 
+                acc_denunciados = (Decimal(ausentismos_acc.exclude(Q(art_ndenuncia__isnull=True)|Q(art_ndenuncia__exact='')).count()) / Decimal(tot_accidentes))*100 
+                acc_sin_denunciar = (Decimal(ausentismos_acc.filter(Q(art_ndenuncia__isnull=True)|Q(art_ndenuncia__exact='')).count()) / Decimal(tot_accidentes))*100 
+                acc_itinere = (Decimal(ausentismos_acc.filter(art_tipo_accidente=2).count()) / Decimal(tot_accidentes))*100 
+                acc_trabajo = (Decimal(ausentismos_acc.filter(art_tipo_accidente=1).count()) / Decimal(tot_accidentes))*100 
                 
-#                 aus_acc = {'dias_caidos_tot':dias_caidos_tot,'empleados_tot':empleados_tot,'dias_trab_tot':dias_trab_tot,'tasa_ausentismo':tasa_ausentismo,
-#                 'dias_laborables':dias_laborables,'porc_dias_trab_tot':porc_dias_trab_tot,'tot_accidentes':tot_accidentes,'acc_denunciados':acc_denunciados,
-#                 'acc_sin_denunciar':acc_sin_denunciar,'acc_itinere':acc_itinere,'acc_trabajo':acc_trabajo}
+                aus_acc = {'dias_caidos_tot':dias_caidos_tot,'empleados_tot':empleados_tot,'dias_trab_tot':dias_trab_tot,'tasa_ausentismo':tasa_ausentismo,
+                'dias_laborables':dias_laborables,'porc_dias_trab_tot':porc_dias_trab_tot,'tot_accidentes':tot_accidentes,'acc_denunciados':acc_denunciados,
+                'acc_sin_denunciar':acc_sin_denunciar,'acc_itinere':acc_itinere,'acc_trabajo':acc_trabajo}
 
-#             aus_x_grupop = ausentismos.values('aus_grupop__patologia').annotate(total=Count('aus_grupop')).order_by('total')
+            aus_x_grupop = ausentismos.values('aus_grupop__patologia').annotate(total=Count('aus_grupop')).order_by('total')
                             
 
-#         context['aus_total']=  aus_total
-#         context['aus_inc']=  aus_inc
-#         context['aus_acc']=  aus_acc
-#         context['aus_x_grupop']=  aus_x_grupop
-#         context['dias_laborables']=  dias_laborables             
-#         return context
+        context['aus_total']=  aus_total
+        context['aus_inc']=  aus_inc
+        context['aus_acc']=  aus_acc
+        context['aus_x_grupop']=  aus_x_grupop
+        context['dias_laborables']=  dias_laborables             
+        return context
 
-#     def post(self, *args, **kwargs):                
-#         return self.get(*args, **kwargs)
+    def post(self, *args, **kwargs):                
+        return self.get(*args, **kwargs)
 
 
 
@@ -232,6 +241,7 @@ class ReporteResumenAnual(VariablesMixin,TemplateView):
         context['fdesde'] = fdesde
         context['fhasta'] = fhasta
         context['ausentismos'] = ausentismos
+        context['empresa'] = empresa
         dias_laborales = 0
         dias_caidos_tot = 0
         empleados_tot = 0
@@ -312,160 +322,160 @@ class ReporteResumenAnual(VariablesMixin,TemplateView):
         return self.get(*args, **kwargs)
 
 
-@login_required 
-def reporte_periodo(request):           
-    template_name = 'reportes/resumen_periodo.html'
-    context = {}
-    context = getVariablesMixin(request) 
-    form = ConsultaPeriodo(request.POST or None,request=request)            
-    fecha = date.today()        
-    fdesde = ultimo_anio()
-    fhasta = hoy()
-    empresa = None
-    if form.is_valid():                                                        
-        fdesde = form.cleaned_data['fdesde']   
-        fhasta = form.cleaned_data['fhasta']                                                 
-        empresa = form.cleaned_data['empresa']                           
-        empleado= form.cleaned_data['empleado']                           
-        tipo_ausentismo = form.cleaned_data['tipo_ausentismo']     
-        trab_cargo= form.cleaned_data['trab_cargo']                           
+# @login_required 
+# def reporte_periodo(request):           
+#     template_name = 'reportes/resumen_periodo.html'
+#     context = {}
+#     context = getVariablesMixin(request) 
+#     form = ConsultaPeriodo(request.POST or None,request=request)            
+#     fecha = date.today()        
+#     fdesde = ultimo_anio()
+#     fhasta = hoy()
+#     empresa = None
+#     if form.is_valid():                                                        
+#         fdesde = form.cleaned_data['fdesde']   
+#         fhasta = form.cleaned_data['fhasta']                                                 
+#         empresa = form.cleaned_data['empresa']                           
+#         empleado= form.cleaned_data['empleado']                           
+#         tipo_ausentismo = form.cleaned_data['tipo_ausentismo']     
+#         trab_cargo= form.cleaned_data['trab_cargo']                           
 
-        ausentismos = ausentismo.objects.filter(baja=False)                      
+#         ausentismos = ausentismo.objects.filter(baja=False)                      
                  
-        if empresa:
-            if empresa.casa_central:
-                ausentismos= ausentismos.filter(empleado__empresa=empresa)
-            else:
-                ausentismos= ausentismos.filter(Q(empleado__empresa=empresa)|Q(empleado__empresa__casa_central=empresa))
-        else:
-            ausentismos= ausentismos.filter(empleado__empresa__pk__in=empresas_habilitadas(self.request))
+#         if empresa:
+#             if empresa.casa_central:
+#                 ausentismos= ausentismos.filter(empleado__empresa=empresa)
+#             else:
+#                 ausentismos= ausentismos.filter(Q(empleado__empresa=empresa)|Q(empleado__empresa__casa_central=empresa))
+#         else:
+#             ausentismos= ausentismos.filter(empleado__empresa__pk__in=empresas_habilitadas(self.request))
 
-        if empleado:
-            ausentismos= ausentismos.filter(Q(empleado__apellido_y_nombre__icontains=empleado)|Q(empleado__nro_doc__icontains=empleado))
-        if trab_cargo:
-            ausentismos= ausentismos.filter(empleado__trab_cargo=trab_cargo)            
+#         if empleado:
+#             ausentismos= ausentismos.filter(Q(empleado__apellido_y_nombre__icontains=empleado)|Q(empleado__nro_doc__icontains=empleado))
+#         if trab_cargo:
+#             ausentismos= ausentismos.filter(empleado__trab_cargo=trab_cargo)            
 
-        if int(tipo_ausentismo) > 0: 
-            ausentismos = ausentismos.filter(tipo_ausentismo=int(tipo_ausentismo))
+#         if int(tipo_ausentismo) > 0: 
+#             ausentismos = ausentismos.filter(tipo_ausentismo=int(tipo_ausentismo))
 
-        ausentismos = ausentismos.filter(Q(aus_fcrondesde__range=[fdesde,fhasta])|Q(aus_fcronhasta__range=[fdesde,fhasta])
-            |Q(aus_fcrondesde__lt=fdesde,aus_fcronhasta__gt=fhasta))  
+#         ausentismos = ausentismos.filter(Q(aus_fcrondesde__range=[fdesde,fhasta])|Q(aus_fcronhasta__range=[fdesde,fhasta])
+#             |Q(aus_fcrondesde__lt=fdesde,aus_fcronhasta__gt=fhasta))  
 
-    else:
-        ausentismos = None            
+#     else:
+#         ausentismos = None            
 
-    context['form'] = form
-    context['fecha'] = fecha        
-    context['fdesde'] = fdesde
-    context['fhasta'] = fhasta
-    context['ausentismos'] = ausentismos
-    dias_laborales = 0
-    dias_caidos_tot = 0
-    empleados_tot = 0
-    dias_trab_tot = 0
-    tasa_ausentismo = 0
-    aus_total = None
-    aus_inc = None
-    aus_acc = None
-    dias_laborables = int((fhasta-fdesde).days+1)   
-    porc_dias_trab_tot = 100
-    if empresa:
-        empleados_tot = empresa.cantidad_empleados()
-    if ausentismos:
+#     context['form'] = form
+#     context['fecha'] = fecha        
+#     context['fdesde'] = fdesde
+#     context['fhasta'] = fhasta
+#     context['ausentismos'] = ausentismos
+#     dias_laborales = 0
+#     dias_caidos_tot = 0
+#     empleados_tot = 0
+#     dias_trab_tot = 0
+#     tasa_ausentismo = 0
+#     aus_total = None
+#     aus_inc = None
+#     aus_acc = None
+#     dias_laborables = int((fhasta-fdesde).days+1)   
+#     porc_dias_trab_tot = 100
+#     if empresa:
+#         empleados_tot = empresa.cantidad_empleados()
+#     if ausentismos:
         
-        #AUSENTISMO TOTAL            
-        #empleados_tot = ausentismos.values('empleado').distinct().count()            
+#         #AUSENTISMO TOTAL            
+#         #empleados_tot = ausentismos.values('empleado').distinct().count()            
         
-        # dias_caidos_tot = ausentismos.aggregate(dias_caidos=Sum(Coalesce('aus_diascaidos', 0)))['dias_caidos'] or 0            
-        dias_caidos_tot=dias_ausentes(fdesde,fhasta,ausentismos)               
-        dias_trab_tot = (dias_laborables * empleados_tot)-dias_caidos_tot
-        tasa_ausentismo = calcular_tasa_ausentismo(dias_caidos_tot,dias_laborables,empleados_tot)        
-        porc_dias_trab_tot = 100 - tasa_ausentismo        
+#         # dias_caidos_tot = ausentismos.aggregate(dias_caidos=Sum(Coalesce('aus_diascaidos', 0)))['dias_caidos'] or 0            
+#         dias_caidos_tot=dias_ausentes(fdesde,fhasta,ausentismos)               
+#         dias_trab_tot = (dias_laborables * empleados_tot)-dias_caidos_tot
+#         tasa_ausentismo = calcular_tasa_ausentismo(dias_caidos_tot,dias_laborables,empleados_tot)        
+#         porc_dias_trab_tot = 100 - tasa_ausentismo        
         
-        aus_total = {'dias_caidos_tot':dias_caidos_tot,'empleados_tot':empleados_tot,'dias_trab_tot':dias_trab_tot,'tasa_ausentismo':tasa_ausentismo,
-        'dias_laborables':dias_laborables,'porc_dias_trab_tot':porc_dias_trab_tot}
-        #F('college_start_date') - F('school_passout_date')
-        #AUSENTISMO INCULPABLE
-        ausentismos_inc = ausentismos.filter(tipo_ausentismo=1)
-        if ausentismos_inc:
-            #empleados_tot = ausentismos_inc.values('empleado').distinct().count()
-            # empleados_tot = 77
-            totales = tot_ausentes_inc(fdesde,fhasta,ausentismos_inc)
-            dias_caidos_tot=totales[0] 
-            # dias_caidos_tot = 67            
-            dias_trab_tot = (dias_laborables * empleados_tot)-dias_caidos_tot
+#         aus_total = {'dias_caidos_tot':dias_caidos_tot,'empleados_tot':empleados_tot,'dias_trab_tot':dias_trab_tot,'tasa_ausentismo':tasa_ausentismo,
+#         'dias_laborables':dias_laborables,'porc_dias_trab_tot':porc_dias_trab_tot}
+#         #F('college_start_date') - F('school_passout_date')
+#         #AUSENTISMO INCULPABLE
+#         ausentismos_inc = ausentismos.filter(tipo_ausentismo=1)
+#         if ausentismos_inc:
+#             #empleados_tot = ausentismos_inc.values('empleado').distinct().count()
+#             # empleados_tot = 77
+#             totales = tot_ausentes_inc(fdesde,fhasta,ausentismos_inc)
+#             dias_caidos_tot=totales[0] 
+#             # dias_caidos_tot = 67            
+#             dias_trab_tot = (dias_laborables * empleados_tot)-dias_caidos_tot
 
-            tasa_ausentismo = calcular_tasa_ausentismo(dias_caidos_tot,dias_laborables,empleados_tot)                                      
+#             tasa_ausentismo = calcular_tasa_ausentismo(dias_caidos_tot,dias_laborables,empleados_tot)                                      
             
-            # agudos = ausentismos_inc.filter(aus_diascaidos__lte=30).aggregate(dias_caidos=Sum(Coalesce('aus_diascaidos', 0)))['dias_caidos'] or 0
-            # graves = ausentismos_inc.filter(aus_diascaidos__gt=30).aggregate(dias_caidos=Sum(Coalesce('aus_diascaidos', 0)))['dias_caidos'] or 0
-            agudos=totales[1] 
-            graves=totales[2]                 
+#             # agudos = ausentismos_inc.filter(aus_diascaidos__lte=30).aggregate(dias_caidos=Sum(Coalesce('aus_diascaidos', 0)))['dias_caidos'] or 0
+#             # graves = ausentismos_inc.filter(aus_diascaidos__gt=30).aggregate(dias_caidos=Sum(Coalesce('aus_diascaidos', 0)))['dias_caidos'] or 0
+#             agudos=totales[1] 
+#             graves=totales[2]                 
             
-            porc_agudos = (Decimal(agudos) / Decimal(dias_caidos_tot))*100 
-            porc_cronicos = (Decimal(graves) / Decimal(dias_caidos_tot))*100 
+#             porc_agudos = (Decimal(agudos) / Decimal(dias_caidos_tot))*100 
+#             porc_cronicos = (Decimal(graves) / Decimal(dias_caidos_tot))*100 
 
-            porc_agudos = Decimal(porc_agudos).quantize(Decimal("0.01"), decimal.ROUND_HALF_UP)
-            porc_cronicos = Decimal(porc_cronicos).quantize(Decimal("0.01"), decimal.ROUND_HALF_UP)
-            porc_dias_trab_tot = 100 - tasa_ausentismo        
+#             porc_agudos = Decimal(porc_agudos).quantize(Decimal("0.01"), decimal.ROUND_HALF_UP)
+#             porc_cronicos = Decimal(porc_cronicos).quantize(Decimal("0.01"), decimal.ROUND_HALF_UP)
+#             porc_dias_trab_tot = 100 - tasa_ausentismo        
 
-            aus_inc = {'dias_caidos_tot':dias_caidos_tot,'empleados_tot':empleados_tot,'dias_trab_tot':dias_trab_tot,'tasa_ausentismo':tasa_ausentismo,
-            'dias_laborables':dias_laborables,'porc_dias_trab_tot':porc_dias_trab_tot,'porc_agudos':porc_agudos,'porc_cronicos':porc_cronicos}
+#             aus_inc = {'dias_caidos_tot':dias_caidos_tot,'empleados_tot':empleados_tot,'dias_trab_tot':dias_trab_tot,'tasa_ausentismo':tasa_ausentismo,
+#             'dias_laborables':dias_laborables,'porc_dias_trab_tot':porc_dias_trab_tot,'porc_agudos':porc_agudos,'porc_cronicos':porc_cronicos}
 
-        #AUSENTISMO ACCIDENTES
-        ausentismos_acc = ausentismos.filter(tipo_ausentismo=2)
-        if ausentismos_acc:
-            #empleados_tot = ausentismos_acc.values('empleado').distinct().count()
-            # empleados_tot = 77
-            dias_caidos_tot=dias_ausentes(fdesde,fhasta,ausentismos_acc) 
-            # dias_caidos_tot = 67            
-            dias_trab_tot = (dias_laborables * empleados_tot)-dias_caidos_tot
-            tasa_ausentismo = calcular_tasa_ausentismo(dias_caidos_tot,dias_laborables,empleados_tot)                       
-            porc_dias_trab_tot = 100 - tasa_ausentismo        
+#         #AUSENTISMO ACCIDENTES
+#         ausentismos_acc = ausentismos.filter(tipo_ausentismo=2)
+#         if ausentismos_acc:
+#             #empleados_tot = ausentismos_acc.values('empleado').distinct().count()
+#             # empleados_tot = 77
+#             dias_caidos_tot=dias_ausentes(fdesde,fhasta,ausentismos_acc) 
+#             # dias_caidos_tot = 67            
+#             dias_trab_tot = (dias_laborables * empleados_tot)-dias_caidos_tot
+#             tasa_ausentismo = calcular_tasa_ausentismo(dias_caidos_tot,dias_laborables,empleados_tot)                       
+#             porc_dias_trab_tot = 100 - tasa_ausentismo        
 
-            tot_accidentes = ausentismos_acc.count()
+#             tot_accidentes = ausentismos_acc.count()
             
-            acc_denunciados = (Decimal(ausentismos_acc.exclude(Q(art_ndenuncia__isnull=True)|Q(art_ndenuncia__exact='')).count()) / Decimal(tot_accidentes))*100 
-            acc_sin_denunciar = (Decimal(ausentismos_acc.filter(Q(art_ndenuncia__isnull=True)|Q(art_ndenuncia__exact='')).count()) / Decimal(tot_accidentes))*100 
-            acc_itinere = (Decimal(ausentismos_acc.filter(art_tipo_accidente=2).count()) / Decimal(tot_accidentes))*100 
-            acc_trabajo = (Decimal(ausentismos_acc.filter(art_tipo_accidente=1).count()) / Decimal(tot_accidentes))*100 
+#             acc_denunciados = (Decimal(ausentismos_acc.exclude(Q(art_ndenuncia__isnull=True)|Q(art_ndenuncia__exact='')).count()) / Decimal(tot_accidentes))*100 
+#             acc_sin_denunciar = (Decimal(ausentismos_acc.filter(Q(art_ndenuncia__isnull=True)|Q(art_ndenuncia__exact='')).count()) / Decimal(tot_accidentes))*100 
+#             acc_itinere = (Decimal(ausentismos_acc.filter(art_tipo_accidente=2).count()) / Decimal(tot_accidentes))*100 
+#             acc_trabajo = (Decimal(ausentismos_acc.filter(art_tipo_accidente=1).count()) / Decimal(tot_accidentes))*100 
             
-            aus_acc = {'dias_caidos_tot':dias_caidos_tot,'empleados_tot':empleados_tot,'dias_trab_tot':dias_trab_tot,'tasa_ausentismo':tasa_ausentismo,
-            'dias_laborables':dias_laborables,'porc_dias_trab_tot':porc_dias_trab_tot,'tot_accidentes':tot_accidentes,'acc_denunciados':acc_denunciados,
-            'acc_sin_denunciar':acc_sin_denunciar,'acc_itinere':acc_itinere,'acc_trabajo':acc_trabajo}
+#             aus_acc = {'dias_caidos_tot':dias_caidos_tot,'empleados_tot':empleados_tot,'dias_trab_tot':dias_trab_tot,'tasa_ausentismo':tasa_ausentismo,
+#             'dias_laborables':dias_laborables,'porc_dias_trab_tot':porc_dias_trab_tot,'tot_accidentes':tot_accidentes,'acc_denunciados':acc_denunciados,
+#             'acc_sin_denunciar':acc_sin_denunciar,'acc_itinere':acc_itinere,'acc_trabajo':acc_trabajo}
             
 
-    context['aus_total']=  aus_total
-    context['aus_inc']=  aus_inc
-    context['aus_acc']=  aus_acc
-    context['dias_laborables']=  dias_laborables
-    if (request.POST.get('submit') == 'Imprimir')and(aus_total):           
-            from django.template.loader import get_template
-            from django.template import RequestContext
+#     context['aus_total']=  aus_total
+#     context['aus_inc']=  aus_inc
+#     context['aus_acc']=  aus_acc
+#     context['dias_laborables']=  dias_laborables
+#     if (request.POST.get('submit') == 'Imprimir')and(aus_total):           
+#             from django.template.loader import get_template
+#             from django.template import RequestContext
 
-            context = {}
-            context = getVariablesMixin(request)  
-            try:
-              config = configuracion.objects.all().first()
-            except Exception as e:                                                      
-                   messages.error(request,e) 
-            context['aus_total'] = aus_total
-            context['aus_inc']=  aus_inc
-            context['aus_acc']=  aus_acc
-            context['dias_laborables']=  dias_laborables
-            context['config'] = config
-            context['fecha'] = fecha        
-            context['fdesde'] = fdesde
-            context['fhasta'] = fhasta
-            context['ausentismos'] = ausentismos            
+#             context = {}
+#             context = getVariablesMixin(request)  
+#             try:
+#               config = configuracion.objects.all().first()
+#             except Exception as e:                                                      
+#                    messages.error(request,e) 
+#             context['aus_total'] = aus_total
+#             context['aus_inc']=  aus_inc
+#             context['aus_acc']=  aus_acc
+#             context['dias_laborables']=  dias_laborables
+#             context['config'] = config
+#             context['fecha'] = fecha        
+#             context['fdesde'] = fdesde
+#             context['fhasta'] = fhasta
+#             context['ausentismos'] = ausentismos            
             
-            # template_name = 'reportes/reporte_periodo.html'            
-            html_template = get_template(template_name)
-            rendered_html = html_template.render({'aus_total':aus_total}).encode(encoding="UTF-8")            
+#             # template_name = 'reportes/reporte_periodo.html'            
+#             html_template = get_template(template_name)
+#             rendered_html = html_template.render({'aus_total':aus_total}).encode(encoding="UTF-8")            
             
-            # return render_to_pdf_response(request, template_name, context) 
-            return render(request,template_name, context) 
-    return render(request,template_name, context) 
+#             # return render_to_pdf_response(request, template_name, context) 
+#             return render(request,template_name, context) 
+#     return render(request,template_name, context) 
 
 
 
