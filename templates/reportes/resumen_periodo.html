@@ -222,7 +222,7 @@
             <div class="panel-body">
                <div class="row">
                 <div class="col-sm-12">
-                     <div id="tabla_aus_grupop"  style="padding: 0px; position: relative;"> 
+                     <div style="padding: 0px; position: relative;"> 
                                 <div id="aus_grupop" class="chart" style="width: 100%; height: 100%; margin: 0 auto"></div>
                       </div>    
                 </div>  
@@ -410,22 +410,22 @@ jQuery(document).ready(function($) {
     });
     {% endif %}
     {% if aus_x_grupop %}
-          colors: ['#04ff00','#147b50', '#ff0000', '#9c1918', '#DDDF00', '#24CBE5', '#64E572', '#FF9655', '#FFF263', '#6AF9C4'],
-          Highcharts.setOptions({
-          colors: Highcharts.map(Highcharts.getOptions().colors, function (color) {
-              return {
-                  radialGradient: {
-                      cx: 0.5,
-                      cy: 0.3,
-                      r: 0.7
-                  },
-                  stops: [
-                      [0, color],
-                      [1, Highcharts.Color(color).brighten(-0.3).get('rgb')] // darken
-                  ]
-              };
-          })
-      });
+          // colors: ['#04ff00','#147b50', '#ff0000', '#9c1918', '#DDDF00', '#24CBE5', '#64E572', '#FF9655', '#FFF263', '#6AF9C4'],
+      //     Highcharts.setOptions({
+      //     colors: Highcharts.map(Highcharts.getOptions().colors, function (color) {
+      //         return {
+      //             radialGradient: {
+      //                 cx: 0.5,
+      //                 cy: 0.3,
+      //                 r: 0.7
+      //             },
+      //             stops: [
+      //                 [0, color],
+      //                 [1, Highcharts.Color(color).brighten(-0.3).get('rgb')] // darken
+      //             ]
+      //         };
+      //     })
+      // });
       Highcharts.chart('aus_grupop', {
             
             chart: {
@@ -578,7 +578,7 @@ function agregar_linea(texto,ltexto,htexto,h,idtabla,idgrafico,marginleft)
     {% if aus_x_grupop %}
       altura=altura+chartHeight;      
       var imageData = $("#aus_grupop").highcharts().createCanvas();
-      doc.addImage(imageData, 'JPEG', 105,h-7,chartWidth, chartHeight);
+      doc.addImage(imageData, 'JPEG', 105,altura-7,chartWidth, chartHeight);
     {% endif %}
     
     doc.setFontSize(5);
