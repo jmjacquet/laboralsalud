@@ -41,7 +41,6 @@ INSTALLED_APPS = (
     'ausentismos',
     'reportes',        
     'modal',
-    'wkhtmltopdf',
 )
 
 MIDDLEWARE_CLASSES = (
