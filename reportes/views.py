@@ -196,7 +196,7 @@ class ReporteResumenPeriodo(VariablesMixin,TemplateView):
                 'acc_sin_denunciar':acc_sin_denunciar,'acc_itinere':acc_itinere,'acc_trabajo':acc_trabajo,'acc_empls':acc_empls,'noacc_empls':acc_empls,
                 'denunciados_empl':denunciados_empl,'sin_denunciar_empl':sin_denunciar_empl,'itinere_empl':itinere_empl,'trabajo_empl':trabajo_empl}
 
-            aus_x_grupop = ausentismos.values('aus_grupop__patologia').annotate(total=Count('aus_grupop')).order_by('total')
+            aus_x_grupop = ausentismos.values('aus_grupop__patologia').annotate(total=Count('aus_grupop')).order_by('-total')[:5]
                             
 
         context['aus_total']=  aus_total
