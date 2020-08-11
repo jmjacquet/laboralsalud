@@ -193,17 +193,26 @@ class ReporteResumenPeriodo(VariablesMixin,TemplateView):
                 
                 aus_acc = {'dias_caidos_tot':dias_caidos_tot,'empleados_tot':empleados_tot,'dias_trab_tot':dias_trab_tot,'tasa_ausentismo':tasa_ausentismo,
                 'dias_laborables':dias_laborables,'porc_dias_trab_tot':porc_dias_trab_tot,'tot_accidentes':tot_accidentes,'acc_denunciados':acc_denunciados,
-                'acc_sin_denunciar':acc_sin_denunciar,'acc_itinere':acc_itinere,'acc_trabajo':acc_trabajo,'acc_empls':acc_empls,'noacc_empls':acc_empls,
+                'acc_sin_denunciar':acc_sin_denunciar,'acc_itinere':acc_itinere,'acc_trabajo':acc_trabajo,'acc_empls':acc_empls,'noacc_empls':noacc_empls,
                 'denunciados_empl':denunciados_empl,'sin_denunciar_empl':sin_denunciar_empl,'itinere_empl':itinere_empl,'trabajo_empl':trabajo_empl}
 
             aus_x_grupop = ausentismos.values('aus_grupop__patologia').annotate(total=Count('aus_grupop')).order_by('-total')[:5]
-                            
+            max_grupop = aus_x_grupop[0]['total']+1
+            
+            empl_mas_faltadores = []
+            for a in ausentismos:
+                dias = dias_ausentes_empl(fdesde,fhasta,a)
+                empl_mas_faltadores.append({'empleado':a.empleado,'dias':dias})
+
+            empl_mas_faltadores = sorted(empl_mas_faltadores, key = lambda i: i['dias'],reverse=True) 
 
         context['aus_total']=  aus_total
         context['aus_inc']=  aus_inc
         context['aus_acc']=  aus_acc
         context['aus_x_grupop']=  aus_x_grupop
+        context['max_grupop']=  max_grupop
         context['dias_laborables']=  dias_laborables             
+        context['empl_mas_faltadores']=  empl_mas_faltadores[:6]             
         return context
 
     def post(self, *args, **kwargs):                
@@ -541,6 +550,17 @@ def dias_ausentes(fdesde,fhasta,ausentismos):
         if fhasta<=ffin:
             ffin =fhasta        
         tot+=(ffin-fini).days+1        
+    return tot
+
+def dias_ausentes_empl(fdesde,fhasta,a):     
+    tot=0
+    fini = a.aus_fcrondesde     
+    ffin = a.aus_fcronhasta        
+    if fdesde>=fini:
+        fini=fdesde
+    if fhasta<=ffin:
+        ffin =fhasta        
+    tot=(ffin-fini).days+1
     return tot
 
 def dias_ausentes_mes(mes, anio,ausentismos):     

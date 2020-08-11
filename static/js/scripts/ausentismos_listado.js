@@ -24,6 +24,12 @@ $.fn.datepicker.dates['es'] = {
       $(this).datepicker();
   });
 
+  $("#id_empresa").chosen({
+      no_results_text: "Empresa inexistente...",
+      placeholder_text_single:"Seleccione una Empresa",
+      allow_single_deselect: true,
+  });
+
 var tabla = $('#ausentismos').DataTable({
             "language": {
                 "decimal": ",",

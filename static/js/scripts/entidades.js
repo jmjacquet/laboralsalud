@@ -11,6 +11,7 @@ $( "#Buscar" ).click(function() {
  });
 $("#AceptarEnt").prop("disabled", false);   
 
+
 $("#id_cuit").keyup(function(e){  
   if(e.which === 13) {
      consulta = $("#id_cuit").val();

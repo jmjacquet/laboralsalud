@@ -10,11 +10,15 @@ $.fn.datepicker.dates['es'] = {
   };
   
  $('.datepicker').datepicker({
-        format: "dd/mm/yyyy",
-        language: "es",
-        autoclose: true,
-        todayHighlight: true
-  });
+          format: "dd/mm/yyyy",
+          language: "es",
+          autoclose: true,
+          todayHighlight: true
+    });
+
+$('.datepicker').each(function(){
+    $(this).datepicker();
+});
 
 $("input[type=number]").click(function(){
             this.select()
@@ -70,7 +74,11 @@ $("#id_empleado").change(function(){
                         {
                           $("#apellido_y_nombre").text(data['apellido_y_nombre']); 
                           $("#nro_doc").text(data['nro_doc']); 
+                          if (data['fecha_nac']==null){
+                            $("#fecha_nac").text(''); }
+                            else{
                           $("#fecha_nac").text(moment(data['fecha_nac']).format("DD/MM/YYYY")); 
+                          }
                           $("#legajo").text(data['legajo']); 
                           $("#edad").text(data['edad']+' años'); 
                           $("#telcel").text((data['telefono']||'')+' / '+(data['celular']||'')); 
@@ -204,25 +212,27 @@ $('#id_aus_fcronhasta').change(function()
 });
 
 
-$('.formDetalle').formset({
-          addText: 'Agregar Control',
-          addCssClass: 'add-row btn blue-hoki ',       
-          deleteCssClass: 'delete-row1',     
-          deleteText: 'Eliminar',
-          prefix: 'formDetalle',
-          formCssClass: 'dynamic-form',
-          keepFieldValues:'',
-          added: function (row) {
-            $('.datepicker').each(function(){       
-                 $(this).datepicker('destroy');
-                            
-            });
-          },
-          removed: function (row) {
-            var i = $(row).index();
-            $(row).attr("id", "formDetalle-"+i);             
-          }
-      });
+// function renovarCalendarios() {    
+//     $('.datepicker').datepicker('destroy');
+//     $(".datepicker").datepicker({format: "dd/mm/yyyy",
+//                         language: "es",
+//                         autoclose: true,
+//                         todayHighlight: true});
+// };
+
+// $('.formDetalle').formset({
+//           addText: '',
+//           addCssClass: '',       
+//           deleteCssClass: 'delete-row1',     
+//           deleteText: 'Eliminar',
+//           prefix: 'formDetalle',
+//           formCssClass: 'dynamic-form',
+//           keepFieldValues:'',
+          
+//           removed: function (row) {
+//             renovarCalendarios();
+//           }
+//       });
 
  function diasRestantes(desde,hasta,dias){
         var a = moment(desde.val(),'D/M/YYYY');
