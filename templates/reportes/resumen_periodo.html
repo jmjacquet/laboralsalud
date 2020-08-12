@@ -7,8 +7,7 @@
 <script src="{% static 'js/highcharts.js' %}" type="text/javascript"></script>
 <script src="{% static 'js/exporting.js' %}" type="text/javascript"></script>
 <script src="{% static 'js/canvg.js' %}" type="text/javascript"></script>
-<script src="{% static 'js/jspdf.debug.js' %}" type="text/javascript"></script>
-<script src="{% static 'js/jspdf.plugin.autotable.js' %}"  type="text/javascript"></script>
+
 {% endblock extra_js %}
 {% block breadcrumbs %}              
         <div class="breadcrumbs">
@@ -21,8 +20,7 @@
     
 
 <div class="col-md-12">   
-  
-  <button class="btn btn-xs btn-primary text-center pull-right" id="exportar" target="_blank">Exportar</button>
+   
  <div class="barra_busqueda" id="barra_busqueda">
   <div class="panel panel-primary">
       <div class="panel-heading">
@@ -41,7 +39,9 @@
                           <div class="col-sm-3">{% bootstrap_field form.empleado  %}</div>
                          
                           <div class="col-sm-12">
-                         
+                            {% if ausentismos %} 
+                            <button class="btn btn-xs btn-primary text-center pull-left" id="exportar" type="button">Exportar</button>
+                            {% endif %}
                             <button class="btn btn-xs btn-primary text-center pull-right" type="submit">Buscar</button></div>
                           
                   </div>     
@@ -51,7 +51,8 @@
   </div>
   </div>
     </form> 
- 
+ {% if ausentismos %} 
+  {% if aus_total or aus_inc %} 
   <div class="row">  
       
       <div class="col-sm-6 cerca">
@@ -140,8 +141,10 @@
           
       </div>
   </div>
+  {% endif %}
+  {% if aus_acc %}        
   <div class="row">
-        <div class="col-sm-4 col-lg-4 cerca">
+      <div class="col-sm-4 col-lg-4 cerca">
           <div class="panel panel-primary graficos">
             <div class="panel-heading text-center">AUSENTISMO ART</div>
             <div class="panel-body">
@@ -178,7 +181,6 @@
                 
             </div>
           </div>
-          
       </div>
       <div class="col-sm-4 col-lg-4 cerca">
           <div class="panel panel-primary graficos">
@@ -194,7 +196,6 @@
                 
             </div>
           </div>
-          
       </div>     
           
        <div class="col-sm-4 col-lg-4 cerca">
@@ -211,10 +212,11 @@
                 
             </div>
           </div>
-          
-      </div> 
-    </div>
-    <div class="row">                         
+       </div> 
+  </div>
+  {% endif %}
+  {% if aus_x_grupop %}   
+  <div class="row">                         
       
       <div class="col-sm-8 cerca">
           <div class="panel panel-primary graficos">
@@ -263,10 +265,12 @@
       </div>
           
   </div>
-           
+  {% endif %}
+ {% endif %}         
 </div>
 
-
+<script src="{% static 'js/jspdf.debug.js' %}" type="text/javascript"></script>
+<script src="{% static 'js/jspdf.plugin.autotable.js' %}"  type="text/javascript"></script>
 
 <script type="text/javascript">
   
@@ -559,7 +563,7 @@ function agregar_linea(texto,ltexto,htexto,h,idtabla,idgrafico,marginleft)
     //save with name
     };
 
-//$('#exportar').click(function () {
+
     var doc = new jsPDF({orientation: 'p', unit: 'mm', format: 'a4',});
 
     var logo = new Image();
@@ -613,10 +617,10 @@ function agregar_linea(texto,ltexto,htexto,h,idtabla,idgrafico,marginleft)
 
       // agregar_linea("DENUNCIA Y TIPO DE ACCIDENTE",65,10,altura+10,'#tabla_ausentismo_acc2',"#ausentismo_acc2",35);
     {% endif %}
-    
+     {% if aus_x_grupop %}
       altura=altura+chartHeight+10;
       var imageData = $("#aus_grupop").highcharts().createCanvas();      
-      doc.text('AUSENTISMO x GRUPO PATOLÓGICO', 150, altura-2, 'center');
+      doc.text('AUSENTISMOS x GRUPO PATOLÓGICO', 150, altura-2, 'center');
       doc.addImage(imageData, 'JPEG', 100,altura,chartWidth, chartHeight);
       
       doc.text('EMPLEADOS CON MÁS AUSENCIAS',55, altura-2, 'center');
@@ -630,15 +634,16 @@ function agregar_linea(texto,ltexto,htexto,h,idtabla,idgrafico,marginleft)
         tableLineWidth:0.5,   
         margin: {left: 30}
        });
-         
+     {% endif %}    
     
     doc.setFontSize(5);
     doc.setFontType('italic');            
     doc.text('{{pie_pagina}}', 15, 293);
     doc.addImage(logo, 'JPEG', 5,290,5, 5);
-    doc.save('reporte_ausentismos.pdf');
-    // doc.autoPrint();
-//});
+    $('#exportar').click(function () {
+      doc.save('reporte_ausentismos.pdf');
+        // doc.autoPrint();
+    });
 
 
 

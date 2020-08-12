@@ -104,7 +104,9 @@ class ReporteResumenPeriodo(VariablesMixin,TemplateView):
         aus_inc = None
         aus_acc = None
         aus_x_grupop = None 
+        max_grupop = 0
         dias_laborables = int((fhasta-fdesde).days+1)   
+        empl_mas_faltadores = []
         porc_dias_trab_tot = 100
         if empresa:
             empleados_tot = empresa.cantidad_empleados()
