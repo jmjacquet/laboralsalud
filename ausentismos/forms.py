@@ -101,14 +101,15 @@ class AusentismoForm(forms.ModelForm):
 			self.add_error("aus_fcronhasta",u'¡Debe cargar una Fecha!')
 		if not aus_diascaidos:
 			self.add_error("aus_diascaidos",u'¡Debe cargar un Día!')
-		if aus_fcrondesde > aus_fcronhasta:
-			self.add_error("aus_fcrondesde",u'¡Verifique las Fechas!')
+		if aus_fcrondesde and aus_fcronhasta:
+			if aus_fcrondesde > aus_fcronhasta:
+				self.add_error("aus_fcrondesde",u'¡Verifique las Fechas!')
 
 		aus_tipo_alta = self.cleaned_data.get('aus_tipo_alta')							
 		if not aus_tipo_alta:
 			self.add_error("aus_tipo_alta",u'¡Debe seleccionar un Tipo de Alta! Verifique.')
 
-		if aus_tipo_alta == 2:
+		elif aus_tipo_alta == 2:
 			descr_altaparc = self.cleaned_data.get('descr_altaparc')				
 			if not descr_altaparc:
 				self.add_error("descr_altaparc",u'¡Debe cargar el Detalle del Alta!')
