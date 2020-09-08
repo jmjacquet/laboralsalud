@@ -92,7 +92,7 @@ pytz==2019.2
 pyxattr==0.5.1
 PyYAML==5.1.2
 reportlab==3.5.34
-requests==2.10.0
+requests==2.20.0
 seobject==0.1
 sepolicy==1.1
 simplejson==3.10.0
