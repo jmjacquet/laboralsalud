@@ -131,7 +131,7 @@ class ReporteResumenPeriodo(VariablesMixin,TemplateView):
             #AUSENTISMO INCULPABLE
             ausentismos_inc = ausentismos.filter(tipo_ausentismo=1)
             if ausentismos_inc:
-                #empleados_tot = ausentismos_inc.values('empleado').distinct().count()
+                empleados_inc = ausentismos_inc.values('empleado').distinct().count()
                 # empleados_tot = 77
                 totales = tot_ausentes_inc(fdesde,fhasta,ausentismos_inc)
                 dias_caidos_tot=totales[0] 
@@ -148,8 +148,8 @@ class ReporteResumenPeriodo(VariablesMixin,TemplateView):
                 porc_agudos = (Decimal(agudos) / Decimal(dias_caidos_tot))*100 
                 porc_cronicos = (Decimal(graves) / Decimal(dias_caidos_tot))*100 
 
-                tot_agudos = int(porc_agudos*Decimal(0.01)*empleados_tot)
-                tot_cronicos = int(empleados_tot-tot_agudos)
+                tot_agudos = int(porc_agudos*Decimal(0.01)*empleados_inc)
+                tot_cronicos = int(empleados_inc-tot_agudos)
 
                 porc_agudos = Decimal(porc_agudos).quantize(Decimal("0.01"), decimal.ROUND_HALF_UP)
                 porc_cronicos = Decimal(porc_cronicos).quantize(Decimal("0.01"), decimal.ROUND_HALF_UP)
