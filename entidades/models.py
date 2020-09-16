@@ -119,10 +119,18 @@ class ent_empresa(models.Model):
 		if not self.casa_central:
 			entidad = u'%s (EMPRESA/CASA CENTRAL)'% entidad
 		return unicode(entidad.upper())		
+	
+	def get_domicilio(self):
+		domicilio=u'%s' % self.domicilio
+		if self.cod_postal:
+			domicilio = u'%s - CP:%s'% (domicilio,self.cod_postal)
+		if self.localidad:
+			domicilio = u'%s - %s'% (domicilio,self.localidad)
+		if self.provincia:
+			domicilio = u'%s - %s'% (domicilio,self.get_provincia_display())			
+		return unicode(domicilio.upper())
 		
 
-
-	
 class ent_art(models.Model):    
 	codigo = models.CharField(u'Código',max_length=50,blank=True, null=True)   
 	nombre = models.CharField(u'Nombre',max_length=500, blank=True, null=True) # Field name made lowercase.    

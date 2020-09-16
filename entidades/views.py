@@ -502,7 +502,7 @@ class EmpresaEditView(VariablesMixin,AjaxUpdateView):
 class EmpresaVerView(VariablesMixin,DetailView):
     model = ent_empresa
     pk_url_kwarg = 'id'
-    context_object_name = 'empresa'
+    context_object_name = 'e'
     template_name = 'entidades/empresa_detalle.html'
 
     @method_decorator(login_required)

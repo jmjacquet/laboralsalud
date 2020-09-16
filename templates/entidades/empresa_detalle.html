@@ -1,92 +1,68 @@
 {% load static from staticfiles %}
 {% load crispy_forms_tags %}
 {% block main %}    
-<div class="row cerca">
-      <div class="col-xs-12">
-        <fieldset>
-          <legend>DATOS LABORALES</legend>
-          <table class="table table-striped table-hover table-condensed table-no-bordered tabla_detalle">
-            <tbody>
-              <tr>
-                <td  class="titulo">Empresa:</td><td colspan="3" id="empresa" class="dato">{{empleados.empresa|default_if_none:''}}</td>
-              </tr>
-              <tr>
-                <td class="titulo">Fecha Ingreso Empresa:</td><td id="empr_fingreso" class="dato">{{empleados.empr_fingreso|date:'d/m/Y'}}</td>
-                <td class="titulo">Antigüedad Laboral:</td><td id="antig_empresa" class="dato">{{empleados.get_antiguedad_empr|default_if_none:0}} años</td>
-              </tr>
-              <tr>
-                <td  class="titulo">Puesto/Cargo:</td><td colspan="3" id="trab_cargo" class="dato">{{empleados.trab_cargo|default_if_none:''}}</td>
-              </tr>
-              <tr>
-                <td class="titulo">Fecha Ingreso Puesto:</td><td id="trab_fingreso" class="dato">{{empleados.trab_fingreso|date:'d/m/Y'}}</td>
-                <td class="titulo">Antigüedad Puesto:</td><td id="antig_trabajo" class="dato">{{empleados.get_antiguedad_trab|default_if_none:0}} años</td>
-              </tr>
-              <tr>
-                <td class="titulo">Fecha Cese de Actividad:</td><td <td colspan="3" id="trab_fbaja" class="dato">{{empleados.trab_fbaja|date:'d/m/Y'}}</td>
-              </tr>
-              <tr>
-                <td class="titulo">¿Portación de Armas?</td><td id="trab_armas" class="dato">{{empleados.trab_armas|default_if_none:'N'}}</td>
-                <td class="titulo">¿Tareas Diferentes?</td><td id="trab_tareas_dif" class="dato">{{empleados.trab_tareas_dif|default_if_none:'N'}}</td>
-              </tr>
-              <tr>
-                <td class="titulo">¿Preocupacional?</td><td id="trab_preocupac" class="dato">{{empleados.trab_preocupac|default_if_none:'N'}}</td>
-                <td class="titulo">Fecha Preocupacional:</td><td id="trab_preocup_fecha" class="dato">{{empleados.trab_preocup_fecha|date:'d/m/Y'}}</td>
-              </tr>
-              <tr>
-                <td class="titulo">Conclusión Preocupacional</td><td colspan="3" class="dato">{{empleados.trab_preocup_conclus|default_if_none:''}}</td>
-              </tr>
-            </tbody>
-          </table>
-        </fieldset>
-      </div>
-      <div class="col-xs-12">
-        <fieldset>                      
-          <table class="table table-striped table-hover table-condensed table-no-bordered tabla_detalle">
-            <tbody>
-               {% if empleados.trab_factores_riesgo %}
-              <tr>
-                <td class="titulo">Factores de Riesgo a lo que está Expuesto</td><td class="dato">{{empleados.trab_factores_riesgo|default_if_none:''}}</td>
-              </tr>
-               {% endif %}
-               {% if empleados.trab_tareas_dif_det %}
-              <tr>
-                <td class="titulo">Descripción Tareas Diferentes</td><td class="dato">{{empleados.trab_tareas_dif_det|default_if_none:''}}</td>
-              </tr>
-              {% endif %}
-               {% if empleados.trab_anteriores %}
-              <tr>
-                <td class="titulo">Trabajos Anteriores</td><td class="dato">{{empleados.trab_anteriores|default_if_none:''}}</td>
-              </tr>
-               {% endif %}
-               {% if empleados.trab_antecedentes %}
-              <tr>
-                <td class="titulo">Antecedentes Patológicos</td><td class="dato">{{empleados.trab_antecedentes|default_if_none:''}}</td>
-              </tr>
-               {% endif %}
-               {% if empleados.trab_accidentes %}
-              <tr>
-                <td class="titulo">Accidentes ART</td><td class="dato">{{empleados.trab_accidentes|default_if_none:''}}</td>
-              </tr>
-               {% endif %}
-               {% if empleados.trab_vacunas %}
-              <tr>
-                <td class="titulo">Vacunas</td><td class="dato">{{empleados.trab_vacunas|default_if_none:''}}</td>
-              </tr>
-               {% endif %}
-            </tbody>
-          </table>
-        </fieldset>
-      </div>            
-</div>                         
+<div class="row cerca">  
+  <div class=" col-xs-12 "> 
+  <fieldset>
+    <table class="table table-striped table-hover table-condensed table-no-bordered tabla_detalle">
+      <tbody>
+      <tr>
+        <td  class="titulo">Razón Social:</td><td colspan="3">{{e.razon_social|default_if_none:''}}</td>
+      </tr>
+      <tr>
+        <td class="titulo">CUIT:</td><td>{{e.cuit|default_if_none:''}}</td>
+        <td class="titulo">Cantidad Empleados:</td><td>{{e.cant_empleados|default_if_none:''}}</td>
+      </tr>
+      <tr>
+        <td  class="titulo">Rubro:</td><td>{{e.rubro|default_if_none:''}}</td>
+        <td class="titulo">Casa Central:</td><td>{{e.casa_central|default_if_none:''}}</td>
+      </tr>
+      <tr>
+        <td  class="titulo">Domicilio:</td><td colspan="3">{{e.get_domicilio|default_if_none:''}}</td>
+      </tr>
+      <tr>
+        <td class="titulo">Condic.IVA:</td><td>{{e.get_fact_categFiscal_display|default_if_none:''}}</td>
+        <td class="titulo">IIBB:</td><td>{{e.iibb|default_if_none:''}}</td>      
+      </tr>
+      <tr>
+        <td class="titulo">Teléfono/Celular:</td><td>{{e.telefono|default_if_none:''}} / {{ e.celular|default_if_none:'' }}</td>      
+        <td class="titulo">E-mail:</td><td>{{ e.email|default_if_none:'' }}</td>
+      </tr>
+
+      <tr>
+        <td class="titulo">ART:</td><td colspan="3">{{e.art|default_if_none:''}}</td>            
+      </tr>
+      <tr>
+        <td class="titulo">Médico/Prof:</td><td colspan="3">{{e.medico_prof|default_if_none:''}}</td>            
+      </tr>
+      <tr>
+        <td class="titulo">Contacto:</td><td >{{e.contacto_nombre|default_if_none:''}} </td>            
+        <td class="titulo">Email:</td><td>{{e.contacto_email|default_if_none:''}}</td>
+      </tr>
+      <tr>
+        <td class="titulo">Tel.:</td><td >{{e.contacto_tel|default_if_none:''}} </td>            
+        <td class="titulo">Cargo/Profesión:</td><td>{{e.contacto_cargo|default_if_none:''}} / {{e.contacto_profesion|default_if_none:''}}</td>
+      </tr>
+      <tr>
+        <td class="titulo">Detalle/Observaciones:</td><td colspan="3">{{e.observaciones|default_if_none:''}} </td>            
+      </tr>
+
+      </tbody>
+    </table>
+  </fieldset>
+  </div>                                 
+</div>                 
+
+          
 <div class="modal-buttons">
     <div class="row">
         <div class="col-xs-6">
          <button data-dismiss="modal" class="btn btn-sm pull-left btn btn-danger" type="button">
               <i class="fa fa-times"></i>Cerrar
          </button>
-        </div>
+        </div>              
       </div>    
-</div> 
+</div>       
 {% endblock main %}        
 
                                
