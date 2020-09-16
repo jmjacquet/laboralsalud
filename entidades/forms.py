@@ -171,7 +171,6 @@ class EmpleadoForm(forms.ModelForm):
 						
 		return self.cleaned_data
 
-
 		
 class ConsultaEmpleados(forms.Form):               		
 	qempresa = EmpresaModelChoiceField(label='Empresa',queryset=ent_empresa.objects.filter(baja=False),empty_label='Todas',required=False)
