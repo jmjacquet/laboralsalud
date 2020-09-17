@@ -1,9 +1,6 @@
-errores.log
-static/*.*
-*.log
-!generarI25.pyc
-errores.log
 *.pyc
-errores.log
+*.log
+static/*.*
+!generarI25.pyc
 *.ini
 /varios/

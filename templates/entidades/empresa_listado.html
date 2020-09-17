@@ -20,20 +20,20 @@
     <table width="100%" id="empresa" style="display:none;" class="table table-striped compact table-hover table-no-bordered tabla_nueva nowrap">         
         <thead >
             <tr>
-                <th>#</th>
-                <th class="imprimir">Código</th>
-                <th class="imprimir">Razón Social</th>
-                <th class="imprimir">CUIT</th>
-                <th class="imprimir">Rubro</th>
-                <th class="imprimir">Cant.Empl.</th>
-                <th class="imprimir">ART</th>
-                <th class="imprimir">EMail</th>                                           
-                <th class="imprimir">Domicilio</th>
-                <th class="imprimir">Localidad</th>           
-                <th class="imprimir">Provincia</th>           
-                <th class="imprimir">Tel.</th>                           
-                <th class="imprimir">Cel.</th>                           
-                <th class="imprimir">Casa Central</th> 
+                <th class="no-sort text-center" data-priority="1">#</th>
+                <th data-priority="1" class="imprimir">Código</th>
+                <th data-priority="1" class="imprimir">Razón Social</th>
+                <th data-priority="1" class="imprimir">CUIT</th>
+                <th data-priority="2" class="imprimir">Rubro</th>
+                <th data-priority="1" class="imprimir">Cant.Empl.</th>
+                <th data-priority="1" class="imprimir">ART</th>
+                <th data-priority="1" class="imprimir">EMail</th>                                           
+                <th data-priority="1" class="imprimir">Domicilio</th>
+                <th data-priority="1" class="imprimir">Localidad</th>           
+                <th data-priority="1" class="imprimir">Provincia</th>           
+                <th data-priority="1" class="imprimir">Tel.</th>                           
+                <th data-priority="1" class="imprimir">Cel.</th>                           
+                <th data-priority="2" class="imprimir">Casa Central</th> 
             </tr>
         </thead>
         <tbody>
@@ -149,7 +149,7 @@ var tabla = $('#empresa').DataTable({
            "colReorder": true,
            "searching": true,
             fixedHeader: {
-              header: true,
+              header: false,
               footer: false
               },
             responsive: true,
