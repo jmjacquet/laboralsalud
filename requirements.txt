@@ -13,7 +13,7 @@ django-fm==0.2.5
 django-localflavor==2.2
 django-wkhtmltopdf==3.3.0
 html5lib==1.0.1
-httplib2==0.17.0
+httplib2==0.18.0
 jsmin==2.2.2
 localflavor==1.8
 mysqlclient
