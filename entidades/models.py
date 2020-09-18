@@ -197,6 +197,14 @@ class ent_empleado(models.Model):
 
 	def __unicode__(self):
 	    return u'%s' % (self.apellido_y_nombre)
+	
+	def save(self, *args, **kwargs):
+		if self.apellido_y_nombre:
+			self.apellido_y_nombre=self.apellido_y_nombre.upper()
+		if self.domicilio:
+			self.domicilio=self.domicilio.upper()
+
+		super(ent_empleado, self).save()
 
 	@property
 	def get_edad(self):

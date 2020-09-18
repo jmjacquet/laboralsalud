@@ -731,12 +731,18 @@ def importar_empleados(request):
             reader = unicode_csv_reader(io_string)                
             #DNI;LEGAJO/NRO;APELLIDO;NOMBRE;FECHA_NAC;DOMICILIO;CELULAR;TELEFONO;EMAIL;CP;LOCALIDAD;FECHA_INGR;ART;PUESTO            
             cant=0
+
             try:
                 next(reader) #Omito el Encabezado                            
                 for index,line in enumerate(reader):                      
-                    campos = line[0].split(";")               
+                    campos = line[0].split(";")                               
+                    cant_campos = len(campos)
+                    if cant_campos<>14:
+                        raise Exception(u'La cantidad de campos para el registro es incorrecta!(verifique que no existan ";" ni "")')
+
                     dni = campos[0].strip()              
                     # dni = str(random.randrange(29000000,40000000))
+                    
                     if dni=='':
                         continue #Salta al siguiente                    
                     
@@ -745,23 +751,30 @@ def importar_empleados(request):
                         continue
 
                     legajo = campos[1].strip()  #nro_legajo                                  
-                    nombre = campos[2].strip().upper()+' '+campos[3].strip().upper() # apellido y Nombre                
+                    apellido = campos[2].strip()#apellido
+                    if apellido=='':
+                        raise Exception(u'El apellido no puede estar vacío!')
+                    nombre = campos[3].strip() # nombre                
+                    if nombre=='':
+                        raise Exception(u'El nombre no puede estar vacío!')
+                    nombre = apellido+' '+nombre
                     fecha=campos[4].strip()
                     if fecha=='':
                         fecha_nac=None
                     else:
                         fecha_nac = datetime.datetime.strptime(fecha, "%d/%m/%Y").date()   #fecha_nacim             
-                    domicilio = campos[5].strip().upper()  #DOMICILIO
+                    domicilio = campos[5].strip()  #DOMICILIO
                     celular =   campos[6].strip()  #celular
-                    telefono =   campos[7].strip()  #telefono
-                    email =   campos[8].strip()  #EMAIL
+                    telefono =   campos[7].strip()  #telefono                    
+                    email =   campos[8].strip()  #EMAIL                    
                     cp =   campos[9].strip()  #CP
-                    localidad =   campos[10].strip().upper()  #LOCALIDAD
+                    localidad =   campos[10].strip()  #LOCALIDAD
                     fecha=campos[11].strip()
                     if fecha=='':
                         fecha_ingr=None
                     else:
                         fecha_ingr = datetime.datetime.strptime(fecha, "%d/%m/%Y").date()   #FECHA_INGR             
+                    
                     art = campos[12].strip().upper().replace(",", "").replace(".", "") #ART               
                     if art=='':
                         art=None
@@ -773,13 +786,13 @@ def importar_empleados(request):
                     else:
                         puesto = ent_cargo.objects.get_or_create(cargo=puesto)[0]        
                     try:
-                       ent_empleado.objects.update_or_create(nro_doc=dni,empresa=empresa,defaults={'legajo':legajo,'apellido_y_nombre':nombre,'fecha_nac':fecha_nac,'art':art,'trab_cargo':puesto,
+                        ent_empleado.objects.update_or_create(nro_doc=dni,empresa=empresa,defaults={'legajo':legajo,'apellido_y_nombre':nombre,'fecha_nac':fecha_nac,'art':art,'trab_cargo':puesto,
                         'domicilio':domicilio,'celular':celular,'telefono':telefono,'email':email,'cod_postal':cp,'localidad':localidad,'empr_fingreso':fecha_ingr})                                                                 
-                       cant+=1                       
-                    except Exception as e:
-                       error = u"Línea:%s -> %s" %(index,e)
-                       messages.error(request,error)                                
-                recalcular_cantidad_empleados(self.object.empresa)
+                        cant+=1
+                    except Exception as e:                    
+                        error = u"Línea:%s -> %s" %(index,e)
+                        messages.error(request,error)                                
+                recalcular_cantidad_empleados(empresa)
                 messages.success(request, u'Se importó el archivo con éxito!<br>(%s empleados creados/actualizados)'% cant )
             except Exception as e:
                 messages.error(request,u"Línea:%s -> %s" %(index,e)) 
