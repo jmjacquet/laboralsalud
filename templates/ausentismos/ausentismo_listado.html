@@ -21,17 +21,24 @@
     <div class="panel panel-primary">
       <div class="panel-heading"> PARÁMETROS DE BÚSQUEDA</div>
       <div class="panel-body">
-        <div class="col-md-12">
+        <div class="col-sm-12">
           <form class="form" accept-charset="UTF-8" role="form" autocomplete="off" id="formBusqueda" action="" method="post">
             {% csrf_token %}
-            <div class="col-sm-1">{% bootstrap_field form.estado  %}</div>
-            <div class="col-sm-1">{% bootstrap_field form.fdesde  %}</div>
-            <div class="col-sm-1">{% bootstrap_field form.fhasta  %}</div>
-            <div class="col-sm-1">{% bootstrap_field form.fcontrol  %}</div>
-            <div class="col-sm-3">{% bootstrap_field form.empresa  %}</div>
-            <div class="col-sm-2">{% bootstrap_field form.tipo_ausentismo  %}</div>
-            <div class="col-sm-2">{% bootstrap_field form.empleado  %}</div>
-            <div class="col-sm-1"><button class="btn btn-xs text-center" type="submit">Buscar</button></div>
+            <div class="col-xs-12 cerca">
+
+                <div class="col-sm-2">{% bootstrap_field form.estado  %}</div>
+                <div class="col-sm-1">{% bootstrap_field form.fdesde  %}</div>
+                <div class="col-sm-1">{% bootstrap_field form.fhasta  %}</div>
+                <div class="col-sm-1">{% bootstrap_field form.fcontrol  %}</div>
+                <div class="col-sm-4">{% bootstrap_field form.empresa  %}</div>
+                <div class="col-sm-3">{% bootstrap_field form.tipo_ausentismo  %}</div>
+           
+                <div class="col-sm-3">{% bootstrap_field form.empleado  %}</div>
+                <div class="col-sm-4">{% bootstrap_field form.aus_grupop  %}</div>
+                <div class="col-sm-4">{% bootstrap_field form.aus_diagn  %}</div>
+                <div class="col-sm-1"><button class="btn btn-xs text-center" type="submit">Buscar</button></div>
+              </div>
+            </div>
           </form>
         </div>
       </div>

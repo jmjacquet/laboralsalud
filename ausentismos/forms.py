@@ -151,6 +151,8 @@ class ConsultaAusentismos(forms.Form):
 	fhasta =  forms.DateField(label='F.Cron.Hasta',widget=forms.DateInput(attrs={'class': 'form-control datepicker','autocomplete':'off'}),required = False)    	
 	empresa = EmpresaModelChoiceField(label='Empresa',queryset=ent_empresa.objects.filter(baja=False),empty_label='Todas',required=False)	 
 	empleado = forms.CharField(required=False,label='Empleado')	
+	aus_grupop = forms.CharField(label=u'Grupo Patológico',required=False)	
+	aus_diagn = forms.CharField(label=u'Diagnóstico',required=False)	
 	tipo_ausentismo = forms.ChoiceField(label='Tipo Ausentismo',choices=TIPO_AUSENCIA_,required=False,initial=0)	
 	estado = forms.ChoiceField(label='Vigencia',choices=TIPO_VIGENCIA,required=False,initial=0)	
 	def __init__(self, *args, **kwargs):		

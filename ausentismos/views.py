@@ -55,6 +55,8 @@ class AusentismoView(VariablesMixin,ListView):
             fhasta = form.cleaned_data['fhasta']                                                 
             empresa = form.cleaned_data['empresa']                           
             empleado= form.cleaned_data['empleado']                           
+            aus_grupop = form.cleaned_data['aus_grupop']                           
+            aus_diagn= form.cleaned_data['aus_diagn']     
             tipo_ausentismo = form.cleaned_data['tipo_ausentismo']     
             estado = form.cleaned_data['estado']
             if not fdesde:
@@ -84,6 +86,11 @@ class AusentismoView(VariablesMixin,ListView):
                     ausentismos = ausentismos.filter(Q(aus_diascaidos__gt=30)|Q(art_diascaidos__gt=30))                    
                 else:
                     ausentismos = ausentismos.filter(tipo_ausentismo=int(tipo_ausentismo))            
+            if aus_grupop:
+                ausentismos= ausentismos.filter(aus_grupop__patologia__icontains=aus_grupop)
+            if aus_diagn:
+                ausentismos= ausentismos.filter(aus_diagn__diagnostico__icontains=aus_diagn)
+                
             self.request.session["ausentismos"] = self.request.POST
         else:
             self.request.session["ausentismos"] = None        
