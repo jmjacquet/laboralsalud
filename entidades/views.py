@@ -738,7 +738,7 @@ def importar_empleados(request):
                     campos = line[0].split(";")                               
                     cant_campos = len(campos)
                     if cant_campos<>14:
-                        raise Exception(u'La cantidad de campos para el registro es incorrecta!(verifique que no existan ";" ni "")')
+                        raise Exception(u'La cantidad de campos para el registro es incorrecta!(verifique que no existan ";" ni ")')
 
                     dni = campos[0].strip()              
                     # dni = str(random.randrange(29000000,40000000))
