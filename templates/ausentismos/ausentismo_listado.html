@@ -59,7 +59,7 @@
         <th class="no-sort text-center" data-priority="2"><input type="checkbox" id="checkall" title="Seleccionar Todas"/></th>
         <th class="imprimir" data-priority="2">F.Cron.Desde</th>
         <th class="imprimir" data-priority="3">F.Cron.Hasta</th>
-        <th class="imprimir" data-priority="4">Días Caídos</th>
+        <th class="imprimir" width"5%" data-priority="4">DíasCaídos</th>
         <th class="imprimir" data-priority="5">Documento</th>
         <th class="imprimir" data-priority="6">Apellido y Nombre</th>
         <th class="imprimir" data-priority="7">F.Próx.Control</th>
@@ -67,6 +67,7 @@
         <th class="imprimir" data-priority="9">Tipo Ausentismo</th>
         <th class="imprimir" data-priority="11">Grupo Patologico</th>
         <th class="imprimir" data-priority="10">Diagnóstico</th>
+        <th class="imprimir" data-priority="6">F.Modif.</th>
         <th class="imprimir" data-priority="6">F.Carga</th>
       </tr>
     </thead>
@@ -113,12 +114,14 @@
         <td>{{ a.get_tipo_ausentismo_display|default_if_none:'' }}</td>
         <td title="{{ a.aus_grupop|default_if_none:''}}">{{ a.aus_grupop|default_if_none:''|truncatechars:60 }}</td>
         <td title="{{ a.aus_diagn|default_if_none:''}}">{{ a.aus_diagn|default_if_none:''|truncatechars:60 }}</td>
+        <td title="Usuario Creación: {{a.usuario_carga|default_if_none:''}} | Última Modificación: {{a.fecha_modif|date:'d/m/Y'}}">{{ a.fecha_modif|date:'d/m/Y' }}</td>
         <td title="Usuario Creación: {{a.usuario_carga|default_if_none:''}} | Última Modificación: {{a.fecha_modif|date:'d/m/Y'}}">{{ a.fecha_creacion|date:'d/m/Y' }}</td>
       </tr>
     {% endfor %}
   </tbody>
   <tfoot>
   <tr>
+    <th></th>
     <th></th>
     <th></th>
     <th></th>
