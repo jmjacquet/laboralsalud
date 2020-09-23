@@ -68,6 +68,7 @@
         <th class="imprimir" data-priority="11">Grupo Patologico</th>
         <th class="imprimir" data-priority="10">Diagnóstico</th>
         <th class="imprimir" data-priority="6">F.Modif.</th>
+        <th class="imprimir" data-priority="6">F.Reintegro</th>
         <th class="imprimir" data-priority="6">F.Carga</th>
       </tr>
     </thead>
@@ -115,12 +116,14 @@
         <td title="{{ a.aus_grupop|default_if_none:''}}">{{ a.aus_grupop|default_if_none:''|truncatechars:60 }}</td>
         <td title="{{ a.aus_diagn|default_if_none:''}}">{{ a.aus_diagn|default_if_none:''|truncatechars:60 }}</td>
         <td title="Usuario Creación: {{a.usuario_carga|default_if_none:''}} | Última Modificación: {{a.fecha_modif|date:'d/m/Y'}}">{{ a.fecha_modif|date:'d/m/Y' }}</td>
+        <td>{{ a.aus_freintegro|date:'d/m/Y' }}</td>
         <td title="Usuario Creación: {{a.usuario_carga|default_if_none:''}} | Última Modificación: {{a.fecha_modif|date:'d/m/Y'}}">{{ a.fecha_creacion|date:'d/m/Y' }}</td>
       </tr>
     {% endfor %}
   </tbody>
   <tfoot>
   <tr>
+    <th></th>
     <th></th>
     <th></th>
     <th></th>
