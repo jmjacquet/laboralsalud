@@ -47,7 +47,8 @@ class AusentismoView(VariablesMixin,ListView):
         form = ConsultaAusentismos(busq or None,request=self.request)   
         fdesde=hoy()
         fhasta=finMes()
-        ausentismos = ausentismo.objects.filter(baja=False,empleado__empresa__pk__in=empresas_habilitadas(self.request))
+        empresas = empresas_habilitadas(self.request)
+        ausentismos = ausentismo.objects.filter(baja=False,empleado__empresa__pk__in=empresas)
         ausentismos = ausentismos.filter(aus_fcronhasta__gte=hoy())                               
         if form.is_valid():                                                        
             fcontrol = form.cleaned_data['fcontrol']   
@@ -64,7 +65,7 @@ class AusentismoView(VariablesMixin,ListView):
             if not fhasta:
                 fhasta=proximo_anio()
             
-            ausentismos = ausentismo.objects.filter(empleado__empresa__pk__in=empresas_habilitadas(self.request))
+            ausentismos = ausentismo.objects.filter(empleado__empresa__pk__in=empresas)
 
             if int(estado) == 1:  
                 ausentismos = ausentismos.filter(aus_fcronhasta__gte=hoy())

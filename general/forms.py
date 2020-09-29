@@ -6,10 +6,7 @@ from .models import ent_art,ent_cargo,ent_especialidad,ent_medico_prof,ent_empre
 from datetime import datetime, timedelta,date
 from laboralsalud.utilidades import *
 
-class EmpresaModelChoiceField(forms.ModelChoiceField):
-    def label_from_instance(self, obj):		
-		return obj.get_empresa()
-		
+	
 class LoginForm(forms.Form):
 	usuario = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','text-transform': 'uppercase','autofocus':'autofocus'}),required = True)
 	password = forms.CharField(widget=forms.PasswordInput(),required=True)
@@ -20,7 +17,7 @@ class EmpleadoModelChoiceField(forms.ModelChoiceField):
 		return obj.get_empleado()
 
 class TurnosForm(forms.ModelForm):		
-	empresa = EmpresaModelChoiceField(label='Empresa',queryset=ent_empresa.objects.filter(baja=False),empty_label='---',required=True)
+	empresa = forms.ModelChoiceField(label='Empresa',queryset=ent_empresa.objects.filter(baja=False),empty_label='---',required=True)
 	empleado = EmpleadoModelChoiceField(label='Empleado',queryset=ent_empleado.objects.filter(baja=False),empty_label='---',required = True)	
 	fecha =  forms.DateField(label='Fecha',widget=forms.DateInput(attrs={'class': 'form-control datepicker'}),required = True,initial=hoy())
 	hora =  forms.TimeField(label='Hora',widget=forms.TimeInput(attrs={'class': 'form-control'}),required = True)
@@ -34,8 +31,9 @@ class TurnosForm(forms.ModelForm):
 	def __init__(self, *args, **kwargs):
 		request = kwargs.pop('request', None)
 		super(TurnosForm, self).__init__(*args, **kwargs)						
-		self.fields['empleado'].queryset = ent_empleado.objects.filter(baja=False,empresa__pk__in=empresas_habilitadas(request))
-		self.fields['empresa'].queryset = ent_empresa.objects.filter(baja=False,pk__in=empresas_habilitadas(request))				
+		empresas = empresas_habilitadas(request)
+		self.fields['empleado'].queryset = ent_empleado.objects.filter(baja=False,empresa__pk__in=empresas)
+		self.fields['empresa'].queryset = ent_empresa.objects.filter(baja=False,pk__in=empresas)				
 			
 
 	# def clean(self):		
@@ -61,7 +59,7 @@ class TurnosForm(forms.ModelForm):
 class ConsultaTurnos(forms.Form):               	
 	fdesde =  forms.DateField(label='Fecha Desde',widget=forms.DateInput(attrs={'class': 'form-control datepicker'}),required = True,initial=inicioMes())
 	fhasta =  forms.DateField(label='Fecha Hasta',widget=forms.DateInput(attrs={'class': 'form-control datepicker'}),required = True,initial=finMes())    	
-	qempresa = EmpresaModelChoiceField(label='Empresa',queryset=ent_empresa.objects.filter(baja=False),empty_label='Todas',required=False)
+	qempresa = forms.ModelChoiceField(label='Empresa',queryset=ent_empresa.objects.filter(baja=False),empty_label='Todas',required=False)
 	qempleado = forms.CharField(required=False,label='Empleado')	
 	qestado = forms.ChoiceField(label='Estado',choices=ESTADO_TURNO_,required=False,initial=3)
 	def __init__(self, *args, **kwargs):		

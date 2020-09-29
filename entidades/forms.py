@@ -6,10 +6,7 @@ from .models import ent_art,ent_cargo,ent_especialidad,ent_medico_prof,ent_empre
 from datetime import datetime, timedelta,date
 from laboralsalud.utilidades import *
 
-class EmpresaModelChoiceField(forms.ModelChoiceField):
-    def label_from_instance(self, obj):		
-		return obj.get_empresa()
-		
+	
 class ARTForm(forms.ModelForm):
 	nombre = forms.CharField(widget=forms.TextInput(attrs={'autofocus': 'autofocus'}),required=True)	
 	codigo = forms.CharField(required=True)	
@@ -117,7 +114,7 @@ class EmpleadoForm(forms.ModelForm):
 	trab_armas = forms.ChoiceField(label=u'¿Portación de Armas?',choices=SINO,required=True,initial='N')
 	trab_tareas_dif = forms.ChoiceField(label=u'¿Tareas Diferentes?',choices=SINO,required=True,initial='N')
 	trab_preocupac = forms.ChoiceField(label='¿Preocupacional?',choices=SINO,required=True,initial='N')
-	empresa = EmpresaModelChoiceField(label='Empresa',queryset=ent_empresa.objects.filter(baja=False),required=True)
+	empresa = forms.ModelChoiceField(label='Empresa',queryset=ent_empresa.objects.filter(baja=False),required=True)
 	trab_cargo = TrabajoModelChoiceField(label=u'Puesto de Trabajo',queryset=ent_cargo.objects.filter(baja=False),required=False,)
 	tipo_form = forms.CharField(widget = forms.HiddenInput(), required = False)						
 	class Meta:
@@ -173,7 +170,7 @@ class EmpleadoForm(forms.ModelForm):
 
 		
 class ConsultaEmpleados(forms.Form):               		
-	qempresa = EmpresaModelChoiceField(label='Empresa',queryset=ent_empresa.objects.filter(baja=False),empty_label='Todas',required=False)
+	qempresa = forms.ModelChoiceField(label='Empresa',queryset=ent_empresa.objects.filter(baja=False),empty_label='Todas',required=False)
 	estado = forms.ChoiceField(label='Estado',choices=ESTADO_,required=False,initial=0)	
 	art = forms.ModelChoiceField(label='ART',queryset=ent_art.objects.filter(baja=False),empty_label='Todas',required=False)
 	def __init__(self, *args, **kwargs):		
@@ -183,7 +180,7 @@ class ConsultaEmpleados(forms.Form):
 
 
 class ImportarEmpleadosForm(forms.Form):
-	empresa = EmpresaModelChoiceField(label='Empresa',queryset=ent_empresa.objects.filter(baja=False),empty_label='----',required=True)
+	empresa = forms.ModelChoiceField(label='Empresa',queryset=ent_empresa.objects.filter(baja=False),empty_label='----',required=True)
 	archivo = forms.FileField(label='Seleccione un archivo',required=True)  
 	sobreescribir = forms.ChoiceField(label=u'',choices=SINO,required=True,initial='N')
 	def __init__(self, *args, **kwargs):		

@@ -121,14 +121,14 @@ class PrincipalView(VariablesMixin,TemplateView):
             fecha1=hoy()
         if not fecha2:
             fecha2=hoy()            
-           
+        empresas = empresas_habilitadas(self.request)
         ausentismos = ausentismos_del_dia(self.request,fecha1).order_by('-aus_fcontrol')
-        fechas_control = ausentismo.objects.filter(baja=False,aus_fcontrol=fecha1,empleado__empresa__pk__in=empresas_habilitadas(self.request)).order_by('-aus_fcontrol')
-        prox_turnos = turnos.objects.filter(empresa__pk__in=empresas_habilitadas(self.request),fecha__gte=fecha2)
+        fechas_control = ausentismo.objects.filter(baja=False,aus_fcontrol=fecha1,empleado__empresa__pk__in=empresas).order_by('-aus_fcontrol')
+        prox_turnos = turnos.objects.filter(empresa__pk__in=empresas,fecha__gte=fecha2)
         
         context['form'] = form
         context['ausentismo'] = ausentismos.select_related('empleado','empleado__empresa','aus_grupop','aus_diagn')
-        context['turnos'] = prox_turnos.select_related('empleado','empleado__empresa','usuario_carga')
+        context['turnos'] = prox_turnos.select_related('empleado','empresa','usuario_carga')
         context['fechas_control'] = fechas_control.select_related('empleado','empleado__empresa','aus_grupop','aus_diagn')
        
         # vars_sistema = settings
@@ -254,7 +254,8 @@ class TurnosView(VariablesMixin,ListView):
     def get_context_data(self, **kwargs):
         context = super(TurnosView, self).get_context_data(**kwargs)
         form = ConsultaTurnos(self.request.POST or None,request=self.request)   
-        listado = turnos.objects.filter(empresa__pk__in=empresas_habilitadas(self.request))
+        empresas = empresas_habilitadas(self.request)
+        listado = turnos.objects.filter(empresa__pk__in=empresas)
         if form.is_valid():                                                        
             fdesde = form.cleaned_data['fdesde']   
             fhasta = form.cleaned_data['fhasta']                                                 
@@ -262,7 +263,7 @@ class TurnosView(VariablesMixin,ListView):
             empleado= form.cleaned_data['qempleado']                           
             estado = form.cleaned_data['qestado']
 
-            listado = turnos.objects.filter(empresa__pk__in=empresas_habilitadas(self.request))
+            listado = turnos.objects.filter(empresa__pk__in=empresas)
            
             if fdesde:                
                 listado = listado.filter(fecha__gte=fdesde)                         

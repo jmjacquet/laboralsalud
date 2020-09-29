@@ -7,10 +7,6 @@ from entidades.models import ent_empleado,ent_medico_prof
 from laboralsalud.utilidades import *
 
 
-class EmpresaModelChoiceField(forms.ModelChoiceField):
-    def label_from_instance(self, obj):		
-		return obj.get_empresa()
-
 class EmpleadoModelChoiceField(forms.ModelChoiceField):
     def label_from_instance(self, obj):		
 		return obj.get_empleado()
@@ -57,7 +53,7 @@ class AusentismoForm(forms.ModelForm):
 	aus_grupop = forms.ModelChoiceField(label=agregar_nuevo_html(u'Grupo Patológico','nuevoGrupoP',u'AGREGAR PATOLOGÍA','/ausentismos/patologia/nuevo/','recargarGP',u'Crear nueva Patología','icon-magnifier-add'),queryset=aus_patologia.objects.filter(baja=False),required=False)
 	aus_diagn = forms.ModelChoiceField(label=agregar_nuevo_html(u'Diagnóstico','nuevoDiagn',u'AGREGAR DIAGNÓSTICO','/ausentismos/diagnostico/nuevo/','recargarD',u'Crear nuevo Diagnóstico','icon-magnifier-add'),queryset=aus_diagnostico.objects.filter(baja=False),required=False)
 	aus_medico = MedicoModelChoiceField(label=agregar_nuevo_html(u'Médico Tratante/ART','nuevoMedicoAUS',u'AGREGAR MÉDICO','/entidades/medico_prof/nuevo/','recargarM',u'Crear nuevo Médico','icon-users'),queryset=ent_medico_prof.objects.filter(baja=False),required=False)
-	empresa = EmpresaModelChoiceField(label='Empresa',queryset=ent_empresa.objects.filter(baja=False),required=False)
+	empresa = forms.ModelChoiceField(label='Empresa',queryset=ent_empresa.objects.filter(baja=False),required=False)
 	aus_fcontrol = forms.DateField(label=popover_html(u'Fecha Próx.Control', u'Actualizar a Fecha de próximo Control Programado'),required = False,widget=forms.DateInput(attrs={'class': 'datepicker'}))
 	aus_fcertif = forms.DateField(label='Fecha Certificado',required = False,widget=forms.DateInput(attrs={'class': 'datepicker'}))
 	aus_fentrega_certif = forms.DateField(label='Fecha Entrega Certif.',required = False,widget=forms.DateInput(attrs={'class': 'datepicker'}))
@@ -75,8 +71,9 @@ class AusentismoForm(forms.ModelForm):
 	def __init__(self, *args, **kwargs):
 		request = kwargs.pop('request', None)
 		super(AusentismoForm, self).__init__(*args, **kwargs)		
-		self.fields['empleado'].queryset = ent_empleado.objects.filter(baja=False,empresa__pk__in=empresas_habilitadas(request))
-		self.fields['empresa'].queryset = ent_empresa.objects.filter(baja=False,pk__in=empresas_habilitadas(request))				
+		empresas = empresas_habilitadas(request)
+		self.fields['empleado'].queryset = ent_empleado.objects.filter(baja=False,empresa__pk__in=empresas)
+		self.fields['empresa'].queryset = ent_empresa.objects.filter(baja=False,pk__in=empresas)				
 	  
 	
 	def clean(self):		
@@ -149,7 +146,7 @@ class ConsultaAusentismos(forms.Form):
 	fcontrol =  forms.DateField(label='F.Próx.Control',widget=forms.DateInput(attrs={'class': 'form-control datepicker','autocomplete':'off'}),required = False)
 	fdesde =  forms.DateField(label='F.Cron.Desde',widget=forms.DateInput(attrs={'class': 'form-control datepicker','autocomplete':'off'}),required = False)
 	fhasta =  forms.DateField(label='F.Cron.Hasta',widget=forms.DateInput(attrs={'class': 'form-control datepicker','autocomplete':'off'}),required = False)    	
-	empresa = EmpresaModelChoiceField(label='Empresa',queryset=ent_empresa.objects.filter(baja=False),empty_label='Todas',required=False)	 
+	empresa = forms.ModelChoiceField(label='Empresa',queryset=ent_empresa.objects.filter(baja=False),empty_label='Todas',required=False)	 
 	empleado = forms.CharField(required=False,label='Empleado')	
 	aus_grupop = forms.CharField(label=u'Grupo Patológico',required=False)	
 	aus_diagn = forms.CharField(label=u'Diagnóstico',required=False)	

@@ -102,7 +102,7 @@ class ent_empresa(models.Model):
 		ordering = ['razon_social','cuit']
 
 	def __unicode__(self):
-	    return u'%s' % unicode(self.razon_social)
+	    return u'%s' % unicode(self.razon_social.upper())
 
 	def cantidad_empleados(self):
 		empls = ent_empleado.objects.filter(baja=False).filter(Q(trab_fbaja__isnull=True)|Q(trab_fbaja__lt=hoy()))		

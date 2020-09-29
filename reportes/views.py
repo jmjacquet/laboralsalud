@@ -202,7 +202,7 @@ class ReporteResumenPeriodo(VariablesMixin,TemplateView):
             max_grupop = aus_x_grupop[0]['total']+1
             
             empl_mas_faltadores = []
-            for a in ausentismos:
+            for a in ausentismos.select_related('empleado'):
                 dias = dias_ausentes_empl(fdesde,fhasta,a)
                 empl_mas_faltadores.append({'empleado':a.empleado,'dias':dias})
 

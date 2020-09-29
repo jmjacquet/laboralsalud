@@ -47,8 +47,6 @@
                         <i class="icon-settings"> </i> <span class="caret"></span>
                       </button>
                       <ul class="dropdown-menu">
-                        <li><a href="{% url 'medico_prof_detalles' id=a.pk %}" class="modal-detail" data-modal-head="DETALLE MÉDICO/PROF. {{a.codigo}}" data-modal-callback="reload">
-                        <i class=" icon-screen-desktop"></i> Detalle</a></li>
                         
                         <li><a href="{% url 'medico_prof_editar' id=a.pk %}"  class="modal-update " title="Editar" data-modal-callback="reload" data-modal-head="EDITAR MÉDICO/PROF."data-modal-target="#object-{{ a.pk }}"><i class="icon-note"></i> Editar</a></li>
 

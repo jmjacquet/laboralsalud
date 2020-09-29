@@ -328,6 +328,12 @@ class MedProfView(VariablesMixin,ListView):
         if not tiene_permiso(self.request,'med_pantalla'):
             return redirect(reverse('principal'))
         return super(MedProfView, self).dispatch(*args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super(MedProfView, self).get_context_data(**kwargs)
+        med=ent_medico_prof.objects.all().select_related('especialidad')
+        context['med'] = med
+        return context
     
 
 class MedProfCreateView(VariablesMixin,AjaxCreateView):
@@ -550,12 +556,13 @@ class EmpleadoView(VariablesMixin,ListView):
             if 'empleados' in self.request.session:
                 busq = self.request.session["empleados"]
         form = ConsultaEmpleados(busq or None,request=self.request)           
-        empleados = ent_empleado.objects.filter(baja=False,empresa__pk__in=empresas_habilitadas(self.request)).select_related('empresa','trab_cargo','art','usuario_carga')[:1000]         
+        empresas = empresas_habilitadas(self.request)
+        empleados = ent_empleado.objects.filter(baja=False,empresa__pk__in=empresas).select_related('empresa','trab_cargo','art','usuario_carga')[:1000]         
         if form.is_valid():                                                        
             qempresa = form.cleaned_data['qempresa']                                       
             estado = form.cleaned_data['estado']
             art = form.cleaned_data['art']
-            empleados = ent_empleado.objects.filter(empresa__pk__in=empresas_habilitadas(self.request)).select_related('empresa','trab_cargo','art','usuario_carga')                                   
+            empleados = ent_empleado.objects.filter(empresa__pk__in=empresas).select_related('empresa','trab_cargo','art','usuario_carga')                                   
           
             if int(estado) == 0:  
                 empleados = empleados.filter(baja=False)
