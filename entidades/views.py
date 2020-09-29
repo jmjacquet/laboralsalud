@@ -424,6 +424,7 @@ class EmpresaView(VariablesMixin,ListView):
     model = ent_empresa
     template_name = 'entidades/empresa_listado.html'
     context_object_name = 'empresas'
+    
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs): 
@@ -433,6 +434,12 @@ class EmpresaView(VariablesMixin,ListView):
 
     def post(self, *args, **kwargs):
         return self.get(*args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super(EmpresaView, self).get_context_data(**kwargs)
+        empr=ent_empresa.objects.all().select_related('art','casa_central')
+        context['empresas'] = empr
+        return context
     
 
 class EmpresaCreateView(VariablesMixin,AjaxCreateView):

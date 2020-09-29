@@ -23,7 +23,7 @@ ALLOWED_HOSTS = ['*']
 
 # Application definition
 
-INSTALLED_APPS = (
+INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -41,9 +41,9 @@ INSTALLED_APPS = (
     'ausentismos',
     'reportes',        
     'modal',
-)
+]
 
-MIDDLEWARE_CLASSES = (
+MIDDLEWARE  = [
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -53,7 +53,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.middleware.locale.LocaleMiddleware',
-)
+]
 
 ROOT_URLCONF = 'laboralsalud.urls'
 
@@ -136,9 +136,7 @@ MESSAGE_TAGS = {message_constants.DEBUG: 'debug',
 CRISPY_TEMPLATE_PACK = 'bootstrap3'           
 
 INTERNAL_IPS = [
-    # ...
     '127.0.0.1',
-    # ...
 ]
 
 
