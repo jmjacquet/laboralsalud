@@ -38,7 +38,7 @@ class DiagnosticoForm(forms.ModelForm):
 		super(DiagnosticoForm, self).__init__(*args, **kwargs)					
 
 class AusentismoForm(forms.ModelForm):
-	empleado = EmpleadoModelChoiceField(label='Empleado',queryset=ent_empleado.objects.filter(baja=False),empty_label='---',required = True)		
+	empleado = forms.ModelChoiceField(label='Empleado',queryset=ent_empleado.objects.filter(baja=False),empty_label='---',required = True)		
 	tipo_ausentismo = forms.ChoiceField(label='',choices=TIPO_AUSENCIA,required=False,initial=1)
 	aus_tipo_alta = forms.ChoiceField(choices=TIPO_ALTA,required=True,initial=0)
 	tipo_control = forms.ChoiceField(label='',choices=TIPO_CONTROL,required=False,initial='C')
@@ -80,6 +80,9 @@ class AusentismoForm(forms.ModelForm):
 		super(forms.ModelForm,self).clean()	
 		tipo_form = self.cleaned_data.get('tipo_form')
 		empleado = self.cleaned_data.get('empleado')
+		if not empleado:
+			raise forms.ValidationError("Debe cargar un Empleado!")
+			
 		aus_grupop = self.cleaned_data.get('aus_grupop')	
 		if not aus_grupop:
 				self.add_error("aus_grupop",u'¡Debe cargar un Grupo Patológico!')
