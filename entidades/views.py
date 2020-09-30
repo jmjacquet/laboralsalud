@@ -670,6 +670,14 @@ class EmpleadoVerView(VariablesMixin,DetailView):
     def dispatch(self, *args, **kwargs): 
         return super(EmpleadoVerView, self).dispatch(*args, **kwargs)        
 
+    def get_context_data(self, **kwargs):
+        context = super(EmpleadoVerView, self).get_context_data(**kwargs)
+        empleados = self.object
+        context['empleados'] = empleados
+        context['adic'] = (empleados.trab_factores_riesgo or empleados.trab_tareas_dif_det or empleados.trab_anteriores or empleados.trab_antecedentes or \
+                           empleados.trab_accidentes or empleados.trab_vacunas)
+        return context
+
 
 @login_required 
 def empleado_baja_alta(request,id):

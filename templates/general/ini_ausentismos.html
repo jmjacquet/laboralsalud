@@ -11,9 +11,9 @@
           <th class="imprimir" data-priority="8">F.Próx.Control</th>
           <th class="imprimir" data-priority="8">F.Cron.Desde</th>
           <th class="imprimir" data-priority="9">F.Cron.Hasta</th>
-          <th class="imprimir" data-priority="7">Días Caídos</th>
-          <th class="imprimir" data-priority="2">Documento</th>
-          <th class="imprimir" width="150" data-priority="3">Apellido y Nombre</th>          
+          <th class="imprimir" width="50" data-priority="7">DíasC.</th>
+          <th class="imprimir" width="150" data-priority="2">Apellido y Nombre</th>          
+          <th class="imprimir" data-priority="3">Documento</th>          
           <th class="imprimir" width="100" data-priority="5">Empresa</th>
           <th class="imprimir" data-priority="6">Tipo Ausentismo</th>          
           <th class="imprimir" width="100" data-priority="10">Patología</th>
@@ -29,9 +29,9 @@
           <td>{{ a.get_proxcontrol|date:'d/m/Y' }}</td> 
           <td>{{ a.get_fcrondesde|date:'d/m/Y' }}</td>               
           <td>{{ a.get_fcronhasta|date:'d/m/Y' }}</td>
-          <td>{{ a.get_dias_caidos|default_if_none:'' }}</td> 
-          <td>{{ a.empleado.nro_doc|default_if_none:'' }}</td>
+          <td>{{ a.get_dias_caidos|default_if_none:'' }}</td>           
           <td title="{{ a.empleado.apellido_y_nombre|default_if_none:''}}"><a href="{% url 'empleado_detalles' id=a.empleado.id %}"  class="modal-detail" data-modal-head="DETALLE EMPLEADO {{a.empleado.legajo}}" data-modal-callback="reload"><strong>{{ a.empleado.apellido_y_nombre|default_if_none:''|truncatechars:60 }}</strong></a></td>           
+          <td>{{ a.empleado.nro_doc|default_if_none:'' }}</td>
           <td title="{{ a.empleado.get_empresa|default_if_none:''}}">{{ a.empleado.get_empresa|default_if_none:''|truncatechars:60 }}</td>
           <td>{{ a.get_tipo_ausentismo_display|default_if_none:'' }}</td>                         
           <td title="{{ a.aus_grupop|default_if_none:''}}">{{ a.aus_grupop|default_if_none:''|truncatechars:60 }}</td>               
