@@ -50,13 +50,50 @@
             <div class="panel-heading text-center">PROGRESIÓN TASA DE AUSENTISMOS</div>
             <div class="panel-body">
              
-               <div class="row">
-                <div class="col-sm-12">
+
+                <div class="col-sm-8 cerca">
                      <div class="chart" style="padding: 0px; position: relative;"> 
                                 <div id="grafico1" style="width: 100%; height: 100%; margin: 0 auto"></div>
                       </div>    
-                </div>  
-              </div>
+                </div>
+                <div class="col-sm-4 cerca">  
+                  <table  class="tabla_totales table table-striped table-hover tabla_nueva text-nowrap">         
+                    <thead >
+                        <tr>
+                            <th rowspan="2">Mes/Anio</th>
+                            <th colspan="2">Aus.Totales</th>
+                            <th colspan="2">Aus.Inculpables</th>
+                            <th colspan="2">Aus.Accidentes</th>
+                          </tr>
+                          <tr>
+                            <th>Tasa</th>
+                            <th>Empl.</th>
+                            <th>Tasa</th>
+                            <th>Empl.</th>
+                            <th>Tasa</th>
+                            <th>Empl.</th>
+                            
+                          </tr>                        
+                    </thead>
+                    <tbody>
+                        
+                      {% for m in datos_tabla %}
+                        <tr>                                                            
+                            <td class="">{{m.mes.0}}/{{m.mes.1}}</td>                   
+                            <td class="destacada">{{ m.tasa_total|default_if_none:'0' }}</td>                   
+                            <td class="destacada">{{ m.ta_cant_empls|default_if_none:'0' }}</td>                   
+                            <td class="">{{ m.tasa_inclup|default_if_none:'0' }}</td>                   
+                            <td class="">{{ m.empl_inculp|default_if_none:'0' }}</td>    
+                            <td class="">{{ m.tasa_acc|default_if_none:'0' }}</td>                   
+                            <td class="">{{ m.empl_acc|default_if_none:'0' }}</td>    
+                        </tr>
+                       {% endfor %}
+                        
+                    </tbody>
+                    
+                </table>
+                </div>
+ 
                 
             </div>
           </div>
@@ -120,7 +157,8 @@ $.fn.datepicker.dates['es'] = {
 });      
 jQuery(document).ready(function($) {       
 Highcharts.chart('grafico1', {
- title: {
+    
+    title: {
             text : null,
           },
     xAxis: {
@@ -152,25 +190,40 @@ Highcharts.chart('grafico1', {
     plotOptions: {
         series: {
             label: {
-                connectorAllowed: false
+                connectorAllowed: true
             },
             marker: {
                 lineWidth: 1
+            },
+           
+            dataLabels: {
+                enabled: true,
+                inside:true,
+                formatter: function(){
+                    return (this.y!=0)?this.y:"";
+                    },
+                
+
             }
+      
           
         }
     },
 
-    series: [{
+     series: [
+    {
+        name: 'Tasa Ausentismo Total',
+        type: 'line',
+        data: {{totales|safe}},        
+    },{
         name: 'Tasa x Inculpables',
-        data: {{inculpables|safe}}
+        data: {{inculpables|safe}},
+        type: 'column',
     }, {
         name: 'Tasa x Accidente',
-        data: {{accidentes|safe}}
-    }, {
-        name: 'Tasa x Enfermedad Profesional',
-        data: {{enfermos|safe}}
-    }, ],
+        data: {{accidentes|safe}},
+        type: 'column',
+    },],
 
     responsive: {
         rules: [{

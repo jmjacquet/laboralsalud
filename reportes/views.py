@@ -223,7 +223,7 @@ class ReporteResumenPeriodo(VariablesMixin,TemplateView):
 
 
 class ReporteResumenAnual(VariablesMixin,TemplateView):
-    template_name = 'reportes/resumen_anual.html'
+    template_name = 'reportes/resumen_anual2.html'
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):                 
@@ -288,145 +288,11 @@ class ReporteResumenAnual(VariablesMixin,TemplateView):
         aus_acc = None
         dias_laborables = 0  
         porc_dias_trab_tot = 100
-        inculpables = []
-        accidentes = []
-        enfermos = []
-        import time
-        from dateutil.rrule import rrule, MONTHLY
-        
-        meses = [[int(dt.strftime("%m")),int(dt.strftime("%y"))] for dt in rrule(MONTHLY, dtstart=fdesde, until=fhasta)]
-        
-        
-        # import locale        
-        # locale.setlocale(locale.LC_ALL, '')
-        listado_meses = ["%s%s" % (MESES[int(dt.strftime("%m"))-1][1].upper(),(dt.strftime("%y"))) for dt in rrule(MONTHLY, dtstart=fdesde, until=fhasta)]
-        if empresa:
-            empleados_tot = empresa.cantidad_empleados()
-        if ausentismos:                                                    
-            for m in meses:                
-                dias_laborables = int(dias_mes(m[0],m[1],fdesde,fhasta))                 
-                ausencias = en_mes_anio(m[0],m[1],ausentismos)
-                
-                qs_inculpables = ausencias.filter(tipo_ausentismo=1)
-                ausenc_inculp = dias_ausentes_mes(m[0],m[1],qs_inculpables)            
-                # empl_tot_inculp= qs_inculpables.values('empleado').distinct().count()
-                empl_tot_inculp = empleados_tot
-                dias_trab_tot = (dias_laborables * empl_tot_inculp)-ausenc_inculp
-                if ausenc_inculp >0:                    
-                    tasa_inclup =  calcular_tasa_ausentismo(ausenc_inculp,dias_laborables,empl_tot_inculp)                        
-                else:
-                    tasa_inclup = 0
-                inculpables.append(tasa_inclup)
-                
-                qs_accidentes = ausencias.filter(tipo_ausentismo=2)
-                ausenc_acc = dias_ausentes_mes(m[0],m[1],qs_accidentes)  
-                # ausenc_acc = qs_accidentes.count()
-                # empl_tot_acc= qs_accidentes.values('empleado').distinct().count()
-                empl_tot_acc = empleados_tot
-                dias_trab_tot = (dias_laborables * empl_tot_acc)-ausenc_acc
-                if ausenc_acc >0:
-                    tasa_acc =  calcular_tasa_ausentismo(ausenc_acc,dias_laborables,empl_tot_acc)                        
-                else:
-                    tasa_acc = 0
-                accidentes.append(tasa_acc)
-
-                qs_enfermos = ausencias.filter(tipo_ausentismo=3)
-                ausenc_enf = dias_ausentes_mes(m[0],m[1],qs_enfermos)  
-                # ausenc_enf = qs_enfermos.count()
-                # empl_tot_enf= qs_enfermos.values('empleado').distinct().count()
-                empl_tot_enf = empleados_tot
-                dias_trab_tot = (dias_laborables * empl_tot_enf)-ausenc_enf
-                if ausenc_enf >0:
-                    tasa_enf =  calcular_tasa_ausentismo(ausenc_enf,dias_laborables,empl_tot_enf)                    
-                else:
-                    tasa_enf = 0
-                enfermos.append(tasa_enf)
-
-
-        context['inculpables']=  json.dumps(inculpables,cls=DecimalEncoder)        
-        context['accidentes']=  json.dumps(accidentes,cls=DecimalEncoder)        
-        context['enfermos']=  json.dumps(enfermos,cls=DecimalEncoder)        
-        
-     
-      
-        context['listado_meses']=  json.dumps(listado_meses,cls=DecimalEncoder) 
-      
-        
-        return context
-
-    def post(self, *args, **kwargs):
-        return self.get(*args, **kwargs)
-
-class ReporteResumenAnual2(VariablesMixin,TemplateView):
-    template_name = 'reportes/resumen_anual2.html'
-
-    @method_decorator(login_required)
-    def dispatch(self, *args, **kwargs):                 
-        if not tiene_permiso(self.request,'indic_pantalla'):
-            return redirect(reverse('principal'))  
-        return super(ReporteResumenAnual2, self).dispatch(*args,**kwargs)
-
-    def get_context_data(self, **kwargs):
-        context = super(ReporteResumenAnual2, self).get_context_data(**kwargs)
-
-        form = ConsultaAnual(self.request.POST or None,request=self.request)            
-        fecha = date.today()        
-               
-        fdesde = ultimo_anio()
-        fhasta = hoy()
-        empresa = None
-        if form.is_valid():                                                        
-            fdesde = form.cleaned_data['fdesde']   
-            fhasta = form.cleaned_data['fhasta']                                                 
-            empresa = form.cleaned_data['empresa']                           
-            empleado= form.cleaned_data['empleado']                           
-            tipo_ausentismo = form.cleaned_data['tipo_ausentismo']     
-            trab_cargo= form.cleaned_data['trab_cargo']                           
-
-            ausentismos = ausentismo.objects.filter(baja=False)                      
-          
-            if fdesde:                
-                ausencias = ausentismos.filter(aus_fcrondesde__gte=fdesde)            
-            if empresa:
-                if empresa.casa_central:
-                    ausentismos= ausentismos.filter(empleado__empresa=empresa)
-                else:
-                    ausentismos= ausentismos.filter(Q(empleado__empresa=empresa)|Q(empleado__empresa__casa_central=empresa))
-            else:
-                ausentismos= ausentismos.filter(empleado__empresa__pk__in=empresas_habilitadas(self.request))
-
-            if empleado:
-                ausentismos= ausentismos.filter(Q(empleado__apellido_y_nombre__icontains=empleado)|Q(empleado__nro_doc__icontains=empleado))
-            if trab_cargo:
-                ausentismos= ausentismos.filter(empleado__trab_cargo=trab_cargo)            
-
-            if int(tipo_ausentismo) > 0: 
-                ausentismos = ausentismos.filter(tipo_ausentismo=int(tipo_ausentismo))           
-
-        else:
-            
-            ausentismos = None            
-
-        context['form'] = form
-        context['fecha'] = fecha        
-        context['fdesde'] = fdesde
-        context['fhasta'] = fhasta
-        context['ausentismos'] = ausentismos
-        context['empresa'] = empresa
-        dias_laborales = 0
-        dias_caidos_tot = 0
-        empleados_tot = 0
-        dias_trab_tot = 0
-        tasa_ausentismo = 0
-        aus_total = None
-        aus_inc = None
-        aus_acc = None
-        dias_laborables = 0  
-        porc_dias_trab_tot = 100
         totales = []
         inculpables = []
         accidentes = []
         enfermos = []
+        datos_tabla = []
         import time
         from dateutil.rrule import rrule, MONTHLY
         
@@ -436,6 +302,7 @@ class ReporteResumenAnual2(VariablesMixin,TemplateView):
         # import locale        
         # locale.setlocale(locale.LC_ALL, '')
         listado_meses = ["%s%s" % (MESES[int(dt.strftime("%m"))-1][1].upper(),(dt.strftime("%y"))) for dt in rrule(MONTHLY, dtstart=fdesde, until=fhasta)]
+
         if empresa:
             empleados_tot = empresa.cantidad_empleados()
         if ausentismos:                                                    
@@ -445,16 +312,18 @@ class ReporteResumenAnual2(VariablesMixin,TemplateView):
                 
                 qs_totales = ausencias
                 ausenc_totales = dias_ausentes_mes(m[0],m[1],ausencias)            
+                
                 empl_totales = empleados_tot
                 dias_trab_tot = (dias_laborables * empl_totales)-ausenc_totales
+                
                 if ausenc_totales >0:                    
                     tasa_total =  calcular_tasa_ausentismo(ausenc_totales,dias_laborables,empl_totales)                        
                 else:
                     tasa_total = 0
-                totales.append(tasa_total)
+                ta_cant_empls = qs_totales.values('empleado').distinct().count()
                 
-
-
+                totales.append({'y':tasa_total,'custom':{'empleados':ta_cant_empls}})               
+                
                 qs_inculpables = ausencias.filter(tipo_ausentismo=1)
                 ausenc_inculp = dias_ausentes_mes(m[0],m[1],qs_inculpables)            
                 # empl_tot_inculp= qs_inculpables.values('empleado').distinct().count()
@@ -464,7 +333,9 @@ class ReporteResumenAnual2(VariablesMixin,TemplateView):
                     tasa_inclup =  calcular_tasa_ausentismo(ausenc_inculp,dias_laborables,empl_tot_inculp)                        
                 else:
                     tasa_inclup = 0
-                inculpables.append(tasa_inclup)
+                empl_inculp = qs_inculpables.values('empleado').distinct().count()                
+                inculpables.append({'y':tasa_inclup,'custom':{'empleados':empl_inculp}})
+                
                 
                 qs_accidentes = ausencias.filter(tipo_ausentismo=2)
                 ausenc_acc = dias_ausentes_mes(m[0],m[1],qs_accidentes)  
@@ -476,7 +347,9 @@ class ReporteResumenAnual2(VariablesMixin,TemplateView):
                     tasa_acc =  calcular_tasa_ausentismo(ausenc_acc,dias_laborables,empl_tot_acc)                        
                 else:
                     tasa_acc = 0
-                accidentes.append(tasa_acc)
+                empl_acc = qs_accidentes.values('empleado').distinct().count()                
+                accidentes.append({'y':tasa_acc,'custom':{'empleados':empl_acc}})
+
 
                 qs_enfermos = ausencias.filter(tipo_ausentismo=3)
                 ausenc_enf = dias_ausentes_mes(m[0],m[1],qs_enfermos)  
@@ -488,7 +361,13 @@ class ReporteResumenAnual2(VariablesMixin,TemplateView):
                     tasa_enf =  calcular_tasa_ausentismo(ausenc_enf,dias_laborables,empl_tot_enf)                    
                 else:
                     tasa_enf = 0
+                
                 enfermos.append(tasa_enf)
+
+                datos_tabla.append({'mes':m,'tasa_total':tasa_total,'ta_cant_empls':ta_cant_empls,\
+                                    'tasa_inclup':tasa_inclup,'empl_inculp':empl_inculp,'tasa_acc':tasa_acc,'empl_acc':empl_acc
+                    })
+
 
 
         context['inculpables']=  json.dumps(inculpables,cls=DecimalEncoder)        
@@ -497,8 +376,9 @@ class ReporteResumenAnual2(VariablesMixin,TemplateView):
         context['totales']=  json.dumps(totales,cls=DecimalEncoder)        
         
      
-      
+
         context['listado_meses']=  json.dumps(listado_meses,cls=DecimalEncoder) 
+        context['datos_tabla']=  datos_tabla
       
         
         return context
