@@ -43,11 +43,11 @@ table.dataTable thead th div.DataTables_sort_wrapper{padding:0}
 table.dataTable thead th{padding:1px}
 .table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td
 {padding:2px 3px 2px 3px;line-height:1.42857143;vertical-align:middle;font-size:10px;}
-table.tabla_totales > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td{
+table.tabla_totales > thead > tr > th, .tabla_totales > tbody > tr > th, .tabla_totales > tfoot > tr > th, .tabla_totales > thead > tr > td, .tabla_totales > tbody > tr > td, .tabla_totales > tfoot > tr > td{
     text-align: center;
     border:1px solid #ccc
 }
-.destacada{background-color: #d3faff }
+.destacada{background-color: #c1dcf6 }
 table.dataTable td a{margin-right:3px;}
 table.dataTable td button{padding:1px 3px;font-size:11px;}
 table.dataTable td span a{margin-right:3px;}

@@ -214,7 +214,8 @@ class ReporteResumenPeriodo(VariablesMixin,TemplateView):
         context['aus_x_grupop']=  aus_x_grupop
         context['max_grupop']=  max_grupop
         context['dias_laborables']=  dias_laborables             
-        context['empl_mas_faltadores']=  empl_mas_faltadores[:6]             
+        context['empl_mas_faltadores']=  empl_mas_faltadores[:6]  
+           
         return context
 
     def post(self, *args, **kwargs):                
@@ -223,7 +224,7 @@ class ReporteResumenPeriodo(VariablesMixin,TemplateView):
 
 
 class ReporteResumenAnual(VariablesMixin,TemplateView):
-    template_name = 'reportes/resumen_anual2.html'
+    template_name = 'reportes/resumen_anual.html'
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):                 
@@ -236,10 +237,10 @@ class ReporteResumenAnual(VariablesMixin,TemplateView):
 
         form = ConsultaAnual(self.request.POST or None,request=self.request)            
         fecha = date.today()        
-               
+        empresa = None
+        filtro = u""       
         fdesde = ultimo_anio()
         fhasta = hoy()
-        empresa = None
         if form.is_valid():                                                        
             fdesde = form.cleaned_data['fdesde']   
             fhasta = form.cleaned_data['fhasta']                                                 
@@ -251,7 +252,9 @@ class ReporteResumenAnual(VariablesMixin,TemplateView):
             ausentismos = ausentismo.objects.filter(baja=False)                      
           
             if fdesde:                
-                ausencias = ausentismos.filter(aus_fcrondesde__gte=fdesde)            
+                ausentismos = ausentismos.filter(aus_fcrondesde__gte=fdesde)            
+            if fhasta:                
+                ausentismos = ausentismos.filter(aus_fcronhasta__lte=fhasta)    
             if empresa:
                 if empresa.casa_central:
                     ausentismos= ausentismos.filter(empleado__empresa=empresa)
@@ -362,24 +365,42 @@ class ReporteResumenAnual(VariablesMixin,TemplateView):
                 else:
                     tasa_enf = 0
                 
-                enfermos.append(tasa_enf)
-
+                enfermos.append(tasa_enf)          
+                                
                 datos_tabla.append({'mes':m,'tasa_total':tasa_total,'ta_cant_empls':ta_cant_empls,\
                                     'tasa_inclup':tasa_inclup,'empl_inculp':empl_inculp,'tasa_acc':tasa_acc,'empl_acc':empl_acc
                     })
 
+            # aus_x_grupop_tot = ausentismos.values('aus_grupop__pk').annotate(total=Count('aus_grupop')).order_by('-total')[:5]
+            # # print aus_x_grupop_tot
+            # id_grupos = [int(x['aus_grupop__pk']) for x in aus_x_grupop_tot]
+            
+            # for m in meses:
+            #  ausencias = en_mes_anio(m[0],m[1],ausentismos)
+            #  aus_x_grupop = ausencias.filter(aus_grupop__pk__in=[23]).values('aus_grupop__patologia','aus_grupop__pk').annotate(total=Count('aus_grupop')).order_by('-total')[:5]
+            #  print m,aus_x_grupop
 
 
-        context['inculpables']=  json.dumps(inculpables,cls=DecimalEncoder)        
-        context['accidentes']=  json.dumps(accidentes,cls=DecimalEncoder)        
-        context['enfermos']=  json.dumps(enfermos,cls=DecimalEncoder)        
-        context['totales']=  json.dumps(totales,cls=DecimalEncoder)        
+
+
+            context['inculpables']=  json.dumps(inculpables,cls=DecimalEncoder)        
+            context['accidentes']=  json.dumps(accidentes,cls=DecimalEncoder)        
+            context['enfermos']=  json.dumps(enfermos,cls=DecimalEncoder)        
+            context['totales']=  json.dumps(totales,cls=DecimalEncoder)        
+        else:
+            context['inculpables']=  None     
+            context['accidentes']=  None
+            context['enfermos']=  None
+            context['totales']=  None
         
      
 
         context['listado_meses']=  json.dumps(listado_meses,cls=DecimalEncoder) 
         context['datos_tabla']=  datos_tabla
-      
+        context['empresa'] = empresa
+        context['titulo_reporte'] = u"REPORTE INDICADORES : %s "%(empresa)                  
+        context['filtro'] = filtro
+        context['pie_pagina'] = "Sistemas Laboral Salud - %s" % (fecha.strftime("%d/%m/%Y"))        
         
         return context
 

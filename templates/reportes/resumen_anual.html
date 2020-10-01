@@ -6,6 +6,8 @@
 {% block extra_js %}
 <script src="{% static 'js/highcharts.js' %}" type="text/javascript"></script>
 <script src="{% static 'js/exporting.js' %}" type="text/javascript"></script>
+<script src="{% static 'js/canvg.js' %}" type="text/javascript"></script>
+
 {% endblock extra_js %}
 {% block breadcrumbs %}              
         <div class="breadcrumbs">
@@ -35,29 +37,32 @@
                           <div class="col-sm-2">{% bootstrap_field form.tipo_ausentismo  %}</div>                            
                           <div class="col-sm-2">{% bootstrap_field form.trab_cargo  %}</div>                            
                           <div class="col-sm-3">{% bootstrap_field form.empleado  %}</div>                                            
-                          <div class="col-sm-12"><button class="btn btn-xs btn-primary text-center pull-right" type="submit">Buscar</button></div>
+                          <div class="col-sm-12">
+                            {% if ausentismos %} 
+                            <button class="btn btn-xs btn-primary text-center pull-left" id="exportar" type="button">Exportar</button>
+                            {% endif %}
+                            <button class="btn btn-xs btn-primary text-center pull-right" type="submit">Buscar</button>
+                          </div>
                   </div>     
                   </form>         
               </div>
       </div>  
   </div>
 </div>
-                                                     
-  <div class="row">  
-    
+
+ {% if totales %}                                                    
+  <div class="row">      
       <div class="col-sm-12">
           <div class="panel panel-primary">
             <div class="panel-heading text-center">PROGRESIÓN TASA DE AUSENTISMOS</div>
-            <div class="panel-body">
-             
-
+            <div class="panel-body">             
                 <div class="col-sm-8 cerca">
-                     <div class="chart" style="padding: 0px; position: relative;"> 
+                     <div  id="ausentismos" class="chart" style="padding: 0px; position: relative;"> 
                                 <div id="grafico1" style="width: 100%; height: 100%; margin: 0 auto"></div>
                       </div>    
                 </div>
-                <div class="col-sm-4 cerca">  
-                  <table  class="tabla_totales table table-striped table-hover tabla_nueva text-nowrap">         
+                <div class="col-sm-4 cerca" >  
+                  <table  id="tabla_ausentismos" style="margin: 0 auto; border:1px solid;text-align:center" class="tabla_totales table table-striped table-hover tabla_nueva text-nowrap">         
                     <thead >
                         <tr>
                             <th rowspan="2">Mes/Anio</th>
@@ -72,11 +77,9 @@
                             <th>Empl.</th>
                             <th>Tasa</th>
                             <th>Empl.</th>
-                            
                           </tr>                        
                     </thead>
                     <tbody>
-                        
                       {% for m in datos_tabla %}
                         <tr>                                                            
                             <td class="">{{m.mes.0}}/{{m.mes.1}}</td>                   
@@ -87,25 +90,21 @@
                             <td class="">{{ m.tasa_acc|default_if_none:'0' }}</td>                   
                             <td class="">{{ m.empl_acc|default_if_none:'0' }}</td>    
                         </tr>
-                       {% endfor %}
-                        
+                      {% endfor %}
                     </tbody>
-                    
                 </table>
                 </div>
- 
-                
             </div>
-          </div>
-          
-      </div>
-   
+          </div>          
+      </div>   
   </div>
-           
+ {% endif %}  
+
 </div>
 
 
-
+<script src="{% static 'js/jspdf.debug.js' %}" type="text/javascript"></script>
+<script src="{% static 'js/jspdf.plugin.autotable.js' %}"  type="text/javascript"></script>
 <script type="text/javascript">
   
 $(document).ready(function() {  
@@ -158,9 +157,12 @@ $.fn.datepicker.dates['es'] = {
 jQuery(document).ready(function($) {       
 Highcharts.chart('grafico1', {
     
-    title: {
-            text : null,
-          },
+    credits: {
+                    enabled: false
+                  },
+      title: {
+              text : null,
+            },
     xAxis: {
               categories: {{ listado_meses|safe }},
               title: {
@@ -189,24 +191,28 @@ Highcharts.chart('grafico1', {
 
     plotOptions: {
         series: {
-            label: {
-                connectorAllowed: true
-            },
+
             marker: {
                 lineWidth: 1
             },
-           
+             
+            // pointWidth: 25,
             dataLabels: {
                 enabled: true,
                 inside:true,
                 formatter: function(){
                     return (this.y!=0)?this.y:"";
                     },
-                
-
+                style:{
+                  fontSize: '8px',
+                }
             }
       
           
+        },
+        column: {
+            grouping: true,
+            shadow: false
         }
     },
 
@@ -214,21 +220,24 @@ Highcharts.chart('grafico1', {
     {
         name: 'Tasa Ausentismo Total',
         type: 'line',
-        data: {{totales|safe}},        
-    },{
+        data: {{totales|safe}},         
+    }
+    ,{
         name: 'Tasa x Inculpables',
         data: {{inculpables|safe}},
         type: 'column',
+         pointPadding: 0
     }, {
         name: 'Tasa x Accidente',
         data: {{accidentes|safe}},
         type: 'column',
+         pointPadding: 0.1
     },],
 
     responsive: {
         rules: [{
             condition: {
-                maxWidth: 500
+                maxWidth: 600
             },
             chartOptions: {
                 legend: {
@@ -241,9 +250,113 @@ Highcharts.chart('grafico1', {
     }
 
 });
+
+
+(function (H) {
+    H.Chart.prototype.createCanvas = function (divId) {
+        var svg = this.getSVG(),
+            width = parseInt(svg.match(/width="([0-9]+)"/)[1]),
+            height = parseInt(svg.match(/height="([0-9]+)"/)[1]),
+            canvas = document.createElement('canvas');
+
+        canvas.setAttribute('width', width);
+        canvas.setAttribute('height', height);
+
+        if (canvas.getContext && canvas.getContext('2d')) {
+
+            canvg(canvas, svg);
+
+            return canvas.toDataURL("image/jpeg");
+
+        } 
+        else {
+            alert("Your browser doesn't support this feature, please use a modern browser");
+            return false;
+        }
+
+    }
+}(Highcharts));
+    
+    function agregar_linea(texto,ltexto,htexto,h,idtabla,idgrafico,marginleft)
+    {
+      doc.text(texto,ltexto,h+htexto,'center');
+      //doc.text("AUSENTISMOS TOTALES", 14, 33, null, null, "center");
+      // doc.line(20,35,90, 35);    
+
+      var table = doc.autoTable(
+        {
+          startY: h+3+htexto, 
+          html: idtabla, 
+          styles: {fontSize: 6,cellwidth: 'wrap',overflow: 'linebreak'},
+          columnStyles: { 0: { halign: 'right' },2: { halign: 'right' } },
+          tableWidth: 'wrap',
+          tableLineWidth:0.5,   
+          margin: {left: marginleft}
+         }
+      );            
+      var imageData = $(idgrafico).highcharts().createCanvas();
+      doc.addImage(imageData, 'JPEG', 105,h-7,chartWidth, chartHeight);
+      //addImage(imagedata, type, x, y, width, height)
+      //save with name
+    };
+
+
+    var doc = new jsPDF({orientation: 'l', unit: 'mm', format: 'a4',});
+
+    var logo = new Image();
+    logo.src  = "{% static 'img/logo.jpg' %}";
+    var pagewidth = doc.internal.pageSize.width;
+    var pageheight = doc.internal.pageSize.height;
+    doc.addImage(logo, 'JPEG', 5,5,10, 10);
+    doc.setFontSize(15);    
+    doc.setFontType('bold');    
+    doc.text('{{titulo_reporte}}', 143, 10, 'center');
+    doc.setFontSize(10);  
+    doc.text('{{filtro}}', 143, 15, 'center');
+
+    
+    var chartHeight = 48*2;
+    var chartWidth = 95*2;
+    specialElementHandlers = {
+            // element with id of "bypass" - jQuery style selector
+            '#bypassme': function (element, renderer) {
+                // true = "handled elsewhere, bypass text extraction"
+                return true
+            }
+        };    
+    
+    doc.setFontSize(10);    
+    doc.setFontType('bold');    
+    var altura = 30;   
+     
+    var imageData = $("#grafico1").highcharts().createCanvas();      
+    doc.text('PROGRESIÓN TASA DE AUSENTISMOS', 185, altura-2, 'center');
+    doc.addImage(imageData, 'JPG', 110,altura,imageData.width,imageData.height);
+    
+    doc.text('TABLA DE REFERENCIAS',65, altura-2, 'center');
+    var table2 = doc.autoTable(
+      {
+        startY: altura+2, 
+        html:"#tabla_ausentismos" , 
+        styles: {fontSize: 6,cellwidth: 'auto',overflow: 'auto'},        
+        tableWidth: 'wrap',
+        tableLineWidth:0.5,   
+        margin: {left: 30}
+       });
+        
+    
+    doc.setFontSize(5);
+    doc.setFontType('italic');            
+    doc.text('{{pie_pagina}}', 15, 203);
+    doc.addImage(logo, 'JPEG', 5,200,5, 5);
+    $('#exportar').click(function () {
+      doc.save('reporte_ausentismos_anual.pdf');
+        // doc.autoPrint();
+    });
+
+
+
 });
-
-
 </script>
 
 {% endblock principal %}
