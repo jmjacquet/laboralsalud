@@ -7,10 +7,14 @@ from datetime import datetime, timedelta,date
 from laboralsalud.utilidades import *
 
 	
+class EmpresasLoginModelChoiceField(forms.ModelChoiceField):
+    def label_from_instance(self, obj):		
+		return u'%s' % unicode(obj.razon_social.upper().replace(" (CC)",""))
+
 class LoginForm(forms.Form):
 	usuario = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','text-transform': 'uppercase','autofocus':'autofocus'}),required = True)
 	password = forms.CharField(widget=forms.PasswordInput(),required=True)
-	empresa = forms.ModelChoiceField(label='Empresa',queryset=ent_empresa.objects.filter(baja=False,casa_central__isnull=True),empty_label='Administrador',required=False)
+	empresa = EmpresasLoginModelChoiceField(label='Empresa',queryset=ent_empresa.objects.filter(baja=False,casa_central__isnull=True),empty_label='Administrador',required=False)
 
 class EmpleadoModelChoiceField(forms.ModelChoiceField):
     def label_from_instance(self, obj):		
