@@ -65,7 +65,7 @@ class VariablesMixin(object):
 
 def getVariablesMixin(request):
     from usuarios.views import ver_permisos
-    context = {}     
+    context = dict({})     
     usr= request.user     
     try:
         context['usuario'] = usuario_actual(request)                        

@@ -299,12 +299,12 @@ class ReporteResumenAnual(VariablesMixin,TemplateView):
         import time
         from dateutil.rrule import rrule, MONTHLY
         
-        meses = [[int(dt.strftime("%m")),int(dt.strftime("%y"))] for dt in rrule(MONTHLY, dtstart=fdesde, until=fhasta)]
+        meses = [[int(dt.strftime("%m")),int(dt.strftime("%Y"))] for dt in rrule(MONTHLY, dtstart=fdesde, until=fhasta)]
         
         
         # import locale        
         # locale.setlocale(locale.LC_ALL, '')
-        listado_meses = ["%s%s" % (MESES[int(dt.strftime("%m"))-1][1].upper(),(dt.strftime("%y"))) for dt in rrule(MONTHLY, dtstart=fdesde, until=fhasta)]
+        listado_meses = ["%s%s" % (MESES[int(dt.strftime("%m"))-1][1].upper(),(dt.strftime("%Y"))) for dt in rrule(MONTHLY, dtstart=fdesde, until=fhasta)]
 
         if empresa:
             empleados_tot = empresa.cantidad_empleados()
@@ -415,9 +415,9 @@ import calendar
 
 def en_mes_anio(mes, anio,ausentismos):
     d_fmt = "{0:>02}/{1:>02}/{2}"
-    fdesde = datetime.strptime(d_fmt.format(1, mes, anio), '%d/%m/%y').date()
+    fdesde = datetime.strptime(d_fmt.format(1, mes, anio), '%d/%m/%Y').date()
     ultimo_dia_mes = calendar.monthrange(anio, mes)[1]
-    fhasta = datetime.strptime(d_fmt.format(ultimo_dia_mes, mes, anio), '%d/%m/%y').date()
+    fhasta = datetime.strptime(d_fmt.format(ultimo_dia_mes, mes, anio), '%d/%m/%Y').date()
     ausencias = ausentismos.filter(
         Q(aus_fcrondesde__range=[fdesde,fhasta])|Q(aus_fcronhasta__range=[fdesde,fhasta])
         |Q(aus_fcrondesde__lt=fdesde,aus_fcronhasta__gt=fhasta))    
@@ -425,9 +425,9 @@ def en_mes_anio(mes, anio,ausentismos):
 
 def dias_mes(mes, anio,fdesde,fhasta):
      d_fmt = "{0:>02}/{1:>02}/{2}"
-     fini = datetime.strptime(d_fmt.format(1, mes, anio), '%d/%m/%y').date()
+     fini = datetime.strptime(d_fmt.format(1, mes, anio), '%d/%m/%Y').date()
      ultimo_dia_mes = calendar.monthrange(anio, mes)[1]
-     ffin = datetime.strptime(d_fmt.format(ultimo_dia_mes, mes, anio), '%d/%m/%y').date()
+     ffin = datetime.strptime(d_fmt.format(ultimo_dia_mes, mes, anio), '%d/%m/%Y').date()
      if fdesde>=fini:
         fini=fdesde
      if fhasta<=ffin:
@@ -462,9 +462,9 @@ def dias_ausentes_empl(fdesde,fhasta,a):
 def dias_ausentes_mes(mes, anio,ausentismos):     
     tot=0
     d_fmt = "{0:>02}/{1:>02}/{2}"
-    fdesde = datetime.strptime(d_fmt.format(1, mes, anio), '%d/%m/%y').date()
+    fdesde = datetime.strptime(d_fmt.format(1, mes, anio), '%d/%m/%Y').date()
     ultimo_dia_mes = calendar.monthrange(anio, mes)[1]
-    fhasta = datetime.strptime(d_fmt.format(ultimo_dia_mes, mes, anio), '%d/%m/%y').date()
+    fhasta = datetime.strptime(d_fmt.format(ultimo_dia_mes, mes, anio), '%d/%m/%Y').date()
     for a in ausentismos:
         fini = a.aus_fcrondesde     
         ffin = a.aus_fcronhasta
