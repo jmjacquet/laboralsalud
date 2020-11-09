@@ -64,13 +64,14 @@ class configuracion(models.Model):
 
 
     def get_datos_mail(self):
+        from django.conf import settings
         d= {}
         d['mensaje_inicial']= u'Estimado/as les envío por este medio el informe correspondiente.'
         d['mail_servidor']= self.mail_servidor or settings.EMAIL_HOST
         d['mail_puerto']= int(self.mail_puerto) or int(settings.EMAIL_PORT)
         d['mail_usuario']= self.mail_usuario or settings.EMAIL_HOST_USER
         d['mail_password']= self.mail_password or settings.EMAIL_HOST_PASSWORD  
-        d['mail_origen']= 'contacto@sistemaslaboralsalud.com.ar'
+        d['mail_origen']= settings.DEFAULT_FROM_EMAIL or 'contacto@sistemaslaboralsalud.com.ar'
         d['mail_cuerpo']= self.mail_cuerpo
             
         return d    
