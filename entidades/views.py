@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 from django.shortcuts import render
-from django.template import RequestContext,Context
-from django.shortcuts import *
+#from django.shortcuts import *
 from .models import *
 from django.views.generic import TemplateView,ListView,CreateView,UpdateView,FormView,DetailView
 from django.conf import settings
@@ -731,8 +730,9 @@ def utf_8_encoder(unicode_csv_data):
 def importar_empleados(request):           
     if not tiene_permiso(request,'empl_pantalla'):
             return redirect(reverse('principal'))
-    context = {}
-    context = getVariablesMixin(request) 
+    ctx = {}
+    ctx = getVariablesMixin(request) 
+    
     if request.method == 'POST':
         form = ImportarEmpleadosForm(request.POST,request.FILES,request=request)
         if form.is_valid(): 
@@ -820,8 +820,9 @@ def importar_empleados(request):
                 messages.error(request,u"Línea:%s -> %s" %(index,e)) 
     else:
         form = ImportarEmpleadosForm(None,None,request=request)
-    context['form'] = form    
-    return render(request, 'entidades/importar_empleados.html',context)
+    ctx.update(form=form)
+    
+    return render(request, 'entidades/importar_empleados.html',context=ctx)
   
 
 def recalcular_cantidad_empleados(empresa):
