@@ -371,27 +371,34 @@ class ReporteResumenAnual(VariablesMixin,TemplateView):
                                     'tasa_inclup':tasa_inclup,'empl_inculp':empl_inculp,'tasa_acc':tasa_acc,'empl_acc':empl_acc
                     })
 
-            # aus_x_grupop_tot = ausentismos.values('aus_grupop__pk').annotate(total=Count('aus_grupop')).order_by('-total')[:5]
-            # # print aus_x_grupop_tot
-            # id_grupos = [int(x['aus_grupop__pk']) for x in aus_x_grupop_tot]
-            
-            # for m in meses:
-            #  ausencias = en_mes_anio(m[0],m[1],ausentismos)
-            #  aus_x_grupop = ausencias.filter(aus_grupop__pk__in=[23]).values('aus_grupop__patologia','aus_grupop__pk').annotate(total=Count('aus_grupop')).order_by('-total')[:5]
-            #  print m,aus_x_grupop
-
-
+            aus_x_grupop_tot = ausentismos.values('aus_grupop__pk','aus_grupop__patologia').annotate(total=Count('aus_grupop')).order_by('aus_grupop__pk')[:5]
+            id_grupos = [int(x['aus_grupop__pk']) for x in aus_x_grupop_tot]
+            listado=[]
+            for m in meses:
+             ausencias = en_mes_anio(m[0],m[1],ausentismos)             
+             aus_x_grupop = list(ausencias.filter(aus_grupop__pk__in=id_grupos).values('aus_grupop__patologia','aus_grupop__pk')\
+                                .annotate(total=Count('aus_grupop')).order_by('-total').values('aus_grupop__patologia','aus_grupop__pk','total'))
+             id_aus_x_grupop = [int(x['aus_grupop__pk']) for x in aus_x_grupop_tot]
+             
+             for x in aus_x_grupop_tot:
+                id=x['aus_grupop__pk']
+                nombre=x['aus_grupop__patologia']
+                total=sum([int(p['total']) for p in aus_x_grupop if id==p['aus_grupop__pk']])
+                listado.append({'mes':m,'custom':{'id':id,'nombre':nombre,'total':total}})
 
 
             context['inculpables']=  json.dumps(inculpables,cls=DecimalEncoder)        
             context['accidentes']=  json.dumps(accidentes,cls=DecimalEncoder)        
             context['enfermos']=  json.dumps(enfermos,cls=DecimalEncoder)        
             context['totales']=  json.dumps(totales,cls=DecimalEncoder)        
+            context['grupop']=  json.dumps(listado)        
+
         else:
             context['inculpables']=  None     
             context['accidentes']=  None
             context['enfermos']=  None
             context['totales']=  None
+            context['grupop']=  None
         
      
 

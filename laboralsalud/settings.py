@@ -110,7 +110,7 @@ MEDIA_URL = '/media/'
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = (
-    os.path.join(SITE_ROOT, "static"),   
+    os.path.join(SITE_ROOT, "staticfiles"),   
 )
 
 STATICFILES_FINDERS = [
