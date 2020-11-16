@@ -1,7 +1,8 @@
 *.pyc
 *.log
-static/*.*
+
+static/
 !generarI25.pyc
 *.ini
-/varios/
+varios/
 requirements.txt

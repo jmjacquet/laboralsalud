@@ -859,7 +859,7 @@ a.fc-more:hover {
 
 .fc-toolbar h2 {
 	margin: 0;
-	font-size: 2em;
+	font-size: 1.8em;
 }
 
 /* button layering (for border precedence) */
@@ -1413,4 +1413,12 @@ be a descendant of the grid when it is being dragged.
 
 .fc-unthemed .fc-list-empty { /* theme will provide own background */
 	background-color: #eee;
+}
+
+
+
+.fc-day-grid-container.fc-scroller {
+    height: auto!important;
+    overflow-y: auto;
+    max-height: 560px;
 }
