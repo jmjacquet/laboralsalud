@@ -48,8 +48,7 @@ class AusentismoView(VariablesMixin,ListView):
         fdesde=hoy()
         fhasta=finMes()
         empresas = empresas_habilitadas(self.request)
-        ausentismos = ausentismo.objects.filter(baja=False,empleado__empresa__pk__in=empresas)
-        ausentismos = ausentismos.filter(aus_fcronhasta__gte=hoy())                               
+        ausentismos = ausentismo.objects.filter(baja=False,empleado__empresa__pk__in=empresas,aus_fcronhasta__gte=hoy())
         if form.is_valid():                                                        
             fcontrol = form.cleaned_data['fcontrol']   
             fdesde = form.cleaned_data['fdesde']   

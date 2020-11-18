@@ -14,6 +14,7 @@ LOGIN_URL = '/login/'
 ROOT_URL = '/'
 
 def login(request):
+    from usuarios.views import ver_permisos
     error = None
     ROOT_URL='/'
     request.session.clear()
@@ -33,7 +34,10 @@ def login(request):
           if user.is_active:                        
             django_login(request, user)            
             if empresa:
-              request.session["empresa"] = empresa.pk       
+              request.session["empresa"] = empresa.pk                     
+              # request.session["permisos"] = list(ver_permisos(request))
+              # request.session["permisos"] = list(ver_permisos(request))
+
             ROOT_URL = reverse('principal')              
             return HttpResponseRedirect(ROOT_URL)
           else:

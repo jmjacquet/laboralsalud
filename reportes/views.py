@@ -241,6 +241,7 @@ class ReporteResumenAnual(VariablesMixin,TemplateView):
         filtro = u""       
         fdesde = ultimo_anio()
         fhasta = hoy()
+        max_grupop = 20
         if form.is_valid():                                                        
             fdesde = form.cleaned_data['fdesde']   
             fhasta = form.cleaned_data['fhasta']                                                 
@@ -385,8 +386,11 @@ class ReporteResumenAnual(VariablesMixin,TemplateView):
                 nombre=x['aus_grupop__patologia']
                 total=sum([int(p['total']) for p in aus_x_grupop if id==p['aus_grupop__pk']])
                 listado.append({'mes':m,'custom':{'id':id,'nombre':nombre,'total':total}})
+            
+            if aus_x_grupop:
+             max_grupop = aus_x_grupop[0]['total']+1                
 
-
+            context['max_grupop']=  max_grupop
             context['inculpables']=  json.dumps(inculpables,cls=DecimalEncoder)        
             context['accidentes']=  json.dumps(accidentes,cls=DecimalEncoder)        
             context['enfermos']=  json.dumps(enfermos,cls=DecimalEncoder)        
