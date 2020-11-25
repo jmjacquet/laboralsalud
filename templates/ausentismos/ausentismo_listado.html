@@ -120,31 +120,31 @@
         <td title="Usuario Creación: {{a.usuario_carga|default_if_none:''}} | Última Modificación: {{a.fecha_modif|date:'d/m/Y'}}">{{ a.fecha_creacion|date:'d/m/Y' }}</td>
       </tr>
     {% endfor %}
-  </tbody>
-  <tfoot>
-  <tr>
-    <th></th>
-    <th></th>
-    <th></th>
-    <th></th>
-    <th></th>
-    <th></th>
-    <th></th>
-    <th></th>
-    <th></th>
-    <th></th>
-    <th></th>
-    <th></th>
-    <th></th>
-    <th></th>
-    <th></th>
-  </tr>
-  </tfoot>
-  
-</table>
+    </tbody>
+    <tfoot>
+    <tr>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+    </tfoot>
+    
+  </table>
 
 <div id="popup" class="modal fade modal-modal" role="dialog"  data-backdrop="static"  data-keyboard="false"></div>
 {% endblock principal %}
 {% block scripts_js %}
-<script src="{% static 'js/scripts/ausentismos_listado.js'%}?{% now "Ymd"%}" type="text/javascript"></script>
+  <script src="{% static 'js/scripts/ausentismos_listado.js'%}?{% now "Ymd"%}" type="text/javascript"></script>
 {% endblock scripts_js %}

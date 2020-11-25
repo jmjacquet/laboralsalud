@@ -3,11 +3,9 @@
 {% load i18n l10n %}
 {% load humanize %}
 {% load bootstrap3 %}
-
 {% block breadcrumbs %}              
         <div class="breadcrumbs">
-            Listado de Empleados <small> carga e impresión</small>
-        
+            Listado de Empleados <small> carga e impresión</small>        
         <button tittle="Búsqueda Avanzada" data-toggle="collapse" aria-expanded="true"  class="btn btn-xs btn-circle pull-right boton_busqueda" data-target="#barra_busqueda" aria-controls="barra_busqueda"><i class="glyphicon glyphicon-search"></i></button>
         </div>
 {% endblock breadcrumbs %}
@@ -34,13 +32,13 @@
                       </div>
               </div>  
           </div>                  
-        </div>
+    </div>
 
     <div class="btn-group " style="float:left;margin-right:20px;margin-bottom:10px;">
         <a class="btn btn-xs btn-primary modal-create" style="float:left;margin-right:20px;" href="{% url 'empleado_nuevo' %}" data-modal-head="AGREGAR EMPLEADO" data-modal-callback="reload">Nuevo Empleado</a>
         <button class="btn btn-xs btn-danger" value="" style="margin-right:10px;" id="btnEliminar">Eliminar</button>
     </div> 
-    <table width="100%" id="empleado" style="display:none;" class="table table-striped compact table-hover table-no-bordered tabla_nueva nowrap">         
+    <table width="100%" id="empleado" style="display:none;" class="table table-striped compact table-hover table-no-bordered tabla_nueva text-nowrap">         
         <thead >
             <tr>
                 <th class="no-sort text-center"data-priority="1">#</th>
