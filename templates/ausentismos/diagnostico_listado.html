@@ -16,8 +16,8 @@
 {% endblock cargando %}
 {% block principal %}                            
 <br>
-    
-     <a class="btn btn-xs btn-primary modal-create" style="float:left;margin-right:20px;" href="{% url 'diagnostico_nuevo' %}" data-modal-head="AGREGAR DIAGNÓSTICO" data-modal-callback="reload">Nuevo Diagnóstico</a>
+    <div class="col-xs-12">
+    <a class="btn btn-xs btn-primary modal-create" style="float:left;margin-right:20px;" href="{% url 'diagnostico_nuevo' %}" data-modal-head="AGREGAR DIAGNÓSTICO" data-modal-callback="reload">Nuevo Diagnóstico</a>
     <table width="100%" id="diagnosticos" style="display:none;" class="table table-striped compact table-hover table-no-bordered tabla_nueva nowrap">         
         <thead >
             <tr>
@@ -65,7 +65,7 @@
         </tfoot>
         
     </table>                   
-
+    </div>
 {% endblock principal %}
 
 {% block scripts_js %}     

@@ -16,7 +16,7 @@ from .forms import TurnosForm,ConsultaTurnos,ConsultaFechasInicio,ConfiguracionF
 from .models import turnos,configuracion
 from ausentismos.models import aus_patologia,aus_diagnostico,ausentismo,ausentismos_del_dia
 from entidades.models import ent_empleado,ent_empresa,ent_medico_prof
-from laboralsalud.utilidades import hoy,usuario_actual,empresa_actual,TIPO_AUSENCIA,empresas_habilitadas,URL_API,mobile,esAdmin,inicioMesAnt
+from laboralsalud.utilidades import hoy,usuario_actual,empresa_actual,TIPO_AUSENCIA,empresas_habilitadas,URL_API,mobile,esAdmin,ultimoMes
 from django.contrib import messages
 import locale
 
@@ -255,7 +255,7 @@ class TurnosView(VariablesMixin,ListView):
         context = super(TurnosView, self).get_context_data(**kwargs)
         form = ConsultaTurnos(self.request.POST or None,request=self.request)   
         empresas = empresas_habilitadas(self.request)
-        listado = turnos.objects.filter(empresa__pk__in=empresas,fecha__gte=inicioMesAnt())
+        listado = turnos.objects.filter(empresa__pk__in=empresas,fecha__gte=ultimoMes())
         if form.is_valid():                                                        
             fdesde = form.cleaned_data['fdesde']   
             fhasta = form.cleaned_data['fhasta']                                                 

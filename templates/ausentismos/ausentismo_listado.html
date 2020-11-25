@@ -44,6 +44,7 @@
       </div>
     </div>
   </div>
+  <div class="col-xs-12">
   {% if 'aus_abm' in permisos_grupo %}
     <div class="btn-group " style="float:left;margin-right:20px;margin-bottom:0px;">
       <a class="btn btn-xs btn-primary" style="float:left;margin-right:20px;" href="{% url 'ausentismo_nuevo' %}" >Nuevo Ausentismo</a>
@@ -52,6 +53,7 @@
       <button class="btn btn-xs btn-primary" id="btnInforme" style="float:left;margin-right:20px;" > Enviar Informe</button>
     </div>
   {% endif %}
+  
   <table width="100%" id="ausentismos" style="display:none;" class="table table-striped compact table-hover table-no-bordered tabla_nueva text-nowrap">
     <thead >
       <tr>
@@ -142,7 +144,7 @@
     </tfoot>
     
   </table>
-
+  </div>
 <div id="popup" class="modal fade modal-modal" role="dialog"  data-backdrop="static"  data-keyboard="false"></div>
 {% endblock principal %}
 {% block scripts_js %}

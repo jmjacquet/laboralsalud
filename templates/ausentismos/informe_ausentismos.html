@@ -11,7 +11,14 @@
 
  @page {
          margin: 0.5cm 0.5cm 1cm 0.5cm;
-         padding: 0;         
+         padding: 0;     
+         background-image:url({% static 'img/portada.jpg' %});             
+        
+         }
+ @page principal {
+         margin: 4cm 0.5cm 1cm 0.5cm;
+         padding: 0;     
+         background-image:url({% static 'img/contenido.jpg' %});    
          @frame footer {
                         -pdf-frame-content: page-footer;
                         bottom: 0cm;
@@ -19,37 +26,37 @@
                         margin-right: 0.5cm;                        
                         margin-left: 0.5cm;                        
                     }
-        
-         }
           @frame header_frame  {
                         -pdf-frame-content: page-header;
-                        margin-top: 0cm;
+                        margin-top: 3cm;
                         margin-right: 1cm;                        
                         margin-left: 1cm;
                         margin-bottom: 1cm;
                         height: 4cm;                      
                     }
+        
+         }
+ @page dorso{
+         margin: 0.5cm 0.5cm 1cm 0.5cm;
+         padding: 0;     
+         background-image:url({% static 'img/dorso.jpg' %});             
+        
+         }         
+          
+
+
+        
+        
 </style>
 </head>
 
 <body>  
+
+<pdf:nexttemplate name="principal" />
+<pdf:nextpage/> 
 <div id="page-header">
 <table width="100%" align="center" >
-  <tr>
-      <td align="center" rowspan="4"   width="30%" valign="middle" class=" borde_abajo borde_izq borde_arriba"  >
-        <img src="{% static 'img/logo.jpg' %}" alt="logo" class="logo_reporte" />        
-      </td>
-      <td  colspan="2" width="70%" class="empresa borde_arriba borde_der">{{config.nombre|default_if_none:''}}</td>         
-  </tr>
-  <tr>
-    <td  colspan="2" class="texto_cpb  borde_der">{{config.domicilio|default_if_none:''}}</td>
-  </tr>
-  <tr>
-    <td  colspan="2" class="texto_cpb  borde_der">{{config.datos_extra|default_if_none:''}}</td>
-  </tr>
-  <tr>
-    <td class="texto_cpb borde_abajo borde_der" colspan="2" width="35%">CUIT: {{config.cuit|default_if_none:''|upper}} {% if config.iibb %}IIBB: {{config.iibb|default_if_none:''|upper}}{% endif %}</td>    
-  </tr>
+
    <tr>
     <td  colspan="3" class="nombre_cpb">INFORME DE AUSENTISMOS</td>
   </tr>
@@ -112,6 +119,7 @@
     </tr>
   </table>    
 </div>
-
+<pdf:nexttemplate name="dorso" />
+<pdf:nextpage/> 
 </body>
 </html>

@@ -571,6 +571,8 @@ function agregar_linea(texto,ltexto,htexto,h,idtabla,idgrafico,marginleft)
     var pagewidth = doc.internal.pageSize.width;
     var pageheight = doc.internal.pageSize.height;
     doc.addImage(logo, 'JPEG', 5,5,10, 10);
+    
+
     doc.setFontSize(15);    
     doc.setFontType('bold');    
     doc.text('{{titulo_reporte}}', 110, 10, 'center');

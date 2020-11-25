@@ -58,6 +58,9 @@ table.dataTable >:first-child >:first-child >:last-child{border-top-right-radius
 table.dataTable >:last-child >:last-child >:first-child{border-bottom-left-radius:6px;}
 table.dataTable >:last-child >:last-child >:last-child{border-bottom-right-radius:6px;}
 table.dataTable thead .sorting:after, table.dataTable thead .sorting_asc:after, table.dataTable thead .sorting_desc:after, table.dataTable thead .sorting_asc_disabled:after, table.dataTable thead .sorting_desc_disabled:after{position:absolute;bottom:3px;right:3px;display:block;font-family:'Glyphicons Halflings';opacity:0.8;color:#fff;}
+table.dataTable thead .sorting {
+    background-image: none;
+}
 div.dataTables_wrapper div.dataTables_length{padding-top:5px;white-space:nowrap;font-size:10px;font-weight:bold;text-align:left;}
 div.dataTables_length .form-control{font-size:10px;height:25px;line-height:25px;}
 div.dataTables_paginate{font-size:10px;height:25px;line-height:25px;}
@@ -564,7 +567,7 @@ textarea.form-control{height:auto}
     font-size: 15px;
     margin-left: 5px;
     margin-right: 10px;
-    font-variant:small-caps;
+    /*font-variant:small-caps;*/
 }
 
 .navbar-header {

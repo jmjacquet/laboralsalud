@@ -16,7 +16,8 @@
 {% endblock cargando %}
 {% block principal %}                            
 <br>   
-     <a class="btn btn-xs btn-primary modal-create" style="float:left;margin-right:20px;" href="{% url 'empresa_nuevo' %}" data-modal-head="AGREGAR EMPRESA" data-modal-callback="reload">Nueva Empresa</a>
+    <div class="col-xs-12">
+    <a class="btn btn-xs btn-primary modal-create" style="float:left;margin-right:20px;" href="{% url 'empresa_nuevo' %}" data-modal-head="AGREGAR EMPRESA" data-modal-callback="reload">Nueva Empresa</a>
     <table width="100%" id="empresa" style="display:none;" class="table table-striped compact table-hover table-no-bordered tabla_nueva nowrap">         
         <thead >
             <tr>
@@ -98,7 +99,7 @@
         </tfoot>
         
     </table>                   
-
+    </div>
 {% endblock principal %}
 
 {% block scripts_js %}     

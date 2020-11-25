@@ -614,7 +614,7 @@ class EmpleadoCreateView(VariablesMixin,AjaxCreateView):
 
     def get_initial(self):    
         initial = super(EmpleadoCreateView, self).get_initial()               
-        initial['legajo'] = '{0:0{width}}'.format((ultimoNroId(ent_empleado)+1),width=4)
+        initial['legajo'] = '' #'{0:0{width}}'.format((ultimoNroId(ent_empleado)+1),width=4)
         initial['request'] = self.request        
         empresa = empresa_actual(self.request)
         initial['empresa'] = empresa_actual(self.request)       

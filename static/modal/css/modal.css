@@ -15,7 +15,7 @@
     padding:7px 0px 5px 0px;
     }
 .modal-modal .modal-body{padding:10px;}
-.modal-modal .modal-buttons{text-align:left;margin-left:20px;margin-right:20px;}
+.modal-modal .modal-buttons{text-align:left;margin-left:20px;margin-right:20px;margin-bottom:5px;}
 .modal-modal .close-modal{background-color:transparent;cursor:pointer;height:25px;position:absolute;right:10px;top:10px;width:45px;}
 .close{float:right;font-size:15px;font-weight:bold;line-height:1;color:#eee;text-shadow:none;opacity:0.8;}
 .modal-modal .close-modal:hover{}

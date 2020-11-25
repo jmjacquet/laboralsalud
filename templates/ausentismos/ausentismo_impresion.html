@@ -8,53 +8,36 @@
     <link rel="stylesheet" href="{% static 'css/reportes_factura.css' %}" type="text/css" />
     <style type="text/css">
     @page {
-    margin: 0.5cm 0.5cm 1cm 0.5cm;
-    padding: 0;
-    @frame footer {
-    -pdf-frame-content: page-footer;
-    bottom: 0cm;
-    height: 1 cm;
-    margin-right: 0.5cm;
-    margin-left: 0.5cm;
-    }
-    
-    }
-    @frame header_frame  {
-    -pdf-frame-content: page-header;
-    margin-top: 0cm;
-    margin-right: 1cm;
-    margin-left: 1cm;
-    margin-bottom: 1cm;
-    height: 4cm;
-    }
+          margin: 3cm 0.5cm 1cm 0.5cm;
+         padding: 0;     
+         background-image:url({% static 'img/contenido.jpg' %});    
+         @frame footer {
+                        -pdf-frame-content: page-footer;
+                        bottom: 0cm;
+                        height: 1 cm;
+                        margin-right: 0.5cm;                        
+                        margin-left: 0.5cm;                        
+                    }
+          @frame header_frame  {
+                        -pdf-frame-content: page-header;
+                        margin-top: 0cm;
+                        margin-right: 1cm;                        
+                        margin-left: 1cm;
+                        margin-bottom: 1cm;
+                        height: 4cm;                      
+                    }
+        
+         }
     </style>
-    <link href="../../staticfiles/css/reportes_factura.css" rel="stylesheet" type="text/css" />
   </head>
   <body>
-    <div id="page-header">
+
       <table width="100%" align="center" >
         <tr>
-          <td align="center" rowspan="4"   width="30%" valign="middle" class=" borde_abajo borde_izq borde_arriba"  >
-            <img src="{% static 'img/logo.jpg' %}" alt="logo" class="logo_reporte" />
-          </td>
-          <td  colspan="2" width="70%" class="empresa borde_arriba borde_der">{{config.nombre|default_if_none:''}}</td>
-        </tr>
-        <tr>
-          <td  colspan="2" class="texto_cpb  borde_der">{{config.domicilio|default_if_none:''}}</td>
-        </tr>
-        <tr>
-          <td  colspan="2" class="texto_cpb  borde_der">{{config.datos_extra|default_if_none:''}}</td>
-        </tr>
-        <tr>
-          <td class="texto_cpb borde_abajo borde_der" colspan="2" width="35%">CUIT: {{config.cuit|default_if_none:''|upper}} {% if config.iibb %}IIBB: {{config.iibb|default_if_none:''|upper}}{% endif %}</td>
-        </tr>
-        <tr>
-          <td  colspan="3" class="nombre_cpb"><p>&nbsp;</p>
-          <p>DETALLE AUSENTISMO</p>
-          <p>&nbsp;</p></td>
+          <td  class="nombre_cpb">DETALLE AUSENTISMO</td>
         </tr>
       </table>
-    </div>
+
     <table class="tabla" width="100%" border="0" cellspacing="0">
       <tr>
         <td width="27%"  class="tabla_footer borde_abajo borde_arriba borde_der borde_izq">Apellido y Nombre</td>
@@ -183,7 +166,7 @@
       {% if controles %}
       <table>
         <tr>
-          <td colspan="3" class="borde_izq borde_abajo borde_arriba borde_der nombre_cpb">CONTROLES REALIZADOS</td>
+          <td colspan="3" class="nombre_cpb">CONTROLES REALIZADOS</td>
         </tr>
         {% for c in controles %}
           <tr>

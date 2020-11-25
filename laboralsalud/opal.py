@@ -30,7 +30,20 @@ DATABASES = {
 # )
 
 
+INSTALLED_APPS += [
+     # 'debug_toolbar',       
+    'compressor' ,
+]
 
-# INSTALLED_APPS += (
-#     'debug_toolbar',    
-# )
+STATICFILES_FINDERS += [
+    'compressor.finders.CompressorFinder',
+    ]
+
+
+
+COMPRESS_ENABLED = True
+COMPRESS_OUTPUT_DIR = 'bundles'
+
+
+COMPRESS_CSS_FILTERS = ['compressor.filters.css_default.CssAbsoluteFilter','compressor.filters.cssmin.CSSMinFilter']
+COMPRESS_JS_FILTERS = ["compressor.filters.jsmin.JSMinFilter"]
