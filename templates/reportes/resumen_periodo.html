@@ -71,13 +71,7 @@
                       </tr>
                       <tr>
                         <td  class="titulo">Días laborables del período</td><td class="dato">{{aus_total.dias_laborables|default_if_none:0}}</td>
-                      </tr>
-                      <tr>
-                        <td class="titulo">Tasa de Ausentismo</td><td class="dato">{{aus_total.tasa_ausentismo|default_if_none:0}}%</td>                
-                      </tr>
-                      <tr>
-                        <td class="titulo">Días trabajados</td><td class="dato">{{aus_total.dias_trab_tot|default_if_none:0}}</td>                
-                      </tr>                  
+                      </tr>                          
                     </tbody>
                   </table>
                 </div>
@@ -111,13 +105,7 @@
                       </tr>
                       <tr>
                         <td  class="titulo">Días laborables del período</td><td class="dato">{{aus_inc.dias_laborables|default_if_none:0}}</td>
-                      </tr>
-                      <tr>
-                        <td class="titulo">Tasa de Ausentismo</td><td class="dato">{{aus_inc.tasa_ausentismo|default_if_none:0}}%</td>                
-                      </tr>
-                      <tr>
-                        <td class="titulo">Días trabajados</td><td class="dato">{{aus_inc.dias_trab_tot|default_if_none:0}}</td>                
-                      </tr>                  
+                      </tr>                     
                       <tr>
                         <td class="titulo">AGUDOS (<=30)</td><td class="dato">{{aus_inc.porc_agudos|default_if_none:0}}%</td>                
                       </tr>
@@ -160,13 +148,7 @@
                       </tr>
                       <tr>
                         <td  class="titulo">Días laborables del período</td><td class="dato">{{aus_acc.dias_laborables}}</td>
-                      </tr>
-                      <tr>
-                        <td class="titulo">Tasa de Ausentismo</td><td class="dato">{{aus_acc.tasa_ausentismo|default_if_none:0}}%</td>                
-                      </tr>
-                      <tr>
-                        <td class="titulo">Días trabajados</td><td class="dato">{{aus_acc.dias_trab_tot}}</td>                
-                      </tr>                  
+                      </tr>                            
                     </tbody>
                   </table>
                 </div>
@@ -182,6 +164,8 @@
             </div>
           </div>
       </div>
+      {% endif %}
+      {% if aus_acc2 %}
       <div class="col-sm-4 col-lg-4 cerca">
           <div class="panel panel-primary graficos">
             <div class="panel-heading text-center">DENUNCIA DE ACCIDENTES</div>
@@ -197,7 +181,8 @@
             </div>
           </div>
       </div>     
-          
+      {% endif %}
+      {% if aus_acc %}    
        <div class="col-sm-4 col-lg-4 cerca">
           <div class="panel panel-primary graficos">
             <div class="panel-heading text-center">TIPO DE ACCIDENTES</div>
@@ -321,7 +306,7 @@ jQuery(document).ready(function($) {
           height:300,
       },   
       tooltip: {
-          pointFormat: '{series.name}: <b>{point.y:.2f}%</b>'
+          pointFormat: '{series.name}: <b>{point.y:.2f}</b>'
       },
       credits: {
                     enabled: false
@@ -339,9 +324,10 @@ jQuery(document).ready(function($) {
                   format: '<b>{point.name}</b>: {point.percentage:.2f}%',
                   style: {
                       color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black',
-                      fontSize: "8px",
+                      fontSize: "10px",
                   },
-                  connectorColor: 'silver',                 
+                  connectorColor: 'silver', 
+                  
               },
               showInLegend: true
           }
@@ -359,15 +345,35 @@ jQuery(document).ready(function($) {
             align: 'center',
             verticalAlign: 'bottom',
             layout: 'vertical',            
-            labelFormat:'<b>{name}</b>: {percentage:.2f}% ({custom.empleados} empl.)',
-        //     labelFormatter: function () {
-        //     return this.name + ' (click to hide)';
-        // }
+            labelFormat:'<b>{name}</b>: {percentage:.2f} ({custom.empleados} empl.)',
         },
+        plotOptions: {
+          pie: {            
+              innerSize:'0%' ,
+              allowPointSelect: true,
+              cursor: 'pointer',
+              dataLabels: {
+                  enabled: true,
+                  format: '<b>{point.name}</b>: {point.percentage:.2f} ({point.custom.empleados} empl.)',
+                  style: {
+                      color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black',
+                      fontSize: "10px",
+                  },
+                  alignTo: 'plotEdges',
+                  connectorColor: 'silver', 
+                  filter: {
+                    property: 'percentage',
+                    operator: '<',
+                    value: 60
+                }                
+              },
+              showInLegend: false
+          }
+      },
         series: [{
             name: 'AUSENTISMO TOTAL',
             data: [                
-                    { name: 'Tasa Ausentismo', y: {{aus_total.tasa_ausentismo|safe}},custom:{empleados: {{aus_total.ta_cant_empls|safe}} }, },           
+                    { name: 'Tasa Ausentismo', sliced: true,y: {{aus_total.tasa_ausentismo|safe}},custom:{empleados: {{aus_total.ta_cant_empls|safe}} }, },           
                     { name: 'Tasa Asistencia', y: {{aus_total.porc_dias_trab_tot|safe}},custom:{empleados: {{aus_total.tp_cant_empls|safe}} }, },                           
             ]
         }]
@@ -410,6 +416,29 @@ jQuery(document).ready(function($) {
             layout: 'vertical',
             labelFormat:'<b>{name}</b>: {percentage:.2f}% ({custom.empleados} empl.)',
         },
+         plotOptions: {
+          pie: {            
+              innerSize:'0%' ,
+              allowPointSelect: true,
+              cursor: 'pointer',
+              dataLabels: {
+                  enabled: true,
+                  format: '<b>{point.name}</b>: {point.percentage:.2f} ({point.custom.empleados} empl.)',
+                  style: {
+                      color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black',
+                      fontSize: "10px",
+                  },
+                  alignTo: 'plotEdges',
+                  connectorColor: 'silver', 
+                  filter: {
+                    property: 'percentage',
+                    operator: '<',
+                    value: 60
+                }                
+              },
+              showInLegend: false
+          }
+      },
         series: [{
             name: 'AUSENTISMO ACCIDENTES',
             data: [                
@@ -418,6 +447,8 @@ jQuery(document).ready(function($) {
             ]
         }]
     });
+    {% endif %}
+    {% if aus_acc2 %}
     Highcharts.chart('ausentismo_acc2', {
         legend: {
             align: 'center',
@@ -429,12 +460,14 @@ jQuery(document).ready(function($) {
             type: 'pie',
             name: 'Denuncias',
             data: [                
-                    { name: 'Denunciados',color:'#6495ED', y: {{aus_acc.acc_denunciados|safe}},custom:{empleados: {{aus_acc.denunciados_empl|safe}} } },           
-                    { name: 'No Denunciados',color:'#DF5353', y: {{aus_acc.acc_sin_denunciar|safe}},custom:{empleados: {{aus_acc.sin_denunciar_empl|safe}} }  },                           
+                    { name: 'Denunciados',color:'#6495ED', y: {{aus_acc2.acc_denunciados|safe}},custom:{empleados: {{aus_acc2.denunciados_empl|safe}} } },           
+                    { name: 'No Denunciados',color:'#DF5353', y: {{aus_acc2.acc_sin_denunciar|safe}},custom:{empleados: {{aus_acc2.sin_denunciar_empl|safe}} }  },                           
             ]            
         },]
 
     });
+    {% endif %}
+    {% if aus_acc %}
      Highcharts.chart('ausentismo_acc3', {
         legend: {
             align: 'center',

@@ -103,6 +103,7 @@ class ReporteResumenPeriodo(VariablesMixin,TemplateView):
         aus_total = None
         aus_inc = None
         aus_acc = None
+        aus_acc2 = None
         aus_x_grupop = None 
         max_grupop = 0
         dias_laborables = int((fhasta-fdesde).days+1)   
@@ -172,31 +173,38 @@ class ReporteResumenPeriodo(VariablesMixin,TemplateView):
                 # dias_caidos_tot = 67            
                 dias_trab_tot = (dias_laborables * empleados_tot)-dias_caidos_tot
                 tasa_ausentismo = calcular_tasa_ausentismo(dias_caidos_tot,dias_laborables,empleados_tot)                       
-                porc_dias_trab_tot = 100 - tasa_ausentismo        
+                if tasa_ausentismo > 0:
 
-                tot_accidentes = ausentismos_acc.count()
-                acc_empls = ausentismos_acc.values('empleado').distinct().count()
-                noacc_empls = empleados_tot- acc_empls
+                    porc_dias_trab_tot = 100 - tasa_ausentismo        
 
-                acc_denunciados = ausentismos_acc.exclude(Q(art_ndenuncia__isnull=True)|Q(art_ndenuncia__exact=''))
-                denunciados_empl = acc_denunciados.values('empleado').distinct().count()
-                acc_denunciados = (Decimal(acc_denunciados.count()) / Decimal(tot_accidentes))*100 
-                acc_sin_denunciar = ausentismos_acc.filter(Q(art_ndenuncia__isnull=True)|Q(art_ndenuncia__exact=''))
-                sin_denunciar_empl = acc_sin_denunciar.values('empleado').distinct().count()
-                acc_sin_denunciar = (Decimal(acc_sin_denunciar.count()) / Decimal(tot_accidentes))*100 
-                
-                acc_itinere = ausentismos_acc.filter(art_tipo_accidente=2)
-                itinere_empl = acc_itinere.values('empleado').distinct().count()
-                acc_itinere = (Decimal(acc_itinere.count()) / Decimal(tot_accidentes))*100                 
-                acc_trabajo = ausentismos_acc.filter(art_tipo_accidente=1)
-                trabajo_empl = acc_trabajo.values('empleado').distinct().count()
-                acc_trabajo = (Decimal(acc_trabajo.count()) / Decimal(tot_accidentes))*100 
+                    tot_accidentes = ausentismos_acc.count()
+                    acc_empls = ausentismos_acc.values('empleado').distinct().count()
+                    noacc_empls = empleados_tot- acc_empls
 
-                
-                aus_acc = {'dias_caidos_tot':dias_caidos_tot,'empleados_tot':empleados_tot,'dias_trab_tot':dias_trab_tot,'tasa_ausentismo':tasa_ausentismo,
-                'dias_laborables':dias_laborables,'porc_dias_trab_tot':porc_dias_trab_tot,'tot_accidentes':tot_accidentes,'acc_denunciados':acc_denunciados,
-                'acc_sin_denunciar':acc_sin_denunciar,'acc_itinere':acc_itinere,'acc_trabajo':acc_trabajo,'acc_empls':acc_empls,'noacc_empls':noacc_empls,
-                'denunciados_empl':denunciados_empl,'sin_denunciar_empl':sin_denunciar_empl,'itinere_empl':itinere_empl,'trabajo_empl':trabajo_empl}
+                    acc_denunciados = ausentismos_acc.exclude(Q(art_ndenuncia__isnull=True)|Q(art_ndenuncia__exact=''))
+                    denunciados_empl = acc_denunciados.values('empleado').distinct().count()
+                    acc_denunciados = (Decimal(acc_denunciados.count()) / Decimal(tot_accidentes))*100 
+                    acc_sin_denunciar = ausentismos_acc.filter(Q(art_ndenuncia__isnull=True)|Q(art_ndenuncia__exact=''))
+                    if not acc_sin_denunciar:
+                        aus_acc2 = None
+                    else:
+                        sin_denunciar_empl = acc_sin_denunciar.values('empleado').distinct().count()
+                        acc_sin_denunciar = (Decimal(acc_sin_denunciar.count()) / Decimal(tot_accidentes))*100 
+                        aus_acc2 = {'acc_denunciados':acc_denunciados,'acc_sin_denunciar':acc_sin_denunciar,'denunciados_empl':denunciados_empl,'sin_denunciar_empl':sin_denunciar_empl}
+
+                    acc_itinere = ausentismos_acc.filter(art_tipo_accidente=2)
+                    itinere_empl = acc_itinere.values('empleado').distinct().count()
+                    acc_itinere = (Decimal(acc_itinere.count()) / Decimal(tot_accidentes))*100                 
+                    acc_trabajo = ausentismos_acc.filter(art_tipo_accidente=1)
+                    trabajo_empl = acc_trabajo.values('empleado').distinct().count()
+                    acc_trabajo = (Decimal(acc_trabajo.count()) / Decimal(tot_accidentes))*100 
+
+                    
+                    aus_acc = {'dias_caidos_tot':dias_caidos_tot,'empleados_tot':empleados_tot,'dias_trab_tot':dias_trab_tot,'tasa_ausentismo':tasa_ausentismo,
+                    'dias_laborables':dias_laborables,'porc_dias_trab_tot':porc_dias_trab_tot,'tot_accidentes':tot_accidentes,
+                    'acc_itinere':acc_itinere,'acc_trabajo':acc_trabajo,'acc_empls':acc_empls,'noacc_empls':noacc_empls,'itinere_empl':itinere_empl,'trabajo_empl':trabajo_empl}
+                else:
+                    aus_acc = None
 
             aus_x_grupop = ausentismos.values('aus_grupop__patologia').annotate(total=Count('aus_grupop')).order_by('-total')[:5]
             max_grupop = aus_x_grupop[0]['total']+1
@@ -211,6 +219,7 @@ class ReporteResumenPeriodo(VariablesMixin,TemplateView):
         context['aus_total']=  aus_total
         context['aus_inc']=  aus_inc
         context['aus_acc']=  aus_acc
+        context['aus_acc2']=  aus_acc2
         context['aus_x_grupop']=  aus_x_grupop
         context['max_grupop']=  max_grupop
         context['dias_laborables']=  dias_laborables             
