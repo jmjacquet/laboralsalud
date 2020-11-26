@@ -15,7 +15,7 @@ STATIC_ROOT = os.path.join(SITE_ROOT, 'static')
 DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.mysql', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-            'NAME': 'lbsl',           # Or path to database file if using sqlite3.
+            'NAME': 'lbls',           # Or path to database file if using sqlite3.
             'USER':  DB_USER,    
             'PASSWORD':  DB_PASS,            # Not used with sqlite3.
             'HOST':  DB_HOST,                      # Set to empty string for localhost. Not used with sqlite3.
@@ -31,7 +31,7 @@ MIDDLEWARE += [
 
 INSTALLED_APPS += [
     'debug_toolbar',       
-    'compressor' ,
+     'compressor' ,
 ]
 
 STATICFILES_FINDERS += [
