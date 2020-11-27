@@ -567,7 +567,7 @@ textarea.form-control{height:auto}
     font-size: 15px;
     margin-left: 5px;
     margin-right: 10px;
-    font-variant:small-caps;
+    /*font-variant:small-caps;*/
 }
 
 .navbar-header {

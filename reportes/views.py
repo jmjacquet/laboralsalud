@@ -936,12 +936,21 @@ def reporte_periodo2(request):
     context['dias_laborables']=  dias_laborables             
     context['empl_mas_faltadores']=  empl_mas_faltadores[:6]  
     if ('pdf' in request.POST)and(aus_total):         
-            aus_tot_image = request.POST['aus_tot_image']
-            aus_inc_image = request.POST['aus_inc_image']
+            aus_tot_image = request.POST.get('aus_tot_image',None)
+            aus_inc_image = request.POST.get('aus_inc_image',None)
+            aus_acc_image = request.POST.get('aus_acc_image',None)
+            aus_acc2_image = request.POST.get('aus_acc2_image',None)
+            aus_acc3_image = request.POST.get('aus_acc3_image',None)
+            aus_grp_image = request.POST.get('aus_grp_image',None)
 
             template = 'reportes/reporte_periodo.html' 
             context['aus_tot_image'] = aus_tot_image     
             context['aus_inc_image'] = aus_inc_image     
+            context['aus_acc_image'] = aus_acc_image     
+            context['aus_acc2_image'] = aus_acc2_image     
+            context['aus_acc3_image'] = aus_acc3_image     
+            context['aus_grp_image'] = aus_grp_image     
+
             return render_to_pdf_response(request,template, context) 
     return render(request,template,context)
     

@@ -157,9 +157,7 @@
                <div class="row">
                 <div class="col-sm-12">
                      <div  style="padding: 0px; position: relative;"> 
-                                 <input type="hidden" name="aus_acc_width" value="">
-                                 <input type="hidden" name="aus_acc_height" value="">
-                                 <input type="hidden" name="aus_acc_image" value="">
+                                 <input type="hidden" name="aus_acc_image" id="aus_acc_image" value="">
                                 <div id="ausentismo_acc" class="chart" style="width: 100%; height: 100%; margin: 0 auto"></div>
                       </div>    
                 </div>  
@@ -177,9 +175,7 @@
                <div class="row">
                 <div class="col-sm-12">
                      <div  style="padding: 0px; position: relative;"> 
-                                 <input type="hidden" name="aus_acc2_width" value="">
-                                 <input type="hidden" name="aus_acc2_height" value="">
-                                 <input type="hidden" name="aus_acc2_image" value="">
+                                 <input type="hidden" name="aus_acc2_image" id="aus_acc2_image" value="">
                                 <div id="ausentismo_acc2" class="chart" style="width: 100%; height: 100%; margin: 0 auto"></div>
                       </div>    
                 </div>  
@@ -197,9 +193,7 @@
                <div class="row">
                 <div class="col-sm-12">
                      <div  style="padding: 0px; position: relative;"> 
-                                 <input type="hidden" name="aus_acc3_width" value="">
-                                 <input type="hidden" name="aus_acc3_height" value="">
-                                 <input type="hidden" name="aus_acc3_image" value="">
+                                 <input type="hidden" name="aus_acc3_image" id="aus_acc3_image" value="">
                                 <div id="ausentismo_acc3" class="chart" style="width: 100%; height: 100%; margin: 0 auto"></div>
                       </div>    
                 </div>  
@@ -221,9 +215,7 @@
                <div class="row">
                 <div class="col-sm-12">
                      <div style="padding: 0px; position: relative;"> 
-                                 <input type="hidden" name="aus_grp_width" value="">
-                                 <input type="hidden" name="aus_grp_height" value="">
-                                 <input type="hidden" name="aus_grp_image" value="">
+                                 <input type="hidden" name="aus_grp_image" id="aus_grp_image" value="">
                                 <div id="aus_grupop" class="chart" style="width: 100%; height: 100%; margin: 0 auto"></div>
                       </div>    
                 </div>  
@@ -588,8 +580,29 @@ jQuery(document).ready(function($) {
 
 var imageData = $("#ausentismo_tot").highcharts().createCanvas();  
 $('#aus_tot_image').val(imageData); 
+{% if aus_inc %}
 imageData = $("#ausentismo_inc").highcharts().createCanvas();  
 $('#aus_inc_image').val(imageData); 
+{% endif %}
+{% if aus_acc %}
+imageData = $("#ausentismo_acc").highcharts().createCanvas();  
+$('#aus_acc_image').val(imageData); 
+{% endif %}
+{% if aus_acc2 %}
+imageData = $("#ausentismo_acc2").highcharts().createCanvas();  
+$('#aus_acc2_image').val(imageData); 
+{% endif %}
+{% if aus_acc3 %}
+imageData = $("#ausentismo_acc3").highcharts().createCanvas();  
+$('#aus_acc3_image').val(imageData); 
+{% endif %}
+{% if aus_x_grupop %}  
+imageData = $("#aus_grupop").highcharts().createCanvas();  
+$('#aus_grp_image').val(imageData); 
+{% endif %}
+
+
+
 
 });
 

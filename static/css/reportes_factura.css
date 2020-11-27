@@ -243,3 +243,10 @@ td {
   font-style: italic;
   padding-bottom: 0px;
 }
+
+
+.borde_reportes{
+  border-color:#E1EFFF;
+  border-style:solid;
+  border-width:0.15px;
+}
