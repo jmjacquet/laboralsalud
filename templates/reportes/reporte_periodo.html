@@ -9,14 +9,14 @@
 <link rel="stylesheet" href="{% static 'css/reportes_factura.css' %}" type="text/css" />
 <style type="text/css">
  
- @page principal{
+ @page {
          margin: 0.5cm 0.5cm 1cm 0.5cm;
          padding: 0;     
          background-image:url({% static 'img/portada.jpg' %});             
         
          }
- @page d  {
-         margin: 4cm 0.5cm 1cm 0.5cm;
+ @page  principal{
+         margin: 3cm 0.5cm 1cm 0.5cm;
          padding: 0;     
          background-image:url({% static 'img/contenido.jpg' %});    
          @frame footer {
@@ -26,14 +26,7 @@
                         margin-right: 0.5cm;                        
                         margin-left: 0.5cm;                        
                     }
-          @frame header_frame  {
-                        -pdf-frame-content: page-header;
-                        margin-top: 3cm;
-                        margin-right: 1cm;                        
-                        margin-left: 1cm;
-                        margin-bottom: 1cm;
-                        height: 4cm;                      
-                    }
+         
         
          }
  @page dorso{
@@ -46,7 +39,8 @@
 </head>
 
 <body>
- 
+ <pdf:nexttemplate name="principal" />
+<pdf:nextpage/> 
    <table width="100%" align="center" >
         <tr>
           <td  class="nombre_cpb">INFORME AUSENTISMOS</th>
@@ -56,10 +50,10 @@
      {% if aus_total %} 
     <tr>
       <td width="60%">
-        <img src="{{ aus_tot_image }}" height="400" width="800" >
+        <img src="{{ aus_tot_image }}" height="500" width="1100" >
       </td>
-      <td width="40%" class="centered" width="70%">
-        <table class="borde_reportes">
+      <td width="40%" class="centered">
+        <table class="borde_reportes" width="80%">
           <thead >
             <tr>
               <th  class="tabla_header" colspan="2">AUSENTISMO TOTAL</th>
@@ -67,13 +61,13 @@
           </thead>
           <tbody>
             <tr>
-              <td  class="titulo" width="80%">Días caídos</td><td class="dato" width="20%">{{aus_total.dias_caidos_tot|default_if_none:0}}</td>
+              <td  class="titulo" width="80%">Días caídos</td><td class="dato texto_der" width="20%">{{aus_total.dias_caidos_tot|default_if_none:0}}</td>
             </tr>
             <tr>
-              <td class="titulo">Cantidad de Empleados</td><td class="dato">{{aus_total.empleados_tot|default_if_none:0}}</td>
+              <td class="titulo">Cantidad de Empleados</td><td class="dato texto_der">{{aus_total.empleados_tot|default_if_none:0}}</td>
             </tr>
             <tr>
-              <td  class="titulo">Días laborables del período</td><td class="dato">{{aus_total.dias_laborables|default_if_none:0}}</td>
+              <td  class="titulo">Días laborables del período</td><td class="dato texto_der">{{aus_total.dias_laborables|default_if_none:0}}</td>
             </tr>
           </tbody>
         </table>
@@ -85,10 +79,10 @@
     {% if aus_inc %} 
       <tr>
         <td width="60%">
-          <img src="{{ aus_inc_image }}" height="100%" width="100%"  >
+          <img src="{{ aus_inc_image }}" height="500" width="1100" >
         </td>
-        <td width="40%">
-          <table class="borde_reportes" width="70%">
+        <td width="40%" class="centered">
+          <table class="borde_reportes" width="80%">
             <thead >
               <tr>
                 <th  class="tabla_header" colspan="2">AUSENTISMO INCULPABLE</th>
@@ -96,46 +90,77 @@
             </thead>
             <tbody>
               <tr>
-                <td  class="titulo" width="80%">Días caídos</td><td class="dato" width="20%">{{aus_inc.dias_caidos_tot|default_if_none:0}}</td>
+                <td  class="titulo" width="80%">Días caídos</td><td class="dato texto_der" width="20%">{{aus_inc.dias_caidos_tot|default_if_none:0}}</td>
               </tr>
               <tr>
-                <td class="titulo">Cantidad de Empleados</td><td class="dato">{{aus_inc.empleados_tot|default_if_none:0}}</td>
+                <td class="titulo">Cantidad de Empleados</td><td class="dato texto_der">{{aus_inc.empleados_tot|default_if_none:0}}</td>
               </tr>
               <tr>
-                <td  class="titulo">Días laborables del período</td><td class="dato">{{aus_inc.dias_laborables|default_if_none:0}}</td>
+                <td  class="titulo">Días laborables del período</td><td class="dato texto_der">{{aus_inc.dias_laborables|default_if_none:0}}</td>
+              </tr>          
+            </tbody>
+          </table>
+        </td>
+      </tr>
+       <tr></tr>
+      <tr>
+        <td width="60%">
+          <img src="{{ aus_inc2_image }}" height="500" width="1100" >
+        </td>
+        <td width="40%" class="centered">
+          <table class="borde_reportes" width="80%">
+            <thead >
+              <tr>
+                <th  class="tabla_header" colspan="2">AUSENTISMO INCULPABLE</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="titulo" width="80%">Agudos (<=30 días)</td><td class="dato texto_der" width="20%">{{aus_inc.porc_agudos|default_if_none:0}}%</td>
               </tr>
               <tr>
-                <td class="titulo">AGUDOS (<=30)</td><td class="dato">{{aus_inc.porc_agudos|default_if_none:0}}%</td>
-              </tr>
-              <tr>
-                <td class="titulo">CRÓNICOS (>30)</td><td class="dato">{{aus_inc.porc_cronicos|default_if_none:0}}%</td>
+                <td class="titulo">Crónicos (>30 días)</td><td class="dato texto_der">{{aus_inc.porc_cronicos|default_if_none:0}}%</td>
               </tr>
             </tbody>
           </table>
         </td>
       </tr>
-     <tr>  </tr>
-      {% endif %}
-     {% if empl_mas_faltadores or aus_grp_image %}     
+
+    </tr>
+    <tr>  </tr>
+    {% endif %}
+    {% if empl_mas_faltadores or aus_grp_image %}     
       <tr>
-        <td width="60%">
-          <img src="{{ aus_grp_image }}" height="100%" width="100%"  >
+        <td width="60%" valign="top" height="100%">
+          <table class="borde_reportes" width="100%" height="100%">
+            <thead >
+              <tr>
+              <th  class="tabla_header" >AUSENTISMO x GRUPO PATOLÓGICO</td>
+            </tr>            
+          </thead>
+          <tbody>            
+              <tr>
+                <td><img src="{{ aus_grp_image }}" height="100%" width="100%"  ></td>                
+              </tr>
+          </tbody>
+        </table>
+
         </td>
-        <td width="40%">
-          <table class="borde_reportes" width="100%">
+        <td width="40%" valign="top" height="100%">
+          <table class="borde_reportes" width="80%" height="100%">
             <thead >
               <tr>
               <th  class="tabla_header" colspan="2">EMPLEADOS CON MÁS AUSENCIAS</td>
             </tr>
             <tr>
-              <th  class="tabla_header" width="70%">Empleado</th><th  class="tabla_header" width="30%">Días Caídos</th>
+              <th  class="tabla_header" width="85%">Empleado</th><th  class="tabla_header texto_der" width="15%">Días</th>
             </tr>
           </thead>
           <tbody>
             {% for e in empl_mas_faltadores %}
               <tr>
                 <td>{{ e.empleado|default_if_none:''|truncatechars:60 }}</td>
-                <td class="text-right">{{ e.dias|default_if_none:'0' }}</td>
+                <td class="texto_der">{{ e.dias|default_if_none:'0' }}</td>
               </tr>
             {% endfor %}
           </tbody>
@@ -153,6 +178,88 @@
       </tr>
     </table>
   </div>
+  
 
+{% if aus_acc %} 
+  <pdf:nextpage/>      
+  <table class="tabla" width="90%" border="0" cellspacing="0">    
+    <tr>      
+      <td >
+        <table class="" width="100%" height="100%">                          
+          <tbody>                      
+              <tr>
+              <td class="titulo_grafico" colspan="2"><p>AUSENTISMO ACCIDENTES</td>
+            </tr>   
+              <tr>
+                <td width="75%"><img src="{{ aus_acc_image }}" height="500" width="1100" ></td>                
+                <td width="25%">
+                  <table class="borde_reportes">
+                    <thead >
+                      <tr>
+                        <th  class="tabla_header" colspan="2">AUSENTISMO ART</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td  class="titulo" width="80%">Días</td><td class="dato" width="20%">{{aus_acc.dias_caidos_tot|default_if_none:0}}</td>
+                      </tr>
+                      <tr>
+                        <td class="titulo">Cantidad de Empleados</td><td class="dato">{{aus_acc.empleados_tot|default_if_none:0}}</td>
+                      </tr>
+                      <tr>
+                        <td  class="titulo">Días laborables</td><td class="dato">{{aus_acc.dias_laborables|default_if_none:0}}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </td>                
+              </tr>
+          </tbody>
+        </table>
+
+      </td>
+    
+   
+      
+    </tr>
+    <tr>
+    </tr>     
+    <tr>        
+      <td>
+        <table class="borde_reportes" width="100%" height="100%">                          
+          <tbody>            
+            <tr>
+              <td width="100%"class="titulo_grafico"><p>DENUNCIA DE ACCIDENTES</td>
+            </tr>            
+              <tr>
+                <td><img src="{{ aus_acc2_image }}" height="300" width="650" ></td>                
+              </tr>
+          </tbody>
+        </table>
+
+      </td>
+    </tr>
+    <tr>
+    </tr>        
+    <tr>   
+      <td >
+        <table class="borde_reportes" width="100%" height="100%">           
+          <tbody> 
+          <tr>
+              <td width="100%" class="titulo_grafico">TIPO DE ACCIDENTES</th>
+            </tr>                       
+              <tr>
+                <td><img src="{{ aus_acc3_image }}" height="300" width="650" ></td>                
+              </tr>
+          </tbody>
+        </table>
+      </td>
+    </tr>
+    
+
+  </table>
+    {% endif %}
+
+<pdf:nexttemplate name="dorso" />
+<pdf:nextpage/> 
 </body>
 </html>

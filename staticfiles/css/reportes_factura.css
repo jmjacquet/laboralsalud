@@ -252,4 +252,15 @@ td {
 }
 
 
+.titulo_grafico{
+  font-size: 18px;
+  border-color:#E1EFFF;
+  border-style:solid;
+  border-width:0.15px;
+  font-weight: bold;
+  text-align: center;
+  background-color: #E1EFFF;
+
+}
+
 

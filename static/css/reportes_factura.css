@@ -250,3 +250,16 @@ td {
   border-style:solid;
   border-width:0.15px;
 }
+
+.titulo_grafico{
+  font-size: 16px;
+  border-color:#E1EFFF;
+  border-style:solid;
+  border-width:0.15px;
+  font-weight: bold;
+  text-align: center;
+  background-color: #E1EFFF;
+
+}
+
+
