@@ -5,7 +5,7 @@ from .views import *
 urlpatterns = [ 
     
     url(r'^reporte_resumen_periodo/$', reporte_resumen_periodo, name='reporte_resumen_periodo'),
-    url(r'^reporte_resumen_anual/$', ReporteResumenAnual.as_view(), name='reporte_resumen_anual'),
+    url(r'^reporte_resumen_anual/$', reporteResumenAnual, name='reporte_resumen_anual'),
 
 
 ]

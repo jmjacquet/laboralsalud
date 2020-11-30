@@ -1,0 +1,112 @@
+{% load static from staticfiles %}
+{% load humanize %} 
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>{{titulo_reporte}}</title>
+<link rel="stylesheet" href="{% static 'css/reportes_factura.css' %}" type="text/css" />
+<style type="text/css">
+ 
+ @page {
+         margin: 0.5cm 0.5cm 1cm 0.5cm;
+         padding: 0;     
+         background-image:url({% static 'img/portada.jpg' %});             
+        
+         }
+ @page  principal{
+         margin: 3cm 2cm 1cm 2cm;
+         padding: 0;     
+         background-image:url({% static 'img/contenido.jpg' %});    
+         @frame footer {
+                        -pdf-frame-content: page-footer;
+                        bottom: 0cm;
+                        height: 1 cm;
+                        margin-right: 0.5cm;                        
+                        margin-left: 0.5cm;                        
+                    }
+         
+        
+         }
+ @page dorso{
+         margin: 0.5cm 0.5cm 1cm 0.5cm;
+         padding: 0;     
+         background-image:url({% static 'img/dorso.jpg' %});             
+        
+         }   
+</style>
+</head>
+
+<body>
+ <pdf:nexttemplate name="principal" />
+<pdf:nextpage/> 
+   <table width="100%" align="center" >
+        <tr>
+          <td  class="nombre_cpb">{{titulo_reporte}}</td>
+        </tr>
+  </table>  
+  {% if totales %}   
+  <table class="tabla" width="100%" border="0" cellspacing="0">
+    <tr>
+      <td >
+        <img src="{{ aus_tot_image }}" height="100%" width="800px" >
+      </td>
+    </tr>
+   
+  </table>
+   <table class="tabla_anual" width="100%">
+    <tr>
+      <td>
+        <table  width="100%" id="tabla_ausentismos" class="borde_reportes ">         
+            <thead >
+                <tr>
+                    <th rowspan="2">Mes/Anio</th>
+                    <th colspan="2">TOTALES</th>
+                    <th colspan="2">INCULPABLES</th>
+                    <th colspan="2">ACCIDENTES</th>
+                  </tr>
+                  <tr>
+                    <th>Tasa</th>
+                    <th>Empl.</th>
+                    <th>Tasa</th>
+                    <th>Empl.</th>
+                    <th>Tasa</th>
+                    <th>Empl.</th>
+                  </tr>                        
+            </thead>
+            <tbody>
+              {% for m in datos_tabla %}
+                <tr>                                                            
+                    <td width="20%" class="dato">{{m.mes.0}}/{{m.mes.1}}</td>                   
+                    <td width="15%" class="tabla_columna_destacada">{{ m.tasa_total|default_if_none:'0' }}</td>                   
+                    <td width="15%"class="tabla_columna_destacada">{{ m.ta_cant_empls|default_if_none:'0' }}</td>                   
+                    <td width="10%" class="dato">{{ m.tasa_inclup|default_if_none:'0' }}</td>                   
+                    <td width="10%" class="dato">{{ m.empl_inculp|default_if_none:'0' }}</td>    
+                    <td width="10%" class="dato">{{ m.tasa_acc|default_if_none:'0' }}</td>                   
+                    <td width="10%" class="dato">{{ m.empl_acc|default_if_none:'0' }}</td>    
+                </tr>
+              {% endfor %}
+            </tbody>
+        </table>
+      </td>
+    </tr>
+   
+  </table>
+  {% endif %}
+  
+  <div id="page-footer">
+    <table class="tabla" width="100%" border="0" cellspacing="0">
+      <tr>
+        <td width="90%" class="pie_sistema"><img alt="" class="pie_logo" src="{% static 'img/loguito.jpg' %}"/>&nbsp;&nbsp;Laboral Salud - {{fecha|date:'d/m/Y'}} </td>
+        <td width="10%" class="pie_texto"><pdf:pagenumber /> de <pdf:pagecount/> </td>
+      </tr>
+    </table>
+  </div>
+  
+
+
+<pdf:nexttemplate name="dorso" />
+<pdf:nextpage/> 
+</body>
+</html>

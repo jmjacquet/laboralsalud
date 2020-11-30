@@ -562,7 +562,8 @@ jQuery(document).ready(function($) {
             plotOptions: {
                 series: {
                     dataLabels: {
-                        enabled: true
+                        enabled: true,
+                        format: '{point.y} casos',
                     }
                 },
             },   
@@ -620,7 +621,7 @@ jQuery(document).ready(function($) {
 
             canvg(canvas, svg);
 
-            return canvas.toDataURL("image/jpeg");
+            return canvas.toDataURL("image/jpeg",1);
 
         } 
         else {
