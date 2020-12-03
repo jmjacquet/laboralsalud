@@ -177,35 +177,11 @@ td {
   padding-right: 1px;  
 }
 
-.texto_firma {
-  font-size: 10px;  
+.tabla_columna_destacada {
+   font-weight: bold;
   text-align: center;
-  border-top: 0.5px dotted gray; 
-}
-
-.cae_obs {
-  font-size: 8px;
+  background-color: #c1dcf6;
   font-weight: bold;
-  text-align: center;
-  text-decoration: underline;
-
-}
-.cae_detalle {
-  font-size: 8px;
-  text-align: left;
-  font-style: italic;
-}
-.cae_autorizado {
-  font-size: 10px;
-  font-weight: bold;
-  vertical-align: middle;
-  font-style: italic;
-}
-.cae_leyenda {
-  font-size: 7px;
-  font-weight: bold;
-  text-align: left;
-  font-style: italic;
 }
 
 .titulo_reporte {
@@ -214,6 +190,13 @@ td {
   text-align: center;
   background-color: #bfbfbf;
 }
+
+.tabla_anual {
+  font-size: 9px;
+  text-align: center;
+  width: 100%;
+}
+
 
 .logo_factura{
   width: 220px;

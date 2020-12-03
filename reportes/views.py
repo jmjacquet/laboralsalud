@@ -387,36 +387,40 @@ def reporteResumenAnual(request):
                                 'tasa_inclup':tasa_inclup,'empl_inculp':empl_inculp,'tasa_acc':tasa_acc,'empl_acc':empl_acc
                 })
 
-        aus_x_grupop_tot = ausentismos.values('aus_grupop__pk','aus_grupop__patologia').annotate(total=Count('aus_grupop')).order_by('aus_grupop__pk')[:5]
+        aus_x_grupop_tot = ausentismos.values('aus_grupop__pk','aus_grupop__patologia').annotate(total=Count('aus_grupop')).order_by('-total')[:4]
+        
         id_grupos = [int(x['aus_grupop__pk']) for x in aus_x_grupop_tot]
+
         listado=[]
-        for m in meses:
-         ausencias = en_mes_anio(m[0],m[1],ausentismos)             
-         aus_x_grupop = list(ausencias.filter(aus_grupop__pk__in=id_grupos).values('aus_grupop__patologia','aus_grupop__pk')\
-                            .annotate(total=Count('aus_grupop')).order_by('-total').values('aus_grupop__patologia','aus_grupop__pk','total'))
-         id_aus_x_grupop = [int(x['aus_grupop__pk']) for x in aus_x_grupop_tot]
-         
-         for x in aus_x_grupop_tot:
-            id=x['aus_grupop__pk']
+
+        for x in aus_x_grupop_tot:
             nombre=x['aus_grupop__patologia']
-            total=sum([int(p['total']) for p in aus_x_grupop if id==p['aus_grupop__pk']])
-            listado.append({'mes':m,'custom':{'id':id,'nombre':nombre,'total':total}})
+            id=x['aus_grupop__pk']
+            datos=[]
+            for m in meses:
+                ausencias = en_mes_anio(m[0],m[1],ausentismos)             
+                aus_x_grupop = list(ausencias.filter(aus_grupop__pk__in=id_grupos).values('aus_grupop__patologia','aus_grupop__pk')\
+                                    .annotate(total=Count('aus_grupop')).order_by('-total').values('aus_grupop__patologia','aus_grupop__pk','total'))
+                total=sum([int(p['total']) for p in aus_x_grupop if id==p['aus_grupop__pk']])                
+                datos.append(total)               
+            listado.append(dict(name=nombre,data=datos))
         
         if aus_x_grupop:
-         max_grupop = aus_x_grupop[0]['total']+1                
+         max_grupop = max([max(l['data']) for l in listado])
 
         context['max_grupop']=  max_grupop
         context['inculpables']=  json.dumps(inculpables,cls=DecimalEncoder)        
         context['accidentes']=  json.dumps(accidentes,cls=DecimalEncoder)        
         context['enfermos']=  json.dumps(enfermos,cls=DecimalEncoder)        
-        context['totales']=  json.dumps(totales,cls=DecimalEncoder)        
-        context['grupop']=  json.dumps(listado)        
-
+        context['totales']=  json.dumps(totales,cls=DecimalEncoder)                
+        context['grupop']=  listado
+        
     else:
         context['inculpables']=  None     
         context['accidentes']=  None
         context['enfermos']=  None
         context['totales']=  None
+        
         context['grupop']=  None
         
      
@@ -430,8 +434,10 @@ def reporteResumenAnual(request):
         
     if ('pdf' in request.POST)and(ausentismos):         
             aus_tot_image = request.POST.get('aus_tot_image',None)
+            aus_grupop_image = request.POST.get('aus_grupop_image',None)
             template_name = 'reportes/reporte_anual.html' 
             context['aus_tot_image'] = aus_tot_image     
+            context['aus_grupop_image'] = aus_grupop_image     
              
 
             return render_to_pdf_response(request,template_name, context) 

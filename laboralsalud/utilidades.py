@@ -207,6 +207,11 @@ def inicioMes():
     hoy = date(hoy.year,hoy.month,1)
     return hoy
 
+def inicioAnio():
+    hoy=date.today()
+    hoy = date(hoy.year,1,1)
+    return hoy
+
 def hoy():
     return date.today()    
 

@@ -39,7 +39,7 @@
                           <div class="col-sm-3">{% bootstrap_field form.empleado  %}</div>                                            
                           <div class="col-sm-12">
                             {% if ausentismos %} 
-                            <button class="btn btn-xs btn-primary text-center pull-left" id="Exportar" name="pdf"  target="_blank" type="submit">Exportar</button>
+                            <button class="btn btn-xs btn-primary text-center pull-left" formtarget="_blank" type="submit" name="pdf">Exportar</button>
                             {% endif %}
                             <button class="btn btn-xs btn-primary text-center pull-right" type="submit">Buscar</button>
                           </div>
@@ -83,12 +83,12 @@
                       {% for m in datos_tabla %}
                         <tr>                                                            
                             <td class="">{{m.mes.0}}/{{m.mes.1}}</td>                   
-                            <td class="destacada">{{ m.tasa_total|default_if_none:'0' }}</td>                   
-                            <td class="destacada">{{ m.ta_cant_empls|default_if_none:'0' }}</td>                   
-                            <td class="">{{ m.tasa_inclup|default_if_none:'0' }}</td>                   
-                            <td class="">{{ m.empl_inculp|default_if_none:'0' }}</td>    
-                            <td class="">{{ m.tasa_acc|default_if_none:'0' }}</td>                   
-                            <td class="">{{ m.empl_acc|default_if_none:'0' }}</td>    
+                            <td class="destacada">{{ m.tasa_total|default_if_none:'-' }}</td>                   
+                            <td class="destacada">{{ m.ta_cant_empls|default_if_none:'-' }}</td>                   
+                            <td class="">{{ m.tasa_inclup|default_if_none:'-' }}</td>                   
+                            <td class="">{{ m.empl_inculp|default_if_none:'-' }}</td>    
+                            <td class="">{{ m.tasa_acc|default_if_none:'-' }}</td>                   
+                            <td class="">{{ m.empl_acc|default_if_none:'-' }}</td>    
                         </tr>
                       {% endfor %}
                     </tbody>
@@ -103,11 +103,12 @@
   <div class="row">      
       <div class="col-sm-12">
           <div class="panel panel-primary">
-            <div class="panel-heading text-center">PROGRESIÓN x GRUPO PATOL'OGICO</div>
+            <div class="panel-heading text-center">PROGRESIÓN x GRUPO PATOLÓGICO</div>
             <div class="panel-body">             
-                <div class="col-sm-8 cerca">
-                     <div  id="grupo_pat" class="chart" style="padding: 0px; position: relative;"> 
+                <div class="col-sm-12 cerca">
+                     <div  id="grupo_pat" class="chart" style="padding: 0px; position: relative;">                       
                                 <div id="grafico2" style="width: 100%; height: 100%; margin: 0 auto"></div>
+                                <input type="hidden" name="aus_grupop_image" id="aus_grupop_image" value="">
                       </div>    
                 </div>
             </div>
@@ -265,7 +266,7 @@ jQuery(document).ready(function($) {
     });
     {% if grupop %}
                    
-        Highcharts.chart('grupo_pat', {
+        Highcharts.chart('grafico2', {
            
             chart: {
                 plotBackgroundColor: null,
@@ -285,9 +286,13 @@ jQuery(document).ready(function($) {
                 },
             },   
             xAxis: {
-                categories: ['Patologías más Frecuentes'],
-                crosshair: true
-            },
+              categories: {{ listado_meses|safe }},
+              title: {
+                    text: 'Mes/Año'
+                },
+                crosshair: true,                
+                
+          },
             yAxis: {
                min: 0,
                max:{{max_grupop}},
@@ -297,7 +302,7 @@ jQuery(document).ready(function($) {
             },
 
             tooltip: {
-                pointFormat: '<b>{point.y} casos</b>'
+                pointFormat: '{series.name}: <b>{point.y} casos</b>'
             },
             credits: {
                           enabled: false
@@ -305,18 +310,21 @@ jQuery(document).ready(function($) {
             title: {
                     text : null,
                   },
+
             legend: {
-            align: 'left',
-            verticalAlign: 'middle',
-            layout: 'vertical',
-            labelFormat:'<b>{name}</b>',
+                layout: 'horizontal',
+                align: 'center',
+                verticalAlign: 'bottom',
+                labelFormat:'<b>{name}</b>',
             },
-            
-            series: [                                
-                    {% for p in aus_x_grupop %}                
-                        { name: '{{p.aus_grupop__patologia|safe}}', data: [{{p.total|safe}}],custom:{empleados: {{p.total|safe}}},                        
-                    },           
-                    {% endfor %}
+            series: [   
+            {% for p in grupop %}               
+              {
+              name:'{{p.name}}',
+              data : {{p.data|safe}},
+
+              },              
+            {% endfor %}
                 ],
            
         });
@@ -352,6 +360,8 @@ jQuery(document).ready(function($) {
 
 var imageData = $("#grafico1").highcharts().createCanvas();  
 $('#aus_tot_image').val(imageData); 
+imageData = $("#grafico2").highcharts().createCanvas();  
+$('#aus_grupop_image').val(imageData); 
 
 });
 </script>

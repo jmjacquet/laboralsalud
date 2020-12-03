@@ -28,7 +28,7 @@
       </div> 
       <div class="panel-body">
               <div class="col-md-12">
-               <form class="form" accept-charset="UTF-8" enctype='multipart/form-data' autocomplete="off" role="form" action="" method="post">
+               <form class="form" accept-charset="UTF-8" enctype='multipart/form-data' id="form-exportar" autocomplete="off" role="form" action="" method="post">
                   {% csrf_token %} 
                   <div class="barra_busqueda col-sm-12">                                    
                           <div class="col-sm-1">{% bootstrap_field form.fdesde  %}</div>                                
@@ -40,7 +40,7 @@
                          
                           <div class="col-sm-12">
                             {% if ausentismos %} 
-                            <button class="btn btn-xs btn-primary text-center pull-left" name="pdf" type="submit" target="_blank" >Exportar</button>
+                            <button class="btn btn-xs btn-primary text-center pull-left" formtarget="_blank" type="submit" name="pdf">Exportar</button>
                             {% endif %}
                             <button class="btn btn-xs btn-primary text-center pull-right" type="submit">Buscar</button></div>
                           
@@ -308,6 +308,7 @@ $.fn.datepicker.dates['es'] = {
   
 });      
 jQuery(document).ready(function($) {       
+    
     Highcharts.setOptions({
       spacingBottom: 0,
       spacingTop: 0,
@@ -414,6 +415,7 @@ jQuery(document).ready(function($) {
             layout: 'vertical',
             labelFormat:'<b>{name}</b>: {percentage:.2f}% ({custom.empleados} empl.)',
         },
+        colors: [ '#64E572', '#6495ED','#FF9655','#6A5ACD', '#FFF263'],
         plotOptions: {
           pie: {            
               innerSize:'50%' ,
@@ -632,31 +634,38 @@ jQuery(document).ready(function($) {
     }
 }(Highcharts));
 
-
+{% if aus_total %}
 var imageData = $("#ausentismo_tot").highcharts().createCanvas();  
 $('#aus_tot_image').val(imageData); 
+{% endif %}
+
 {% if aus_inc %}
 imageData = $("#ausentismo_inc").highcharts().createCanvas();  
 $('#aus_inc_image').val(imageData); 
 imageData = $("#ausentismo_inc2").highcharts().createCanvas();  
 $('#aus_inc2_image').val(imageData); 
 {% endif %}
+
 {% if aus_acc %}
 imageData = $("#ausentismo_acc").highcharts().createCanvas();  
 $('#aus_acc_image').val(imageData); 
-
 imageData = $("#ausentismo_acc2").highcharts().createCanvas();  
 $('#aus_acc2_image').val(imageData); 
-
 imageData = $("#ausentismo_acc3").highcharts().createCanvas();  
 $('#aus_acc3_image').val(imageData); 
 {% endif %}
+
 {% if aus_x_grupop %}  
 imageData = $("#aus_grupop").highcharts().createCanvas();  
 $('#aus_grp_image').val(imageData); 
 {% endif %}
 
 
+$( "#exportar" ).click(function() {        
+   $("#form-exportar :disabled").removeAttr('disabled');      
+    $("#exportar").prop("disabled", true);    
+    $( "#form-exportar" ).submit();         
+  });
 
 
 });
