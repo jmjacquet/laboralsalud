@@ -260,7 +260,7 @@
 										<table id="id_forms_table" width="100%" class="table tabla table-condensed tabla_listado">
 											<thead>
 												<tr>
-													<th style="width: 10%;">Fecha Control &nbsp;<i class="fa fa-question-circle" data-toggle="tooltip" data-placement="top" title="Fechas/Historial de Control (ascendente)"></i></th>
+													<th style="width: 10%;">Fecha Control &nbsp;<i class="fa fa-question-circle" title="Fechas/Historial de Control (ascendente)" data-placement="top"></i></th>
 													<th>Detalles/Observaciones</th>
 												</tr>
 											</thead>
@@ -289,6 +289,7 @@
 		</div>
 		{% if form.non_field_errors  %}
 			<script type="text/javascript">
+			$('[data-toggle=tooltip]').tooltip();     
 			$(document).ready(function() {
 				alertify.errorAlert("{% for err in form.non_field_errors %}{{ err|safe }}{% endfor %}");
 				});
