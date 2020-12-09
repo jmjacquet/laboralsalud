@@ -31,12 +31,11 @@
                <form class="form" accept-charset="UTF-8" enctype='multipart/form-data' id="form-exportar" autocomplete="off" role="form" action="" method="post">
                   {% csrf_token %} 
                   <div class="barra_busqueda col-sm-12">                                    
-                          <div class="col-sm-1">{% bootstrap_field form.fdesde  %}</div>                                
-                          <div class="col-sm-1">{% bootstrap_field form.fhasta  %}</div>                                    
+                          <div class="col-sm-1">{% bootstrap_field form.periodo  %}</div>                                                          
                           <div class="col-sm-3">{% bootstrap_field form.empresa  %}</div>                                    
                           <div class="col-sm-2">{% bootstrap_field form.tipo_ausentismo  %}</div>                            
                           <div class="col-sm-2">{% bootstrap_field form.trab_cargo  %}</div>                            
-                          <div class="col-sm-3">{% bootstrap_field form.empleado  %}</div>
+                          <div class="col-sm-4">{% bootstrap_field form.empleado  %}</div>
                          
                           <div class="col-sm-12">
                             {% if ausentismos %} 
@@ -287,10 +286,11 @@ $.fn.datepicker.dates['es'] = {
   };
   
  $('.datepicker').datepicker({
-        format: "dd/mm/yyyy",
+        format: "mm/yyyy",
         language: "es",
         autoclose: true,
-        todayHighlight: true
+        startView: "months", 
+    minViewMode: "months",
   });
 
   $('.datepicker').each(function(){

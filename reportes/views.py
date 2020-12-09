@@ -16,6 +16,7 @@ from django.db.models import Q,Sum,Count,FloatField,Func,Avg
 from django.db.models.functions import Coalesce
 import decimal
 from easy_pdf.rendering import render_to_pdf_response,render_to_pdf 
+import calendar
 
 from general.views import VariablesMixin,getVariablesMixin
 from laboralsalud.utilidades import ultimo_anio,hoy,DecimalEncoder,MESES
@@ -48,15 +49,19 @@ def reporte_resumen_periodo(request):
     empresa = None
     filtro = u""
     if form.is_valid():                                                        
-        fdesde = form.cleaned_data['fdesde']   
-        fhasta = form.cleaned_data['fhasta']                                                 
+        periodo = form.cleaned_data['periodo']   
+        # fdesde = form.cleaned_data['fdesde']   
+        # fhasta = form.cleaned_data['fhasta']                                                 
         empresa = form.cleaned_data['empresa']                           
         empleado= form.cleaned_data['empleado']                           
         tipo_ausentismo = form.cleaned_data['tipo_ausentismo']     
         trab_cargo= form.cleaned_data['trab_cargo']                           
+        fdesde =  date(periodo.year,periodo.month,1)
+        fhasta = date(periodo.year,periodo.month,calendar.monthrange(periodo.year, periodo.month)[1])
 
         ausentismos = ausentismo.objects.filter(baja=False)                      
         filtro = u"Fecha Desde: %s - Fecha Hasta: %s" % (fdesde.strftime("%d/%m/%Y"),fhasta.strftime("%d/%m/%Y"))
+
 
         if empresa:
             if empresa.casa_central:
@@ -108,11 +113,7 @@ def reporte_resumen_periodo(request):
     if empresa:
         empleados_tot = empresa.cantidad_empleados()
     if ausentismos:
-        
-        #AUSENTISMO TOTAL            
-        #empleados_tot = ausentismos.values('empleado').distinct().count()            
-        
-        # dias_caidos_tot = ausentismos.aggregate(dias_caidos=Sum(Coalesce('aus_diascaidos', 0)))['dias_caidos'] or 0            
+         
         dias_caidos_tot=dias_ausentes(fdesde,fhasta,ausentismos)               
         dias_trab_tot = (dias_laborables * empleados_tot)-dias_caidos_tot
         tasa_ausentismo = calcular_tasa_ausentismo(dias_caidos_tot,dias_laborables,empleados_tot)        
@@ -258,13 +259,16 @@ def reporteResumenAnual(request):
     max_grupop = 20  
         
     if form.is_valid():                                                        
-        fdesde = form.cleaned_data['fdesde']   
-        fhasta = form.cleaned_data['fhasta']                                                 
+        periodo_desde = form.cleaned_data['periodo_desde']   
+        periodo_hasta = form.cleaned_data['periodo_hasta']                                                 
         empresa = form.cleaned_data['empresa']                           
         empleado= form.cleaned_data['empleado']                           
         tipo_ausentismo = form.cleaned_data['tipo_ausentismo']     
         trab_cargo= form.cleaned_data['trab_cargo']                           
 
+        fdesde =  date(periodo_desde.year,periodo_desde.month,1)
+        fhasta = date(periodo_hasta.year,periodo_hasta.month,calendar.monthrange(periodo_hasta.year, periodo_hasta.month)[1])
+        
         ausentismos = ausentismo.objects.filter(baja=False)                      
         filtro = u"Fecha Desde: %s - Fecha Hasta: %s" % (fdesde.strftime("%d/%m/%Y"),fhasta.strftime("%d/%m/%Y"))
         if fdesde:                
@@ -447,7 +451,7 @@ def reporteResumenAnual(request):
 
 
 ######################################################################################
-import calendar
+
 
 def en_mes_anio(mes, anio,ausentismos):
     d_fmt = "{0:>02}/{1:>02}/{2}"
