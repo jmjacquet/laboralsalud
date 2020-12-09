@@ -20,6 +20,11 @@ $.fn.datepicker.dates['es'] = {
     });
 
 
+const userAgent = navigator.userAgent.toLowerCase();
+const isTablet = /(ipad|tablet|(android(?!.*mobile))|(windows(?!.*phone)(.*touch))|kindle|playbook|silk|(puffin(?!.*(IP|AP|WP))))/.test(userAgent);
+
+if (isTablet==false) {
+
 $("#id_empleado").chosen({
         no_results_text: "Empleado inexistente...",
         placeholder_text_single:"Seleccione un Empleado",
@@ -31,6 +36,7 @@ $("#id_empleado").chosen({
       placeholder_text_single:"Seleccione una Empresa",
       allow_single_deselect: true,
   });
+};
 
 $('#id_hora').timepicker({
    className: "form-control",
@@ -52,8 +58,10 @@ $("#id_empresa").change(function(){
         $.each(c["empleados"], function (idx, item) {
             jQuery("<option/>").text(item['nombre']).attr("value", item['id']).appendTo("#id_empleado");
         })
+        if (isTablet==false) {
         $('#id_empleado').trigger("chosen:updated");  
         $('#id_empleado').val(ide).trigger('chosen:updated');        
+      };
                     
     });      
     $('#cargando').hide();

@@ -5,12 +5,18 @@ $("input[type=number]").click(function(){
             this.select()
           });
 
+const userAgent = navigator.userAgent.toLowerCase();
+const isTablet = /(ipad|tablet|(android(?!.*mobile))|(windows(?!.*phone)(.*touch))|kindle|playbook|silk|(puffin(?!.*(IP|AP|WP))))/.test(userAgent);
+
+if (isTablet==false) {
+
   $("#id_empresa").chosen({
       no_results_text: "Empresa inexistente...",
       placeholder_text_single:"Seleccione una Empresa",
       allow_single_deselect: true,
   });
-  
+};
+    
   
 $.fn.datepicker.dates['es'] = {
     days: ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"],
@@ -68,13 +74,11 @@ if ($("#id_trab_fingreso").val()!=''){
 $("#id_trab_fingreso").trigger("change");};
 
 
-
-
-   $( "#Aceptar" ).click(function() {        
-       $("#form-empl :disabled").removeAttr('disabled');      
-        $("#Aceptar").prop("disabled", true);    
-        $( "#form-empl" ).submit();                 
-        recargarEmpleadosEmpresa($("#id_empresa").val());
-      });
+$( "#Aceptar" ).click(function() {        
+ $("#form-empl :disabled").removeAttr('disabled');      
+  $("#Aceptar").prop("disabled", true);    
+  $( "#form-empl" ).submit();                 
+  recargarEmpleadosEmpresa($("#id_empresa").val());
+});
 
 });    

@@ -1,5 +1,8 @@
 $(document).ready(function() {  
 
+const userAgent = navigator.userAgent.toLowerCase();
+const isTablet = /(ipad|tablet|(android(?!.*mobile))|(windows(?!.*phone)(.*touch))|kindle|playbook|silk|(puffin(?!.*(IP|AP|WP))))/.test(userAgent);
+
 $.fn.datepicker.dates['es'] = {
     days: ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"],
     daysShort: ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb", "Dom"],
@@ -26,7 +29,7 @@ $("input[type=number]").click(function(){
 
 
 
-
+if (isTablet==false) {
 $("#id_aus_grupop").chosen({
       no_results_text: "Patología inexistente...",
       placeholder_text_single:"Seleccione una Patología",
@@ -51,7 +54,7 @@ $("#id_art_medico").chosen({
       allow_single_deselect: true,
   });
 
-
+};
 
 $("#id_empleado").change(function(){
   var id =  $("#id_empleado").val();
@@ -270,8 +273,10 @@ if ($('#id_tipo_form').val()=='EDICION'){
                   $.each(data["empleados"], function (idx, item) {
                       jQuery("<option/>").text(item['nombre']).attr("value", item['id']).appendTo("#id_empleado");
                   })
-                  $('#id_empleado').trigger("chosen:updated");  
-                  $("#id_empleado").trigger("change");      
+                  if (isTablet==false) {
+                    $('#id_empleado').trigger("chosen:updated");  
+                    $("#id_empleado").trigger("change");      
+                  };
                 },
                 error : function(message) {
                   console.log(message);
@@ -293,21 +298,24 @@ if ($('#id_tipo_form').val()=='EDICION'){
   }); 
 
 
+    if (isTablet==false) {
     $("#id_empleado").chosen({
         no_results_text: "Empleado inexistente...",
         placeholder_text_single:"Seleccione un Empleado",
         allow_single_deselect: true,
     });
+    };
     if ($("#id_empleado").val()==''){
     $("#id_empresa").trigger("change");
   }
 };
-
-$("#id_empleado").chosen({
-        no_results_text: "Empleado inexistente...",
-        placeholder_text_single:"Seleccione un Empleado",
-        allow_single_deselect: true,
-    });
+if (isTablet==false) {
+  $("#id_empleado").chosen({
+          no_results_text: "Empleado inexistente...",
+          placeholder_text_single:"Seleccione un Empleado",
+          allow_single_deselect: true,
+      });
+ };
 $("#id_tipo_ausentismo").trigger("change");
 
 
