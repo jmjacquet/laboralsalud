@@ -133,13 +133,16 @@
 <script type="text/javascript">
 
 $(document).ready(function() { 
+const userAgent = navigator.userAgent.toLowerCase();
+const isTablet = /(ipad|tablet|(android(?!.*mobile))|(windows(?!.*phone)(.*touch))|kindle|playbook|silk|(puffin(?!.*(IP|AP|WP))))/.test(userAgent);
 
+if (isTablet==false) {
   $("#id_qempresa").chosen({
       no_results_text: "Empresa inexistente...",
       placeholder_text_single:"Seleccione una Empresa",
       allow_single_deselect: true,
   });
-
+  };
 moment.locale('es');
 $.fn.dataTable.moment('DD/MM/YYYY'); 
 var tabla = $('#empleado').DataTable({

@@ -24,12 +24,16 @@ $.fn.datepicker.dates['es'] = {
       $(this).datepicker();
   });
 
+const userAgent = navigator.userAgent.toLowerCase();
+const isTablet = /(ipad|tablet|(android(?!.*mobile))|(windows(?!.*phone)(.*touch))|kindle|playbook|silk|(puffin(?!.*(IP|AP|WP))))/.test(userAgent);
+
+if (isTablet==false) {
   $("#id_empresa").chosen({
       no_results_text: "Empresa inexistente...",
       placeholder_text_single:"Seleccione una Empresa",
       allow_single_deselect: true,
   });
-
+  };
 var tabla = $('#ausentismos').DataTable({
             "language": {
                 "decimal": ",",
