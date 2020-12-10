@@ -58,7 +58,6 @@ def reporte_resumen_periodo(request):
         trab_cargo= form.cleaned_data['trab_cargo']                           
         fdesde =  date(periodo.year,periodo.month,1)
         fhasta = date(periodo.year,periodo.month,calendar.monthrange(periodo.year, periodo.month)[1])
-
         ausentismos = ausentismo.objects.filter(baja=False)                      
         filtro = u"Fecha Desde: %s - Fecha Hasta: %s" % (fdesde.strftime("%d/%m/%Y"),fhasta.strftime("%d/%m/%Y"))
 
@@ -81,9 +80,8 @@ def reporte_resumen_periodo(request):
         if int(tipo_ausentismo) > 0: 
             ausentismos = ausentismos.filter(tipo_ausentismo=int(tipo_ausentismo))
 
-        ausentismos = ausentismos.filter(Q(aus_fcrondesde__range=[fdesde,fhasta])|Q(aus_fcronhasta__range=[fdesde,fhasta])
+        ausentismos = ausentismos.filter(Q(aus_fcrondesde__gte=fdesde,aus_fcrondesde__lte=fhasta)|Q(aus_fcronhasta__gte=fdesde,aus_fcronhasta__lte=fhasta)
             |Q(aus_fcrondesde__lt=fdesde,aus_fcronhasta__gt=fhasta))  
-
     else:
         ausentismos = None            
     context['form'] = form
@@ -141,13 +139,15 @@ def reporte_resumen_periodo(request):
             # agudos = ausentismos_inc.filter(aus_diascaidos__lte=30).aggregate(dias_caidos=Sum(Coalesce('aus_diascaidos', 0)))['dias_caidos'] or 0
             # graves = ausentismos_inc.filter(aus_diascaidos__gt=30).aggregate(dias_caidos=Sum(Coalesce('aus_diascaidos', 0)))['dias_caidos'] or 0
             agudos=totales[1] 
-            graves=totales[2]                 
+            graves=totales[2]   
+            empl_agudos=totales[3] 
+            empl_graves=totales[4]                 
             
             porc_agudos = (Decimal(agudos) / Decimal(dias_caidos_tot))*100 
             porc_cronicos = (Decimal(graves) / Decimal(dias_caidos_tot))*100 
 
-            tot_agudos = int(porc_agudos*Decimal(0.01)*empleados_inc)
-            tot_cronicos = int(empleados_inc-tot_agudos)
+            tot_agudos = int(empl_agudos)
+            tot_cronicos = int(empl_graves)
 
             porc_agudos = Decimal(porc_agudos).quantize(Decimal("0.01"), decimal.ROUND_HALF_UP)
             porc_cronicos = Decimal(porc_cronicos).quantize(Decimal("0.01"), decimal.ROUND_HALF_UP)
@@ -518,9 +518,8 @@ def dias_ausentes_mes(mes, anio,ausentismos):
 
 
 def tot_ausentes_inc(fdesde,fhasta,ausentismos):         
-    parcial=0
-    agudos=0
-    graves=0
+    parcial,agudos,graves=0,0,0
+    empl_agudos,empl_graves=0,0
     tot=0
     for a in ausentismos:
         fini = a.aus_fcrondesde     
@@ -532,9 +531,11 @@ def tot_ausentes_inc(fdesde,fhasta,ausentismos):
             ffin =fhasta        
         parcial=(ffin-fini).days+1        
         tot+=parcial
-        if parcial <= 30:
+        if parcial < 30:
             agudos+=parcial
+            empl_agudos+=1
         else:
             graves+=parcial
-    return [tot,agudos,graves]
+            empl_graves+=1
+    return [tot,agudos,graves,empl_agudos,empl_graves]
 

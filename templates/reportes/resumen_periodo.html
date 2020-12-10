@@ -112,10 +112,10 @@
                   <table id="tabla_ausentismo_inc" class="table table-striped table-hover table-condensed table-no-bordered">
                     <tbody>
                       <tr>
-                        <td class="titulo">Agudos (<=30 días)</td><td class="dato">{{aus_inc.porc_agudos|default_if_none:0}}%</td>                
+                        <td class="titulo">Agudos (<30 días)</td><td class="dato">{{aus_inc.porc_agudos|default_if_none:0}}%</td>                
                       </tr>
                       <tr>
-                        <td class="titulo">Crónicos (>30 días)</td><td class="dato">{{aus_inc.porc_cronicos|default_if_none:0}}%</td>                
+                        <td class="titulo">Crónicos (>=30 días)</td><td class="dato">{{aus_inc.porc_cronicos|default_if_none:0}}%</td>                
                       </tr>     
                     </tbody>
                   </table>
