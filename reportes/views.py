@@ -59,7 +59,7 @@ def reporte_resumen_periodo(request):
         fdesde =  date(periodo.year,periodo.month,1)
         fhasta = date(periodo.year,periodo.month,calendar.monthrange(periodo.year, periodo.month)[1])
         ausentismos = ausentismo.objects.filter(baja=False)                      
-        filtro = u"Fecha Desde: %s - Fecha Hasta: %s" % (fdesde.strftime("%d/%m/%Y"),fhasta.strftime("%d/%m/%Y"))
+        filtro = u"Período: %s " % (periodo.strftime("%m/%Y"))
 
 
         if empresa:
@@ -90,7 +90,7 @@ def reporte_resumen_periodo(request):
     context['fhasta'] = fhasta
     context['ausentismos'] = ausentismos
     context['empresa'] = empresa
-    context['titulo_reporte'] = u"REPORTE INDICADORES: %s "%(empresa)
+    context['titulo_reporte'] = u"REPORTE INDICADORES: %s  - %s"%(empresa,filtro)
               
     context['filtro'] = filtro
     context['pie_pagina'] = "Sistemas Laboral Salud - %s" % (fecha.strftime("%d/%m/%Y"))
@@ -270,11 +270,8 @@ def reporteResumenAnual(request):
         fhasta = date(periodo_hasta.year,periodo_hasta.month,calendar.monthrange(periodo_hasta.year, periodo_hasta.month)[1])
         
         ausentismos = ausentismo.objects.filter(baja=False)                      
-        filtro = u"Fecha Desde: %s - Fecha Hasta: %s" % (fdesde.strftime("%d/%m/%Y"),fhasta.strftime("%d/%m/%Y"))
-        if fdesde:                
-            ausentismos = ausentismos.filter(aus_fcrondesde__gte=fdesde)            
-        if fhasta:                
-            ausentismos = ausentismos.filter(aus_fcronhasta__lte=fhasta)    
+        filtro = u"Período desde %s al %s" % (fdesde.strftime("%m/%Y"),fhasta.strftime("%m/%Y"))
+
         if empresa:
             if empresa.casa_central:
                 ausentismos= ausentismos.filter(empleado__empresa=empresa)
@@ -291,8 +288,10 @@ def reporteResumenAnual(request):
         if int(tipo_ausentismo) > 0: 
             ausentismos = ausentismos.filter(tipo_ausentismo=int(tipo_ausentismo))           
 
-    else:
-        
+        ausentismos = ausentismos.filter(Q(aus_fcrondesde__gte=fdesde,aus_fcrondesde__lte=fhasta)|Q(aus_fcronhasta__gte=fdesde,aus_fcronhasta__lte=fhasta)
+            |Q(aus_fcrondesde__lt=fdesde,aus_fcronhasta__gt=fhasta))  
+
+    else:       
         ausentismos = None            
 
     context['form'] = form
@@ -331,6 +330,7 @@ def reporteResumenAnual(request):
     if ausentismos:                                                    
         for m in meses:                
             dias_laborables = int(dias_mes(m[0],m[1],fdesde,fhasta))                 
+            
             ausencias = en_mes_anio(m[0],m[1],ausentismos)
             
             qs_totales = ausencias
@@ -432,7 +432,7 @@ def reporteResumenAnual(request):
     context['listado_meses']=  json.dumps(listado_meses,cls=DecimalEncoder) 
     context['datos_tabla']=  datos_tabla
     context['empresa'] = empresa
-    context['titulo_reporte'] = u"REPORTE INDICADORES : %s "%(empresa)                  
+    context['titulo_reporte'] = u"REPORTE INDICADORES : %s %s"%(empresa,filtro)                  
     context['filtro'] = filtro
     context['pie_pagina'] = "Sistemas Laboral Salud - %s" % (fecha.strftime("%d/%m/%Y"))        
         
@@ -505,14 +505,18 @@ def dias_ausentes_mes(mes, anio,ausentismos):
     fdesde = datetime.strptime(d_fmt.format(1, mes, anio), '%d/%m/%Y').date()
     ultimo_dia_mes = calendar.monthrange(anio, mes)[1]
     fhasta = datetime.strptime(d_fmt.format(ultimo_dia_mes, mes, anio), '%d/%m/%Y').date()
+
     for a in ausentismos:
         fini = a.aus_fcrondesde     
         ffin = a.aus_fcronhasta
+        
         if fdesde>=fini:
             fini=fdesde
         if fhasta<=ffin:
             ffin =fhasta
-        tot+=(ffin-fini).days+1
+        dif=(ffin-fini).days+1
+        
+        tot+=dif
     return tot    
 
 
@@ -521,7 +525,7 @@ def tot_ausentes_inc(fdesde,fhasta,ausentismos):
     parcial,agudos,graves=0,0,0
     empl_agudos,empl_graves=0,0
     tot=0
-    for a in ausentismos:
+    for a in ausentismos:        
         fini = a.aus_fcrondesde     
         ffin = a.aus_fcronhasta
         

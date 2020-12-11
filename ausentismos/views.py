@@ -104,7 +104,7 @@ class AusentismoView(VariablesMixin,ListView):
 
 class ControlesDetalleFormSet(BaseInlineFormSet): 
     pass  
-ControlDetalleFormSet = inlineformset_factory(ausentismo, ausentismo_controles,form=ControlesDetalleForm,formset=ControlesDetalleFormSet, can_delete=True,extra=0,min_num=20)
+ControlDetalleFormSet = inlineformset_factory(ausentismo, ausentismo_controles,form=ControlesDetalleForm,formset=ControlesDetalleFormSet, can_delete=True,extra=0,min_num=100)
 
 class AusentismoCreateView(VariablesMixin,CreateView):
     form_class = AusentismoForm
