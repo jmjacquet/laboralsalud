@@ -1,7 +1,5 @@
 *.pyc
 *.log
-
-static/
 !generarI25.pyc
 *.ini
 varios/

@@ -749,10 +749,10 @@ div.breadcrumbs a:focus, div.breadcrumbs a:hover {
     /*border-bottom:none;*/
 }
 
-.dropdown:hover .dropdown-menu {
+/*.dropdown:hover .dropdown-menu {
   display: block;
 }
-
+*/
 
 .popover-title {
     padding: 8px 14px;
