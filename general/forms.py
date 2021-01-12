@@ -40,23 +40,11 @@ class TurnosForm(forms.ModelForm):
 		self.fields['empresa'].queryset = ent_empresa.objects.filter(baja=False,pk__in=empresas)				
 			
 
-	# def clean(self):		
-	# 	cuit = self.cleaned_data.get('cuit')	
-	# 	if cuit:
-	# 		if not validar_cuit(str(cuit)):
-	# 			raise forms.ValidationError("El Nº de CUIT ingresado es incorrecto! Verifique.")
-				
-	# 	tipo_form = self.cleaned_data.get('tipo_form')
-	# 	if tipo_form == 'ALTA':			
-	# 		if cuit: 
-	# 			try:
-	# 				entidad=ent_medico_prof.objects.filter(cuit=cuit)				
-	# 				if entidad:
-	# 					raise forms.ValidationError("El Nº de CUIT ingresado ya existe en el Sistema! Verifique.")
-	# 			except ent_medico_prof.DoesNotExist:
-	# 			#because we didn't get a match
-	# 				pass
-	# 	return self.cleaned_data
+	def clean(self):		
+	 	fecha = self.cleaned_data.get('fecha')	
+	 	if fecha<hoy():
+	 		self.add_error("fecha",u'¡Fecha no válida!')
+		return self.cleaned_data
 
 
 
