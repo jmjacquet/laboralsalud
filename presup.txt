@@ -1,0 +1,10 @@
+Presupuesto Estimado Modificaciones SistemaLaboralSalud:
+=======================================================
+
+Tareas:
+1)Nueva Pestaña en ABM Ausentismo, que diga PLAN DE ACCIÓN	(sólo un recuadro para escribir, tipo observaciones)
+2)Nueva Pestaña en ABM Ausentismo, que diga RESUMEN PATOLOGIA  contiene varios ítems (fecha,observación) como está en CONTROLES REALIZADOS. Generar una nueva tabla para guardar estas relaciones.
+3)Agregar un nuevo Tipo de Ausentismo : "Familiar enfermo", conlos mismos requrimientos que Inculpable (misma pestaña). Verificar en el resto del sistema el agregado de un Tipo de ausentismo.
+4)Carga exterior al ABM Ausentismo (desde pantalla de listado de ausentismos) de evoluciones (lo que permite evitar modificar el Ausentismo y controlar que toquen y/o modifiquen datos).
+
+Monto: $10.000 (a pagar al terminar las tareas).
