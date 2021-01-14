@@ -63,6 +63,9 @@ class AusentismoForm(forms.ModelForm):
 	aus_falta = forms.DateField(label='Fecha Alta',required = False,widget=forms.DateInput(attrs={'class': 'datepicker'}))
 	art_faccidente = forms.DateField(label='Fecha Accidente',required = False,widget=forms.DateInput(attrs={'class': 'datepicker'}))
 	art_fdenuncia = forms.DateField(label='Fecha Denuncia',required = False,widget=forms.DateInput(attrs={'class': 'datepicker'}))	
+
+	plan_accion = forms.CharField(label=u'Detalle del Plan de Acción',widget=forms.Textarea(attrs={'class':'form-control2', 'rows': 10}),required = False)	
+
 	tipo_form = forms.CharField(widget = forms.HiddenInput(), required = False)	
 	class Meta:
 			model = ausentismo
@@ -74,6 +77,11 @@ class AusentismoForm(forms.ModelForm):
 		empresas = empresas_habilitadas(request)
 		self.fields['empleado'].queryset = ent_empleado.objects.filter(baja=False,empresa__pk__in=empresas)
 		self.fields['empresa'].queryset = ent_empresa.objects.filter(baja=False,pk__in=empresas)				
+
+		usuario=usuario_actual(request)      
+		#Si es médico no vé los últimos tipos
+		if usuario.tipoUsr == 1:
+			self.fields['tipo_ausentismo'].choices = TIPO_AUSENCIA_MEDICOS
 	  
 	
 	def clean(self):		
@@ -114,7 +122,7 @@ class AusentismoForm(forms.ModelForm):
 			if not descr_altaparc:
 				self.add_error("descr_altaparc",u'¡Debe cargar el Detalle del Alta!')
 		
-		if int(tipo_ausentismo)> 1:			
+		if int(tipo_ausentismo) not in (1,4):			
 			art_tipo_accidente = self.cleaned_data.get('art_tipo_accidente')							
 			if not art_tipo_accidente:
 				self.add_error("art_tipo_accidente",u'¡Debe seleccionar un Tipo de Accidente! Verifique.')
@@ -133,7 +141,7 @@ class AusentismoForm(forms.ModelForm):
 
 class ControlesDetalleForm(forms.ModelForm):	
 	ausentismo = forms.IntegerField(widget = forms.HiddenInput(), required = False)
-	detalle = forms.CharField(label='',widget=forms.Textarea(attrs={ 'class':'form-control2','rows': 3}),required = False)				
+	detalle = forms.CharField(label='',widget=forms.Textarea(attrs={ 'class':'form-control2','rows': 4}),required = False)				
 	fecha = forms.DateField(label='',required = False,widget=forms.DateInput(attrs={'class': 'form-control datepicker','autocomplete':'off'}))	
 	class Meta:
 			model = ausentismo_controles
@@ -143,6 +151,17 @@ class ControlesDetalleForm(forms.ModelForm):
 		request = kwargs.pop('request', None)
 		super(ControlesDetalleForm, self).__init__(*args, **kwargs)
 
+class PatologiaDetalleForm(forms.ModelForm):	
+	ausentismo = forms.IntegerField(widget = forms.HiddenInput(), required = False)
+	detalle = forms.CharField(label='',widget=forms.Textarea(attrs={ 'class':'form-control2','rows': 3}),required = False)				
+	fecha = forms.DateField(label='',required = False,widget=forms.DateInput(attrs={'class': 'form-control datepicker','autocomplete':'off'}))	
+	class Meta:
+			model = ausentismo_controles_patologias
+			exclude = ['id','fecha_creacion','fecha_modif','usuario_carga']
+
+	def __init__(self, *args, **kwargs):
+		request = kwargs.pop('request', None)
+		super(PatologiaDetalleForm, self).__init__(*args, **kwargs)
 
 
 class ConsultaAusentismos(forms.Form):               	
@@ -208,3 +227,16 @@ class ImprimirInformeAusenciasForm(forms.Form):
 	lista = forms.CharField(widget = forms.HiddenInput(), required = False)	
 	def __init__(self, *args, **kwargs):				
 		super(ImprimirInformeAusenciasForm, self).__init__(*args, **kwargs)		
+
+
+
+class SeguimControlForm(forms.ModelForm):
+	detalle = forms.CharField(label='',widget=forms.Textarea(attrs={ 'class':'form-control2','rows': 4}),required = False)				
+	fecha = forms.DateField(label='',required = False,widget=forms.DateInput(attrs={'class': 'form-control datepicker','autocomplete':'off'}))	
+	class Meta:
+			model = ausentismo_controles
+			exclude = ['id','fecha_creacion','fecha_modif','usuario_carga']
+
+	def __init__(self, *args, **kwargs):
+		request = kwargs.pop('request', None)
+		super(SeguimControlForm, self).__init__(*args, **kwargs)

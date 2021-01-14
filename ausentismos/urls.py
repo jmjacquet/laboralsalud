@@ -10,6 +10,7 @@ urlpatterns = [
     url(r'^eliminar/(?P<id>\d+)/$', ausentismo_eliminar, name='ausentismo_eliminar'),
 
     url(r'^historial/(?P<id>\d+)/$', AusentismoHistorialView.as_view(), name="ausentismo_historial"),    
+    url(r'^ausencias_cargar_control/(?P<id>\d+)/$', SeguimControlCreateView.as_view(),name="ausencias_cargar_control"),
 
     url(r'^patologia/$', PatologiaView.as_view(),name="patologia_listado"),
     url(r'^patologia/nuevo/$', PatologiaCreateView.as_view(), name="patologia_nuevo"),

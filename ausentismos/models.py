@@ -74,6 +74,8 @@ class ausentismo(models.Model):
 	estudios_art = models.TextField(u'Estudios ART',blank=True, null=True)       
 	recalificac_art = models.TextField(u'Recalificación ART',blank=True, null=True)       
 
+	plan_accion = models.TextField('Observaciones',blank=True, null=True)       
+
 	baja = models.BooleanField(default=False)
 	fecha_creacion = models.DateField(auto_now_add = True)
 	fecha_modif = models.DateField(auto_now = True)			
@@ -147,7 +149,20 @@ class ausentismo_controles(models.Model):
 	def __unicode__(self):
 	    return u'%s - %s' % (self.fecha,self.detalle)
 
+class ausentismo_controles_patologias(models.Model):
+	id = models.AutoField(primary_key=True,db_index=True)
+	ausentismo = models.ForeignKey('ausentismo',db_column='ausentismo',related_name='control_ausentismo_pat',blank=True, null=True,on_delete=models.CASCADE)
+	fecha = models.DateField(blank=True, null=True)
+	detalle = models.TextField(max_length=1000,blank=True, null=True) # Field name made lowercase.   
+	fecha_creacion = models.DateField(auto_now_add = True)
+	fecha_modif = models.DateField(auto_now = True)			
+	usuario_carga = models.ForeignKey('usuarios.UsuUsuario',db_column='usuario_carga',blank=True, null=True,related_name='control_pat_usuario_carga',on_delete=models.SET_NULL)    
+	class Meta:
+	    db_table = 'ausentismo_controles_patologias'
+	    ordering = ['fecha','id']
 
+	def __unicode__(self):
+	    return u'%s - %s' % (self.fecha,self.detalle)
 
 from django.db.models import Q
 

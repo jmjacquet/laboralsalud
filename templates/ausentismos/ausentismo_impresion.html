@@ -160,6 +160,12 @@
           <td class="dato borde_abajo borde_arriba borde_der borde_izq" colspan="5">{{a.observaciones|default_if_none:''}}</td>
         </tr>
       {% endif %}
+      {% if a.plan_accion %}
+        <tr>
+          <td width="20%" class="tabla_footer borde_izq borde_abajo borde_arriba borde_der">Detalle Plan de Acción:</td>
+          <td class="dato borde_abajo borde_arriba borde_der borde_izq" colspan="5">{{a.plan_accion|default_if_none:''}}</td>
+        </tr>
+      {% endif %}
         </tbody>
       </table>
       <br>
@@ -173,6 +179,20 @@
             <td width="15%" class="tabla_footer borde_izq borde_abajo borde_arriba borde_der">Fecha Control</td>
             <td width="10%" class="dato borde_abajo borde_arriba borde_der borde_izq texto_cen">{{c.fecha|date:'d/m/Y'}}</td>
             <td class="dato borde_abajo borde_arriba borde_der borde_izq">{{c.detalle|default_if_none:''}}</td>
+          </tr>
+        {% endfor %}    
+      </table>
+      {% endif %}   
+      {% if controles_pat %}
+      <table>
+        <tr>
+          <td colspan="3" class="nombre_cpb">RESUMEN PATOLOGÍA</td>
+        </tr>
+        {% for cc in controles_pat %}
+          <tr>
+            <td width="15%" class="tabla_footer borde_izq borde_abajo borde_arriba borde_der">Fecha Detalle</td>
+            <td width="10%" class="dato borde_abajo borde_arriba borde_der borde_izq texto_cen">{{cc.fecha|date:'d/m/Y'}}</td>
+            <td class="dato borde_abajo borde_arriba borde_der borde_izq">{{cc.detalle|default_if_none:''}}</td>
           </tr>
         {% endfor %}    
       </table>

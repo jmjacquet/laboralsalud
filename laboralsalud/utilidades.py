@@ -19,6 +19,15 @@ TIPO_AUSENCIA = (
     (2, 'Accidente'),
     (3, 'Enfermedad Profesional'),
     (4, 'Familiar Enfermo'),
+    (5, 'Licencias Especiales'),
+    (6, 'Embarazo'),
+)
+
+TIPO_AUSENCIA_MEDICOS = (    
+    (1, 'Inculpable'),
+    (2, 'Accidente'),
+    (3, 'Enfermedad Profesional'),
+    (4, 'Familiar Enfermo'),   
 )
 
 TIPO_CONTROL = (    
@@ -40,6 +49,8 @@ TIPO_AUSENCIA_ = (
     (2, 'Accidente'),
     (3, 'Enfermedad'),
     (4, 'Familiar Enfermo'),
+    (5, 'Licencias Especiales'),
+    (6, 'Embarazo'),
 )
 
 TIPO_ALTA = (    
@@ -142,7 +153,7 @@ PROVINCIAS = (
 (21,'La Pampa'),
 (22,'Río Negro'),
 (23,'Santa Cruz'),
-(24,'Tierra del Fuego/Antártida/Islas Malvinas'),
+(24,u'Tierra del Fuego/Antártida/Islas Malvinas'),
 )   
 
 

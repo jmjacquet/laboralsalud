@@ -289,11 +289,7 @@
 					</div>
 					<div class="tab-pane" id="tab_plan">
 						<fieldset>
-							<div class="row cerca">
-								<div class="col-sm-12">
-									{{form.observaciones|as_crispy_field}}
-								</div>
-							</div>
+									{{form.plan_accion|as_crispy_field}}
 						</fieldset>
 					</div>
 					<div class="tab-pane" id="tab_resumen">
@@ -303,19 +299,19 @@
 									<table id="id_forms_table" width="100%" class="table tabla table-condensed tabla_listado">
 										<thead>
 											<tr>
-												<th style="width: 10%;">Fecha Control &nbsp;<i class="fa fa-question-circle" title="Fechas/Historial de Control (ascendente)" data-placement="top"></i></th>
+												<th style="width: 10%;">Fecha</th>
 												<th>Detalles/Observaciones</th>
 											</tr>
 										</thead>
 										<tbody class='form-detalles'>
-											{{ controles_detalle.management_form }}
-											{{ controles_detalle.non_form_errors  }}
-											{% for form2 in controles_detalle.forms %}
-												{{ form2.non_field_errors }}
-												<tr class="formDetalle" id="{{ form2.prefix }}">
-													<td>{% bootstrap_field form2.fecha show_label=False%}</td>
-													<td>{% bootstrap_field form2.detalle show_label=False%}</td>
-												{% for hidden in form2.hidden_fields %} {{ hidden }} {% endfor %}
+											{{ controles_patologias.management_form }}
+											{{ controles_patologias.non_form_errors  }}
+											{% for form3 in controles_patologias.forms %}
+												{{ form3.non_field_errors }}
+												<tr class="formDetalle2" id="{{ form3.prefix }}">
+													<td>{% bootstrap_field form3.fecha show_label=False%}</td>
+													<td>{% bootstrap_field form3.detalle show_label=False%}</td>
+												{% for hidden in form3.hidden_fields %} {{ hidden }} {% endfor %}
 											</tr>
 										{% endfor %}
 										</tbody>
