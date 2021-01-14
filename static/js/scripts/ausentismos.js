@@ -183,7 +183,7 @@ $("#id_empleado").change(function(){
 $('#id_tipo_ausentismo').change(function()
 {
   var id =  $("#id_tipo_ausentismo").val();
-  if (id==1){
+  if ((id==1)or(id==4)){
     $('#tab_ausencia').show();
     $('#tab_art').hide();
     $('#titulo').html('DATOS DE LA AUSENCIA')

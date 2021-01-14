@@ -18,6 +18,7 @@ TIPO_AUSENCIA = (
     (1, 'Inculpable'),
     (2, 'Accidente'),
     (3, 'Enfermedad Profesional'),
+    (4, 'Familiar Enfermo'),
 )
 
 TIPO_CONTROL = (    
@@ -38,6 +39,7 @@ TIPO_AUSENCIA_ = (
     (12, u'Inculpable Crónicos (>30 días)'),    
     (2, 'Accidente'),
     (3, 'Enfermedad'),
+    (4, 'Familiar Enfermo'),
 )
 
 TIPO_ALTA = (    
