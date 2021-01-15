@@ -229,10 +229,9 @@ class ImprimirInformeAusenciasForm(forms.Form):
 		super(ImprimirInformeAusenciasForm, self).__init__(*args, **kwargs)		
 
 
-
 class SeguimControlForm(forms.ModelForm):
-	detalle = forms.CharField(label='',widget=forms.Textarea(attrs={ 'class':'form-control2','rows': 4}),required = False)				
-	fecha = forms.DateField(label='',required = False,widget=forms.DateInput(attrs={'class': 'form-control datepicker','autocomplete':'off'}))	
+	detalle = forms.CharField(label='Detalles/Observaciones',widget=forms.Textarea(attrs={ 'class':'form-control2','rows': 5}),required = True)				
+	fecha = forms.DateField(label='Fecha Control',required = True,initial=hoy(),widget=forms.DateInput(attrs={'class': 'form-control datepicker','autocomplete':'off'}))	
 	class Meta:
 			model = ausentismo_controles
 			exclude = ['id','fecha_creacion','fecha_modif','usuario_carga']

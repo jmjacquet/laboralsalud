@@ -181,7 +181,7 @@ from django.dispatch import receiver
 def eliminar_controles_vacios(sender, instance,created, **kwargs):
    if instance:
    	controles = ausentismo_controles.objects.filter(ausentismo=instance)\
-   	.filter(Q(fecha__isnull=True,detalle__isnull=True)|Q(fecha__isnull=True,detalle=''))
+   	.filter(Q(fecha__isnull=True,detalle__isnull=True)|Q(fecha__isnull=True,detalle=''))   	
    	controles.delete()
    	# if (not instance.fecha)and(not instance.detalle):
    	# 	instance.delete()

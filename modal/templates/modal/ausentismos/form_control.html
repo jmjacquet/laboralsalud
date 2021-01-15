@@ -1,15 +1,15 @@
 {% load i18n %}
 {% load static from staticfiles %}
 {% load crispy_forms_tags %}
-{% load bootstrap3 %}
+
 
 <div id="form-container">
-    <form role="form" class="form abm" autocomplete="off" method="POST" action="" id="form-alta" enctype="multipart/form-data">
+    <form role="form" class="form abm" autocomplete="off" method="POST" action="" id="form-alta">
      {% csrf_token %}         
         <div class="col-xs-12">	         	
 			  	<div class="row">										
-			  		<div class="col-sm-2">{% bootstrap_field form.fecha %}</div>											
-					<div class="col-sm-10">{% bootstrap_field form.detalle %}</div>															
+			  		<div class="col-sm-2"> {{form.fecha|as_crispy_field}}</div>							       
+					 <div class="col-sm-10"> {{form.detalle|as_crispy_field}}</div>															
 			  	</div>
 			  				  										
 		</div>
@@ -23,12 +23,31 @@
          </button>
         </div>
         <div class="col-xs-6">
-         <a  class="btn pull-right btn-xs btn-primary" id="Aceptar" type="submit">
-              <i class="fa fa-check"></i>{% trans 'Aceptar' %}</a>
+         <button  class="btn pull-right btn-xs btn-primary" id="Aceptar" type="button" 
+            onclick="this.disabled=true;$('#form-alta' ).submit();">
+              <i class="fa fa-check"></i>{% trans 'Aceptar' %}</button>
         </div>
       
       </div>
     
 </div>
 </form>	
+<script type="text/javascript">
+    $.fn.datepicker.dates['es'] = {
+    days: ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"],
+    daysShort: ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb", "Dom"],
+    daysMin: ["Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa", "Do"],
+    months: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"],
+    monthsShort: ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"],
+    today: "Hoy"
+  };
+  
+ $('.datepicker').datepicker({
+          format: "dd/mm/yyyy",
+          language: "es",
+          autoclose: true,
+          todayHighlight: true
+    });
+
+</script>
 

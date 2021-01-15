@@ -258,8 +258,8 @@ class AusentismoVerView(VariablesMixin,DetailView):
     def get_context_data(self, **kwargs):
         context = super(AusentismoVerView, self).get_context_data(**kwargs)
         a = self.get_object()
-        context['controles'] = ausentismo_controles.objects.filter(ausentismo=a)
-        context['controles_pat'] = ausentismo_controles_patologias.objects.filter(ausentismo=a)
+        context['controles'] = ausentismo_controles.objects.filter(ausentismo=a).exclude(Q(fecha__isnull=True,detalle__isnull=True)|Q(fecha__isnull=True,detalle=''))
+        context['controles_pat'] = ausentismo_controles_patologias.objects.filter(ausentismo=a).exclude(Q(fecha__isnull=True,detalle__isnull=True)|Q(fecha__isnull=True,detalle=''))
         return context
 
 
@@ -296,9 +296,14 @@ class SeguimControlCreateView(VariablesMixin,AjaxCreateView):
     def form_valid(self, form):                                        
         self.object = form.save(commit=False)
         aus=self.get_object() 
-        print aus
+        self.object.ausentismo = aus
+        self.object.usuario_carga = usuario_actual(self.request)
+        self.object.save()
         messages.success(self.request, u'Los datos se guardaron con éxito!')
         return super(SeguimControlCreateView, self).form_valid(form)
+
+    def get_object(self):
+        return get_object_or_404(ausentismo, pk=self.kwargs.get('id',None))
 
     def get_form_kwargs(self):
         kwargs = super(SeguimControlCreateView, self).get_form_kwargs()
@@ -311,8 +316,7 @@ class SeguimControlCreateView(VariablesMixin,AjaxCreateView):
         initial['request'] = self.request        
         return initial   
 
-    def form_invalid(self, form):
-        print form.errors
+    def form_invalid(self, form):        
         return super(SeguimControlCreateView, self).form_invalid(form)
 
 
@@ -761,8 +765,8 @@ def imprimir_ausentismo(request,id):
     template = 'ausentismos/ausentismo_impresion.html'     
     try:
         ausencia = ausentismo.objects.get(pk=id)
-        controles = ausentismo_controles.objects.filter(ausentismo=ausencia)
-        controles_pat = ausentismo_controles_patologias.objects.filter(ausentismo=ausencia)
+        controles = ausentismo_controles.objects.filter(ausentismo=ausencia).exclude(Q(fecha__isnull=True,detalle__isnull=True)|Q(fecha__isnull=True,detalle=''))
+        controles_pat = ausentismo_controles_patologias.objects.filter(ausentismo=ausencia).exclude(Q(fecha__isnull=True,detalle__isnull=True)|Q(fecha__isnull=True,detalle=''))
     except Exception as e:                                                      
            ausencia=None
            controles_pat=None
