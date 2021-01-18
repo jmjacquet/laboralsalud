@@ -5,7 +5,7 @@ from django.forms.widgets import TextInput,NumberInput,Select
 from .models import *
 from entidades.models import ent_empleado,ent_medico_prof
 from laboralsalud.utilidades import *
-
+from usuarios.views import tiene_permiso
 
 class EmpleadoModelChoiceField(forms.ModelChoiceField):
     def label_from_instance(self, obj):		
@@ -82,6 +82,16 @@ class AusentismoForm(forms.ModelForm):
 		#Si es médico no vé los últimos tipos
 		if usuario.tipoUsr == 1:
 			self.fields['tipo_ausentismo'].choices = TIPO_AUSENCIA_MEDICOS
+
+		if not tiene_permiso(request,'pat_pantalla'):
+			self.fields['aus_grupop'].queryset = aus_patologia.objects.filter(baja=False)
+			self.fields['aus_grupop'].label =u'Grupo Patológico'
+		if not tiene_permiso(request,'diag_pantalla'):			
+			self.fields['aus_diagn'].queryset = aus_diagnostico.objects.filter(baja=False)
+			self.fields['aus_diagn'].label =u'Diagnóstico'
+		if not tiene_permiso(request,'med_pantalla'):
+			self.fields['aus_medico'].queryset = ent_medico_prof.objects.filter(baja=False)
+			self.fields['aus_medico'].label =u'Médico Tratante/ART'
 	  
 	
 	def clean(self):		
