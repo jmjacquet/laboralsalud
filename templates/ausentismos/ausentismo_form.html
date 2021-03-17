@@ -296,7 +296,7 @@
 						<fieldset>
 							<div class="row cerca">
 								<div class="col-sm-12" style="width: 100%; height: 400px; overflow-y: scroll;">
-									<table id="id_forms_table" width="100%" class="table tabla table-condensed tabla_listado">
+									<table id="id_forms_table" width="100%" class="table tabla table-condensed tabla_listado table_responsive">
 										<thead>
 											<tr>
 												<th style="width: 10%;">Fecha</th>
@@ -309,8 +309,8 @@
 											{% for form3 in controles_patologias.forms %}
 												{{ form3.non_field_errors }}
 												<tr class="formDetalle2" id="{{ form3.prefix }}">
-													<td>{% bootstrap_field form3.fecha show_label=False%}</td>
-													<td>{% bootstrap_field form3.detalle show_label=False%}</td>
+													<td width="auto">{% bootstrap_field form3.fecha show_label=False%}</td>
+													<td >{% bootstrap_field form3.detalle show_label=False%}</td>
 												{% for hidden in form3.hidden_fields %} {{ hidden }} {% endfor %}
 											</tr>
 										{% endfor %}
