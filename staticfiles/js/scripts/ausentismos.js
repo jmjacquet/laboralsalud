@@ -215,27 +215,6 @@ $('#id_aus_fcronhasta').change(function()
 });
 
 
-// function renovarCalendarios() {    
-//     $('.datepicker').datepicker('destroy');
-//     $(".datepicker").datepicker({format: "dd/mm/yyyy",
-//                         language: "es",
-//                         autoclose: true,
-//                         todayHighlight: true});
-// };
-
-// $('.formDetalle').formset({
-//           addText: '',
-//           addCssClass: '',       
-//           deleteCssClass: 'delete-row1',     
-//           deleteText: 'Eliminar',
-//           prefix: 'formDetalle',
-//           formCssClass: 'dynamic-form',
-//           keepFieldValues:'',
-          
-//           removed: function (row) {
-//             renovarCalendarios();
-//           }
-//       });
 
  function diasRestantes(desde,hasta,dias){
         var a = moment(desde.val(),'D/M/YYYY');
@@ -275,8 +254,9 @@ if ($('#id_tipo_form').val()=='EDICION'){
                   })
                   if (isTablet==false) {
                     $('#id_empleado').trigger("chosen:updated");  
+                   };
                     $("#id_empleado").trigger("change");      
-                  };
+                 
                 },
                 error : function(message) {
                   console.log(message);
@@ -284,16 +264,7 @@ if ($('#id_tipo_form').val()=='EDICION'){
                 }
         });
         $('#cargando').hide();
-
-      // $.getJSON('/recargar_empleados_empresa/'+id,{},
-      //     function (c) {
-      //     $("#id_empleado").empty().append('<option value="">---</option>');
-      //     $.each(c["empleados"], function (idx, item) {
-      //         jQuery("<option/>").text(item['nombre']).attr("value", item['id']).appendTo("#id_empleado");
-      //     })
-      //     $('#id_empleado').trigger("chosen:updated");  
-      //     $("#id_empleado").trigger("change");          
-      // });      
+     
       $('#cargando').hide();
   }); 
 
@@ -307,6 +278,8 @@ if ($('#id_tipo_form').val()=='EDICION'){
     };
     if ($("#id_empleado").val()==''){
     $("#id_empresa").trigger("change");
+  }else{
+    $("#id_empleado").trigger("change");  
   }
 };
 if (isTablet==false) {
