@@ -29,10 +29,39 @@
     <tbody>
         {% for t in turnos %}
         <tr>    
-            <td class="text-center">
-            <a href="{% url 'turnos_detalles' id=t.pk %}" class="modal-detail" title="Ver Detalle turno {{ t.get_turno }}" data-modal-head="DETALLE TURNO">
-              <i class="fa fa-list-alt text-primary"></i></a>
-          </td>
+            <td>
+              <div class="btn-group">
+                <button type="button" title="{{ t.pk|safe}}" class="btn btn-xs color_barra" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <i class="icon-settings"> </i> <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu">                        
+                  <li><a href="{% url 'turnos_detalles' id=t.pk %}" class="modal-detail" data-modal-head="DETALLE TURNO">
+                      <i class=" icon-screen-desktop"></i> Detalle</a></li>                            
+                      <li>
+                  <li><a href="{% url 'turnos_editar' id=t.pk %}"  class="modal-update " title="Editar" data-modal-callback="reload" data-modal-head="EDITAR TURNO" data-modal-target="#object-{{ t.pk }}"><i class="icon-note"></i> Editar</a></li>
+                  <li><a href="#" 
+                              onClick="alerta= alertify.dialog('confirm').set({'labels':{ok:'Aceptar', cancel:'Cancelar'},'message': '¿DESEA ELIMINAR EL REGISTRO ACTUAL?',transition:'fade','onok': function(){ window.location.href = '{% url 'turnos_eliminar' id=t.pk  %}'; },'oncancel': function(){ return true;} }); alerta.setting('modal', true); alerta.setHeader('ELIMINAR'); alerta.show(); return true;" ><i class="glyphicon glyphicon-trash"></i>Eliminar</a>
+                          </li>
+
+                  {% if t.estado != 1 %}
+                  <li><a href="#" 
+                          onClick="alerta= alertify.dialog('confirm').set({'labels':{ok:'Aceptar', cancel:'Cancelar'},'message': '¿DESEA MODIFICAR EL ESTADO DEL TURNO?',transition:'fade','onok': function(){ window.location.href = '{% url 'turnos_estado' id=t.pk estado=1  %}'; },'oncancel': function(){ return true;} }); alerta.setting('modal', true); alerta.setHeader('ASISTENCIA'); alerta.show(); return true;" ><i class="icon-like"></i>Marcar Asistencia</a>
+                  </li>
+                  {% endif %}     
+                  {% if t.estado != 2 %}
+                  <li><a href="#" 
+                          onClick="alerta= alertify.dialog('confirm').set({'labels':{ok:'Aceptar', cancel:'Cancelar'},'message': '¿DESEA MODIFICAR EL ESTADO DEL TURNO?',transition:'fade','onok': function(){ window.location.href = '{% url 'turnos_estado' id=t.pk estado=2  %}'; },'oncancel': function(){ return true;} }); alerta.setting('modal', true); alerta.setHeader('NO ASISTENCIA'); alerta.show(); return true;" ><i class="icon-dislike"></i>Marcar Inasistencia</a>
+                  </li>
+                  {% endif %}
+                  {% if t.estado != 0 %}
+                  <li><a href="#" 
+                          onClick="alerta= alertify.dialog('confirm').set({'labels':{ok:'Aceptar', cancel:'Cancelar'},'message': '¿DESEA MODIFICAR EL ESTADO DEL TURNO?',transition:'fade','onok': function(){ window.location.href = '{% url 'turnos_estado' id=t.pk estado=0  %}'; },'oncancel': function(){ return true;} }); alerta.setting('modal', true); alerta.setHeader('DEJAR PENDIENTE'); alerta.show(); return true;" ><i class="icon-minus"></i>Marcar Pendiente</a>
+                  </li>
+                  {% endif %}         
+                  
+                </ul>                                      
+              </div>
+            </td>         
             <td title="{{ t.observaciones|default_if_none:''}}">{{ t.fecha|date:'d/m/Y' }} {{ t.hora|time:"H:i" }}hs</td>
             <td title="{{ t.empleado|default_if_none:''}}"><a href="{% url 'empleado_detalles' id=t.empleado.id %}"  class="modal-detail" data-modal-head="DETALLE EMPLEADO {{t.empleado.legajo}}" data-modal-callback="reload"><strong>{{ t.empleado|default_if_none:''|truncatechars:60 }}</strong></a></td>
             <td title="{{ t.empresa|default_if_none:''}}">{{ t.empresa|default_if_none:''|truncatechars:60 }}</td>
@@ -65,7 +94,6 @@ $(document).ready(function() {
    
 moment.locale('es');
 $.fn.dataTable.moment('DD/MM/YYYY'); 
-
 var tabla = $('#fturnos').DataTable({
             "language": {
                 "decimal": ",",
@@ -111,7 +139,7 @@ var tabla = $('#fturnos').DataTable({
               footer: false
               },
             responsive: false,            
-            dom: '',
+            dom: "<'row'<'col-sm-12'tr>>"+"<'row'<'col-sm-3'l><'col-sm-9'ip>>",
             PreDrawCallback:function(){
             $("#cargando").show();
             },

@@ -24,7 +24,24 @@
       {% for a in fechas_control %}
       <tr>    
           <td class="text-center">
-            <a href="{% url 'ausentismo_detalles' id=a.pk %}" class="modal-detail" data-modal-head="DETALLE AUSENTISMO" title="Ver Detalle"><i class="fa fa-list-alt text-primary"></i></a>
+            <div class="btn-group">
+                <button type="button" title="{{ a.pk|safe}}" class="btn btn-xs color_barra" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="icon-settings"> </i> <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu">
+                  <li><a href="{% url 'ausentismo_detalles' id=a.pk %}" class="modal-detail" data-modal-head="DETALLE AUSENTISMO">
+                  <i class=" icon-screen-desktop"></i> Detalle</a></li>
+                  {% if 'aus_abm' in permisos_grupo %}
+                    <li>
+                      <a href="{% url 'ausentismo_editar' id=a.pk %}"  title="Editar"><i class="icon-note"></i> Editar</a>
+                    </li>                                   
+                  <li> <a href="{% url 'ausencias_cargar_control' id=a.pk %}"  class="modal-create " title="Cargar Control" data-modal-callback="reload" data-modal-head="CARGA NUEVO CONTROL"data-modal-target="#object-{{ a.pk }}"><i class="icon-note"></i> Cargar Control</a></li>
+                {% endif %}
+                <li><a href="{% url 'ausentismo_historial' id=a.empleado.pk %}" class="modal-detail" data-modal-head="HISTORIA CLINICA">
+                <i class=" icon-screen-desktop"></i> Historia Clínica</a></li>
+                <li><a href="#"onClick="abrir_modal('/ausentismos/generar_informe/?id={{a.pk|safe}}')"><i class=" icon-screen-desktop"></i> Generar Informe</a></li>
+              </ul>
+            </div>
           </td>
           <td>{{ a.get_proxcontrol|date:'d/m/Y' }}</td>          
           <td>{{ a.get_fcrondesde|date:'d/m/Y' }}</td>               

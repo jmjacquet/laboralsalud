@@ -699,6 +699,7 @@ div.breadcrumbs a:focus, div.breadcrumbs a:hover {
 
 .panel-body {
     padding: 5px;
+    min-height: 50%;
 }
 
 .panel > .barra_busqueda {
