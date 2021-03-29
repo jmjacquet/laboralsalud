@@ -674,7 +674,7 @@ textarea.form-control{height:auto}
 
 div.breadcrumbs {
     background: #79aec8;
-    padding: 10px 40px;
+    padding: 10px 20px;
     border: none;
     font-size: 18px;
     color: #fff;
@@ -699,7 +699,6 @@ div.breadcrumbs a:focus, div.breadcrumbs a:hover {
 
 .panel-body {
     padding: 5px;
-    min-height: 50%;
 }
 
 .panel > .barra_busqueda {
