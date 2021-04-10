@@ -1,5 +1,15 @@
 # -*- coding: utf8 -*-
 from __future__ import unicode_literals
+import io
+import csv
+from easy_pdf.rendering import render_to_pdf_response, render_to_pdf
+from django.template.loader import get_template
+from django.core.mail.backends.smtp import EmailBackend
+from django.core.mail import send_mail, EmailMessage
+import random
+import datetime
+from general.views import getVariablesMixin
+from .forms import ImportarAusentismosForm, InformeAusenciasForm, ImprimirInformeAusenciasForm
 from django.shortcuts import render
 from django.template import RequestContext, Context
 from django.shortcuts import *
@@ -579,13 +589,6 @@ def diagnostico_baja_alta(request, id):
     return HttpResponseRedirect(reverse("diagnostico_listado"))
 
 
-import csv, io
-from .forms import ImportarAusentismosForm, InformeAusenciasForm, ImprimirInformeAusenciasForm
-from general.views import getVariablesMixin
-import datetime
-import random
-
-
 def unicode_csv_reader(unicode_csv_data, dialect=csv.excel, **kwargs):
     # csv.py doesn't do Unicode; encode temporarily as UTF-8:
     csv_reader = csv.reader(utf_8_encoder(unicode_csv_data), dialect=dialect, **kwargs)
@@ -808,9 +811,6 @@ def ausencias_importar(request):
 
 
 # ************* EMAIL **************
-from django.core.mail import send_mail, EmailMessage
-from django.core.mail.backends.smtp import EmailBackend
-from django.template.loader import get_template
 
 
 @login_required
@@ -858,9 +858,6 @@ def mandarEmail(request, ausencias, fecha, asunto, destinatario, observaciones):
     except Exception as e:
         print e
         return False
-
-
-from easy_pdf.rendering import render_to_pdf_response, render_to_pdf
 
 
 @login_required
@@ -1000,8 +997,51 @@ def generarInforme(request):
 
         return HttpResponse(json.dumps(response, default=default), content_type="application/json")
     else:
-        form = InformeAusenciasForm(None)
+        form = InformeAusenciasForm(None, initial={"ausentismo_id": ""})
         lista = request.GET.getlist("id")
         ausencias = ausentismo.objects.filter(id__in=lista, empleado__empresa__pk__in=empresas_habilitadas(request))
+        variables = locals()
+        return render(request, "ausentismos/informe_ausentismos_form.html", variables)
+
+
+def generarInformeIndividual(request, id):
+    if request.method == "POST":
+        form = InformeAusenciasForm(request.POST or None)
+        if form.is_valid():
+            fecha = form.cleaned_data["fecha"]
+            asunto = form.cleaned_data["asunto"]
+            destinatario = form.cleaned_data["destinatario"]
+            observaciones = form.cleaned_data["observaciones"]
+
+            ausencias = ausentismo.objects.filter(id=id)
+            cant = len(ausencias)
+            if cant <= 0:
+                response = {"cant": 0, "message": "¡Debe seleccionar al menos un Ausentismo!"}
+                return HttpResponse(json.dumps(response, default=default), content_type="application/json")
+            # blah blah blah
+            try:
+                if not mandarEmail(request, ausencias, fecha, asunto, destinatario, observaciones):
+                    response = {
+                        "cant": 0,
+                        "message": "El informe no pudo ser enviado! (verifique la dirección de correo del destinatario)",
+                    }
+                else:
+                    response = {"cant": cant, "message": "¡El Informe fué generado/enviado con éxito!."}  # for ok
+            except:
+                response = {
+                    "cant": 0,
+                    "message": "El informe no pudo ser enviado! (verifique la dirección de correo del destinatario)",
+                }
+
+        else:
+            errores = ""
+            for err in form.errors:
+                errores += "<b>" + err + "</b><br>"
+            response = {"cant": 0, "message": "¡Verifique los siguientes datos: <br>" + errores.strip()}
+
+        return HttpResponse(json.dumps(response, default=default), content_type="application/json")
+    else:
+        form = InformeAusenciasForm(None, initial={"ausentismo_id": id})
+        ausencias = ausentismo.objects.filter(id=id)
         variables = locals()
         return render(request, "ausentismos/informe_ausentismos_form.html", variables)

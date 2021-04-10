@@ -39,7 +39,7 @@
                 {% endif %}
                 <li><a href="{% url 'ausentismo_historial' id=a.empleado.pk %}" class="modal-detail" data-modal-head="HISTORIA CLINICA">
                 <i class=" icon-screen-desktop"></i> Historia Clínica</a></li>
-                <li><a href="#"onClick="abrir_modal('/ausentismos/generar_informe/?id={{a.pk|safe}}')"><i class=" icon-screen-desktop"></i> Generar Informe</a></li>
+                <li><a href="#"onClick="abrir_modal('{% url 'generar_informe_individual' id=a.pk %}')"><i class=" icon-screen-desktop"></i> Generar Informe</a></li>
               </ul>
             </div>
           </td>

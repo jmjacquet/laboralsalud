@@ -21,6 +21,7 @@
                 <div id="form-container">
                 <form role="form" class="form" method="POST" action="" id="form-informe">
                 {% csrf_token %}  
+                {% for hidden in form.hidden_fields %} {{ hidden }} {% endfor %}
                 <div class="modal-body">                        
                     <div class="col-xs-12">
                       <div class="row">                    

@@ -354,6 +354,7 @@ class InformeAusenciasForm(forms.Form):
         widget=forms.Textarea(attrs={"class": "form-control2", "rows": 5}),
         required=False,
     )
+    ausentismo_id = forms.CharField(widget=forms.HiddenInput(), required=False)
 
     def __init__(self, *args, **kwargs):
         super(InformeAusenciasForm, self).__init__(*args, **kwargs)
