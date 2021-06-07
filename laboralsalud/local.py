@@ -6,7 +6,7 @@ DEBUG = True
 # DEBUG = False
 
 DB_USER = "gg"
-DB_PASS = "qwerty"
+DB_PASS = "battlehome"
 DB_HOST = "127.0.0.1"
 
 MEDIA_ROOT = os.path.join(SITE_ROOT, "media")

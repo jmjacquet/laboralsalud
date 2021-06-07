@@ -9,13 +9,8 @@
 <link rel="stylesheet" href="{% static 'css/reportes_factura.css' %}" type="text/css" />
 <style type="text/css">
  
- @page {
-         margin: 0.5cm 0.5cm 1cm 0.5cm;
-         padding: 0;     
-         background-image:url({% static 'img/portada.jpg' %});             
-        
-         }
- @page  principal{
+
+ @page  {
          margin: 3cm 0.5cm 1cm 0.5cm;
          padding: 0;     
          background-image:url({% static 'img/contenido.jpg' %});    
@@ -29,18 +24,10 @@
          
         
          }
- @page dorso{
-         margin: 0.5cm 0.5cm 1cm 0.5cm;
-         padding: 0;     
-         background-image:url({% static 'img/dorso.jpg' %});             
-        
-         }   
 </style>
 </head>
 
 <body>
- <pdf:nexttemplate name="principal" />
-<pdf:nextpage/> 
    <table width="100%" align="center" >
         <tr>
           <td  class="nombre_cpb">{{titulo_reporte}}</th>
@@ -259,7 +246,5 @@
   </table>
     {% endif %}
 
-<pdf:nexttemplate name="dorso" />
-<pdf:nextpage/> 
 </body>
 </html>
