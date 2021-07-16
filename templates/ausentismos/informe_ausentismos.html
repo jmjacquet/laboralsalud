@@ -58,8 +58,12 @@
       <td class="tabla_header texto_der borde_arriba borde_der">Fecha Cron.Hasta:</td><td class="borde_der borde_arriba">{{a.aus_fcronhasta|date:'d/m/Y'}}</td>
     </tr>   
     <tr class="" >
-      <td class="tabla_header texto_der borde_der borde_arriba borde_izq">Diagnóstico:</td><td colspan="3" width="60%" class="borde_der borde_arriba" >{{a.aus_diagn|default_if_none:''|upper}} </td>      
+      <td class="tabla_header texto_der borde_der borde_arriba borde_izq">Tipo Ausentismo:</td><td colspan="3" width="60%" class="borde_der borde_arriba" >{{ a.get_tipo_ausentismo_display|default_if_none:''|upper }}</td>      
       <td class="tabla_header texto_der borde_arriba borde_der">Días:</td><td width="10%" class="borde_der borde_arriba">{{a.aus_diascaidos|default_if_none:'0'}}</td>     
+    </tr>
+    <tr class="" >
+      <td class="tabla_header texto_der borde_der borde_arriba borde_izq">Diagnóstico:</td><td colspan="5" width="60%" class="borde_der borde_arriba" >{{a.aus_diagn|default_if_none:''|upper}} </td>      
+          
     </tr>
    
     <tr class="" >     
