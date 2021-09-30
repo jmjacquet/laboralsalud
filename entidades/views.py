@@ -1,13 +1,21 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-from django.shortcuts import render
-#from django.shortcuts import *
-from .models import *
+
+from django.http import HttpResponseRedirect
+from django.shortcuts import render, redirect
+from django.urls import reverse
 from django.views.generic import TemplateView,ListView,CreateView,UpdateView,FormView,DetailView
 from django.conf import settings
 from general.views import VariablesMixin
 from modal.views import AjaxCreateView,AjaxUpdateView,AjaxDeleteView
-from .forms import ARTForm,CargoForm,EspecialidadForm,MedProfForm,EmpresaForm,EmpleadoForm,ConsultaEmpleados
+from entidades.forms import (ARTForm,
+                             CargoForm,
+                             EspecialidadForm,
+                             MedProfForm,
+                             EmpresaForm,
+                             EmpleadoForm,
+                             ConsultaEmpleados, EmpresaAgrupamientoForm)
+from entidades.models import *
 from django.contrib import messages
 from laboralsalud.utilidades import ultimoNroId,usuario_actual,empresa_actual,empresas_habilitadas
 from django.contrib.auth.decorators import login_required
@@ -154,7 +162,7 @@ class CargoCreateView(VariablesMixin,AjaxCreateView):
 
     def get_initial(self):    
         initial = super(CargoCreateView, self).get_initial()               
-        initial['codigo'] = '{0:0{width}}'.format((ultimoNroId(ent_cargo)+1),width=4)
+        initial['codigo'] = '{0:0{width}}'.format((ultimoNroId(ent_cargo)+1), width=4)
         initial['request'] = self.request        
         return initial    
 
@@ -829,3 +837,87 @@ def recalcular_cantidad_empleados(empresa):
         cant = ent_empleado.objects.filter(empresa=empresa,baja=False).filter(Q(trab_fbaja__isnull=True)|Q(trab_fbaja__lt=hoy())).distinct().count()        
         empresa.cant_empleados = cant
         empresa.save()
+
+
+############ AGRUPAMIENTO EMPRESAS ############################
+
+class EmprAgrupamientoView(VariablesMixin, ListView):
+    model = ent_empresa_agrupamiento
+    template_name = 'entidades/empr_agrupamiento_listado.html'
+    context_object_name = 'agrupamientos'
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        if not tiene_permiso(self.request, 'emp_pantalla'):
+            return redirect(reverse('principal'))
+        return super(EmprAgrupamientoView, self).dispatch(*args, **kwargs)
+
+
+class EmprAgrupamientoCreateView(VariablesMixin, AjaxCreateView):
+    form_class = EmpresaAgrupamientoForm
+    template_name = 'modal/entidades/form_empr_agrupamiento.html'
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        if not tiene_permiso(self.request, 'emp_pantalla'):
+            return redirect(reverse('principal'))
+        return super(EmprAgrupamientoCreateView, self).dispatch(*args, **kwargs)
+
+    def form_valid(self, form):
+        messages.success(self.request, u'Los datos se guardaron con éxito!')
+        return super(EmprAgrupamientoCreateView, self).form_valid(form)
+
+    def get_form_kwargs(self):
+        kwargs = super(EmprAgrupamientoCreateView, self).get_form_kwargs()
+        kwargs['request'] = self.request
+        return kwargs
+
+    def get_initial(self):
+        initial = super(EmprAgrupamientoCreateView, self).get_initial()
+        initial['request'] = self.request
+        initial['tipo_form'] = 'ALTA'
+        return initial
+
+    def form_invalid(self, form):
+        return super(EmprAgrupamientoCreateView, self).form_invalid(form)
+
+
+class EmprAgrupamientoEditView(VariablesMixin, AjaxUpdateView):
+    form_class = EmpresaAgrupamientoForm
+    model = ent_empresa_agrupamiento
+    pk_url_kwarg = 'id'
+    template_name = 'modal/entidades/form_empr_agrupamiento.html'
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        if not tiene_permiso(self.request, 'emp_pantalla'):
+            return redirect(reverse('principal'))
+        return super(EmprAgrupamientoEditView, self).dispatch(*args, **kwargs)
+
+    def form_valid(self, form):
+        messages.success(self.request, u'Los datos se guardaron con éxito!')
+        return super(EmprAgrupamientoEditView, self).form_valid(form)
+
+    def form_invalid(self, form):
+        return super(EmprAgrupamientoEditView, self).form_invalid(form)
+
+    def get_form_kwargs(self):
+        kwargs = super(EmprAgrupamientoEditView, self).get_form_kwargs()
+        kwargs['request'] = self.request
+        return kwargs
+
+    def get_initial(self):
+        initial = super(EmprAgrupamientoEditView, self).get_initial()
+        initial['tipo_form'] = 'EDICION'
+        return initial
+
+
+@login_required
+def empr_agrupamiento_baja_alta(request, id):
+    if not tiene_permiso(request, 'emp_pantalla'):
+        return redirect(reverse('principal'))
+    ent = ent_empresa_agrupamiento.objects.get(pk=id)
+    ent.baja = not ent.baja
+    ent.save()
+    messages.success(request, u'¡Los datos se guardaron con éxito!')
+    return HttpResponseRedirect(reverse("empr_agrupamiento_listado"))

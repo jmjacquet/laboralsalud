@@ -42,4 +42,9 @@ urlpatterns = [
     url(r'^empleado_eliminar_masivo/$',empleado_eliminar_masivo,name="empleado_eliminar_masivo"),
 
     url(r'^importar_empleados/$', importar_empleados,name="importar_empleados"),
+
+    url(r'^empr_agrupamiento/$', EmprAgrupamientoView.as_view(),name="empr_agrupamiento_listado"),
+    url(r'^empr_agrupamiento/nuevo/$', EmprAgrupamientoCreateView.as_view(), name="empr_agrupamiento_nuevo"),
+    url(r'^empr_agrupamiento/editar/(?P<id>\d+)/$', EmprAgrupamientoEditView.as_view(), name="empr_agrupamiento_editar"),
+    url(r'^empr_agrupamiento/baja_alta/(?P<id>\d+)/$', empr_agrupamiento_baja_alta, name='empr_agrupamiento_baja_alta'),
 ]

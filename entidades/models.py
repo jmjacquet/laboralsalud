@@ -42,6 +42,19 @@ class ent_especialidad(models.Model):
     def __unicode__(self):
         return "%s" % self.especialidad
 
+class ent_empresa_agrupamiento(models.Model):
+    id = models.AutoField(primary_key=True, db_index=True)
+    descripcion = models.CharField(max_length=200)
+    baja = models.BooleanField(default=False)
+
+    class Meta:
+        db_table = "ent_empresa_agrupamiento"
+        ordering = [
+            "descripcion",
+        ]
+
+    def __unicode__(self):
+        return "%s" % self.descripcion
 
 # Tabla de la Base de Configuracion
 
@@ -170,6 +183,16 @@ class ent_empresa(models.Model):
         blank=True,
         null=True,
         related_name="empr_especialidad",
+        on_delete=models.SET_NULL,
+    )
+
+    agrupamiento = models.ForeignKey(
+        "ent_empresa_agrupamiento",
+        verbose_name="Agrupamiento Empresa",
+        db_column="agrupamiento",
+        blank=True,
+        null=True,
+        related_name="empr_agrupamiento",
         on_delete=models.SET_NULL,
     )
 

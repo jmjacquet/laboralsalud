@@ -2,7 +2,7 @@
 from django import forms
 from django.forms import ModelForm
 from django.forms.widgets import TextInput,NumberInput,Select
-from .models import ent_art,ent_cargo,ent_especialidad,ent_medico_prof,ent_empresa,ent_empleado
+from entidades.models import (ent_art,ent_cargo,ent_especialidad,ent_medico_prof,ent_empresa,ent_empleado,ent_empresa_agrupamiento)
 from datetime import datetime, timedelta,date
 from laboralsalud.utilidades import *
 
@@ -199,3 +199,11 @@ class ImportarEmpleadosForm(forms.Form):
 		return self.cleaned_data
 	    
 
+class EmpresaAgrupamientoForm(forms.ModelForm):
+	class Meta:
+			model = ent_empresa_agrupamiento
+			exclude = ['id','baja']
+
+	def __init__(self, *args, **kwargs):
+		request = kwargs.pop('request', None)
+		super(EmpresaAgrupamientoForm, self).__init__(*args, **kwargs)
