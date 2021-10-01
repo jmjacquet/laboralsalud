@@ -62,6 +62,9 @@
               {% if 'emp_pantalla' in permisos_grupo %}
                 <li><a href="{% url 'empresa_listado' %}"><i class="icon-grid"> </i> Empresas</a></li>
               {% endif %}
+              {% if 'emp_pantalla' in permisos_grupo %}
+                <li><a href="{% url 'empr_agrupamiento_listado' %}"><i class="icon-grid"> </i> Agrupamientos</a></li>
+              {% endif %}
               {% if 'med_pantalla' in permisos_grupo %}
                 <li><a href="{% url 'medico_prof_listado' %}"><i class="icon-users"> </i> Médicos/Profesionales</a></li>
               {% endif %}
