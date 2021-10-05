@@ -4,3 +4,4 @@
 *.ini
 varios/
 requirements.txt
+!Modificaciones en sistema.docx
