@@ -1,5 +1,7 @@
 {% load static from staticfiles %}
 {% load humanize %}
+{% load filtros_especiales %}
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
@@ -88,8 +90,8 @@
           <td width="80" class="dato borde_abajo borde_arriba borde_der borde_izq">{{ h.aus_falta|date:'d/m/Y'|default_if_none:' ' }}</td>
           <td width="90" class="dato borde_abajo borde_arriba borde_der borde_izq">{{ h.get_tipo_alta|default_if_none:' ' }}</td>
           <td width="80" class="dato borde_abajo borde_arriba borde_der borde_izq">{{ h.get_proxcontrol|date:'d/m/Y'|default_if_none:'' }}</td>
-          <td width="200" class="dato borde_abajo borde_arriba borde_der borde_izq"><small>{{h.aus_grupop|truncatechars:26|default_if_none:''}}</small></td>
-          <td width="200" class="dato borde_abajo borde_arriba borde_der borde_izq"><small>{{h.aus_diagn|truncatechars:26|default_if_none:''}}</small></td>
+          <td width="200" class="dato borde_abajo borde_arriba borde_der borde_izq"><small>{{h.aus_grupop|proteger_dato:info_sensible|truncatechars:26|default_if_none:''}}</small></td>
+          <td width="200" class="dato borde_abajo borde_arriba borde_der borde_izq"><small>{{h.aus_diagn|proteger_dato:info_sensible|truncatechars:26|default_if_none:''}}</small></td>
         </tr>
       {% endfor %}
     </tbody>

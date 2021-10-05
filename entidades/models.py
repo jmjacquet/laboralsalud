@@ -2,6 +2,7 @@
 from __future__ import unicode_literals
 
 from django.db import models
+
 from laboralsalud.utilidades import *
 
 # from usuarios.models import *
@@ -195,6 +196,8 @@ class ent_empresa(models.Model):
         related_name="empr_agrupamiento",
         on_delete=models.SET_NULL,
     )
+
+    objects = models.Manager()
 
     class Meta:
         db_table = "ent_empresa"

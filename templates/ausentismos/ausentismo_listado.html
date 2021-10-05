@@ -3,6 +3,8 @@
 {% load i18n l10n %}
 {% load humanize %}
 {% load bootstrap3 %}
+{% load filtros_especiales %}
+
 {% block breadcrumbs %}
   <div class="breadcrumbs">
     Listado Ausentismos <small> carga e impresión</small>
@@ -119,8 +121,8 @@
         <td>{{ a.aus_fcontrol|date:'d/m/Y' }}</td>
         <td title="{{ a.empleado.empresa|default_if_none:''}}">{{ a.empleado.empresa|default_if_none:''|truncatechars:60 }}</td>
         <td>{{ a.get_tipo_ausentismo_display|default_if_none:'' }}</td>
-        <td title="{{ a.aus_grupop|default_if_none:''}}">{{ a.aus_grupop|default_if_none:''|truncatechars:60 }}</td>
-        <td title="{{ a.aus_diagn|default_if_none:''}}">{{ a.aus_diagn|default_if_none:''|truncatechars:60 }}</td>
+        <td title="{{ a.aus_grupop|default_if_none:''}}">{{ a.aus_grupop|proteger_dato:info_sensible|default_if_none:''|truncatechars:60 }}</td>
+        <td title="{{ a.aus_diagn|default_if_none:''}}">{{ a.aus_diagn|proteger_dato:info_sensible|default_if_none:''|truncatechars:60 }}</td>
         <td title="Usuario Creación: {{a.usuario_carga|default_if_none:''}} | Última Modificación: {{a.fecha_modif|date:'d/m/Y'}}">{{ a.fecha_modif|date:'d/m/Y' }}</td>
         <td>{{ a.aus_freintegro|date:'d/m/Y' }}</td>
         <td title="Usuario Creación: {{a.usuario_carga|default_if_none:''}} | Última Modificación: {{a.fecha_modif|date:'d/m/Y'}}">{{ a.fecha_creacion|date:'d/m/Y' }}</td>

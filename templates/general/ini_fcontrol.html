@@ -1,6 +1,8 @@
 {% load static from staticfiles %}
 {% load i18n %}
 {% load bootstrap3 %}
+{% load filtros_especiales %}
+
 
 <div id="container" style="width: 100%; height: 100%; margin: 0 auto">
   <div class="table-responsive">
@@ -51,8 +53,8 @@
           <td>{{ a.empleado.nro_doc|default_if_none:'' }}</td>
           <td title="{{ a.empleado.empresa|default_if_none:''}}">{{ a.empleado.empresa|default_if_none:''|truncatechars:60 }}</td>
           <td>{{ a.get_tipo_ausentismo_display|default_if_none:'' }}</td>                                   
-          <td title="{{ a.aus_grupop|default_if_none:''}}">{{ a.aus_grupop|default_if_none:''|truncatechars:60 }}</td>               
-          <td title="{{ a.aus_diagn|default_if_none:''}}">{{ a.aus_diagn|default_if_none:''|truncatechars:60 }}</td>               
+          <td title="{{ a.aus_grupop|proteger_dato:info_sensible|default_if_none:''}}">{{ a.aus_grupop|proteger_dato:info_sensible|default_if_none:''|truncatechars:60 }}</td>
+          <td title="{{ a.aus_diagn|proteger_dato:info_sensible|default_if_none:''}}">{{ a.aus_diagn|proteger_dato:info_sensible|default_if_none:''|truncatechars:60 }}</td>
       </tr>
       {% endfor %}
   </tbody>
@@ -119,7 +121,7 @@ var tabla = $('#fcontrol').DataTable({
                   "orderable": false,
                 }],          
            "paging":   true,
-           "lengthMenu": [[28, 50, -1], [28, 50, "Todos"]],
+           "lengthMenu": [[25, 50, -1], [25, 50, "Todos"]],
            "autoWidth": false,
            "order": [],
            "colReorder": false,

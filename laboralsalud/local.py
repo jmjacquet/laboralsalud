@@ -4,14 +4,15 @@ from decouple import config
 
 DEBUG = True
 # DEBUG = False
-
+# USE_TZ = False
+USE_I18N = False
 DB_USER = "gg"
 DB_PASS = "battlehome"
 DB_HOST = "127.0.0.1"
 
 MEDIA_ROOT = os.path.join(SITE_ROOT, "media")
 STATIC_ROOT = os.path.join(SITE_ROOT, "static")
-
+INTERNAL_IPS = ('localhost')
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.mysql",  # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.

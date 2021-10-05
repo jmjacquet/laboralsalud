@@ -5,7 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>INFORME AUENTISMOS</title>
+<title>INFORME AUSENTISMOS</title>
 <link rel="stylesheet" href="{% static 'css/reportes_factura.css' %}" type="text/css" />
 <style type="text/css">
 
@@ -71,7 +71,7 @@
      <td  width="15%" class="tabla_header texto_der borde_abajo borde_arriba borde_der">Fecha Reintegro:</td><td width="10%" class="borde_der borde_arriba borde_abajo">{{a.aus_freintegro|date:'d/m/Y'}}</td>
      <td  class="tabla_header texto_der borde_arriba borde_abajo borde_der">Fecha Próx.Control:</td><td width="10%" class="borde_der borde_arriba borde_abajo">{{a.aus_fcontrol|date:'d/m/Y'}}</td>     
     </tr>
-    {% if a.get_ultimo_control %}
+    {% if a.get_ultimo_control and info_sensible %}
     <tr class="" >     
      <td class="tabla_header texto_der borde_izq borde_arriba borde_der borde_abajo">Detalles Control:</td><td colspan="5" class="borde_der borde_arriba borde_abajo"><b>Fecha: {{a.get_ultimo_control.fecha|date:'d/m/Y'}}</b> - {{a.get_ultimo_control.detalle|default_if_none:''}}</td>      
     </tr>
@@ -81,11 +81,13 @@
     </tr>   
   
   {% endfor %}
-  <tr class="" >
-     <td width="100%" colspan="6" class="texto_der"><strong>{{cant}}</strong> Ausentismos en total.</td>      
+{% if info_sensible %}
+    <tr class="" >
+     <td width="100%" colspan="6" class="texto_der"><strong>{{cant}}</strong> Ausentismos en total.</td>
+{% endif %}
   </tr>    
   </table>  
-  {% if observaciones_finales %}
+  {% if observaciones_finales and info_sensible %}
   <table class="tabla" width="100%" border="0" cellspacing="0">
   <tr class="" >
      <td width="100%" colspan="2"class=""></td>      

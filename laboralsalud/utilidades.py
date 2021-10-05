@@ -318,6 +318,9 @@ def empresa_actual(request):
         pass
     return empresa
 
+def empresa_y_sucursales(id_empresa):
+    return list(set([int(id_empresa)] + list(ent_empresa.objects.filter(casa_central__id=id_empresa, baja=False).values_list('id', flat=True))))
+
 #Incluye la empresa del usuario + la empresa 1 universal
 def empresas_habilitadas(request):    
     e = empresa_actual(request)        
@@ -326,7 +329,9 @@ def empresas_habilitadas(request):
     if usu.tipoUsr == 0:
         lista = list(ent_empresa.objects.filter(baja=False).values_list('id', flat=True))    
     else:
-        lista = [int(e.id)] + list(ent_empresa.objects.filter(casa_central=e,baja=False).values_list('id', flat=True))    
+        #Sólo trae las empresas y sucursales permitidas al usuario
+        # lista = empresa_y_sucursales(e.id)
+        lista = usu.empresas.values_list('id', flat=True).distinct()
     return lista
 
 import json

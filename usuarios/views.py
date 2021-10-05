@@ -16,7 +16,7 @@ import json
 from modal.views import AjaxDeleteView,AjaxUpdateView
 from .models import *
 from .forms import *
-from laboralsalud.utilidades import hoy,usuario_actual,empresa_actual,esAdmin
+from laboralsalud.utilidades import hoy, usuario_actual, empresa_actual, esAdmin, empresa_y_sucursales
 from general.views import VariablesMixin
 
 @login_required 
@@ -44,17 +44,18 @@ def tiene_permiso(request,permiso):
     return (permiso in permisos)
 
  
-def tiene_empresa(usuario,empresa):    
-    ok=False
+def tiene_empresa(usuario, empresa):
     if usuario:
         if usuario.tipoUsr == 0:
-            ok=True
+            return True
         else:                        
             if empresa:
-                ok=(empresa.id in usuario.empresas.values_list('id', flat=True).distinct())
+                empr_elegidas = empresa_y_sucursales(empresa.id)
+                usr_empresas = usuario.empresas.values_list('id', flat=True).distinct()
+                return any(e in usr_empresas for e in empr_elegidas)
             else:
                 return False
-    return ok
+    return False
 
 # @login_required 
 def password(request):
@@ -178,12 +179,9 @@ def UsuarioEditView(request,id):
     if not esAdmin(request):
              return redirect(reverse('principal'))
     context = {}
-    context = getVariablesMixin(request)    
-   
+    context = getVariablesMixin(request)
     usuario = usuario_actual(request)
-    
     usr = get_object_or_404(UsuUsuario, id_usuario=id)
-
     if request.method == 'POST':
         form = UsuarioForm(request,usuario,request.POST,request.FILES,instance=usr)
         if form.is_valid():
@@ -214,7 +212,7 @@ def usuarios_resetear_passwd(request,id):
     if not esAdmin(request):
              return redirect(reverse('principal'))
     usuario = UsuUsuario.objects.get(pk=id) 
-    clave = make_password(password=usuario.usuario,salt=None)
+    clave = make_password(password=usuario.usuario, salt=None)
     usuario.password = clave
     usuario.save()
     messages.success(request, u'Los datos se guardaron con éxito!')

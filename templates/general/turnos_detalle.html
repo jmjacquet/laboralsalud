@@ -1,5 +1,7 @@
 {% load static from staticfiles %}
 {% load crispy_forms_tags %}
+{% load filtros_especiales %}
+
 {% block main %}    
 <div class="row cerca">
       <div class="col-xs-12">
@@ -12,14 +14,14 @@
               </tr>
               <tr>
                 <td class="titulo">Fecha/Hora:</td><td id="nro_doc" class="dato">{{t.fecha|date:'d/m/Y'}} {{ t.hora|time:"H:i" }}hs</td>
-                <td class="titulo">Diagnóstico:</td><td id="art" class="dato">{{t.detalle|default_if_none:''}}</td>
+                <td class="titulo">Diagnóstico:</td><td id="art" class="dato">{{t.detalle|proteger_dato:info_sensible|default_if_none:''}}</td>
               </tr>               
               <tr>
                 <td class="titulo">Estado:</td><td id="fecha_nac" class="dato">{{t.get_estado_display|default_if_none:''}}</td>
-                <td class="titulo">Empresa:</td><td id="legajo" class="dato">{{t.empresa|default_if_none:''}}</td>
+                <td class="titulo">Empresa:</td><td id="legajo" class="dato">{{t.empresa|default_if_none:''|proteger_dato:info_sensible}}</td>
               </tr>             
               <tr>
-                <td class="titulo">Observaciones:</td><td colspan="3" id="art" class="dato">{{t.observaciones|default_if_none:''}}</td>
+                <td class="titulo">Observaciones:</td><td colspan="3" id="art" class="dato">{{t.observaciones|proteger_dato:info_sensible|default_if_none:''}}</td>
               </tr>
               <tr>
                 <td class="titulo">Fecha Carga:</td><td id="nro_doc" class="dato">{{t.fecha_creacion|date:'d/m/Y'}}</td>

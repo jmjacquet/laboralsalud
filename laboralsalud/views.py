@@ -29,7 +29,7 @@ def login(request):
         usuario = form.cleaned_data['usuario']        
         clave = form.cleaned_data['password']
         empresa = form.cleaned_data['empresa']
-        user =  authenticate(usuario=usuario, clave=clave,empresa=empresa)               
+        user = authenticate(usuario=usuario, clave=clave,empresa=empresa)
         if user is not None:
           if user.is_active:                        
             django_login(request, user)            

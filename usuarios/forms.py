@@ -35,10 +35,10 @@ class CHKMultiplePermisos(forms.CheckboxSelectMultiple):
          apps=UsuCategPermisos.objects.all().order_by('orden')    
                                  
          for i,categoria in enumerate(apps):  
-             output.append(u'<div class="col-sm-4 cerca"> ' )
+             output.append(u'<div class="col-sm-4 cerca" > ' )
              output.append(u'<div class="panel panel-primary">')
              output.append(u'<div class="panel-heading"><strong>%s </strong></div>' % (categoria))
-             output.append(u'<div class="panel-body">')
+             output.append(u'<div class="panel-body" >')
              del self.choices
              self.choices = []                          
 
@@ -87,14 +87,15 @@ class CHKMultipleEmpresas(forms.CheckboxSelectMultiple):
          output.append(u'<div class="col-sm-12"> ' )
          output.append(u'<div class="panel panel-primary">')
          output.append(u'<div class="panel-heading"><strong>EMPRESAS</strong></div>')
-         output.append(u'<div class="panel-body">')
+         output.append(u'<div class="panel-body" style="width: 100%; max-height: 610px; overflow-y: scroll;">')
          
          apps=UsuCategPermisos.objects.all().order_by('orden')    
          del self.choices
          self.choices = []                          
 
-         empresas = ent_empresa.objects.filter(baja=False,casa_central__isnull=True)             
-
+         empresas = ent_empresa.objects.filter(baja=False,
+                                               # casa_central__isnull=True,
+                                               )
          for e in empresas:
              self.choices.append((e.pk,e.razon_social))
          # output.append(u'<div class="col-sm-4"> ' )

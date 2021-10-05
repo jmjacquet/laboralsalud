@@ -32,7 +32,7 @@
 		    <form role="form" class="form abm form-horizontal " autocomplete="off" method="POST" action="" id="form-alta" enctype="multipart/form-data">
 		     {% csrf_token %}         				        		       
 				        <div class="row ">							       	
-						    <div class="col-sm-8">
+						    <div class="col-sm-7 col-xs-12">
 						       	<div class="row">										       											       		
 					       			<fieldset>
 						       		<legend>DATOS GENERALES</legend>
@@ -61,12 +61,12 @@
 					                </fieldset>		 
 				              	</div>  
 				              </div> 
-				              <div class="col-sm-4">
+				              <div class="col-sm-5 col-xs-12" >
 						       	<div class="row">										       											       		
 					       			<fieldset>
 						       		<legend>EMPRESAS RELACIONADAS</legend> 
 						       		<div class="row cerca">
-				                                {{form.empresas}}
+				                        {{form.empresas}}
 			                        </div> 
 			                    	</fieldset>
 			                    </div>

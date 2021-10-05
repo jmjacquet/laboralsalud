@@ -16,6 +16,7 @@
 
 {% block principal %}	
 <br>
+{% if inicio_turnos or inicio_ausentismos %}
 <form class="form" accept-charset="UTF-8" role="form" autocomplete="off" action="" method="post">{% csrf_token %}
   <div class="col-sm-{% if 'inicio_turnos' in permisos_grupo %}12{% else %}12{% endif %} cerca"> 
     <div class="panel  panel-primary">
@@ -45,7 +46,7 @@
             {% endif %}
         </ul>
     </div>
-  
+
     <div class="panel-body">
       <div class="tab-content">            
           {% if 'inicio_ausentismos' in permisos_grupo %}
@@ -63,17 +64,19 @@
           </div>
           {% endif %}
            {% if inicio_turnos %}
-          <div class="tab-pane" id="tab_21">
+            <div class="tab-pane" id="tab_21">
                   <div id="pturnos" style="padding: 0px; position: relative;"> 
                       {% include 'general/ini_turnos.html' %}
                   </div>
-              </div>
+            </div>
           {% endif %}
       </div>            
     </div>
+
 </div> 
 </div>
  
 </form>
+{% endif %}
  <div id="popup" class="modal fade modal-modal" role="dialog"  data-backdrop="static"  data-keyboard="false"></div>
 {% endblock principal %}

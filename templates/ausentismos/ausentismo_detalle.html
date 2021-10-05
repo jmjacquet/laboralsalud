@@ -1,5 +1,7 @@
 {% load static from staticfiles %}
 {% load crispy_forms_tags %}
+{% load filtros_especiales %}
+
 {% block main %}
   <div class="row ">
     <div class="col-xs-12 cerca" >
@@ -85,6 +87,7 @@
                 <td class="titulo">Médico Tratante:</td><td class="dato" colspan="7">{{a.aus_medico|default_if_none:''}}</td>
               </tr>
             {% endif %}
+            {% if info_sensible %}
             <tr>
               <td class="titulo">Grupo Patológico:</td><td colspan="3" class="dato">{{a.aus_grupop|default_if_none:''}}</td>
               <td class="titulo">Diagnóstico:</td><td class="dato" colspan="3">{{a.aus_diagn|default_if_none:''}}</td>
@@ -95,22 +98,24 @@
               >
               <td class="titulo">Fecha Modificación:</td><td id="antig_empresa" class="dato">{{a.fecha_modif|date:'d/m/Y'}}</td>
             </tr>
+            {% endif %}
           </tbody>
         </table>
       </fieldset>
-      {% if a.plan_accion %}
-      <fieldset>
-        <legend>PLAN DE ACCIÓN</legend>
-        <table class="table table-striped table-hover table-condensed table-no-bordered tabla_detalle">
-          <tbody>            
-              <tr>
-               <td colspan="4" class="dato">{{a.plan_accion|default_if_none:''}}</td>
-              </tr>            
-          </tbody>
-        </table>
-      </fieldset>
-      {% endif %}
-      <fieldset >
+      {% if info_sensible %}
+          {% if a.plan_accion %}
+          <fieldset>
+            <legend>PLAN DE ACCIÓN</legend>
+            <table class="table table-striped table-hover table-condensed table-no-bordered tabla_detalle">
+              <tbody>
+                  <tr>
+                   <td colspan="4" class="dato">{{a.plan_accion|default_if_none:''}}</td>
+                  </tr>
+              </tbody>
+            </table>
+          </fieldset>
+          {% endif %}
+            <fieldset>
         <legend>OTRAS OBSERVACIONES/CONTROLES</legend>
         <div class="row">
         <div style="width: 100%; max-height: 260px; overflow-y: scroll">         
@@ -174,6 +179,7 @@
         </table>
       </fieldset>
       {% endif %}
+    {% endif %}
     </div>
   </div>
   <div class="modal-buttons">

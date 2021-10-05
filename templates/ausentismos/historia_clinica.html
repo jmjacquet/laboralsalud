@@ -1,6 +1,8 @@
 {% load static from staticfiles %}
 {% load crispy_forms_tags %}
-{% block main %}    
+{% load filtros_especiales %}
+
+{% block main %}
 <div class="row ">
       <div class="col-xs-12 cerca">
         <fieldset>
@@ -54,8 +56,8 @@
                     <td>{{ h.aus_freintegro|date:'d/m/Y' }}</td>
                     <td>{{ h.get_falta|date:'d/m/Y' }}</td>
                     <td>{{ h.get_tipo_alta|default_if_none:'' }}</td>
-                    <td title="{{h.aus_grupop}}"><small>{{h.aus_grupop|truncatechars:26|default_if_none:''}}</small></td>
-                    <td title="{{h.aus_diagn}}"><small>{{h.aus_diagn|truncatechars:26|default_if_none:''}}</small></td> 
+                    <td title="{{h.aus_grupop|proteger_dato:info_sensible}}"><small>{{h.aus_grupop|proteger_dato:info_sensible|truncatechars:26|default_if_none:''}}</small></td>
+                    <td title="{{h.aus_diagn|proteger_dato:info_sensible}}"><small>{{h.aus_diagn|proteger_dato:info_sensible|truncatechars:26|default_if_none:''}}</small></td>
                   </tr>
                 {% endfor %}
                </tbody>

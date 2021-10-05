@@ -24,24 +24,19 @@ class VariablesMixin(object):
     def get_context_data(self, **kwargs):
         from usuarios.views import ver_permisos
         context = super(VariablesMixin, self).get_context_data(**kwargs)
-        # context['ENTIDAD_ID'] = settings.ENTIDAD_ID
-        # context['ENTIDAD_DIR'] = settings.ENTIDAD_DIR
-        usr= self.request.user     
+        usr= self.request.user
         try:
             context['usuario'] = usuario_actual(self.request)                        
         except:
             context['usuario'] = None         
-        
         try:
             context['usr'] = usr                        
         except:
             context['usr'] = None 
-       
-        try:            
+        try:
             context['empresa'] = empresa_actual(self.request)   
         except:
             context['empresa'] = None    
-                
         try:
             context['esAdmin'] = (self.request.user.userprofile.id_usuario.tipoUsr == 0)     
         except:
@@ -57,6 +52,7 @@ class VariablesMixin(object):
         
         context['inicio_ausentismos'] = ('inicio_ausentismos' in permisos_grupo)or('inicio_controles' in permisos_grupo)
         context['inicio_turnos'] = ('inicio_turnos' in permisos_grupo)
+        context['info_sensible'] = 'info_sensible' in permisos_grupo or self.request.user.userprofile.id_usuario.tipoUsr == 0
         context['empresas'] = ent_empresa.objects.filter(baja=False)
         context['sitio_mobile'] = mobile(self.request)
         context['hoy'] =  hoy()
@@ -94,8 +90,8 @@ def getVariablesMixin(request):
     context['permisos_configuracion'] = ('art_pantalla' in permisos_grupo)or('emp_pantalla' in permisos_grupo)or('med_pantalla' in permisos_grupo)or('med_pantalla' in permisos_grupo)\
                                         or('pat_pantalla' in permisos_grupo)or('diag_pantalla' in permisos_grupo)or('ptrab_pantalla' in permisos_grupo)or('esp_pantalla' in permisos_grupo)
     context['inicio_ausentismos'] = ('inicio_ausentismos' in permisos_grupo)or('inicio_controles' in permisos_grupo)
-    context['inicio_turnos'] = ('inicio_turnos' in permisos_grupo)                                        
-
+    context['inicio_turnos'] = ('inicio_turnos' in permisos_grupo)
+    context['info_sensible'] = 'info_sensible' in permisos_grupo or request.user.userprofile.id_usuario.tipoUsr == 0
     context['empresas'] = ent_empresa.objects.filter(baja=False)
     context['sitio_mobile'] = mobile(request)
     context['hoy'] =  hoy()
@@ -110,8 +106,7 @@ class PrincipalView(VariablesMixin,TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(PrincipalView, self).get_context_data(**kwargs)              
-        
-        form = ConsultaFechasInicio(self.request.POST or None)  
+        form = ConsultaFechasInicio(self.request.POST or None)
         fecha1=hoy()        
         fecha2=hoy()        
         if form.is_valid():
@@ -125,13 +120,10 @@ class PrincipalView(VariablesMixin,TemplateView):
         ausentismos = ausentismos_del_dia(self.request,fecha1).order_by('-aus_fcontrol')
         fechas_control = ausentismo.objects.filter(baja=False,aus_fcontrol=fecha1,empleado__empresa__pk__in=empresas).order_by('-aus_fcontrol')
         prox_turnos = turnos.objects.filter(empresa__pk__in=empresas,fecha__gte=fecha2)
-        
         context['form'] = form
         context['ausentismo'] = ausentismos.select_related('empleado','empleado__empresa','aus_grupop','aus_diagn')
         context['turnos'] = prox_turnos.select_related('empleado','empresa','usuario_carga')
         context['fechas_control'] = fechas_control.select_related('empleado','empleado__empresa','aus_grupop','aus_diagn')
-       
-        # vars_sistema = settings
         return context
 
     def post(self, *args, **kwargs):
