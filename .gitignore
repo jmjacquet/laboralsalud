@@ -2,6 +2,7 @@
 *.log
 !generarI25.pyc
 *.ini
-varios/
+
 requirements.txt
 !varios/Modificaciones en sistema.docx
+varios/
