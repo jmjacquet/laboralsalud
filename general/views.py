@@ -182,20 +182,20 @@ def buscarDatosEntidad(request):
 # @login_required 
 def recargar_empleados(request):
     context={}
-    lista = []
-    empleados = ent_empleado.objects.filter(empresa__pk__in=empresas_habilitadas(request),baja=False).order_by('apellido_y_nombre')    
-    for e in empleados:
-        lista.append({'id':e.pk,'nombre':e.get_empleado()})
-    context["empleados"]=lista
+    empleados = ent_empleado.objects.filter(empresa__pk__in=empresas_habilitadas(request),baja=False).order_by('apellido_y_nombre')
+    context["empleados"] = [{'id': e.pk, 'nombre': e.get_empleado()} for e in empleados]
     return HttpResponse(json.dumps(context))
 
 def recargar_empleados_empresa(request,id):
     context={}
-    lista = []
-    empleados = ent_empleado.objects.filter(empresa__pk=id,baja=False).order_by('apellido_y_nombre')        
-    for e in empleados:
-        lista.append({'id':e.pk,'nombre':e.get_empleado()})
-    context["empleados"]=lista
+    empleados = ent_empleado.objects.filter(empresa__pk=id,baja=False).order_by('apellido_y_nombre')
+    context["empleados"] = [{'id':e.pk,'nombre':e.get_empleado()} for e in empleados]
+    return HttpResponse(json.dumps(context))
+
+def recargar_empresas_agrupamiento(request,id):
+    context={}
+    empresas = ent_empresa.objects.filter(agrupamiento__pk=id,baja=False)
+    context["empresas"] = [{'id':e.pk,'nombre':e.get_empresa()} for e in empresas]
     return HttpResponse(json.dumps(context))
 
 def recargar_medicos(request):

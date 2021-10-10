@@ -53,9 +53,9 @@ def reporte_resumen_periodo(request):
         # fdesde = form.cleaned_data['fdesde']   
         # fhasta = form.cleaned_data['fhasta']                                                 
         empresa = form.cleaned_data['empresa']                           
-        empleado= form.cleaned_data['empleado']                           
+        empleado = form.cleaned_data['empleado']
         tipo_ausentismo = form.cleaned_data['tipo_ausentismo']     
-        trab_cargo= form.cleaned_data['trab_cargo']                           
+        trab_cargo = form.cleaned_data['trab_cargo']
         fdesde =  date(periodo.year,periodo.month,1)
         fhasta = date(periodo.year,periodo.month,calendar.monthrange(periodo.year, periodo.month)[1])
         ausentismos = ausentismo.objects.filter(baja=False)                      
