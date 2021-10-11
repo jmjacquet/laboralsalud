@@ -5,6 +5,8 @@ from django.db.models import Q
 from django.dispatch import receiver
 
 from django.db import models
+
+from ausentismos.managers import AusentismosActivos
 from laboralsalud.utilidades import *
 from entidades.models import ent_empleado, ent_medico_prof
 
@@ -133,6 +135,8 @@ class ausentismo(models.Model):
         on_delete=models.SET_NULL,
     )
 
+    objects = models.Manager()
+    ausentismos_activos = AusentismosActivos()
     class Meta:
         db_table = "ausentismo"
         ordering = ["-aus_fcrondesde", "-aus_fcronhasta", "empleado__empresa"]

@@ -2,6 +2,7 @@
 from __future__ import unicode_literals
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
+from django.urls import reverse
 from django.utils.decorators import method_decorator
 from datetime import datetime,date,timedelta
 from django.utils import timezone
@@ -19,7 +20,7 @@ from easy_pdf.rendering import render_to_pdf_response,render_to_pdf
 import calendar
 
 from general.views import VariablesMixin,getVariablesMixin
-from laboralsalud.utilidades import ultimo_anio,hoy,DecimalEncoder,MESES
+from laboralsalud.utilidades import ultimo_anio, hoy, DecimalEncoder, MESES, empresas_habilitadas
 from .forms import ConsultaPeriodo,ConsultaAnual
 from ausentismos.models import ausentismo
 from usuarios.views import tiene_permiso
@@ -40,7 +41,7 @@ def reporte_resumen_periodo(request):
     if not tiene_permiso(request,'indic_pantalla'):
             return redirect(reverse('principal'))  
     template = 'reportes/resumen_periodo.html'     
-    form = ConsultaPeriodo(request.POST or None,request=request)            
+    form = ConsultaPeriodo(request.POST or None, request=request)
     fecha = date.today()        
     fdesde = ultimo_anio()
     fhasta = hoy()
@@ -50,17 +51,20 @@ def reporte_resumen_periodo(request):
     filtro = u""
     if form.is_valid():                                                        
         periodo = form.cleaned_data['periodo']   
-        # fdesde = form.cleaned_data['fdesde']   
-        # fhasta = form.cleaned_data['fhasta']                                                 
-        empresa = form.cleaned_data['empresa']                           
+        empresa = form.cleaned_data['empresa']
+        agrupamiento = form.cleaned_data['agrupamiento']
         empleado = form.cleaned_data['empleado']
         tipo_ausentismo = form.cleaned_data['tipo_ausentismo']     
         trab_cargo = form.cleaned_data['trab_cargo']
         fdesde =  date(periodo.year,periodo.month,1)
         fhasta = date(periodo.year,periodo.month,calendar.monthrange(periodo.year, periodo.month)[1])
-        ausentismos = ausentismo.objects.filter(baja=False)                      
         filtro = u"Período: %s " % (periodo.strftime("%m/%Y"))
 
+        ausentismos = ausentismo.ausentismos_activos.filter(
+            Q(aus_fcrondesde__gte=fdesde, aus_fcrondesde__lte=fhasta)
+            | Q(aus_fcronhasta__gte=fdesde, aus_fcronhasta__lte=fhasta)
+            | Q(aus_fcrondesde__lt=fdesde, aus_fcronhasta__gt=fhasta)
+        )
 
         if empresa:
             if empresa.casa_central:
@@ -68,7 +72,7 @@ def reporte_resumen_periodo(request):
             else:
                 ausentismos= ausentismos.filter(Q(empleado__empresa=empresa)|Q(empleado__empresa__casa_central=empresa))
         else:
-            ausentismos= ausentismos.filter(empleado__empresa__pk__in=empresas_habilitadas(self.request))
+            ausentismos= ausentismos.filter(empleado__empresa__pk__in=empresas_habilitadas(request))
 
         if empleado:
             ausentismos= ausentismos.filter(Q(empleado__apellido_y_nombre__icontains=empleado)|Q(empleado__nro_doc__icontains=empleado))
@@ -80,8 +84,7 @@ def reporte_resumen_periodo(request):
         if int(tipo_ausentismo) > 0: 
             ausentismos = ausentismos.filter(tipo_ausentismo=int(tipo_ausentismo))
 
-        ausentismos = ausentismos.filter(Q(aus_fcrondesde__gte=fdesde,aus_fcrondesde__lte=fhasta)|Q(aus_fcronhasta__gte=fdesde,aus_fcronhasta__lte=fhasta)
-            |Q(aus_fcrondesde__lt=fdesde,aus_fcronhasta__gt=fhasta))  
+
     else:
         ausentismos = None            
     context['form'] = form

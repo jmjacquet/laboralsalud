@@ -186,17 +186,23 @@ def recargar_empleados(request):
     context["empleados"] = [{'id': e.pk, 'nombre': e.get_empleado()} for e in empleados]
     return HttpResponse(json.dumps(context))
 
+
 def recargar_empleados_empresa(request,id):
     context={}
-    empleados = ent_empleado.objects.filter(empresa__pk=id,baja=False).order_by('apellido_y_nombre')
+    empleados = ent_empleado.objects.filter(empresa__pk=id, baja=False).order_by('apellido_y_nombre')
     context["empleados"] = [{'id':e.pk,'nombre':e.get_empleado()} for e in empleados]
     return HttpResponse(json.dumps(context))
 
-def recargar_empresas_agrupamiento(request,id):
+
+def recargar_empresas_agrupamiento(request, id):
     context={}
-    empresas = ent_empresa.objects.filter(agrupamiento__pk=id,baja=False)
-    context["empresas"] = [{'id':e.pk,'nombre':e.get_empresa()} for e in empresas]
+    empresas_hab = empresas_habilitadas(request)
+    empresas = ent_empresa.objects.filter(id__in=empresas_hab, baja=False)
+    if int(id) > 0:
+        empresas = empresas.filter(agrupamiento__id=id)
+    context["empresas"] = [{'id': e.pk, 'nombre': e.get_empresa()} for e in empresas]
     return HttpResponse(json.dumps(context))
+
 
 def recargar_medicos(request):
     context={}
