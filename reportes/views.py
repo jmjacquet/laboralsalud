@@ -116,7 +116,8 @@ def reporte_resumen_periodo(request):
     context['ausentismos'] = ausentismos
     context['empresa'] = empresa
     context['agrupamiento'] = agrupamiento
-    context['titulo_reporte'] = u"REPORTE INDICADORES: %s  - %s"%(empresa or agrupamiento, filtro)
+    # _tipo_reporte =
+    context['titulo_reporte'] = u"%s  - %s"%(("Empresa: %s" % empresa if empresa else "Sector: %s" % agrupamiento), filtro)
     context['filtro'] = filtro
     context['pie_pagina'] = "Sistemas Laboral Salud - %s" % (fecha.strftime("%d/%m/%Y"))
     dias_laborales = 0
