@@ -20,7 +20,7 @@
 <br>
     
 
-<div class="col-md-12">   
+<div class="col-md-12">
    
  <div class="barra_busqueda" id="barra_busqueda">
   <div class="panel panel-primary">
@@ -46,13 +46,21 @@
                             <button class="btn btn-xs btn-primary text-center pull-right" type="submit">Buscar</button>
                           </div>
                           
-                  </div>     
+                  </div>
+                {% if form.non_field_errors  %}
+                    <script type="text/javascript">
+                        $('[data-toggle=tooltip]').tooltip();
+                        $(document).ready(function() {
+                            alertify.errorAlert("{% for err in form.non_field_errors %}{{ err|safe }}{% endfor %}");
+                            });
+                    </script>
+                {% endif %}
                 </form>
               </div>
       </div>  
   </div>
   </div>
-   
+
  {% if ausentismos %} 
   {% if aus_total or aus_inc %} 
   <div class="row">        

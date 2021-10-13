@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
+
+from django.http import JsonResponse
 from django.shortcuts import *
 from django.shortcuts import render
 from django.core.serializers.json import DjangoJSONEncoder
@@ -200,8 +202,8 @@ def recargar_empresas_agrupamiento(request, id):
     empresas = ent_empresa.objects.filter(id__in=empresas_hab, baja=False)
     if int(id) > 0:
         empresas = empresas.filter(agrupamiento__id=id)
-    context["empresas"] = [{'id': e.pk, 'nombre': e.get_empresa()} for e in empresas]
-    return HttpResponse(json.dumps(context))
+    lista_empresas = [{'id': e.pk, 'nombre': e.get_empresa()} for e in empresas]
+    return JsonResponse(lista_empresas, safe=False)
 
 
 def recargar_medicos(request):

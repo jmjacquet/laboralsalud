@@ -27,8 +27,6 @@ class ConsultaPeriodo(forms.Form):
         required=True,
         initial=mes_anio(inicioMes()),
     )
-    # fdesde =  forms.DateField(label='Fecha Desde',widget=forms.DateInput(attrs={'class': 'form-control datepicker'}),required = True,initial=inicioMes())
-    # fhasta =  forms.DateField(label='Fecha Hasta',widget=forms.DateInput(attrs={'class': 'form-control datepicker'}),required = True,initial=finMes())
     empresa = forms.ModelChoiceField(
         label="Empresa",
         queryset=ent_empresa.objects.filter(baja=False),
@@ -36,7 +34,7 @@ class ConsultaPeriodo(forms.Form):
         required=False,
     )
     agrupamiento = forms.ModelChoiceField(
-        label="Agrupamiento",
+        label="Agrupamiento/Sector",
         queryset=ent_empresa_agrupamiento.objects.filter(baja=False),
         initial=0,
         required=False,
@@ -57,6 +55,12 @@ class ConsultaPeriodo(forms.Form):
         self.fields["empresa"].queryset = ent_empresa.objects.filter(
             baja=False, pk__in=empresas_habilitadas(request)
         )
+
+    def clean(self):
+        agrupamiento = self.cleaned_data.get("agrupamiento")
+        empresa = self.cleaned_data.get("empresa")
+        if not empresa and not agrupamiento:
+            raise forms.ValidationError("¡Debe seleccionar un Agrupamiento/Sector y/o una Empresa!")
 
 
 class ConsultaAnual(forms.Form):

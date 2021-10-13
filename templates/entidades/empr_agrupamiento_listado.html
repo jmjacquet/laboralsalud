@@ -5,7 +5,7 @@
 
 {% block breadcrumbs %}
         <div class="breadcrumbs">
-            LISTADO AGRUPAMIENTOS <small> carga e impresión</small>
+            LISTADO AGRUPAMIENTOS/SECTORES <small> carga e impresión</small>
         </div>
 {% endblock breadcrumbs %}
 {% block cargando %}
@@ -17,7 +17,7 @@
 {% block principal %}
 <br>
     <div class="col-xs-12">
-    <a class="btn btn-xs btn-primary modal-create" style="float:left;margin-right:20px;" href="{% url 'empr_agrupamiento_nuevo' %}" data-modal-head="AGREGAR AGRUPAMIENTO" data-modal-callback="reload">Nuevo Agrupamiento</a>
+    <a class="btn btn-xs btn-primary modal-create" style="float:left;margin-right:20px;" href="{% url 'empr_agrupamiento_nuevo' %}" data-modal-head="AGREGAR AGRUPAMIENTO/SECTOR" data-modal-callback="reload">Nuevo Agrupamiento/Sector</a>
     <table width="100%" id="empr_agrupamiento" style="display:none;" class="table table-striped compact table-hover table-no-bordered tabla_nueva nowrap">
         <thead >
             <tr>

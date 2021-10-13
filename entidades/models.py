@@ -189,7 +189,7 @@ class ent_empresa(models.Model):
 
     agrupamiento = models.ForeignKey(
         "ent_empresa_agrupamiento",
-        verbose_name="Agrupamiento Empresa",
+        verbose_name="Agrupamiento/Sector Empresa",
         db_column="agrupamiento",
         blank=True,
         null=True,

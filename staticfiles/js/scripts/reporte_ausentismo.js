@@ -19,7 +19,7 @@ $(document).ready(function() {
                 },
                 success : function(data) {
                   $("#id_empresa").empty().append('<option value="">---</option>');
-                  $.each(data["empresas"], function (idx, item) {
+                  $.each(data, function (idx, item) {
                       jQuery("<option/>").text(item['nombre']).attr("value", item['id']).appendTo("#id_empresa");
                   })
                     $('#id_empresa').trigger("chosen:updated");
@@ -35,5 +35,13 @@ $(document).ready(function() {
 
       $('#cargando').hide();
   });
+
+  if ($("#id_empresa") == undefined) {
+    $("#id_agrupamiento").change();
+  }else{
+    var id =  $("#id_empresa").val();
+    $("#id_agrupamiento").change();
+    $("[name='empresa']").val(id).trigger("chosen:updated");
+  }
 
 });
