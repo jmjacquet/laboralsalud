@@ -90,7 +90,7 @@ def reporte_resumen_periodo(request):
             empresas_list = [d['id'] for d in json.loads(data.content)]
         elif empresa:
             if empresa.casa_central:
-                empresas_list = list(empresa.pk)
+                empresas_list = list([empresa.pk])
             else:
                 empresas_list = [e.id for e in ent_empresa.objects.filter(Q(id=empresa.id)|Q(casa_central=empresa))]
         else:
@@ -242,7 +242,7 @@ def reporte_resumen_periodo(request):
             context['aus_acc3_image'] = aus_acc3_image     
             context['aus_grp_image'] = aus_grp_image     
             return render_to_pdf_response(request,template, context)
-    return render(request,template,context)
+    return render(request, template, context)
     
 @login_required 
 def reporteResumenAnual(request):
