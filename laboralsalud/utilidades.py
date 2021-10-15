@@ -342,7 +342,7 @@ class DecimalEncoder(json.JSONEncoder):
             return float(obj)
         return json.JSONEncoder.default(self, obj)
 
-from django.db.models import Func,IntegerField
+from django.db.models import Func, IntegerField
 
 class Month(Func):
     function = 'EXTRACT'
