@@ -320,15 +320,28 @@ def reporte_resumen_periodo(request):
             else:
                 aus_acc = None
 
-        aus_x_grupop = (
-            ausentismos.values("aus_grupop__patologia")
+        aus_grupop = (
+            ausentismos.values("aus_grupop__patologia", "aus_grupop__id")
             .annotate(total=Count("aus_grupop"))
             .order_by("-total")[:5]
         )
+        aus_x_grupop = []
+        for a in aus_grupop:
+            aus = ausentismos.filter(aus_grupop__id=a.get("aus_grupop__id"))
+            dias = dias_ausentes(fdesde, fhasta, aus)
+            aus_x_grupop.append({"patologia": a.get("aus_grupop__patologia"),
+                             "total": a.get("total"),
+                             "dias": dias})
+        aus_x_grupop = sorted(
+            aus_x_grupop, key=lambda i: (i["total"], i["dias"]), reverse=True
+        )
+
+
         max_grupop = aus_x_grupop[0]["total"] + 1
+
         empl_mas_faltadores = []
         for a in ausentismos.select_related("empleado"):
-            dias = dias_ausentes_empl(fdesde, fhasta, a)
+            dias = dias_ausentes_tot(fdesde, fhasta, a)
             empl_mas_faltadores.append({"empleado": a.empleado, "dias": dias})
         empl_mas_faltadores = sorted(
             empl_mas_faltadores, key=lambda i: i["dias"], reverse=True
@@ -653,19 +666,11 @@ def dias_mes(mes, anio, fdesde, fhasta):
 def dias_ausentes(fdesde, fhasta, ausentismos):
     tot = 0
     for a in ausentismos:
-        fini = a.aus_fcrondesde
-        ffin = a.aus_fcronhasta
-
-        if fdesde >= fini:
-            fini = fdesde
-        if fhasta <= ffin:
-            ffin = fhasta
-        tot += (ffin - fini).days + 1
+        tot += dias_ausentes_tot(fdesde, fhasta, a)
     return tot
 
 
-def dias_ausentes_empl(fdesde, fhasta, a):
-    tot = 0
+def dias_ausentes_tot(fdesde, fhasta, a):
     fini = a.aus_fcrondesde
     ffin = a.aus_fcronhasta
     if fdesde >= fini:

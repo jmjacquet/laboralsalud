@@ -4,8 +4,8 @@
 {% load bootstrap3 %}
 {% load humanize %}
 {% block extra_js %}
-<script src="{% static 'js/highcharts.js' %}" type="text/javascript"></script>
-<script src="{% static 'js/exporting.js' %}" type="text/javascript"></script>
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
 <script src="{% static 'js/canvg.js' %}" type="text/javascript"></script>
 <script src="{% static 'js/scripts/reporte_ausentismo.js' %}" type="text/javascript"></script>
 
@@ -564,39 +564,45 @@ jQuery(document).ready(function($) {
     {% if aus_x_grupop %}
                    
         Highcharts.chart('aus_grupop', {
-           
+
             chart: {
-                plotBackgroundColor: null,
-                plotBorderWidth: null,
-                plotShadow: false,
-                type: 'column',
+
+                type: 'bar',
+
                 spacingBottom: 5,
                 spacingTop: 10,
                 spacingLeft: 0,
-                spacingRight: 0, 
-            },
-            plotOptions: {
-                series: {
-                    dataLabels: {
-                        enabled: true,
-                        format: '{point.y} casos',
-                    }
-                },
-            },   
-            xAxis: {
-                categories: ['Patologías más Frecuentes'],
-                crosshair: true
-            },
-            yAxis: {
-               min: 0,
-               max:{{max_grupop}},
-               title: {
-                  text: 'Cantidad de Casos'         
-               }      
+                spacingRight: 0,
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false,
             },
 
+            plotOptions: {
+                    series: {
+                        dataLabels: {
+                            enabled: true,
+                            inside: true,
+                            },
+                        colorByPoint: true,
+                        },
+                    colors: [ '#64E572', '#6495ED','#FF9655','#6A5ACD', '#FFF263'],
+            },
+
+            xAxis: {
+                type: 'category',
+                lineWidth: 0,
+                tickWidth: 0,
+                allowDecimals: false,
+            },
+
+            yAxis: {
+                title: {
+                    text: ''
+                }
+            },
             tooltip: {
-                pointFormat: '<b>{point.y} casos</b>'
+                pointFormat: '<b>{point.y} casos ({point.dias} días)</b>'
             },
             credits: {
                           enabled: false
@@ -604,20 +610,24 @@ jQuery(document).ready(function($) {
             title: {
                     text : null,
                   },
-            legend: {
-              align: 'left',
-              verticalAlign: 'middle',
-              layout: 'vertical',
-              labelFormat:'<b>{name}</b>',
-              },
-            
-            series: [                                
-                    {% for p in aus_x_grupop %}                
-                        { name: '{{p.aus_grupop__patologia|safe}}', data: [{{p.total|safe}}],custom:{empleados: {{p.total|safe}}},                        
-                    },           
+
+            series: [{
+                dataLabels: [{
+                    align: 'left',
+                    format: '{point.dias} días'
+                }, {
+                    align: 'right',
+                    format: '{y} casos',
+                    inside: false,
+
+                }],
+                data: [
+                    {% for p in aus_x_grupop %}
+                        {name: '{{p.patologia|safe}}', y: {{p.total|safe}}, dias: {{p.dias|safe}}},
                     {% endfor %}
                 ],
-           
+                showInLegend: false,
+            }]
         });
     
     
