@@ -112,9 +112,9 @@ class AusentismoView(VariablesMixin, ListView):
                 ausentismos = ausentismos.filter(aus_fcontrol=fcontrol)
             if int(tipo_ausentismo) > 0:
                 if int(tipo_ausentismo) == 11:
-                    ausentismos = ausentismos.filter(Q(aus_diascaidos__lte=30) | Q(art_diascaidos__lte=30))
+                    ausentismos = ausentismos.filter(Q(aus_diascaidos__lte=30))
                 elif int(tipo_ausentismo) == 12:
-                    ausentismos = ausentismos.filter(Q(aus_diascaidos__gt=30) | Q(art_diascaidos__gt=30))
+                    ausentismos = ausentismos.filter(Q(aus_diascaidos__gt=30))
                 else:
                     ausentismos = ausentismos.filter(tipo_ausentismo=int(tipo_ausentismo))
             if aus_grupop:
