@@ -2,8 +2,8 @@
 from .settings import *
 from decouple import config
 
-DEBUG = True
-#DEBUG = False
+#DEBUG = True
+DEBUG = False
 
 
 DB_USER = config('DB_USER')
@@ -41,7 +41,7 @@ STATICFILES_FINDERS += [
 
 
 
-COMPRESS_ENABLED = True
+COMPRESS_ENABLED = False
 COMPRESS_OUTPUT_DIR = 'bundles'
 
 

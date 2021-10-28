@@ -32,6 +32,7 @@ if (isTablet==false) {
       no_results_text: "Empresa inexistente...",
       placeholder_text_single:"Seleccione una Empresa",
       allow_single_deselect: true,
+      width:"100%",
   });
   };
 var tabla = $('#ausentismos').DataTable({

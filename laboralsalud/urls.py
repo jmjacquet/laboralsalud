@@ -20,7 +20,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from .views import login,logout,volverHome
-import debug_toolbar
+
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
@@ -33,9 +33,11 @@ urlpatterns = [
     url(r'^logout/$', logout,name="logout"),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
-urlpatterns = [
-        url(r'^__debug__/', include(debug_toolbar.urls)),
-    ] + urlpatterns
+# if settings.DEBUG:
+#     import debug_toolbar
+#     urlpatterns = [
+#         url(r'^__debug__/', include(debug_toolbar.urls)),
+#     ] + urlpatterns
 
 
 handler500 = volverHome
