@@ -221,7 +221,7 @@ class AusentismoForm(forms.ModelForm):
             if not descr_altaparc:
                 self.add_error("descr_altaparc", u"¡Debe cargar el Detalle del Alta!")
 
-        if int(tipo_ausentismo) not in (1, 4):
+        if int(tipo_ausentismo) not in (1, 4, 5, 6):
             art_tipo_accidente = self.cleaned_data.get("art_tipo_accidente")
             if not art_tipo_accidente:
                 self.add_error("art_tipo_accidente", u"¡Debe seleccionar un Tipo de Accidente! Verifique.")

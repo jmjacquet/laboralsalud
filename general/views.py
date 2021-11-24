@@ -253,10 +253,15 @@ class TurnosView(VariablesMixin,ListView):
 
     def get_context_data(self, **kwargs):
         context = super(TurnosView, self).get_context_data(**kwargs)
-        form = ConsultaTurnos(self.request.POST or None,request=self.request)   
+        busq = None
+        if self.request.POST:
+            busq = self.request.POST
+        elif "turnos" in self.request.session:
+            busq = self.request.session["turnos"]
+        form = ConsultaTurnos(self.request.POST or None,request=self.request)
         empresas = empresas_habilitadas(self.request)
         listado = turnos.objects.filter(empresa__pk__in=empresas,fecha__gte=ultimoMes())
-        if form.is_valid():                                                        
+        if form.is_valid():
             fdesde = form.cleaned_data['fdesde']   
             fhasta = form.cleaned_data['fhasta']                                                 
             empresa = form.cleaned_data['qempresa']                           
@@ -275,9 +280,11 @@ class TurnosView(VariablesMixin,ListView):
                 listado= listado.filter(Q(empleado__apellido_y_nombre__icontains=empleado)|Q(empleado__nro_doc__icontains=empleado))
 
             if int(estado)<3:
-                listado= listado.filter(estado=estado)            
-                
-        context['form'] = form        
+                listado= listado.filter(estado=estado)
+
+            self.request.session["turnos"] = self.request.POST or busq
+
+        context['form'] = form
         context['turnos'] = listado.select_related('empleado','empresa','usuario_carga')
 
 

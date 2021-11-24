@@ -556,13 +556,12 @@ class EmpleadoView(VariablesMixin,ListView):
 
     def get_context_data(self, **kwargs):
         context = super(EmpleadoView, self).get_context_data(**kwargs)
-        busq = None        
+        busq = None
         if self.request.POST:
             busq = self.request.POST
-        else:
-            if 'empleados' in self.request.session:
-                busq = self.request.session["empleados"]
-        form = ConsultaEmpleados(busq or None,request=self.request)           
+        elif "empleados" in self.request.session:
+            busq = self.request.session["empleados"]
+        form = ConsultaEmpleados(busq or None,request=self.request)
         empresas = empresas_habilitadas(self.request)
         empleados = ent_empleado.objects.filter(baja=False,empresa__pk__in=empresas).select_related('empresa','trab_cargo','art','usuario_carga')[:100]         
         if form.is_valid():                                                        
@@ -581,10 +580,8 @@ class EmpleadoView(VariablesMixin,ListView):
             if art:
                 empleados= empleados.filter(art=art) 
 
-            self.request.session["empleados"] = self.request.POST
-        else:
-            self.request.session["empleados"] = None      
-                
+            self.request.session["empleados"] = self.request.POST or busq
+
         context['form'] = form
 
         context['empleados'] = empleados

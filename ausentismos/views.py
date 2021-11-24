@@ -63,9 +63,8 @@ class AusentismoView(VariablesMixin, ListView):
         busq = None
         if self.request.POST:
             busq = self.request.POST
-        else:
-            if "ausentismos" in self.request.session:
-                busq = self.request.session["ausentismos"]
+        elif "ausentismos" in self.request.session:
+            busq = self.request.session["ausentismos"]
         form = ConsultaAusentismos(busq or None, request=self.request)
         fdesde = hoy()
         fhasta = finMes()
@@ -122,9 +121,8 @@ class AusentismoView(VariablesMixin, ListView):
             if aus_diagn:
                 ausentismos = ausentismos.filter(aus_diagn__diagnostico__icontains=aus_diagn)
 
-            self.request.session["ausentismos"] = self.request.POST
-        else:
-            self.request.session["ausentismos"] = None
+            self.request.session["ausentismos"] = self.request.POST or busq
+
         context["form"] = form
         context["ausentismos"] = ausentismos.select_related(
             "empleado", "empleado__empresa", "aus_grupop", "aus_diagn", "usuario_carga"
