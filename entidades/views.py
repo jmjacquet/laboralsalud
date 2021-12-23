@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.views.generic import TemplateView,ListView,CreateView,UpdateView,FormView,DetailView
@@ -707,9 +707,11 @@ def empleado_eliminar_masivo(request):
             return redirect(reverse('principal'))
     listado = request.GET.getlist('id')    
     try:
-        empleados = ent_empleado.objects.filter(id__in=listado).delete()   
+        empleados = ent_empleado.objects.filter(id__in=listado)
+        empresa = empleados.first().empresa
+        empleados.delete()
         messages.success(request, u'¡Los datos se eliminaron con éxito!')
-        recalcular_cantidad_empleados(self.object.empresa)
+        recalcular_cantidad_empleados(empresa)
     except:
         messages.error(request, u'¡El Empleado no debe tener cargado Ausentismos a su nombre!<br>(elimínelos y vuelva a intentar)')
     

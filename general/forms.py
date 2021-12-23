@@ -42,6 +42,8 @@ class TurnosForm(forms.ModelForm):
 
 	def clean(self):		
 	 	fecha = self.cleaned_data.get('fecha')	
+	 	if not fecha:
+			self.add_error("fecha", u'¡Fecha no válida!')
 	 	if fecha<hoy():
 	 		self.add_error("fecha",u'¡Fecha no válida!')
 		return self.cleaned_data
