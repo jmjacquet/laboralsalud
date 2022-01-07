@@ -29,7 +29,12 @@
     </thead>
     <tbody>
         {% for t in turnos %}
-        <tr>    
+        <tr
+            {% if t.baja %}
+                class='danger'
+            {% elif t.estado == 1 %}class='success'
+            {% elif t.estado == 2 %}class='danger'
+            {% endif %}>
             <td>
               <div class="btn-group">
                 <button type="button" title="{{ t.pk|safe}}" class="btn btn-xs color_barra" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

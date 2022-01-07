@@ -388,7 +388,8 @@ def turno_eliminar(request,id):
             return redirect(reverse('principal'))
     ent = turnos.objects.get(pk=id).delete()    
     messages.success(request, u'¡Los datos se guardaron con éxito!')
-    return HttpResponseRedirect(reverse("turnos_listado"))            
+    # return HttpResponseRedirect(reverse("turnos_listado"))
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 @login_required 
 def turno_estado(request,id,estado):
@@ -398,7 +399,8 @@ def turno_estado(request,id,estado):
     ent.estado = estado
     ent.save()       
     messages.success(request, u'¡Los datos se guardaron con éxito!')
-    return HttpResponseRedirect(reverse("turnos_listado"))  
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+    # return HttpResponseRedirect(reverse("turnos_listado"))
 
 
 class ConfiguracionEditView(VariablesMixin,UpdateView):
