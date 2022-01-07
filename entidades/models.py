@@ -393,6 +393,15 @@ class ent_empleado(models.Model):
         except:
             return 0
 
+    @property
+    def get_full_name(self):
+        entidad = "%s" % self.apellido_y_nombre.upper()
+        if self.nro_doc:
+            entidad = entidad + " - %s" % (self.nro_doc)
+        if self.empresa:
+            entidad = entidad + " - %s" % (self.empresa)
+        return entidad.upper()
+
     def get_empleado(self):
         entidad = "%s" % self.apellido_y_nombre.upper()
         if self.nro_doc:

@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+from django.core.cache import cache
 from django.http import JsonResponse
 from django.shortcuts import *
 from django.shortcuts import render
@@ -11,6 +12,8 @@ import urllib
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.views.generic import TemplateView,ListView,CreateView,UpdateView,FormView,DetailView
+
+from laboralsalud.local import CACHE_TTL
 from modal.views import AjaxCreateView,AjaxUpdateView,AjaxDeleteView
 from django.db.models import Q,Sum,Count,FloatField,Func
 
@@ -183,54 +186,75 @@ def buscarDatosEntidad(request):
 
 # @login_required 
 def recargar_empleados(request):
-    context={}
-    empleados = ent_empleado.objects.filter(empresa__pk__in=empresas_habilitadas(request),baja=False).order_by('apellido_y_nombre')
-    context["empleados"] = [{'id': e.pk, 'nombre': e.get_empleado()} for e in empleados]
+    context = {}
+    e_id = 'ent_empleado'
+    lista = cache.get(e_id)
+    if not lista:
+        empleados = ent_empleado.objects.filter(empresa__pk__in=empresas_habilitadas(request),baja=False).order_by('apellido_y_nombre')
+        lista = [{'id': e.pk, 'nombre': e.get_full_name} for e in empleados]
+        cache.set(e_id, lista, timeout=CACHE_TTL)
+    context["empleados"] = lista
     return HttpResponse(json.dumps(context))
 
 
-def recargar_empleados_empresa(request,id):
-    context={}
-    empleados = ent_empleado.objects.filter(empresa__pk=id, baja=False).order_by('apellido_y_nombre')
-    context["empleados"] = [{'id':e.pk,'nombre':e.get_empleado()} for e in empleados]
+def recargar_empleados_empresa(request, id):
+    context = {}
+    e_id = 'ent_empleados_empr_{}'.format(id)
+    results = cache.get(e_id)
+    if not results:
+        empleados = ent_empleado.objects.filter(empresa__pk=id, baja=False).order_by('apellido_y_nombre')
+        results = [{'id':e.pk,'nombre':e.get_empleado()} for e in empleados]
+        # store data in cache
+        cache.set(e_id, results, timeout=CACHE_TTL)
+    context["empleados"] = results
     return HttpResponse(json.dumps(context))
 
 
 def recargar_empresas_agrupamiento(request, id):
     context={}
-    empresas_hab = empresas_habilitadas(request)
-    empresas = ent_empresa.objects.filter(id__in=empresas_hab, baja=False)
-    if int(id) > 0:
-        empresas = empresas.filter(agrupamiento__id=id)
-    lista_empresas = [{'id': e.pk, 'nombre': e.get_empresa()} for e in empresas]
+    e_id = 'ent_empresa_agrup_{}'.format(id)
+    lista_empresas = cache.get(e_id)
+    if not lista_empresas:
+        empresas_hab = empresas_habilitadas(request)
+        empresas = ent_empresa.objects.filter(id__in=empresas_hab, baja=False)
+        if int(id) > 0:
+            empresas = empresas.filter(agrupamiento__id=id)
+        lista_empresas = [{'id': e.pk, 'nombre': e.get_empresa()} for e in empresas]
+        cache.set(e_id, lista_empresas, timeout=CACHE_TTL)
     return JsonResponse(lista_empresas, safe=False)
 
 
 def recargar_medicos(request):
     context={}
-    lista = []
-    medicos = ent_medico_prof.objects.filter(baja=False)   
-    for e in medicos:
-        lista.append({'id':e.pk,'nombre':e.get_medico()})
-    context["medicos"]=lista
+    e_id = 'ent_medicos'
+    lista = cache.get(e_id)
+    if not lista:
+        medicos = ent_medico_prof.objects.filter(baja=False)
+        lista = [{'id':e.pk,'nombre':e.get_medico()} for e in medicos]
+        cache.set(e_id, lista, timeout=CACHE_TTL)
+    context["medicos"] = lista
     return HttpResponse(json.dumps(context))    
 
 def recargar_diagnosticos(request):
-    context={}
-    lista = []
-    diagnosticos = aus_diagnostico.objects.filter(baja=False)           
-    for e in diagnosticos:
-        lista.append({'id':e.pk,'nombre':e.diagnostico.upper()})
+    context = {}
+    e_id = 'aus_diagnostico'
+    lista = cache.get(e_id)
+    if not lista:
+        diagnosticos = aus_diagnostico.objects.filter(baja=False)
+        lista = [{'id': e.pk, 'nombre': e.diagnostico.upper()} for e in diagnosticos]
+        cache.set(e_id, lista, timeout=CACHE_TTL)
     context["diagnosticos"]=lista    
     return HttpResponse(json.dumps(context))    
 
 def recargar_patologias(request):
-    context={}
-    lista = []
-    patologias = aus_patologia.objects.filter(baja=False)   
-    for e in patologias:
-        lista.append({'id':e.pk,'nombre':e.get_patologia()})
-    context["patologias"]=lista
+    context = {}
+    e_id = 'patologias'
+    lista = cache.get(e_id)
+    if not lista:
+        patologias = aus_patologia.objects.filter(baja=False)
+        lista = [{'id': e.pk, 'nombre': e.get_patologia()} for e in patologias]
+        cache.set(e_id, lista, timeout=CACHE_TTL)
+    context["patologias"] = lista
     return HttpResponse(json.dumps(context))        
 
 
@@ -286,9 +310,6 @@ class TurnosView(VariablesMixin,ListView):
 
         context['form'] = form
         context['turnos'] = listado.select_related('empleado','empresa','usuario_carga')
-
-
-
         return context
     def post(self, *args, **kwargs):
         return self.get(*args, **kwargs)
