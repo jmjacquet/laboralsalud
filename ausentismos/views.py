@@ -76,6 +76,8 @@ class AusentismoView(VariablesMixin, ListView):
             fcontrol = form.cleaned_data["fcontrol"]
             fdesde = form.cleaned_data["fdesde"]
             fhasta = form.cleaned_data["fhasta"]
+            freintegro = form.cleaned_data["freintegro"]
+            fmodificacion = form.cleaned_data["fmodificacion"]
             empresa = form.cleaned_data["empresa"]
             empleado = form.cleaned_data["empleado"]
             aus_grupop = form.cleaned_data["aus_grupop"]
@@ -109,6 +111,13 @@ class AusentismoView(VariablesMixin, ListView):
                 )
             if fcontrol:
                 ausentismos = ausentismos.filter(aus_fcontrol=fcontrol)
+
+            if fmodificacion:
+                ausentismos = ausentismos.filter(fecha_modif=fmodificacion)
+
+            if freintegro:
+                ausentismos = ausentismos.filter(aus_freintegro=freintegro)
+
             if int(tipo_ausentismo) > 0:
                 if int(tipo_ausentismo) == 11:
                     ausentismos = ausentismos.filter(Q(aus_diascaidos__lte=30))
