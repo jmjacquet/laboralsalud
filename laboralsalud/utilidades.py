@@ -244,6 +244,11 @@ def ultimoMes():
     dia =hoy - timedelta(days=30)
     return dia
 
+def proximoMes():
+    hoy=date.today()
+    dia =hoy + timedelta(days=30)
+    return dia
+
 def finMes():
     hoy=date.today()
     hoy = date(hoy.year,hoy.month,calendar.monthrange(hoy.year, hoy.month)[1])

@@ -308,6 +308,7 @@ class ConsultaAusentismos(forms.Form):
         request = kwargs.pop("request", None)
         super(ConsultaAusentismos, self).__init__(*args, **kwargs)
         self.fields["empresa"].queryset = ent_empresa.objects.filter(baja=False, pk__in=empresas_habilitadas(request))
+        self.fields["fdesde"].initial = new_date
 
 
 class ImportarAusentismosForm(forms.Form):
