@@ -278,7 +278,8 @@ def reporte_resumen_periodo(request):
                     Q(art_ndenuncia__isnull=True) | Q(art_ndenuncia__exact="")
                 )
                 if not acc_sin_denunciar:
-                    aus_acc2 = None
+                    sin_denunciar_empl = 0
+                    acc_sin_denunciar = 0
                 else:
                     sin_denunciar_empl = (
                         acc_sin_denunciar.values("empleado").distinct().count()
@@ -286,12 +287,12 @@ def reporte_resumen_periodo(request):
                     acc_sin_denunciar = (
                         Decimal(acc_sin_denunciar.count()) / Decimal(tot_accidentes)
                     ) * 100
-                    aus_acc2 = {
-                        "acc_denunciados": acc_denunciados,
-                        "acc_sin_denunciar": acc_sin_denunciar,
-                        "denunciados_empl": denunciados_empl,
-                        "sin_denunciar_empl": sin_denunciar_empl,
-                    }
+                aus_acc2 = {
+                    "acc_denunciados": acc_denunciados,
+                    "acc_sin_denunciar": acc_sin_denunciar,
+                    "denunciados_empl": denunciados_empl,
+                    "sin_denunciar_empl": sin_denunciar_empl,
+                }
                 acc_itinere = ausentismos_acc.filter(art_tipo_accidente=2)
                 itinere_empl = acc_itinere.values("empleado").distinct().count()
                 acc_itinere = (
@@ -335,7 +336,6 @@ def reporte_resumen_periodo(request):
         aus_x_grupop = sorted(
             aus_x_grupop, key=lambda i: (i["total"], i["dias"]), reverse=True
         )
-
 
         max_grupop = aus_x_grupop[0]["total"] + 1
 
