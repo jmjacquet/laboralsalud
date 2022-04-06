@@ -22,7 +22,7 @@ class EmpleadoModelChoiceField(forms.ModelChoiceField):
 
 class TurnosForm(forms.ModelForm):		
 	empresa = forms.ModelChoiceField(label='Empresa',queryset=None,empty_label='---',required=True)
-	empleado = EmpleadoModelChoiceField(label='Empleado',queryset=None,empty_label='---',required = True)	
+	empleado = EmpleadoModelChoiceField(label='Empleado',queryset=None,empty_label='---',required = True)
 	fecha =  forms.DateField(label='Fecha',widget=forms.DateInput(attrs={'class': 'form-control datepicker'}),required = True,initial=hoy())
 	hora =  forms.TimeField(label='Hora',widget=forms.TimeInput(attrs={'class': 'form-control'}),required = True)
 	observaciones = forms.CharField(label='Observaciones / Datos adicionales',widget=forms.Textarea(attrs={'class':'form-control2', 'rows': 5}),required = False)	
@@ -36,9 +36,9 @@ class TurnosForm(forms.ModelForm):
 		request = kwargs.pop('request', None)
 		super(TurnosForm, self).__init__(*args, **kwargs)						
 		empresas = empresas_habilitadas(request)
-		self.fields['empleado'].queryset = ent_empleado.objects.filter(baja=False,empresa__pk__in=empresas)
-		self.fields['empresa'].queryset = ent_empresa.objects.filter(baja=False,pk__in=empresas)				
-			
+		self.fields['empleado'].queryset = ent_empleado.objects.none()
+		self.fields['empresa'].queryset = ent_empresa.objects.filter(baja=False,pk__in=empresas)
+
 
 	def clean(self):		
 	 	fecha = self.cleaned_data.get('fecha')	
