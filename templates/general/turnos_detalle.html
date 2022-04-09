@@ -10,18 +10,18 @@
           <table class="table table-striped table-hover table-condensed table-no-bordered tabla_detalle">
             <tbody>
               <tr>
-                <td class="titulo">Empleado:</td><td colspan="3" id="art" class="dato">{{t.empleado|default_if_none:''}}</td>
+                <td class="titulo">Empleado:</td><td colspan="3" id="art" class="dato">{{t.turno_empleado|default_if_none:''}}</td>
               </tr>
               <tr>
                 <td class="titulo">Fecha/Hora:</td><td id="nro_doc" class="dato">{{t.fecha|date:'d/m/Y'}} {{ t.hora|time:"H:i" }}hs</td>
-                <td class="titulo">Diagnóstico:</td><td id="art" class="dato">{{t.detalle|proteger_dato:info_sensible|default_if_none:''}}</td>
+                <td class="titulo">Diagnóstico:</td><td id="art" class="dato">{{t.detalle|proteger_dato:info_sensible}}</td>
               </tr>               
               <tr>
                 <td class="titulo">Estado:</td><td id="fecha_nac" class="dato">{{t.get_estado_display|default_if_none:''}}</td>
-                <td class="titulo">Empresa:</td><td id="legajo" class="dato">{{t.empresa|default_if_none:''|proteger_dato:info_sensible}}</td>
+                <td class="titulo">Empresa:</td><td id="legajo" class="dato">{{t.turno_empresa|proteger_dato:info_sensible}}</td>
               </tr>             
               <tr>
-                <td class="titulo">Observaciones:</td><td colspan="3" id="art" class="dato">{{t.observaciones|proteger_dato:info_sensible|default_if_none:''}}</td>
+                <td class="titulo">Observaciones:</td><td colspan="3" id="art" class="dato">{{t.observaciones|proteger_dato:info_sensible}}</td>
               </tr>
               <tr>
                 <td class="titulo">Fecha Carga:</td><td id="nro_doc" class="dato">{{t.fecha_creacion|date:'d/m/Y'}}</td>

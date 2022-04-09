@@ -105,6 +105,8 @@ class ent_medico_prof(models.Model):
         entidad = "%s" % self.apellido_y_nombre.upper()
         if self.nro_doc:
             entidad = entidad + " - %s" % (self.nro_doc)
+        if self.especialidad:
+            entidad = entidad + " - %s" % (self.especialidad)
         return unicode(entidad.upper())
 
 

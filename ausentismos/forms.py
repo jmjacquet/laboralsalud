@@ -115,7 +115,7 @@ class AusentismoForm(forms.ModelForm):
             u"Crear nuevo Médico",
             "icon-users",
         ),
-        queryset=ent_medico_prof.objects.filter(baja=False),
+        queryset=ent_medico_prof.objects.filter(baja=False).select_related('especialidad'),
         required=False,
     )
     empresa = forms.ModelChoiceField(label="Empresa", queryset=ent_empresa.objects.filter(baja=False), required=False)

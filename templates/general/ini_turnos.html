@@ -3,7 +3,7 @@
 {% load bootstrap3 %}
 {% load filtros_especiales %}
 
-<div id="container" style="width: 100%; height: 100%; margin: 0px;">
+<div id="container" style="width: 100%; height:100%;min-height:300px; margin: 0 auto">
 <div class="row">
    {% if esAdmin %}
     <div class="caption pull-right col-sm-2" title="Actualizar a la Fecha seleccionada">           
@@ -69,8 +69,11 @@
               </div>
             </td>         
             <td title="{{ t.observaciones|default_if_none:''}}">{{ t.fecha|date:'d/m/Y' }} {{ t.hora|time:"H:i" }}hs</td>
-            <td title="{{ t.empleado|default_if_none:''}}"><a href="{% url 'empleado_detalles' id=t.empleado.id %}"  class="modal-detail" data-modal-head="DETALLE EMPLEADO {{t.empleado.legajo}}" data-modal-callback="reload"><strong>{{ t.empleado|default_if_none:''|truncatechars:60 }}</strong></a></td>
-            <td title="{{ t.empresa|default_if_none:''}}">{{ t.empresa|default_if_none:''|truncatechars:60 }}</td>
+            <td title="{{ t.turno_empleado|default_if_none:''}}"><a href="{% url 'empleado_detalles' id=t.turno_empleado.id %}"
+                                                                    class="modal-detail" data-modal-head="DETALLE EMPLEADO {{t.turno_empleado.legajo}}"
+                                                                    data-modal-callback="reload"><strong>
+                {{ t.turno_empleado|default_if_none:''|truncatechars:60 }}</strong></a></td>
+            <td title="{{ t.turno_empresa|default_if_none:''}}">{{ t.turno_empresa|default_if_none:''|truncatechars:60 }}</td>
             <td>{{ t.get_estado_display|default_if_none:'' }}</td>
             <td>{{ t.fecha_creacion|date:'d/m/Y' }}</td>
             <td>{{ t.usuario_carga|default_if_none:'' }}</td>                    

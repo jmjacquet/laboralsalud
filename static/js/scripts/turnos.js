@@ -1,4 +1,4 @@
-$(document).ready(function() {  
+$(document).ready(function() {
 
 
 
@@ -25,13 +25,13 @@ const isTablet = /(ipad|tablet|(android(?!.*mobile))|(windows(?!.*phone)(.*touch
 
 if (isTablet==false) {
 
-$("#id_empleado").chosen({
+$("#id_turno_empleado").chosen({
         no_results_text: "Empleado inexistente...",
         placeholder_text_single:"Seleccione un Empleado",
         allow_single_deselect: true,
     });
 
-  $("#id_empresa").chosen({
+  $("#id_turno_empresa").chosen({
       no_results_text: "Empresa inexistente...",
       placeholder_text_single:"Seleccione una Empresa",
       allow_single_deselect: true,
@@ -47,30 +47,30 @@ $('#id_hora').timepicker({
    useSelect: true,
 });
 
-$("#id_empresa").change(function(){
-    var id =  $("#id_empresa").val();
+$("#id_turno_empresa").change(function(){
+    var id =  $("#id_turno_empresa").val();
     if (id =='') {id=0;};
     $('#cargando').show();
     $.getJSON('/recargar_empleados_empresa/'+id,{},
     function (c) {
-        var ide = $("#id_empleado").val();
-        $("#id_empleado").empty().append('<option value="">---</option>');
+        var ide = $("#id_turno_empleado").val();
+        $("#id_turno_empleado").empty().append('<option value="">---</option>');
         $.each(c["empleados"], function (idx, item) {
-            jQuery("<option/>").text(item['nombre']).attr("value", item['id']).appendTo("#id_empleado");
+            jQuery("<option/>").text(item['nombre']).attr("value", item['id']).appendTo("#id_turno_empleado");
         })
         if (isTablet==false) {
-        $('#id_empleado').trigger("chosen:updated");  
-        $('#id_empleado').val(ide).trigger('chosen:updated');        
+        $('#id_turno_empleado').trigger("chosen:updated");
+        $('#id_turno_empleado').val(ide).trigger('chosen:updated');
       };
-                    
-    });      
+
+    });
     $('#cargando').hide();
-}); 
+});
 
 
 
-if ($('#id_tipo_form').val()=='ALTA'){  
-  $("#id_empresa").trigger("change");
+if ($('#id_tipo_form').val()=='ALTA'){
+  $("#id_turno_empresa").trigger("change");
 }else{
    
    

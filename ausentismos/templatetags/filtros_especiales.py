@@ -8,11 +8,11 @@ register = template.Library()
 @stringfilter
 @register.filter(name='proteger_dato')
 def proteger_dato(value, permiso):
+    if value in (None, '', 'None'):
+        return ''
     if permiso:
         return value
     else:
-        if not value or value == '':
-            return value
         return mark_safe("<b>(NO DISPONIBLE)</b>")
 
 

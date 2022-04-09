@@ -10,8 +10,8 @@
      {% csrf_token %}         
         <div class="col-xs-12">
 	         	<div class="row">										
-					<div class="col-sm-5">{% bootstrap_field form.empresa %}</div>											
-					<div class="col-sm-7">{% bootstrap_field form.empleado %}</div>										
+					<div class="col-sm-5">{% bootstrap_field form.turno_empresa %}</div>
+					<div class="col-sm-7">{% bootstrap_field form.turno_empleado %}</div>
 			  	</div>								
 			  	<div class="row">										
 			  		<div class="col-sm-2">{% bootstrap_field form.fecha %}</div>											
@@ -46,5 +46,5 @@
 </div>
 
 {% block scripts_js %}
- <script src="{% static 'js/scripts/turnos.js' %}" type="text/javascript"></script>
+    <script src="{% static 'js/scripts/turnos.js' %}" type="text/javascript"></script>
 {% endblock %}

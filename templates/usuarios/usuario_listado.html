@@ -56,7 +56,7 @@
                 <td>{{ usu.get_tipoUsr_display|default_if_none:'' }}</td>
                 <td>{{ usu.nro_doc|default_if_none:'' }}</td>
                 <td>{{ usu.email|default_if_none:'' }}</td>                                               
-                <td>{{ usu.get_ultimo_logueo|date:'d/m/Y H:i'}}hs.</td> 
+                <td>{{ usu.|date:'d/m/Y H:i'}}hs.</td>
             </tr>
             {% endfor %}
         </tbody>

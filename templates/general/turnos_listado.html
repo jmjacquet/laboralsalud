@@ -77,7 +77,8 @@
                         <li><a href="{% url 'turnos_detalles' id=t.pk %}" class="modal-detail" data-modal-head="DETALLE TURNO">
                             <i class=" icon-screen-desktop"></i> Detalle</a></li>                            
                             <li>
-                        <li><a href="{% url 'turnos_editar' id=t.pk %}"  class="modal-update " title="Editar" data-modal-callback="reload" data-modal-head="EDITAR TURNO" data-modal-target="#object-{{ t.pk }}"><i class="icon-note"></i> Editar</a></li>
+                        <li><a href="{% url 'turnos_editar' id=t.pk %}"  class="modal-update " title="Editar" data-modal-callback="reload" data-modal-head="EDITAR TURNO"
+                               data-modal-target="#object-{{ t.pk }}"><i class="icon-note"></i> Editar</a></li>
                         <li><a href="#" 
                                     onClick="alerta= alertify.dialog('confirm').set({'labels':{ok:'Aceptar', cancel:'Cancelar'},'message': '¿DESEA ELIMINAR EL REGISTRO ACTUAL?',transition:'fade','onok': function(){ window.location.href = '{% url 'turnos_eliminar' id=t.pk  %}'; },'oncancel': function(){ return true;} }); alerta.setting('modal', true); alerta.setHeader('ELIMINAR'); alerta.show(); return true;" ><i class="glyphicon glyphicon-trash"></i>Eliminar</a>
                                 </li>
@@ -106,8 +107,11 @@
                 <td><a href="{% url 'turnos_detalles' id=t.pk %}" class="modal-detail" title="Ver Detalle" data-modal-head="DETALLE TURNO">
                             <strong>{{ t.get_turno }}</strong></a></td>
                 <td>{{ t.fecha|date:'d/m/Y' }} {{ t.hora|time:"H:i" }}hs</td>
-                <td title="{{ t.empleado.apellido_y_nombre|default_if_none:''}}"><a href="{% url 'empleado_detalles' id=t.empleado.id %}"  class="modal-detail" data-modal-head="DETALLE EMPLEADO {{t.empleado.legajo}}" data-modal-callback="reload"><strong>{{ t.empleado.apellido_y_nombre|default_if_none:''|truncatechars:60 }}</strong></a></td>
-                <td title="{{ t.empresa|default_if_none:''}}">{{ t.empresa|default_if_none:''|truncatechars:60 }}</td>
+                <td title="{{ t.turno_empleado.apellido_y_nombre|default_if_none:''}}"><a href="{% url 'empleado_detalles' id=t.turno_empleado.id %}"
+                                                                                          class="modal-detail" data-modal-head="DETALLE EMPLEADO {{t.turno_empleado.legajo}}"
+                                                                                          data-modal-callback="reload"><strong>
+                    {{ t.turno_empleado.apellido_y_nombre|default_if_none:''|truncatechars:60 }}</strong></a></td>
+                <td title="{{ t.turno_empresa|default_if_none:''}}">{{ t.turno_empresa|default_if_none:''|truncatechars:60 }}</td>
                 <td>{{ t.get_estado_display|default_if_none:'' }}</td>
                 <td title="{{ t.detalle|default_if_none:''}}">{{ t.detalle|default_if_none:''|truncatechars:60 }}</td>
                 <td title="{{ t.observaciones|default_if_none:''}}">{{ t.observaciones|default_if_none:''|truncatechars:60 }}</td>
@@ -348,8 +352,8 @@ $('#calendar').fullCalendar({
                         title: '{{t.get_turno}} - {{t.hora}}hs',
                         description: '{{t.detalle|default_if_none:''}}',
                         start: "{{ t.fecha|date:'Y-m-d' }}",
-                        name: "{{t.empleado|default_if_none:''}}",
-                        otro: "{{t.empresa|default_if_none:''}}",
+                        name: "{{t.turno_empleado|default_if_none:''}}",
+                        otro: "{{t.turno_empresa|default_if_none:''}}",
 
                     },
                 {% endfor %}
