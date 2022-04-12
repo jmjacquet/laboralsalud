@@ -574,7 +574,7 @@ def reporteResumenAnual(request):
         id_grupos = [int(x["aus_grupop__pk"]) for x in aus_x_grupop_tot]
 
         listado = []
-
+        aus_x_grupop = []
         for x in aus_x_grupop_tot:
             nombre = x["aus_grupop__patologia"]
             id = x["aus_grupop__pk"]
