@@ -410,7 +410,7 @@ def reporteResumenAnual(request):
             Q(aus_fcrondesde__gte=fdesde, aus_fcrondesde__lte=fhasta)
             | Q(aus_fcronhasta__gte=fdesde, aus_fcronhasta__lte=fhasta)
             | Q(aus_fcrondesde__lt=fdesde, aus_fcronhasta__gt=fhasta)
-        )
+        ).filter(tipo_ausentismo__in=(1,2))
         filtro = "Período desde %s al %s" % (
             fdesde.strftime("%m/%Y"),
             fhasta.strftime("%m/%Y"),
@@ -471,6 +471,7 @@ def reporteResumenAnual(request):
     inculpables = []
     accidentes = []
     enfermos = []
+    otros = []
     datos_tabla = []
     import time
     from dateutil.rrule import rrule, MONTHLY
@@ -552,6 +553,30 @@ def reporteResumenAnual(request):
                 tasa_enf = 0
 
             enfermos.append(tasa_enf)
+
+            datos_tabla.append(
+                {
+                    "mes": m,
+                    "tasa_total": tasa_total,
+                    "ta_cant_empls": ta_cant_empls,
+                    "tasa_inclup": tasa_inclup,
+                    "empl_inculp": empl_inculp,
+                    "tasa_acc": tasa_acc,
+                    "empl_acc": empl_acc,
+                }
+            )
+            # OTROS AUSENTISMOS
+            qs_otros = ausencias.filter(tipo_ausentismo__gt=3)
+            ausenc_otros = dias_ausentes_mes(m[0], m[1], qs_otros)
+            empl_tot_otros = empleados_tot
+            dias_trab_tot = (dias_laborables * empl_tot_otros) - ausenc_otros
+            if ausenc_otros > 0:
+                tasa_otros = calcular_tasa_ausentismo(
+                    ausenc_otros, dias_laborables, empl_tot_otros
+                )
+            else:
+                tasa_otros = 0
+            otros.append(tasa_otros)
 
             datos_tabla.append(
                 {
