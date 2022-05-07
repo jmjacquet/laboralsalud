@@ -123,7 +123,7 @@ def reporte_resumen_periodo(request):
             Q(aus_fcrondesde__gte=fdesde, aus_fcrondesde__lte=fhasta)
             | Q(aus_fcronhasta__gte=fdesde, aus_fcronhasta__lte=fhasta)
             | Q(aus_fcrondesde__lt=fdesde, aus_fcronhasta__gt=fhasta)
-        )
+        ).filter(tipo_ausentismo__in=(1,2,3,7))
         if agrupamiento and not empresa:
             data = recargar_empresas_agrupamiento(request, agrupamiento.id)
             empresas_list = [d["id"] for d in json.loads(data.content)]
@@ -196,7 +196,7 @@ def reporte_resumen_periodo(request):
         )
         porc_dias_trab_tot = 100 - tasa_ausentismo
 
-        ta_cant_empls = ausentismos.values("empleado").distinct().count()
+        ta_cant_empls = ausentismos.values("empleado", "tipo_ausentismo").distinct().count()
         tp_cant_empls = empleados_tot - ta_cant_empls
 
         aus_total = {
@@ -255,7 +255,7 @@ def reporte_resumen_periodo(request):
             }
 
         # AUSENTISMO ACCIDENTES
-        ausentismos_acc = ausentismos.filter(tipo_ausentismo=2)
+        ausentismos_acc = ausentismos.filter(tipo_ausentismo__in=(2,3,7))
         if ausentismos_acc:
             dias_caidos_tot = dias_ausentes(fdesde, fhasta, ausentismos_acc)
             dias_trab_tot = (dias_laborables * empleados_tot) - dias_caidos_tot
@@ -410,7 +410,7 @@ def reporteResumenAnual(request):
             Q(aus_fcrondesde__gte=fdesde, aus_fcrondesde__lte=fhasta)
             | Q(aus_fcronhasta__gte=fdesde, aus_fcronhasta__lte=fhasta)
             | Q(aus_fcrondesde__lt=fdesde, aus_fcronhasta__gt=fhasta)
-        ).filter(tipo_ausentismo__in=(1,2))
+        ).filter(tipo_ausentismo__in=(1, 2, 3, 7))
         filtro = "Período desde %s al %s" % (
             fdesde.strftime("%m/%Y"),
             fhasta.strftime("%m/%Y"),
@@ -456,22 +456,9 @@ def reporteResumenAnual(request):
     context["ausentismos"] = ausentismos
     context["empresa"] = empresa
     context["agrupamiento"] = agrupamiento
-
-    dias_laborales = 0
-    dias_caidos_tot = 0
-    empleados_tot = 0
-    dias_trab_tot = 0
-    tasa_ausentismo = 0
-    aus_total = None
-    aus_inc = None
-    aus_acc = None
-    dias_laborables = 0
-    porc_dias_trab_tot = 100
     totales = []
     inculpables = []
     accidentes = []
-    enfermos = []
-    otros = []
     datos_tabla = []
     import time
     from dateutil.rrule import rrule, MONTHLY
@@ -491,30 +478,23 @@ def reporteResumenAnual(request):
         empleados_tot = calcular_empleados_empresas(empresas_list)
         for m in meses:
             dias_laborables = int(dias_mes(m[0], m[1], fdesde, fhasta))
-
             ausencias = en_mes_anio(m[0], m[1], ausentismos)
-
             qs_totales = ausencias
             ausenc_totales = dias_ausentes_mes(m[0], m[1], ausencias)
-
             empl_totales = empleados_tot
-            dias_trab_tot = (dias_laborables * empl_totales) - ausenc_totales
-
             if ausenc_totales > 0:
                 tasa_total = calcular_tasa_ausentismo(
                     ausenc_totales, dias_laborables, empl_totales
                 )
             else:
                 tasa_total = 0
-            ta_cant_empls = qs_totales.values("empleado").distinct().count()
+            ta_cant_empls = qs_totales.values("empleado", "tipo_ausentismo").distinct().count()
 
             totales.append({"y": tasa_total, "custom": {"empleados": ta_cant_empls}})
 
             qs_inculpables = ausencias.filter(tipo_ausentismo=1)
             ausenc_inculp = dias_ausentes_mes(m[0], m[1], qs_inculpables)
-            # empl_tot_inculp= qs_inculpables.values('empleado').distinct().count()
             empl_tot_inculp = empleados_tot
-            dias_trab_tot = (dias_laborables * empl_tot_inculp) - ausenc_inculp
             if ausenc_inculp > 0:
                 tasa_inclup = calcular_tasa_ausentismo(
                     ausenc_inculp, dias_laborables, empl_tot_inculp
@@ -524,12 +504,9 @@ def reporteResumenAnual(request):
             empl_inculp = qs_inculpables.values("empleado").distinct().count()
             inculpables.append({"y": tasa_inclup, "custom": {"empleados": empl_inculp}})
 
-            qs_accidentes = ausencias.filter(tipo_ausentismo=2)
+            qs_accidentes = ausencias.filter(tipo_ausentismo__in=(2, 3, 7))
             ausenc_acc = dias_ausentes_mes(m[0], m[1], qs_accidentes)
-            # ausenc_acc = qs_accidentes.count()
-            # empl_tot_acc= qs_accidentes.values('empleado').distinct().count()
             empl_tot_acc = empleados_tot
-            dias_trab_tot = (dias_laborables * empl_tot_acc) - ausenc_acc
             if ausenc_acc > 0:
                 tasa_acc = calcular_tasa_ausentismo(
                     ausenc_acc, dias_laborables, empl_tot_acc
@@ -538,45 +515,6 @@ def reporteResumenAnual(request):
                 tasa_acc = 0
             empl_acc = qs_accidentes.values("empleado").distinct().count()
             accidentes.append({"y": tasa_acc, "custom": {"empleados": empl_acc}})
-
-            qs_enfermos = ausencias.filter(tipo_ausentismo=3)
-            ausenc_enf = dias_ausentes_mes(m[0], m[1], qs_enfermos)
-            # ausenc_enf = qs_enfermos.count()
-            # empl_tot_enf= qs_enfermos.values('empleado').distinct().count()
-            empl_tot_enf = empleados_tot
-            dias_trab_tot = (dias_laborables * empl_tot_enf) - ausenc_enf
-            if ausenc_enf > 0:
-                tasa_enf = calcular_tasa_ausentismo(
-                    ausenc_enf, dias_laborables, empl_tot_enf
-                )
-            else:
-                tasa_enf = 0
-
-            enfermos.append(tasa_enf)
-
-            datos_tabla.append(
-                {
-                    "mes": m,
-                    "tasa_total": tasa_total,
-                    "ta_cant_empls": ta_cant_empls,
-                    "tasa_inclup": tasa_inclup,
-                    "empl_inculp": empl_inculp,
-                    "tasa_acc": tasa_acc,
-                    "empl_acc": empl_acc,
-                }
-            )
-            # OTROS AUSENTISMOS
-            qs_otros = ausencias.filter(tipo_ausentismo__gt=3)
-            ausenc_otros = dias_ausentes_mes(m[0], m[1], qs_otros)
-            empl_tot_otros = empleados_tot
-            dias_trab_tot = (dias_laborables * empl_tot_otros) - ausenc_otros
-            if ausenc_otros > 0:
-                tasa_otros = calcular_tasa_ausentismo(
-                    ausenc_otros, dias_laborables, empl_tot_otros
-                )
-            else:
-                tasa_otros = 0
-            otros.append(tasa_otros)
 
             datos_tabla.append(
                 {
@@ -625,14 +563,12 @@ def reporteResumenAnual(request):
         context["max_grupop"] = max_grupop
         context["inculpables"] = json.dumps(inculpables, cls=DecimalEncoder)
         context["accidentes"] = json.dumps(accidentes, cls=DecimalEncoder)
-        context["enfermos"] = json.dumps(enfermos, cls=DecimalEncoder)
         context["totales"] = json.dumps(totales, cls=DecimalEncoder)
         context["grupop"] = listado
 
     else:
         context["inculpables"] = None
         context["accidentes"] = None
-        context["enfermos"] = None
         context["totales"] = None
         context["grupop"] = None
 
