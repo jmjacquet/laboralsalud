@@ -190,13 +190,6 @@ class AusentismoForm(forms.ModelForm):
         if not empleado:
             raise forms.ValidationError("Debe cargar un Empleado!")
 
-        aus_grupop = self.cleaned_data.get("aus_grupop")
-        if not aus_grupop:
-            self.add_error("aus_grupop", u"¡Debe cargar un Grupo Patológico!")
-        aus_diagn = self.cleaned_data.get("aus_diagn")
-        if not aus_diagn:
-            self.add_error("aus_diagn", u"¡Debe cargar un Diagnóstico!")
-
         tipo_ausentismo = self.cleaned_data.get("tipo_ausentismo")
         aus_fcrondesde = self.cleaned_data.get("aus_fcrondesde")
         aus_fcronhasta = self.cleaned_data.get("aus_fcronhasta")
@@ -206,32 +199,42 @@ class AusentismoForm(forms.ModelForm):
             self.add_error("aus_fcrondesde", u"¡Debe cargar una Fecha!")
         if not aus_fcronhasta:
             self.add_error("aus_fcronhasta", u"¡Debe cargar una Fecha!")
-        if not aus_diascaidos:
-            self.add_error("aus_diascaidos", u"¡Debe cargar un Día!")
-        if aus_fcrondesde and aus_fcronhasta:
-            if aus_fcrondesde > aus_fcronhasta:
-                self.add_error("aus_fcrondesde", u"¡Verifique las Fechas!")
+        # Si es un control no exijo los dias caidos ni control de fechas
+        if int(tipo_ausentismo) == 8:
+            self.cleaned_data['aus_diascaidos'] = 0
+        else:
+            aus_grupop = self.cleaned_data.get("aus_grupop")
+            if not aus_grupop:
+                self.add_error("aus_grupop", u"¡Debe cargar un Grupo Patológico!")
+            aus_diagn = self.cleaned_data.get("aus_diagn")
+            if not aus_diagn:
+                self.add_error("aus_diagn", u"¡Debe cargar un Diagnóstico!")
+            if not aus_diascaidos:
+                self.add_error("aus_diascaidos", u"¡Debe cargar un Día!")
+            if aus_fcrondesde and aus_fcronhasta:
+                if aus_fcrondesde > aus_fcronhasta:
+                    self.add_error("aus_fcrondesde", u"¡Verifique las Fechas!")
 
-        aus_tipo_alta = self.cleaned_data.get("aus_tipo_alta")
-        if not aus_tipo_alta:
-            self.add_error("aus_tipo_alta", u"¡Debe seleccionar un Tipo de Alta! Verifique.")
+            aus_tipo_alta = self.cleaned_data.get("aus_tipo_alta")
+            if not aus_tipo_alta:
+                self.add_error("aus_tipo_alta", u"¡Debe seleccionar un Tipo de Alta! Verifique.")
 
-        elif aus_tipo_alta == 2:
-            descr_altaparc = self.cleaned_data.get("descr_altaparc")
-            if not descr_altaparc:
-                self.add_error("descr_altaparc", u"¡Debe cargar el Detalle del Alta!")
+            elif aus_tipo_alta == 2:
+                descr_altaparc = self.cleaned_data.get("descr_altaparc")
+                if not descr_altaparc:
+                    self.add_error("descr_altaparc", u"¡Debe cargar el Detalle del Alta!")
 
-        if int(tipo_ausentismo) not in (1, 4, 5, 6):
-            art_tipo_accidente = self.cleaned_data.get("art_tipo_accidente")
-            if not art_tipo_accidente:
-                self.add_error("art_tipo_accidente", u"¡Debe seleccionar un Tipo de Accidente! Verifique.")
-            else:
-                art_faccidente = self.cleaned_data.get("art_faccidente")
-                if not art_faccidente:
-                    self.add_error("art_faccidente", u"¡Debe cargar una Fecha!")
-                art_fdenuncia = self.cleaned_data.get("art_fdenuncia")
-                if not art_fdenuncia:
-                    self.add_error("art_fdenuncia", u"¡Debe cargar una Fecha!")
+            if int(tipo_ausentismo) not in (1, 4, 5, 6):
+                art_tipo_accidente = self.cleaned_data.get("art_tipo_accidente")
+                if not art_tipo_accidente:
+                    self.add_error("art_tipo_accidente", u"¡Debe seleccionar un Tipo de Accidente! Verifique.")
+                else:
+                    art_faccidente = self.cleaned_data.get("art_faccidente")
+                    if not art_faccidente:
+                        self.add_error("art_faccidente", u"¡Debe cargar una Fecha!")
+                    art_fdenuncia = self.cleaned_data.get("art_fdenuncia")
+                    if not art_fdenuncia:
+                        self.add_error("art_fdenuncia", u"¡Debe cargar una Fecha!")
 
         if self._errors:
             raise forms.ValidationError("¡Existen errores en la carga!.<br>Verifique los campos marcados en rojo.")

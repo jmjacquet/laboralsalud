@@ -27,9 +27,9 @@
                 <li class="divider"></li>
               {% endif %}
               {% if 'aus_pantalla' in permisos_grupo %}
-                <li><a href="{% url 'ausentismo_listado' %}"><i class="icon-list"> </i>Gestión Ausentismos</a></li>
-                {% if 'aus_abm' in permisos_grupo %}<li><a href="{% url 'ausentismo_nuevo' %}"><i class="icon-list"> </i>Nuevo Ausentismo</a></li>
-                <li><a href="{% url 'ausencias_importar' %}"><i class="icon-book-open"> </i>Importar Ausentismos</a></li>{% endif %}
+                <li><a href="{% url 'ausentismo_listado' %}"><i class="icon-list"> </i>Gestión Ausentismos/Controles</a></li>
+                {% if 'aus_abm' in permisos_grupo %}<li><a href="{% url 'ausentismo_nuevo' %}"><i class="icon-list"> </i>Nuevo Ausentismo/Control</a></li>
+                <li><a href="{% url 'ausencias_importar' %}"><i class="icon-book-open"> </i>Importar Ausentismos/Controles</a></li>{% endif %}
                 <li class="divider"></li>
               {% endif %}
               {% if 'turnos_pantalla' in permisos_grupo %}
