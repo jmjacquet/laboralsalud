@@ -35,14 +35,14 @@ TIPO_AUSENCIA_MEDICOS = (
 )
 
 TIPO_CONTROL = (    
-    ('C', 'Consultorio'),
-    ('D', 'Domicilio'),    
+    ('C', 'Consultorio cibys'),
+    ('D', u'Control Telefónico'),
 )
 
 TIPO_CONTROL_ = (    
     ('T', 'Todos'),
-    ('C', 'Consultorio'),
-    ('D', 'Domicilio'),    
+    ('C', 'Consultorio cibys'),
+    ('D', u'Control Telefónico'),
 )
 
 TIPO_AUSENCIA_ = (    
