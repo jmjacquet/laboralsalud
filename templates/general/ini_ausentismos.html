@@ -15,7 +15,8 @@
           <th class="imprimir" width="150" data-priority="2">Apellido y Nombre</th>          
           <th class="imprimir" data-priority="3">Documento</th>          
           <th class="imprimir" width="100" data-priority="5">Empresa</th>
-          <th class="imprimir" data-priority="6">Tipo Ausentismo</th>          
+          <th class="imprimir" data-priority="6">Tipo Ausentismo</th>
+          <th class="imprimir" data-priority="6">Tipo Control</th>
           <th class="imprimir" width="100" data-priority="10">Patología</th>
           <th class="imprimir" width="100" data-priority="11">Diagnóstico</th>          
       </tr>
@@ -51,6 +52,7 @@
           <td>{{ a.empleado.nro_doc|default_if_none:'' }}</td>
           <td title="{{ a.empleado.get_empresa|default_if_none:''}}">{{ a.empleado.get_empresa|default_if_none:''|truncatechars:60 }}</td>
           <td>{{ a.get_tipo_ausentismo_display|default_if_none:'' }}</td>                         
+          <td>{{ a.get_tipo_control_display|default_if_none:'' }}</td>
           <td title="{{ a.aus_grupop|proteger_dato:info_sensible|default_if_none:''}}">{{ a.aus_grupop|proteger_dato:info_sensible|default_if_none:''|truncatechars:60 }}</td>
           <td title="{{ a.aus_diagn|proteger_dato:info_sensible|default_if_none:''}}">{{ a.aus_diagn|proteger_dato:info_sensible|default_if_none:''|truncatechars:60 }}</td>
           
@@ -64,7 +66,8 @@
           <th></th>
           <th></th> 
           <th></th>
-          <th></th> 
+          <th></th>
+          <th></th>
           <th></th>  
           <th></th>                                
           <th></th>
