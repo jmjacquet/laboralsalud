@@ -182,7 +182,7 @@ $("#id_empleado").change(function(){
 
 $('#id_tipo_ausentismo').change(function()
 {
-  var tipos = ['1','4','5','6', '7']
+  var tipos = ['1','4','5','6']
     var id =  $("#id_tipo_ausentismo").val();
   if (tipos.indexOf(id) !== -1){
     $('#tab_ausencia').show();
