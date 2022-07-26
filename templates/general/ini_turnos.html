@@ -23,7 +23,8 @@
             <th class="imprimir">Empleado</th>
             <th class="imprimir">Empresa</th>
             <th class="imprimir">Estado</th>
-            <th class="imprimir">F.Carga</th>           
+            <th class="imprimir">Tipo Control</th>
+            <th class="imprimir">F.Carga</th>
             <th class="imprimir">Usuario</th>         
         </tr>
     </thead>
@@ -75,6 +76,7 @@
                 {{ t.turno_empleado|default_if_none:''|truncatechars:60 }}</strong></a></td>
             <td title="{{ t.turno_empresa|default_if_none:''}}">{{ t.turno_empresa|default_if_none:''|truncatechars:60 }}</td>
             <td>{{ t.get_estado_display|default_if_none:'' }}</td>
+            <td>{{ t.get_tipo_control_display|default_if_none:'' }}</td>
             <td>{{ t.fecha_creacion|date:'d/m/Y' }}</td>
             <td>{{ t.usuario_carga|default_if_none:'' }}</td>                    
         </tr>
@@ -153,7 +155,7 @@ var tabla = $('#fturnos').DataTable({
             $("#cargando").show();
             },
             initComplete: function () {
-               this.api().columns([3,4]).every( function () {
+               this.api().columns([3,4,5]).every( function () {
                     var column = this;
                     var select = $('<select class="form-control"><option value="">Todos</option></select>')
                         .appendTo( $(column.footer()).empty() )

@@ -64,6 +64,7 @@ class TurnosForm(forms.ModelForm):
         widget=forms.TimeInput(attrs={"class": "form-control"}),
         required=True,
     )
+    tipo_control = forms.ChoiceField(label="Tipo Control", choices=TIPO_CONTROL, required=False, initial="C")
     observaciones = forms.CharField(
         label="Observaciones / Datos adicionales",
         widget=forms.Textarea(attrs={"class": "form-control2", "rows": 5}),

@@ -56,6 +56,7 @@
                 <th class="imprimir">Empleado</th>
                 <th class="imprimir">Empresa</th>
                 <th class="imprimir">Estado</th>
+                <th class="imprimir">Tipo Control</th>
                 <th class="imprimir">Diagnóstico</th>
                 <th class="imprimir">Observaciones</th>                                          
             </tr>
@@ -113,6 +114,7 @@
                     {{ t.turno_empleado.apellido_y_nombre|default_if_none:''|truncatechars:60 }}</strong></a></td>
                 <td title="{{ t.turno_empresa|default_if_none:''}}">{{ t.turno_empresa|default_if_none:''|truncatechars:60 }}</td>
                 <td>{{ t.get_estado_display|default_if_none:'' }}</td>
+                <td>{{ t.get_tipo_control_display|default_if_none:'' }}</td>
                 <td title="{{ t.detalle|default_if_none:''}}">{{ t.detalle|default_if_none:''|truncatechars:60 }}</td>
                 <td title="{{ t.observaciones|default_if_none:''}}">{{ t.observaciones|default_if_none:''|truncatechars:60 }}</td>
             </tr>
@@ -124,6 +126,7 @@
                 <th></th> 
                 <th></th> 
                 <th></th>                                
+                <th></th>
                 <th></th>
                 <th></th>
                 <th></th>
@@ -277,7 +280,7 @@ var tabla = $('#turnos').DataTable({
             },
             initComplete: function () {
                // this.api().columns().every( function () {[0, 1, 9]
-                this.api().columns([4,5]).every( function () {
+                this.api().columns([4,5,6]).every( function () {
                     var column = this;
                     var select = $('<select class="form-control"><option value="">Todos</option></select>')
                         .appendTo( $(column.footer()).empty() )

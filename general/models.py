@@ -32,6 +32,7 @@ class turnos(models.Model):
     detalle = models.CharField("Diagnóstico", max_length=100, blank=True, null=True)
     estado = models.IntegerField("Estado", choices=ESTADO_TURNO, blank=True, null=True)
     observaciones = models.TextField("Observaciones", blank=True, null=True)
+    tipo_control = models.CharField("Tipo Control", choices=TIPO_CONTROL, max_length=1, blank=True, null=True)
     baja = models.BooleanField(default=False)
     fecha_creacion = models.DateField(auto_now_add=True)
     fecha_modif = models.DateField(auto_now=True)
