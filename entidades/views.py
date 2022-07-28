@@ -762,7 +762,9 @@ def importar_empleados(request):
             cant=0
 
             try:
-                next(reader) #Omito el Encabezado                            
+                index=0
+                line=""
+                next(reader) #Omito el Encabezado
                 for index,line in enumerate(reader):                      
                     campos = line[0].split(";")                               
                     cant_campos = len(campos)
