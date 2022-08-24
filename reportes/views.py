@@ -99,7 +99,6 @@ def reporte_resumen_periodo(request):
     fecha = date.today()
     fdesde = ultimo_anio()
     fhasta = hoy()
-    context = {}
     context = getVariablesMixin(request)
     empresas_list = []
     empresa = None
@@ -324,7 +323,7 @@ def reporte_resumen_periodo(request):
         aus_grupop = (
             ausentismos.values("aus_grupop__patologia", "aus_grupop__id")
             .annotate(total=Count("aus_grupop"))
-            .order_by("-total")[:5]
+            .order_by("-total")[:10]
         )
         aus_x_grupop = []
         for a in aus_grupop:
@@ -335,7 +334,7 @@ def reporte_resumen_periodo(request):
                              "dias": dias})
         aus_x_grupop = sorted(
             aus_x_grupop, key=lambda i: (i["total"], i["dias"]), reverse=True
-        )
+        )[:5]
 
         max_grupop = aus_x_grupop[0]["total"] + 1
 
@@ -354,22 +353,15 @@ def reporte_resumen_periodo(request):
     context["max_grupop"] = max_grupop
     context["dias_laborables"] = dias_laborables
     context["empl_mas_faltadores"] = empl_mas_faltadores[:10]
-    if ("pdf" in request.POST) and (aus_total):
-        aus_tot_image = request.POST.get("aus_tot_image", None)
-        aus_inc_image = request.POST.get("aus_inc_image", None)
-        aus_inc2_image = request.POST.get("aus_inc2_image", None)
-        aus_acc_image = request.POST.get("aus_acc_image", None)
-        aus_acc2_image = request.POST.get("aus_acc2_image", None)
-        aus_acc3_image = request.POST.get("aus_acc3_image", None)
-        aus_grp_image = request.POST.get("aus_grp_image", None)
+    if ("pdf" in request.POST) and aus_total:
         template = "reportes/reporte_periodo.html"
-        context["aus_tot_image"] = aus_tot_image
-        context["aus_inc_image"] = aus_inc_image
-        context["aus_inc2_image"] = aus_inc2_image
-        context["aus_acc_image"] = aus_acc_image
-        context["aus_acc2_image"] = aus_acc2_image
-        context["aus_acc3_image"] = aus_acc3_image
-        context["aus_grp_image"] = aus_grp_image
+        context["aus_tot_image"] = request.POST.get("aus_tot_image")
+        context["aus_inc_image"] = request.POST.get("aus_inc_image")
+        context["aus_inc2_image"] = request.POST.get("aus_inc2_image")
+        context["aus_acc_image"] = request.POST.get("aus_acc_image")
+        context["aus_acc2_image"] = request.POST.get("aus_acc2_image")
+        context["aus_acc3_image"] = request.POST.get("aus_acc3_image")
+        context["aus_grp_image"] = request.POST.get("aus_grp_image")
         return render_to_pdf_response(request, template, context)
     return render(request, template, context)
 
@@ -582,12 +574,10 @@ def reporteResumenAnual(request):
     context["filtro"] = filtro
     context["pie_pagina"] = "Sistemas Laboral Salud - %s" % (fecha.strftime("%d/%m/%Y"))
 
-    if ("pdf" in request.POST) and (ausentismos):
-        aus_tot_image = request.POST.get("aus_tot_image", None)
-        aus_grupop_image = request.POST.get("aus_grupop_image", None)
+    if ("pdf" in request.POST) and ausentismos:
         template_name = "reportes/reporte_anual.html"
-        context["aus_tot_image"] = aus_tot_image
-        context["aus_grupop_image"] = aus_grupop_image
+        context["aus_tot_image"] = request.POST.get("aus_tot_image")
+        context["aus_grupop_image"] = request.POST.get("aus_grupop_image")
 
         return render_to_pdf_response(request, template_name, context)
     return render(request, template_name, context)

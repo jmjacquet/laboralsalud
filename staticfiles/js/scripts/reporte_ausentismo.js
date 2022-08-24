@@ -44,4 +44,9 @@ $(document).ready(function() {
     $("[name='empresa']").val(id).trigger("chosen:updated");
   }
 
+    $("#form-exportar").change(function() {
+        $("#btnExportar").prop("disabled", true);
+        $("#btnExportar").prop("title", "Para exportar los resultados primero debe presionar el botón Buscar");
+    });
+
 });

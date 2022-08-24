@@ -29,7 +29,7 @@
       </div> 
       <div class="panel-body">
               <div class="col-md-12">
-               <form class="form" accept-charset="UTF-8" role="form" autocomplete="off" action="" method="post">
+               <form class="form" accept-charset="UTF-8" role="form" autocomplete="off" id="form-exportar" action="" method="post">
                   {% csrf_token %} 
                   <div class="barra_busqueda col-sm-12">                                    
                           <div class="col-sm-1">{% bootstrap_field form.periodo_desde  %}</div>                                
@@ -41,7 +41,7 @@
                           <div class="col-sm-4">{% bootstrap_field form.empleado  %}</div>
                           <div class="col-sm-12">
                             {% if ausentismos %} 
-                            <button class="btn btn-xs btn-primary text-center pull-left" formtarget="_blank" type="submit" name="pdf">Exportar</button>
+                            <button class="btn btn-xs btn-primary text-center pull-left" formtarget="_blank" id="btnExportar" type="submit" name="pdf">Exportar</button>
                             {% endif %}
                             <button class="btn btn-xs btn-primary text-center pull-right" type="submit">Buscar</button>
                           </div>
