@@ -790,10 +790,13 @@ def importar_empleados(request):
                         raise Exception(u'El nombre no puede estar vacío!')
                     nombre = apellido+' '+nombre
                     fecha=campos[4].strip()
-                    if fecha=='':
-                        fecha_nac=None
-                    else:
-                        fecha_nac = datetime.datetime.strptime(fecha, "%d/%m/%Y").date()   #fecha_nacim             
+                    try:
+                        if fecha=='':
+                            fecha_nac=None
+                        else:
+                            fecha_nac = datetime.datetime.strptime(fecha, "%d/%m/%Y").date()   #fecha_nacim
+                    except Exception as e:
+                        raise Exception(u'Error en el formato de Fecha!')
                     domicilio = campos[5].strip()  #DOMICILIO
                     celular =   campos[6].strip()  #celular
                     telefono =   campos[7].strip()  #telefono                    
