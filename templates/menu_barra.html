@@ -23,6 +23,8 @@
             <ul class="dropdown-menu">
               {% if 'empl_pantalla' in permisos_grupo %}
                 <li><a href="{% url 'empleado_listado' %}"><i class="icon-users"> </i>Gestión Empleados</a></li>
+              {% endif %}
+              {% if esAdmin %}
                 <li><a href="{% url 'importar_empleados' %}"><i class="icon-user-follow"> </i>Importar Empleados</a></li>
                 <li class="divider"></li>
               {% endif %}

@@ -198,6 +198,20 @@
 			</div>
 			
 		<div class="row cerca">
+            <div class="col-xs-12 cerca">
+                <fieldset>
+                    <div class="row cerca">
+                        <div class="col-sm-6 col-xs-12">
+                            {{form.aus_grupop|as_crispy_field}}
+                        </div>
+                        <div class="col-sm-6 col-xs-12">
+                            {{form.aus_diagn|as_crispy_field}}
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+        <div class="row cerca">
 			<div class="tabbable-line col-sm-12 cerca">
 				<ul class="nav nav-tabs ">
 					<li class="active">
@@ -217,14 +231,6 @@
 				<div class="tab-content">
 					<div class="tab-pane active" id="tab_obs">
 						<fieldset>
-							<div class="row cerca">
-								<div class="col-sm-6 col-xs-12">
-									{{form.aus_grupop|as_crispy_field}}
-								</div>
-								<div class="col-sm-6 col-xs-12">
-									{{form.aus_diagn|as_crispy_field}}
-								</div>
-							</div>
 							<div class="row cerca">
 								<div class="col-sm-12">
 									{{form.estudios_partic|as_crispy_field}}
