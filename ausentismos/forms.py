@@ -306,16 +306,16 @@ class ConsultaAusentismos(forms.Form):
     aus_diagn = forms.CharField(label=u"Diagnóstico", required=False)
     tipo_ausentismo = forms.ChoiceField(label="Tipo Ausentismo", choices=TIPO_AUSENCIA_, required=False, initial=0)
     estado = forms.ChoiceField(label="Vigencia", choices=TIPO_VIGENCIA, required=False, initial=0)
-    fmodificacion = forms.DateField(
-        label="F.Modificacion",
-        widget=forms.DateInput(attrs={"class": "form-control datepicker", "autocomplete": "off"}),
-        required=False,
-    )
-    freintegro = forms.DateField(
-        label="F.Reintegro",
-        widget=forms.DateInput(attrs={"class": "form-control datepicker", "autocomplete": "off"}),
-        required=False,
-    )
+    # fmodificacion = forms.DateField(
+    #     label="F.Modificacion",
+    #     widget=forms.DateInput(attrs={"class": "form-control datepicker", "autocomplete": "off"}),
+    #     required=False,
+    # )
+    # freintegro = forms.DateField(
+    #     label="F.Reintegro",
+    #     widget=forms.DateInput(attrs={"class": "form-control datepicker", "autocomplete": "off"}),
+    #     required=False,
+    # )
     def __init__(self, *args, **kwargs):
         request = kwargs.pop("request", None)
         super(ConsultaAusentismos, self).__init__(*args, **kwargs)

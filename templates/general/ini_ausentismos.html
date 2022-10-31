@@ -2,12 +2,18 @@
 {% load i18n %}
 {% load bootstrap3 %}
 {% load filtros_especiales %}
-<div id="container" style="width: 100%; height:100%;min-height:300px; margin: 0 auto">
-  <div class="table-responsive">
-      <table width="100%" id="ausentismos" style="display:none;" class="table table-striped table-hover table-no-bordered tabla_nueva text-nowrap">         
+<div id="container" style="width: 100%; height:100%;min-height:300px; margin: 0 auto; padding: 5px;">
+  {% if 'aus_abm' in permisos_grupo %}
+    <div class="btn-group " style="float:left;margin-right:20px;margin-bottom:0px;">
+      <button class="btn btn-xs btn-primary" id="btnImprimirInforme" style="float:left;margin-right:10px;;margin-bottom:5px;" >Generar Informe</button>
+      <button class="btn btn-xs btn-primary" id="btnInforme" style="float:left;margin-bottom:5px;" > Enviar Informe</button>
+    </div>
+  {% endif %}
+      <table width="100%" id="ausentismos" style="display:none;" class="table table-striped table-responsive compact table-hover table-no-bordered tabla_nueva text-nowrap">
   <thead >
       <tr>
-          <th class="no-sort text-center" data-priority="1"></th>          
+          <th class="no-sort text-center" data-priority="1"></th>
+          <th class="no-sort text-center" data-priority="2"><input type="checkbox" id="checkall" title="Seleccionar Todas"/></th>
           <th class="imprimir" data-priority="8">F.Próx.Control</th>
           <th class="imprimir" data-priority="8">F.Cron.Desde</th>
           <th class="imprimir" data-priority="9">F.Cron.Hasta</th>
@@ -40,10 +46,14 @@
                 {% endif %}
                 <li><a href="{% url 'ausentismo_historial' id=a.empleado.pk %}" class="modal-detail" data-modal-head="HISTORIA CLINICA">
                 <i class=" icon-screen-desktop"></i> Historia Clínica</a></li>
-                <li><a href="#"onClick="abrir_modal('{% url 'generar_informe_individual' id=a.pk %}')"><i class=" icon-screen-desktop"></i> Generar Informe</a></li>
+                <li><a href="#"onClick="abrir_modal('{% url 'generar_informe_individual' id=a.pk %}')"><i class=" icon-screen-desktop"></i> Enviar Informe</a></li>
               </ul>
             </div>
-          </td>          
+          </td>
+          <td class="text-center">
+              <input type="checkbox" class="tildado" id="chk_{{forloop.counter0}}" value="{{ a.pk|safe }}" aria-label="chk_{{forloop.counter0}}">
+              {% if a.observaciones %}  <i title="{{a.observaciones}}" class="icon-speech icono_seguimiento"></i> {% endif %}
+          </td>
           <td>{{ a.get_proxcontrol|date:'d/m/Y' }}</td> 
           <td>{{ a.get_fcrondesde|date:'d/m/Y' }}</td>               
           <td>{{ a.get_fcronhasta|date:'d/m/Y' }}</td>
@@ -62,7 +72,8 @@
   <tfoot>
       <tr>
           <th></th>       
-          <th></th> 
+          <th></th>
+          <th></th>
           <th></th>
           <th></th> 
           <th></th>
@@ -76,81 +87,9 @@
       </tr>
   </tfoot>		            
   
-</table> 
-  </div>
+</table>
 </div>
 
 {% block scripts_js %}     
-<script type="text/javascript">
-
-$(document).ready(function() { 
-   
-moment.locale('es');
-$.fn.dataTable.moment('DD/MM/YYYY'); 
-
-var tabla = $('#ausentismos').DataTable({
-            "language": {
-                "decimal": ",",
-                "thousands": ".",                 
-                "sProcessing": "Procesando...",
-                "sLengthMenu": "Mostrar _MENU_ registros",
-                "sZeroRecords": "No se encontraron resultados",
-                "sEmptyTable": "No hay registros en esta tabla",
-                "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
-                "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
-                "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
-                "sInfoPostFix": "",
-                "sSearch": "Buscar:",
-                "sUrl": "",
-                "sInfoThousands": ",",
-                "sLoadingRecords": "Cargando...",
-                "oPaginate": {
-                    "sFirst": "Primero",
-                    "sLast": "Ãšltimo",
-                    "sNext": "Siguiente",
-                    "sPrevious": "Anterior"
-                },
-                "oAria": {
-                    "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
-                    "sSortDescending": ": Activar para ordenar la columna de manera descendente"
-                },
-                "decimal": ",",
-                "thousands": ".",                
-            },                      
-           
-         "columnDefs": [ {
-                  "targets"  : 'no-sort',
-                  "orderable": false,
-                }],          
-           "paging":   true,
-           "lengthMenu": [[25, 50, -1], [25, 50, "Todos"]],
-           "autoWidth": false,
-           "order": [],
-           "colReorder": false,
-           "searching": true,
-            fixedHeader: {
-              header: false,
-              footer: false
-              },
-            responsive: false,            
-            
-            dom: "<'row'<'col-sm-12'tr>>"+"<'row'<'col-sm-3'l><'col-sm-9'ip>>",
-            PreDrawCallback:function(){
-            $("#cargando").show();
-            },
-            initComplete: function () {
-               // this.api().columns().every( function () {[0, 1, 9]                
-                $("#ausentismos").show();
-                  this.fnAdjustColumnSizing();
-                $("#cargando").hide();
-            },
-            
-        });
-
-
-
-
-});
-</script> 
+    <script src="{% static 'js/scripts/ausentismos_ini.js'%}?{% now "Ymd"%}" type="text/javascript"></script>
 {% endblock scripts_js %}
-
