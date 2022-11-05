@@ -179,15 +179,6 @@ class AusentismoCreateView(VariablesMixin, CreateView):
         self.object = None
         form_class = self.get_form_class()
         form = self.get_form(form_class)
-        form.fields["empleado"].label = agregar_nuevo_html(
-            "Empleado",
-            "nuevoEmpleado",
-            "AGREGAR EMPLEADO",
-            "/entidades/empleado/nuevo/",
-            "recargarE",
-            "Crear Nuevo Empleado",
-            "icon-users",
-        )
         controles_detalle = ControlDetalleFormSet(prefix="formDetalle")
         controles_patologias = PatologiaDetalleFormSet(prefix="formDetalle2")
         return self.render_to_response(

@@ -86,10 +86,48 @@ class TurnosForm(forms.ModelForm):
         self.fields["turno_empresa"].queryset = ent_empresa.objects.filter(
             baja=False, pk__in=empresas
         )
-        # self.fields["turno_empleado"].queryset = ent_empleado.objects.filter(
-        #     baja=False, empresa__pk__in=empresas
-        # ).select_related("empresa")
         self.fields["turno_empleado"].queryset = ent_empleado.objects.none().select_related("empresa")
+
+    def clean(self):
+        fecha = self.cleaned_data.get("fecha")
+        if not fecha:
+            self.add_error("fecha", u"¡Fecha no válida!")
+        elif fecha < hoy():
+            self.add_error("fecha", u"¡Fecha no válida!")
+        return self.cleaned_data
+
+
+class TurnosLightForm(forms.ModelForm):
+
+    fecha = forms.DateField(
+        label="Fecha",
+        widget=forms.DateInput(attrs={"class": "form-control datepicker"}),
+        required=True,
+        initial=hoy(),
+    )
+    hora = forms.TimeField(
+        label="Hora",
+        widget=forms.TimeInput(attrs={"class": "form-control"}),
+        required=True,
+    )
+    tipo_control = forms.ChoiceField(label="Tipo Control", choices=TIPO_CONTROL, required=False, initial="C")
+    observaciones = forms.CharField(
+        label="Observaciones / Datos adicionales",
+        widget=forms.Textarea(attrs={"class": "form-control2", "rows": 5}),
+        required=False,
+    )
+    tipo_form = forms.CharField(widget=forms.HiddenInput(), required=False)
+    estado = forms.ChoiceField(
+        label="Estado", choices=ESTADO_TURNO, required=True, initial=0
+    )
+
+    class Meta:
+        model = turnos
+        exclude = ["id", "fecha_creacion", "fecha_modif", "usuario_carga", "turno_empresa", "turno_empleado"]
+
+    def __init__(self, *args, **kwargs):
+        request = kwargs.pop("request", None)
+        super(TurnosLightForm, self).__init__(*args, **kwargs)
 
     def clean(self):
         fecha = self.cleaned_data.get("fecha")

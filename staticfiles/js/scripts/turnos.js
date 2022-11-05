@@ -10,7 +10,14 @@ $.fn.datepicker.dates['es'] = {
     monthsShort: ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"],
     today: "Hoy"
   };
-  
+   $('#id_empleado_form-fecha_nac').datepicker({
+          format: "dd/mm/yyyy",
+          language: "es",
+          autoclose: true,
+          todayHighlight: true,
+          daysOfWeekDisabled : [0,6],
+    });
+
    $('#id_fecha').datepicker({
           format: "dd/mm/yyyy",
           language: "es",
@@ -67,6 +74,55 @@ $("#id_turno_empresa").change(function(){
     $('#cargando').hide();
 });
 
+$( "#Buscar" ).click(function() {
+      var e = $.Event( "keyup", { which: 13 } );
+      $('#id_empresa_form-cuit').trigger(e);
+ });
+$("#id_empresa_form-cuit").keyup(function(e){
+  if(e.which === 13) {
+     consulta = $("#id_empresa_form-cuit").val();
+     if (consulta.length<6)
+     {
+      alertify.alert('Búsqueda por CUIT','Debe ingresar un CUIT válido!.');
+      $("#id_empresa_form-cuit").focus();
+     }
+     else{
+        $.ajax({
+        data: {'cuit': consulta},
+        url: '/buscarDatosAPICUIT/',
+        type: 'get',
+        cache: true,
+        beforeSend: function(){
+            $('#cargando').show();
+        },
+        complete: function(){
+            $('#cargando').hide();
+        },
+        success : function(data) {
+             if (data!='')
+                {
+                    if (data['tipoPersona']=='JURIDICA'){
+                      $("#id_empresa_form-razon_social").val(data['razonSocial']);
+                    }else{
+                      $("#id_empresa_form-razon_social").val(data['apellido']+' '+data['nombre']);
+                    };
+                }else
+                {
+                  $("#id_empresa_form-cuit").val('');
+                  $("#id_empresa_form-razon_social").val('');
+                  $("#id_empresa_form-cuit").focus();
+                  alertify.alert('Búsqueda por CUIT','No se encontraron contribuyentes con el CUIT '+consulta+'. <br>El servicio de consulta de CUIT ONline (AFIP) puede estar momentáneamente interrumpido. Vuelva a intentarlo mas tarde.');
+                }
+        },
+        error : function(message) {
+             $('#cargando').hide();
+             alertify.alert('Búsqueda por CUIT','No se encontraron contribuyentes. <br>El servicio de consulta de CUIT ONline (AFIP) puede estar momentáneamente interrumpido. Vuelva a intentarlo mas tarde.');
+             console.log(message);
+          }
+      });
+      }
+    }
+  });
 
 
 if ($('#id_tipo_form').val()=='ALTA'){

@@ -8,11 +8,6 @@ from laboralsalud.utilidades import *
 from usuarios.views import tiene_permiso
 
 
-class EmpleadoModelChoiceField(forms.ModelChoiceField):
-    def label_from_instance(self, obj):
-        return obj.get_empleado()
-
-
 class MedicoModelChoiceField(forms.ModelChoiceField):
     def label_from_instance(self, obj):
         return obj.get_medico()
@@ -168,6 +163,15 @@ class AusentismoForm(forms.ModelForm):
         # self.fields["empleado"].queryset = ent_empleado.objects.filter(baja=False, empresa__pk__in=empresas)
         self.fields["empleado"].queryset = ent_empleado.objects.none()
         self.fields["empresa"].queryset = ent_empresa.objects.filter(baja=False, pk__in=empresas)
+        self.fields["empleado"].label = agregar_nuevo_html(
+            label="Empleado",
+            id="nuevoEmpleado",
+            title="AGREGAR EMPLEADO",
+            url="/entidades/empleado/nuevo/",
+            callback="recargarE",
+            hint="Crear Nuevo Empleado",
+            icon="icon-users",
+        )
 
         usuario = usuario_actual(request)
         # Si es médico no vé los últimos tipos

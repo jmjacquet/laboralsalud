@@ -5,6 +5,7 @@ from decouple import config
 DEBUG = True
 # DEBUG = False
 # USE_TZ = False
+LANGUAGE_CODE = 'es'
 USE_I18N = False
 DB_USER = "gg"
 DB_PASS = "battlehome"

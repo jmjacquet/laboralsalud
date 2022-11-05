@@ -15,7 +15,8 @@ urlpatterns = [
 
     url(r'^turnos/$', TurnosView.as_view(),name="turnos_listado"),
     url(r'^turnos/nuevo/$', TurnosCreateView.as_view(), name="turnos_nuevo"),
-    url(r'^turnos/editar/(?P<id>\d+)/$', TurnosEditView.as_view(), name="turnos_editar"),    
+    url(r'^turnos/nuevo_rapido/$', TurnosLightCreateView.as_view(), name="turnos_nuevo_rapido"),
+    url(r'^turnos/editar/(?P<id>\d+)/$', TurnosEditView.as_view(), name="turnos_editar"),
     url(r'^turnos/eliminar/(?P<id>\d+)/$', turno_eliminar, name='turnos_eliminar'),
     url(r'^turnos/estado/(?P<id>\d+)/(?P<estado>\d+)$', turno_estado, name='turnos_estado'),
     url(r'^turnos/detalles/(?P<id>\d+)/$', TurnosVerView.as_view(), name="turnos_detalles"),    

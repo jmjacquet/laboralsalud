@@ -207,3 +207,57 @@ class EmpresaAgrupamientoForm(forms.ModelForm):
 	def __init__(self, *args, **kwargs):
 		request = kwargs.pop('request', None)
 		super(EmpresaAgrupamientoForm, self).__init__(*args, **kwargs)
+
+
+class EmpresaLightForm(forms.ModelForm):
+	cuit = forms.IntegerField(label='CUIT', required=False, widget=PostPendWidgetBuscar(
+		attrs={'class': 'form-control', 'autofocus': 'autofocus'},
+		base_widget=TextInput, data='<i class="fa fa-search" aria-hidden="true"></i>',
+		tooltip=u"Buscar datos y validar CUIT en AFIP"))
+	razon_social = forms.CharField(required=True)
+	codigo = forms.CharField(required=True, initial='{0:0{width}}'.format((ultimoNroId(ent_empresa) + 1), width=4))
+	class Meta:
+			model = ent_empresa
+			exclude = ['id','fecha_creacion','fecha_modif','usuario_carga']
+
+	def clean(self):
+		cuit = self.cleaned_data.get('cuit')
+		cant_empresas = ent_empresa.objects.filter(cuit=cuit, baja=False).count()
+		if (cant_empresas > 0):
+
+			raise forms.ValidationError("¡La Empresa ya existe en el sistema! Verifique.")
+		if self._errors:
+			raise forms.ValidationError(
+				"¡Existen errores en la carga!.<br>Por favor verifique los campos marcados en rojo.")
+		return self.cleaned_data
+
+
+class EmpleadoLightForm(forms.ModelForm):
+	apellido_y_nombre = forms.CharField(widget=forms.TextInput(),required=True)
+	nro_doc = forms.IntegerField(label=u'Documento', required=True)
+	fecha_nac = forms.DateField(label=u'Fecha Nacim.', required=True,
+								widget=forms.DateInput(attrs={'class': 'form-control datepicker'}))
+	class Meta:
+		model = ent_empleado
+		exclude = ['id', 'fecha_creacion', 'fecha_modif', 'usuario_carga', 'trab_armas', "trab_tareas_dif", "trab_preocupac"]
+
+	def __init__(self, *args, **kwargs):
+		request = kwargs.pop('request', None)
+		super(EmpleadoLightForm, self).__init__(*args, **kwargs)
+
+	def clean(self):
+		fecha_nac = self.cleaned_data.get('fecha_nac')
+
+		if fecha_nac:
+			if date.today() < fecha_nac:
+				self.add_error("fecha_nac", u'¡Verifique las Fechas!')
+
+		nro_doc = self.cleaned_data.get('nro_doc')
+		cant = ent_empleado.objects.filter(nro_doc=nro_doc, baja=False).count()
+		if (cant > 0):
+			raise forms.ValidationError("¡El Empleado ya existe en el sistema! Verifique.")
+		if self._errors:
+			raise forms.ValidationError(
+				"¡Existen errores en la carga!.<br>Por favor verifique los campos marcados en rojo.")
+
+		return self.cleaned_data

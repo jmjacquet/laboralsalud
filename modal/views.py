@@ -71,13 +71,13 @@ class AjaxFormMixin(JSONResponseMixin):
             return self.render_json_response(self.get_success_result())
         return HttpResponseRedirect(self.get_success_url())
 
-    def form_invalid(self, form):
+    def form_invalid(self, form, *args, **kwargs):
         """
         We have errors in the form. If ajax, return them as json.
         Otherwise, proceed as normal.
         """
         if self.request.is_ajax():
-            return self.render_json_response(self.get_error_result(form))
+            return self.render_json_response(self.get_error_result(form, *args, **kwargs))
         return super(AjaxFormMixin, self).form_invalid(form)
 
     def get_message_template_context(self):
@@ -101,10 +101,10 @@ class AjaxFormMixin(JSONResponseMixin):
     def get_success_result(self):
         return {'status': 'ok', 'message': self.get_response_message()}
 
-    def get_error_result(self, form):
+    def get_error_result(self, form, *args, **kwargs):
         html = render_to_string(
             self.template_name,
-            self.get_context_data(form=form),            
+            self.get_context_data(form=form, *args, **kwargs),
         )
         return {'status': 'error', 'message': html}
 

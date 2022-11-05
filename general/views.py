@@ -1,48 +1,45 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from django.http import JsonResponse
-from django.shortcuts import *
-from django.shortcuts import render
-from django.core.serializers.json import DjangoJSONEncoder
 import json
 import urllib
 
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.core.serializers.json import DjangoJSONEncoder
+from django.db import transaction, IntegrityError
+from django.db.models import Q
+from django.http import JsonResponse
+from django.shortcuts import *
 from django.utils.decorators import method_decorator
 from django.views.generic import (
     TemplateView,
     ListView,
-    CreateView,
     UpdateView,
-    FormView,
     DetailView,
 )
-from modal.views import AjaxCreateView, AjaxUpdateView, AjaxDeleteView
-from django.db.models import Q, Sum, Count, FloatField, Func
 
-from .forms import TurnosForm, ConsultaTurnos, ConsultaFechasInicio, ConfiguracionForm
-from .models import turnos, configuracion
 from ausentismos.models import (
     aus_patologia,
     aus_diagnostico,
     ausentismo,
     ausentismos_del_dia,
 )
+from entidades.forms import EmpleadoLightForm, EmpresaLightForm
 from entidades.models import ent_empleado, ent_empresa, ent_medico_prof
 from laboralsalud.utilidades import (
     hoy,
     usuario_actual,
     empresa_actual,
-    TIPO_AUSENCIA,
     empresas_habilitadas,
     URL_API,
     mobile,
     esAdmin,
     ultimoMes,
 )
-from django.contrib import messages
-import locale
+from modal.views import AjaxCreateView, AjaxUpdateView
+from .forms import TurnosForm, ConsultaTurnos, ConsultaFechasInicio, ConfiguracionForm, TurnosLightForm
+from .models import turnos, configuracion
 
 
 class VariablesMixin(object):
@@ -234,9 +231,6 @@ def buscarDatosAPICUIT(request):
     return HttpResponse(json.dumps(d), content_type="application/json")
 
 
-from django.forms.models import model_to_dict
-
-
 def buscarDatosEntidad(request):
     lista = {}
     id = request.GET["id"]
@@ -341,8 +335,6 @@ def recargar_patologias(request):
 
 
 ############ TURNOS ############################
-from .calendario import Calendar
-from django.utils.safestring import mark_safe
 from usuarios.views import tiene_permiso
 
 
@@ -441,6 +433,74 @@ class TurnosCreateView(VariablesMixin, AjaxCreateView):
     def get_success_url(self):
         messages.success(self.request, "Los datos se guardaron con éxito!")
         return reverse("turnos_listado")
+
+
+class TurnosLightCreateView(VariablesMixin, AjaxCreateView):
+    form_class = TurnosLightForm
+    template_name = "modal/general/form_turnos_light.html"
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        if not tiene_permiso(self.request, "turnos_pantalla"):
+            return redirect(reverse("principal"))
+        return super(TurnosLightCreateView, self).dispatch(*args, **kwargs)
+
+    def get(self, request, *args, **kwargs):
+        self.object = None
+        form_class = self.get_form_class()
+        form = self.get_form(form_class)
+        empresa_form = EmpresaLightForm(prefix="empresa_form")
+        empleado_form = EmpleadoLightForm(prefix="empleado_form")
+        return self.render_to_response(self.get_context_data(form=form, empresa_form=empresa_form, empleado_form=empleado_form))
+
+    def post(self, request, *args, **kwargs):
+        self.object = None
+        form_class = self.get_form_class()
+        form = self.get_form(form_class)
+        empresa_form = EmpresaLightForm(self.request.POST, prefix="empresa_form")
+        empleado_form = EmpleadoLightForm(self.request.POST, prefix="empleado_form")
+        if form.is_valid() and empresa_form.is_valid() and empleado_form.is_valid():
+            return self.form_valid(form, empresa_form, empleado_form)
+        else:
+            return self.form_invalid(form=form, empresa_form=empresa_form, empleado_form=empleado_form)
+
+    def form_valid(self, form, empresa_form, empleado_form):
+        try:
+            with transaction.atomic():
+                self.object = form.save(commit=False)
+                self.object.usuario_carga = usuario_actual(self.request)
+
+                empresa = empresa_form.save(commit=False)
+                empresa.usuario_carga = usuario_actual(self.request)
+                empresa.save()
+
+                empleado = empleado_form.save(commit=False)
+                empleado.usuario_carga = usuario_actual(self.request)
+                empleado.empresa = empresa
+                empleado.save()
+
+                self.object.turno_empresa = empresa
+                self.object.turno_empleado = empleado
+                self.object.save()
+                messages.success(self.request, "Los datos se guardaron con éxito!")
+        except IntegrityError:
+            return self.form_invalid(form, empresa_form, empleado_form)
+        return super(TurnosLightCreateView, self).form_valid(form)
+
+    def get_form_kwargs(self):
+        kwargs = super(TurnosLightCreateView, self).get_form_kwargs()
+        kwargs["request"] = self.request
+        return kwargs
+
+    def get_initial(self):
+        initial = super(TurnosLightCreateView, self).get_initial()
+        initial["request"] = self.request
+        initial["tipo_form"] = "ALTA"
+        return initial
+
+    def form_invalid(self, form, empresa_form, empleado_form):
+        return super(TurnosLightCreateView, self).form_invalid(form=form, empresa_form=empresa_form, empleado_form=empleado_form)
+
 
 
 class TurnosEditView(VariablesMixin, AjaxUpdateView):
