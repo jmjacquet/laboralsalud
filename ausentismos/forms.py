@@ -48,9 +48,9 @@ class AusentismoForm(forms.ModelForm):
     empleado = forms.ModelChoiceField(
         label="Empleado", queryset=ent_empleado.objects.filter(baja=False), empty_label="---", required=True
     )
-    tipo_ausentismo = forms.ChoiceField(label="", choices=TIPO_AUSENCIA, required=False, initial=1)
+    tipo_ausentismo = forms.ChoiceField(label="Tipo Ausentismo", choices=TIPO_AUSENCIA, required=False, initial=1)
     aus_tipo_alta = forms.ChoiceField(choices=TIPO_ALTA, required=True, initial=0)
-    tipo_control = forms.ChoiceField(label="", choices=TIPO_CONTROL, required=False, initial="C")
+    tipo_control = forms.ChoiceField(label="Tipo Control", choices=TIPO_CONTROL, required=False, initial="C")
     aus_control = forms.ChoiceField(label=u"¿Asistió a Control?", choices=SINO, required=False, initial="N")
     aus_certificado = forms.ChoiceField(label=u"¿Presenta Certificado?", choices=SINO, required=False, initial="N")
     observaciones = forms.CharField(
@@ -165,7 +165,8 @@ class AusentismoForm(forms.ModelForm):
         request = kwargs.pop("request", None)
         super(AusentismoForm, self).__init__(*args, **kwargs)
         empresas = empresas_habilitadas(request)
-        self.fields["empleado"].queryset = ent_empleado.objects.filter(baja=False, empresa__pk__in=empresas)
+        # self.fields["empleado"].queryset = ent_empleado.objects.filter(baja=False, empresa__pk__in=empresas)
+        self.fields["empleado"].queryset = ent_empleado.objects.none()
         self.fields["empresa"].queryset = ent_empresa.objects.filter(baja=False, pk__in=empresas)
 
         usuario = usuario_actual(request)
@@ -252,6 +253,7 @@ class ControlesDetalleForm(forms.ModelForm):
         required=False,
         widget=forms.DateInput(attrs={"class": "form-control datepicker", "autocomplete": "off"}),
     )
+    tipo_control = forms.ChoiceField(label="Tipo Control", choices=TIPO_CONTROL, required=False, initial="C")
 
     class Meta:
         model = ausentismo_controles

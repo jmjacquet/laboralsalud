@@ -86,15 +86,16 @@ class TurnosForm(forms.ModelForm):
         self.fields["turno_empresa"].queryset = ent_empresa.objects.filter(
             baja=False, pk__in=empresas
         )
-        self.fields["turno_empleado"].queryset = ent_empleado.objects.filter(
-            baja=False, empresa__pk__in=empresas
-        ).select_related("empresa")
+        # self.fields["turno_empleado"].queryset = ent_empleado.objects.filter(
+        #     baja=False, empresa__pk__in=empresas
+        # ).select_related("empresa")
+        self.fields["turno_empleado"].queryset = ent_empleado.objects.none().select_related("empresa")
 
     def clean(self):
         fecha = self.cleaned_data.get("fecha")
         if not fecha:
             self.add_error("fecha", u"¡Fecha no válida!")
-        if fecha < hoy():
+        elif fecha < hoy():
             self.add_error("fecha", u"¡Fecha no válida!")
         return self.cleaned_data
 

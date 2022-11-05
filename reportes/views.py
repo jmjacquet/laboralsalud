@@ -108,6 +108,7 @@ def reporte_resumen_periodo(request):
         periodo = form.cleaned_data["periodo"]
         empresa = form.cleaned_data["empresa"]
         agrupamiento = form.cleaned_data["agrupamiento"]
+        grupop = form.cleaned_data["grupo_patologico"]
         empleado = form.cleaned_data["empleado"]
         tipo_ausentismo = form.cleaned_data["tipo_ausentismo"]
         trab_cargo = form.cleaned_data["trab_cargo"]
@@ -156,6 +157,8 @@ def reporte_resumen_periodo(request):
             filtro += " - Puesto de Trabajo: %s" % (trab_cargo)
         if int(tipo_ausentismo) > 0:
             ausentismos = ausentismos.filter(tipo_ausentismo=int(tipo_ausentismo))
+        if grupop:
+            ausentismos = ausentismos.filter(aus_grupop__patologia=grupop)
     else:
         ausentismos = None
     context["form"] = form
@@ -390,6 +393,7 @@ def reporteResumenAnual(request):
         empleado = form.cleaned_data["empleado"]
         tipo_ausentismo = form.cleaned_data["tipo_ausentismo"]
         trab_cargo = form.cleaned_data["trab_cargo"]
+        grupop = form.cleaned_data["grupo_patologico"]
 
         fdesde = date(periodo_desde.year, periodo_desde.month, 1)
         fhasta = date(
@@ -439,6 +443,8 @@ def reporteResumenAnual(request):
             filtro += " - Puesto de Trabajo: %s" % (trab_cargo)
         if int(tipo_ausentismo) > 0:
             ausentismos = ausentismos.filter(tipo_ausentismo=int(tipo_ausentismo))
+        if grupop:
+            ausentismos = ausentismos.filter(aus_grupop__patologia=grupop)
     else:
         ausentismos = None
     context["form"] = form

@@ -450,7 +450,7 @@ class EmpresaView(VariablesMixin,ListView):
 
     def get_context_data(self, **kwargs):
         context = super(EmpresaView, self).get_context_data(**kwargs)
-        empr=ent_empresa.objects.filter(id__in=empresas_habilitadas(self.request)).select_related('art','casa_central')
+        empr=ent_empresa.objects.filter(id__in=empresas_habilitadas(self.request)).select_related('art', 'casa_central', 'agrupamiento')
         context['empresas'] = empr
         return context
     

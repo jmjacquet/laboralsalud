@@ -2,6 +2,8 @@
 from django import forms
 from django.forms import ModelForm
 import datetime
+
+from ausentismos.models import aus_patologia
 from laboralsalud.utilidades import *
 from entidades.models import (
     ent_art,
@@ -37,6 +39,11 @@ class ConsultaPeriodo(forms.Form):
         label="Agrupamiento/Sector",
         queryset=ent_empresa_agrupamiento.objects.filter(baja=False),
         initial=0,
+        required=False,
+    )
+    grupo_patologico = forms.ModelChoiceField(
+        label=u"Grupo Patológico",
+        queryset=aus_patologia.objects.filter(baja=False),
         required=False,
     )
     empleado = forms.CharField(required=False, label="Empleado")
@@ -97,6 +104,11 @@ class ConsultaAnual(forms.Form):
         label="Agrupamiento/Sector",
         queryset=ent_empresa_agrupamiento.objects.filter(baja=False),
         initial=0,
+        required=False,
+    )
+    grupo_patologico = forms.ModelChoiceField(
+        label=u"Grupo Patológico",
+        queryset=aus_patologia.objects.filter(baja=False),
         required=False,
     )
 

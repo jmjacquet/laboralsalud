@@ -38,14 +38,12 @@ TIPO_CONTROL = (
     ('C', 'Consultorio'),
     ('S', 'Consultorio CIBYS'),
     ('D', u'Control Telefónico'),
+    ('E', u'Evolución ART'),
+    ('R', u'Otros Registros'),
+    ('V', u'Visita a Domicilio'),
 )
 
-TIPO_CONTROL_ = (    
-    ('T', 'Todos'),
-    ('C', 'Consultorio'),
-    ('S', 'Consultorio CIBYS'),
-    ('D', u'Control Telefónico'),
-)
+TIPO_CONTROL_ = (('T', 'Todos'),) + TIPO_CONTROL
 
 TIPO_AUSENCIA_ = (    
     (0, 'Todas'),
@@ -94,12 +92,7 @@ ESTADO_TURNO = (
  (2,'NO ASISTIÓ'), 
 )
 
-ESTADO_TURNO_ = (
- (0,'PENDIENTE'), 
- (1,'ATENDIDO'), 
- (2,'NO ASISTIÓ'), 
- (3,'TODOS'), 
-)
+ESTADO_TURNO_ = ESTADO_TURNO + ((3,'TODOS'),)
 
 CATEG_FISCAL = (
 (1, 'IVA Responsable Inscripto'),          
