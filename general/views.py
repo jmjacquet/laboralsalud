@@ -525,6 +525,8 @@ class TurnosEditView(VariablesMixin, AjaxUpdateView):
     def get_form_kwargs(self):
         kwargs = super(TurnosEditView, self).get_form_kwargs()
         kwargs["request"] = self.request
+        kwargs["tipo_form"] = "EDICION"
+        kwargs["turno"] = self.get_object()
         return kwargs
 
     def get_initial(self):

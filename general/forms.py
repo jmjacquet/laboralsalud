@@ -64,7 +64,9 @@ class TurnosForm(forms.ModelForm):
         widget=forms.TimeInput(attrs={"class": "form-control"}),
         required=True,
     )
-    tipo_control = forms.ChoiceField(label="Tipo Control", choices=TIPO_CONTROL, required=False, initial="C")
+    tipo_control = forms.ChoiceField(
+        label="Tipo Control", choices=TIPO_CONTROL, required=False, initial="C"
+    )
     observaciones = forms.CharField(
         label="Observaciones / Datos adicionales",
         widget=forms.Textarea(attrs={"class": "form-control2", "rows": 5}),
@@ -81,12 +83,24 @@ class TurnosForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         request = kwargs.pop("request", None)
+        tipo_form = kwargs.pop("tipo_form", None)
+        turno = kwargs.pop("turno", None)
         super(TurnosForm, self).__init__(*args, **kwargs)
-        empresas = empresas_habilitadas(request)
-        self.fields["turno_empresa"].queryset = ent_empresa.objects.filter(
-            baja=False, pk__in=empresas
-        )
-        self.fields["turno_empleado"].queryset = ent_empleado.objects.none().select_related("empresa")
+        if tipo_form == "EDICION":
+            self.fields["turno_empresa"].queryset = ent_empresa.objects.filter(
+                pk=turno.turno_empresa.pk
+            )
+            self.fields["turno_empleado"].queryset = ent_empleado.objects.filter(
+                pk=turno.turno_empleado.pk
+            ).select_related("empresa")
+        else:
+            empresas = empresas_habilitadas(request)
+            self.fields["turno_empresa"].queryset = ent_empresa.objects.filter(
+                baja=False, pk__in=empresas
+            )
+            self.fields[
+                "turno_empleado"
+            ].queryset = ent_empleado.objects.none().select_related("empresa")
 
     def clean(self):
         fecha = self.cleaned_data.get("fecha")
@@ -110,7 +124,9 @@ class TurnosLightForm(forms.ModelForm):
         widget=forms.TimeInput(attrs={"class": "form-control"}),
         required=True,
     )
-    tipo_control = forms.ChoiceField(label="Tipo Control", choices=TIPO_CONTROL, required=False, initial="C")
+    tipo_control = forms.ChoiceField(
+        label="Tipo Control", choices=TIPO_CONTROL, required=False, initial="C"
+    )
     observaciones = forms.CharField(
         label="Observaciones / Datos adicionales",
         widget=forms.Textarea(attrs={"class": "form-control2", "rows": 5}),
@@ -123,7 +139,14 @@ class TurnosLightForm(forms.ModelForm):
 
     class Meta:
         model = turnos
-        exclude = ["id", "fecha_creacion", "fecha_modif", "usuario_carga", "turno_empresa", "turno_empleado"]
+        exclude = [
+            "id",
+            "fecha_creacion",
+            "fecha_modif",
+            "usuario_carga",
+            "turno_empresa",
+            "turno_empleado",
+        ]
 
     def __init__(self, *args, **kwargs):
         request = kwargs.pop("request", None)

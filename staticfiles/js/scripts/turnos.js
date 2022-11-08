@@ -124,12 +124,15 @@ $("#id_empresa_form-cuit").keyup(function(e){
     }
   });
 
+if ($('#id_tipo_form').val()=='EDICION'){
+  $("#id_empleado").trigger("change");
+} else {
 
-if ($('#id_tipo_form').val()=='ALTA'){
-  $("#id_turno_empresa").trigger("change");
-}else{
-   
-   
+  if ($("#id_empleado").val()==''){
+    $("#id_empresa").trigger("change");
+  }else{
+    $("#id_empleado").trigger("change");
+  }
 };
 
 

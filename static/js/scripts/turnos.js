@@ -54,10 +54,6 @@ $('#id_hora').timepicker({
    useSelect: true,
 });
 
-$( "#Buscar" ).click(function() {
-      var e = $.Event( "keyup", { which: 13 } );
-      $('#id_empresa_form-cuit').trigger(e);
- });
 $("#id_turno_empresa").change(function(){
     var id =  $("#id_turno_empresa").val();
     if (id =='') {id=0;};
@@ -78,6 +74,10 @@ $("#id_turno_empresa").change(function(){
     $('#cargando').hide();
 });
 
+$( "#Buscar" ).click(function() {
+      var e = $.Event( "keyup", { which: 13 } );
+      $('#id_empresa_form-cuit').trigger(e);
+ });
 $("#id_empresa_form-cuit").keyup(function(e){
   if(e.which === 13) {
      consulta = $("#id_empresa_form-cuit").val();
@@ -124,12 +124,15 @@ $("#id_empresa_form-cuit").keyup(function(e){
     }
   });
 
+if ($('#id_tipo_form').val()=='EDICION'){
+  $("#id_empleado").trigger("change");
+} else {
 
-if ($('#id_tipo_form').val()=='ALTA'){
-  $("#id_turno_empresa").trigger("change");
-}else{
-   
-   
+  if ($("#id_empleado").val()==''){
+    $("#id_empresa").trigger("change");
+  }else{
+    $("#id_empleado").trigger("change");
+  }
 };
 
 
