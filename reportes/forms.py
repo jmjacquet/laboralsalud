@@ -36,7 +36,7 @@ class ConsultaPeriodo(forms.Form):
         required=False,
     )
     agrupamiento = forms.ModelChoiceField(
-        label="Agrupamiento/Sector",
+        label="Agrupamiento/Gerencia",
         queryset=ent_empresa_agrupamiento.objects.filter(baja=False),
         initial=0,
         required=False,
@@ -67,7 +67,7 @@ class ConsultaPeriodo(forms.Form):
         agrupamiento = self.cleaned_data.get("agrupamiento")
         empresa = self.cleaned_data.get("empresa")
         if not empresa and not agrupamiento:
-            raise forms.ValidationError("¡Debe seleccionar un Agrupamiento/Sector y/o una Empresa!")
+            raise forms.ValidationError("¡Debe seleccionar un Agrupamiento/Gerencia y/o una Empresa!")
 
 
 class ConsultaAnual(forms.Form):
@@ -101,7 +101,7 @@ class ConsultaAnual(forms.Form):
         required=False,
     )
     agrupamiento = forms.ModelChoiceField(
-        label="Agrupamiento/Sector",
+        label="Agrupamiento/Gerencia",
         queryset=ent_empresa_agrupamiento.objects.filter(baja=False),
         initial=0,
         required=False,
@@ -123,5 +123,5 @@ class ConsultaAnual(forms.Form):
         agrupamiento = self.cleaned_data.get("agrupamiento")
         empresa = self.cleaned_data.get("empresa")
         if not empresa and not agrupamiento:
-            raise forms.ValidationError("¡Debe seleccionar un Agrupamiento/Sector y/o una Empresa!")
+            raise forms.ValidationError("¡Debe seleccionar un Agrupamiento/Gerencia y/o una Empresa!")
 

@@ -55,7 +55,7 @@
      <td width="15%" class="tabla_header texto_der borde_arriba borde_der">Fecha Cron.Desde:</td><td width="10%" class="borde_der borde_arriba">{{a.aus_fcrondesde|date:'d/m/Y'}}</td>          
     </tr>
     <tr class="" >
-      <td class="tabla_header texto_der borde_der borde_izq borde_arriba">Sector:</td><td colspan="3" class="borde_der borde_arriba" >{{a.empleado.empresa|default_if_none:''|upper}} {% if a.empleado.trab_cargo %} ({{a.empleado.trab_cargo}}){% endif %}</td>
+      <td class="tabla_header texto_der borde_der borde_izq borde_arriba">Gerencia:</td><td colspan="3" class="borde_der borde_arriba" >{{a.empleado.empresa|default_if_none:''|upper}} {% if a.empleado.trab_cargo %} ({{a.empleado.trab_cargo}}){% endif %}</td>
       <td class="tabla_header texto_der borde_arriba borde_der">Fecha Cron.Hasta:</td><td class="borde_der borde_arriba">{{a.aus_fcronhasta|date:'d/m/Y'}}</td>
     </tr>   
     <tr class="" >
