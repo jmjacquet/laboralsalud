@@ -1,47 +1,26 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-from django.shortcuts import render
+
+import calendar
+import decimal
+import json
+from datetime import datetime, date
+from decimal import Decimal
+
 from django.contrib.auth.decorators import login_required
-from django.urls import reverse
-from django.utils.decorators import method_decorator
-from datetime import datetime, date, timedelta
-from django.utils import timezone
-from django.contrib import messages
-from dateutil.relativedelta import *
+from django.db.models import Q, Count
+from django.db.models import Value as V
+from django.db.models.functions import Coalesce
 from django.shortcuts import (
     render,
     redirect,
-    get_object_or_404,
-    render_to_response,
-    HttpResponseRedirect,
-    HttpResponse,
 )
-from django.views.generic import (
-    TemplateView,
-    ListView,
-    CreateView,
-    UpdateView,
-    FormView,
-    DetailView,
-)
-from django.db.models import (
-    DateTimeField,
-    ExpressionWrapper,
-    F,
-    DecimalField,
-    IntegerField,
-)
-import json
-from decimal import Decimal
-from django.db.models import Q, Sum, Count, FloatField, Func, Avg
-from django.db.models.functions import Coalesce
-import decimal
-from easy_pdf.rendering import render_to_pdf_response, render_to_pdf
-import calendar
+from django.urls import reverse
+from easy_pdf.rendering import render_to_pdf_response
 
+from ausentismos.models import ausentismo
 from entidades.models import ent_empresa
 from general.views import (
-    VariablesMixin,
     getVariablesMixin,
     recargar_empresas_agrupamiento,
 )
@@ -50,12 +29,10 @@ from laboralsalud.utilidades import (
     hoy,
     DecimalEncoder,
     MESES,
-    empresas_habilitadas,
 )
-from .forms import ConsultaPeriodo, ConsultaAnual
-from ausentismos.models import ausentismo
 from usuarios.views import tiene_permiso
-from general.models import configuracion
+from .forms import ConsultaPeriodo, ConsultaAnual
+
 
 ################################################################
 
@@ -78,16 +55,18 @@ def calcular_empleados_empresas(empresas_list):
     Calcula la cantidad de empleados de un listado de empresas
     (si hay casas centrales y sucursales debe filtrar para que no se repitan los empleados)
     """
-    empl = 0
+    tot_empl = 0
     if not empresas_list:
-        return empl
-    empresas = ent_empresa.objects.filter(id__in=empresas_list)
+        return tot_empl
+    empresas = ent_empresa.objects.filter(id__in=empresas_list).select_related(
+        "casa_central"
+    )
     for e in empresas:
         if not e.casa_central:
-            empl += e.cantidad_empleados()
+            tot_empl += e.cantidad_empleados()
         elif e.casa_central.id not in empresas_list:
-            empl += e.cantidad_empleados()
-    return empl
+            tot_empl += e.cantidad_empleados()
+    return tot_empl
 
 
 @login_required
@@ -104,6 +83,7 @@ def reporte_resumen_periodo(request):
     empresa = None
     agrupamiento = None
     filtro = ""
+    q_empresas = None
     if form.is_valid():
         periodo = form.cleaned_data["periodo"]
         empresa = form.cleaned_data["empresa"]
@@ -183,8 +163,11 @@ def reporte_resumen_periodo(request):
     aus_acc2 = None
     aus_x_grupop = None
     aus_total_x_gerencia = None
+    aus_total_x_sector = None
+    aus_empl_x_edad = None
     max_grupop = 0
-    tot_aus_gerencia = 0
+    tasa_aus_tot_gerencia = 0
+    tasa_aus_tot_sector = 0
     dias_laborables = int((fhasta - fdesde).days + 1)
     empl_mas_faltadores = []
     if ausentismos:
@@ -202,7 +185,16 @@ def reporte_resumen_periodo(request):
             ausentismos, fdesde, fhasta
         )
         empl_mas_faltadores = calcular_empleados_faltadores(ausentismos, fdesde, fhasta)
-        aus_total_x_gerencia, tot_aus_gerencia = ausentismo_total_x_gerencia(ausentismos, fdesde, fhasta, dias_laborables, empleados_tot, empresa)
+
+        if empresa:
+            aus_total_x_gerencia, tasa_aus_tot_gerencia = ausentismo_total_x_gerencia(
+                ausentismos, fdesde, fhasta, dias_laborables, empresa, empleados_tot
+            )
+        else:
+            aus_total_x_sector, tasa_aus_tot_sector = ausentismo_total_x_sector(
+                ausentismos, fdesde, fhasta, dias_laborables, q_empresas, empleados_tot
+            )
+            aus_empl_x_edad = ausencias_empleados_x_edad(ausentismos, fdesde, fhasta, dias_laborables, empleados_tot)
 
     context["aus_total"] = aus_total
     context["aus_inc"] = aus_inc
@@ -212,7 +204,10 @@ def reporte_resumen_periodo(request):
     context["max_grupop"] = max_grupop
     context["dias_laborables"] = dias_laborables
     context["aus_total_x_gerencia"] = aus_total_x_gerencia
-    context["tot_aus_gerencia"] = tot_aus_gerencia
+    context["aus_total_x_sector"] = aus_total_x_sector
+    context["tasa_aus_tot_gerencia"] = tasa_aus_tot_gerencia
+    context["tasa_aus_tot_sector"] = tasa_aus_tot_sector
+    context["aus_empl_x_edad"] = aus_empl_x_edad
     context["empl_mas_faltadores"] = empl_mas_faltadores[:10]
     if ("pdf" in request.POST) and aus_total:
         template = "reportes/reporte_periodo.html"
@@ -360,6 +355,7 @@ def ausentismo_accidentes(ausentismos, fdesde, fhasta, dias_laborables, empleado
             aus_acc = None
 
         return aus_acc, aus_acc2
+    return None, None
 
 
 def ausentismo_grupo_patologico(ausentismos, fdesde, fhasta):
@@ -392,55 +388,168 @@ def calcular_empleados_faltadores(ausentismos, fdesde, fhasta):
     # Empleados más faltadores
     empl_mas_faltadores = []
     for a in ausentismos.select_related("empleado"):
-        dias = dias_ausentes_tot(fdesde, fhasta, a)
+        dias = dias_ausentes_tot(fdesde, fhasta, a.aus_fcrondesde, a.aus_fcronhasta)
         empl_mas_faltadores.append({"empleado": a.empleado, "dias": dias})
     return sorted(empl_mas_faltadores, key=lambda i: i["dias"], reverse=True)
 
 
 def ausentismo_total_x_gerencia(
-    ausentismos, fdesde, fhasta, dias_laborables, empleados_tot, empresa
+    ausentismos, fdesde, fhasta, dias_laborables, empresa, empleados_tot
 ):
     # AUSENTISMO por Gerencia (agrupamiento)
     if not empresa:
         return None, 0
-    agrupamiento_empresa = [
-        e.id for e in ent_empresa.objects.filter(Q(id=empresa.id) | Q(casa_central=empresa))
-    ]
+
+    empresas = [e.id for e in ent_empresa.objects.filter(casa_central=empresa)]
     ausentismos_inc_agrupam = ausentismos.filter(
-        tipo_ausentismo=1, empleado__empresa__id__in=agrupamiento_empresa
+        tipo_ausentismo=1, empleado__empresa__id__in=empresas
     )
-    total_aus = ausentismos_inc_agrupam.count()
-    aus_agrupamiento_empresa = (
-        ausentismos_inc_agrupam.filter()
-        .values("empleado__empresa", "empleado__empresa__razon_social")
-        .annotate(total=Count("empleado__empresa"))
+
+    dias_caidos_tot = dias_ausentes(fdesde, fhasta, ausentismos_inc_agrupam)
+    tasa_ausentismo_tot = calcular_tasa_ausentismo(
+        dias_caidos_tot, dias_laborables, empleados_tot
+    )
+    agrupamientos_empresa = (
+        ausentismos_inc_agrupam.filter(empleado__empresa__agrupamiento__isnull=False)
+        .values(
+            "empleado__empresa__agrupamiento",
+            "empleado__empresa__agrupamiento__descripcion",
+        )
+        .annotate(total=Coalesce(Count("empleado__empresa__agrupamiento"), V(0)))
         .order_by("-total")
     )
     aus_x_agrupamiento = []
-    total_agrupam_otros = 0
-    for i,a in enumerate(aus_agrupamiento_empresa):
-        if i<=7:
+    tasa_aus_acum = 0
+    for i, a in enumerate(agrupamientos_empresa):
+        if i <= 7:
+            a_id = a["empleado__empresa__agrupamiento"]
+            ausentismos_inc_agrup = ausentismos_inc_agrupam.filter(
+                empleado__empresa__agrupamiento__id=a_id
+            )
+            dias_caidos = dias_ausentes(fdesde, fhasta, ausentismos_inc_agrup)
+            tasa_ausentismo = calcular_tasa_ausentismo(
+                dias_caidos, dias_laborables, empleados_tot
+            )
             aus_x_agrupamiento.append(
                 {
-                    "id": a.get("empleado__empresa"),
-                    "nombre": a.get("empleado__empresa__razon_social"),
-                    "total": a.get("total"),
-                    "porc": a.get("total")*100/total_aus,
+                    "id": a_id,
+                    "nombre": a["empleado__empresa__agrupamiento__descripcion"],
+                    "tasa": tasa_ausentismo,
+                    "porc": tasa_ausentismo * 100 / tasa_ausentismo_tot,
                 }
             )
-        else:
-            total_agrupam_otros += a.get("total")
-    if total_agrupam_otros > 0:
+            tasa_aus_acum += tasa_ausentismo
+
+    if tasa_aus_acum < tasa_ausentismo_tot:
         aus_x_agrupamiento.append(
             {
                 "id": -1,
                 "nombre": "OTRAS EMPRESAS",
-                "total": total_agrupam_otros,
-                "porc": total_agrupam_otros * 100 / total_aus,
+                "tasa": tasa_ausentismo_tot - tasa_aus_acum,
+                "porc": (tasa_ausentismo_tot - tasa_aus_acum)
+                * 100
+                / tasa_ausentismo_tot,
             }
         )
 
-    return aus_x_agrupamiento, total_aus
+    return aus_x_agrupamiento, tasa_ausentismo_tot
+
+
+def ausentismo_total_x_sector(
+    ausentismos, fdesde, fhasta, dias_laborables, q_empresas, empleados_tot
+):
+    # AUSENTISMO por Gerencia (agrupamiento)
+    if not q_empresas:
+        return None, 0
+
+    ausentismos_inc_sector = ausentismos.filter(
+        tipo_ausentismo=1, empleado__empresa__in=q_empresas
+    )
+    dias_caidos_tot = dias_ausentes(fdesde, fhasta, ausentismos_inc_sector)
+    tasa_ausentismo_tot = calcular_tasa_ausentismo(
+        dias_caidos_tot, dias_laborables, empleados_tot
+    )
+
+    aus_x_sector = []
+    tasa_aus_acum = 0
+    for i, e in enumerate(q_empresas):
+        ausentismos_inc_empresa = ausentismos_inc_sector.filter(empleado__empresa=e)
+        dias_caidos = dias_ausentes(fdesde, fhasta, ausentismos_inc_empresa)
+        tasa_ausentismo = calcular_tasa_ausentismo(
+            dias_caidos, dias_laborables, empleados_tot
+        )
+        aus_x_sector.append(
+            {
+                "id": e.id,
+                "nombre": e.razon_social.upper(),
+                "tasa": tasa_ausentismo,
+                "porc": tasa_ausentismo * 100 / tasa_ausentismo_tot,
+            }
+        )
+
+    aus_x_sector = sorted(aus_x_sector, key=lambda i: (i["tasa"]), reverse=True)[:7]
+    for i, a in enumerate(aus_x_sector):
+        if i <= 7:
+            tasa_aus_acum += a["tasa"]
+
+    if tasa_aus_acum < tasa_ausentismo_tot:
+        aus_x_sector.append(
+            {
+                "id": -1,
+                "nombre": "OTRAS EMPRESAS",
+                "tasa": tasa_ausentismo_tot - tasa_aus_acum,
+                "porc": (tasa_ausentismo_tot - tasa_aus_acum)
+                * 100
+                / tasa_ausentismo_tot,
+            }
+        )
+
+    return aus_x_sector, tasa_ausentismo_tot
+
+
+FRANJA_ETARIA = (
+    ((18, 29), u"De 18 a 29 años"),
+    ((30, 39), u"De 30 a 39 años"),
+    ((40, 49), u"De 40 a 49 años"),
+    ((50, 99), u"Mayores de 50 años"),
+)
+
+
+def ausencias_empleados_x_edad(ausentismos, fdesde, fhasta, dias_laborables, empleados_tot):
+    if not ausentismos:
+        return None
+
+    rango_0 = []
+    rango_1 = []
+    rango_2 = []
+    rango_3 = []
+    rangos = (rango_0, rango_1, rango_2, rango_3)
+    for a in ausentismos:
+        edad = a.empleado.get_edad
+        i, f = get_franja_x_edad(edad)
+        rangos[i].append(a.id)
+
+    totales = []
+    for i, r in enumerate(rangos):
+        aus_empl_rango = ausentismos.filter(id__in=r)
+        dias_caidos = dias_ausentes(fdesde, fhasta, aus_empl_rango)
+        tasa_ausentismo = calcular_tasa_ausentismo(
+            dias_caidos, dias_laborables, empleados_tot
+        )
+        totales.append(
+            {
+                "nombre": FRANJA_ETARIA[i][1],
+                "tasa": tasa_ausentismo,
+            }
+        )
+    return totales
+
+
+def get_franja_x_edad(edad):
+    for i,f in enumerate(FRANJA_ETARIA):
+        rango = range(f[0][0], f[0][1]+1)
+        if edad in rango:
+            return i, f
 
 
 @login_required
@@ -534,7 +643,6 @@ def reporteResumenAnual(request):
     inculpables = []
     accidentes = []
     datos_tabla = []
-    import time
     from dateutil.rrule import rrule, MONTHLY
 
     meses = [
@@ -700,14 +808,13 @@ def dias_mes(mes, anio, fdesde, fhasta):
 
 def dias_ausentes(fdesde, fhasta, ausentismos):
     tot = 0
-    for a in ausentismos:
-        tot += dias_ausentes_tot(fdesde, fhasta, a)
+    fechas_desde_hasta = [(a.aus_fcrondesde, a.aus_fcronhasta) for a in ausentismos]
+    for f in fechas_desde_hasta:
+        tot += dias_ausentes_tot(fdesde, fhasta, *f)
     return tot
 
 
-def dias_ausentes_tot(fdesde, fhasta, a):
-    fini = a.aus_fcrondesde
-    ffin = a.aus_fcronhasta
+def dias_ausentes_tot(fdesde, fhasta, fini, ffin):
     if fdesde >= fini:
         fini = fdesde
     if fhasta <= ffin:

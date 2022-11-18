@@ -646,7 +646,11 @@ class EmpleadoEditView(VariablesMixin,AjaxUpdateView):
             return redirect(reverse('principal'))
         return super(EmpleadoEditView, self).dispatch(*args, **kwargs)
 
-    def form_valid(self, form):        
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        self.object.usuario_carga = usuario_actual(self.request)
+        self.object.save()
+        recalcular_cantidad_empleados(self.object.empresa)
         messages.success(self.request, u'Los datos se guardaron con éxito!')
         return super(EmpleadoEditView, self).form_valid(form)
 
