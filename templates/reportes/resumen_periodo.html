@@ -158,7 +158,7 @@
       <div class="col-sm-5 cerca">
           <div class="graficos panel panel-primary">
             <div  class="panel-heading text-center">AUSENTISMO INCULPABLE x GERENCIA</div>
-            <div class="panel-body" style="height:380px;">
+            <div class="panel-body" style="height:400px;">
               <div class="row">
                 <div  class="col-sm-12">
                   <table  id="tabla_ausentismo_inc_gerencia" class="table table-striped table-hover table-condensed table-no-bordered">
@@ -182,7 +182,7 @@
                <div class="row">
                 <div class="col-sm-12">
                      <div style="padding: 5px; position: relative;">
-                                 <input type="hidden" name="aus_tot_agrupam_image" id="aus_tot_agrupam_image" value="">
+                                 <input type="hidden" name="ausentismo_inc_gerencia_image" id="ausentismo_inc_gerencia_image" value="">
                                 <div id="ausentismo_inc_gerencia" class="chart" style="width: 90%; height: 100%; margin: 0 auto"></div>
                       </div>
                 </div>
@@ -201,7 +201,7 @@
       <div class="col-sm-5 cerca">
           <div class="graficos panel panel-primary">
             <div  class="panel-heading text-center">AUSENTISMO INCULPABLE x SECTOR</div>
-            <div class="panel-body" style="height:380px;">
+            <div class="panel-body" style="height:400px;">
               <div class="row">
                 <div  class="col-sm-12">
                   <table  id="tabla_ausentismo_inc_sector" class="table table-striped table-hover table-condensed table-no-bordered">
@@ -225,7 +225,7 @@
                <div class="row">
                 <div class="col-sm-12">
                      <div style="padding: 5px; position: relative;">
-                                 <input type="hidden" name="aus_tot_sector_image" id="aus_tot_sector_image" value="">
+                                 <input type="hidden" name="ausentismo_inc_sector_image" id="ausentismo_inc_sector_image" value="">
                                 <div id="ausentismo_inc_sector" class="chart" style="width: 90%; height: 100%; margin: 0 auto"></div>
                       </div>
                 </div>
@@ -240,7 +240,7 @@
       <div class="col-sm-5 cerca">
           <div class="graficos panel panel-primary">
             <div  class="panel-heading text-center">AUSENTISMO x RANGO ETARIO</div>
-            <div class="panel-body" style="height:380px;">
+            <div class="panel-body" style="height:400px;">
               <div class="row">
                 <div  class="col-sm-12">
                   <table  id="tabla_ausentismo_inc_sector" class="table table-striped table-hover table-condensed table-no-bordered">
@@ -261,7 +261,7 @@
                <div class="row">
                 <div class="col-sm-12">
                      <div style="padding: 5px; position: relative;">
-                                 <input type="hidden" name="aus_empl_x_edad_image" id="aus_tot_sector_image" value="">
+                                 <input type="hidden" name="aus_tot_empl_x_edad_image" id="aus_tot_empl_x_edad_image" value="">
                                 <div id="aus_tot_empl_x_edad" class="chart" style="width: 90%; height: 100%; margin: 0 auto"></div>
                       </div>
                 </div>
@@ -884,7 +884,19 @@ $('#aus_tot_image').val(imageData);
 imageData = $("#ausentismo_inc").highcharts().createCanvas();  
 $('#aus_inc_image').val(imageData); 
 imageData = $("#ausentismo_inc2").highcharts().createCanvas();  
-$('#aus_inc2_image').val(imageData); 
+$('#aus_inc2_image').val(imageData);
+    {% if aus_total_x_gerencia %}
+    imageData = $("#ausentismo_inc_gerencia").highcharts().createCanvas();
+    $('#ausentismo_inc_gerencia_image').val(imageData);
+    {% endif %}
+    {% if aus_total_x_sector %}
+    imageData = $("#ausentismo_inc_sector").highcharts().createCanvas();
+    $('#ausentismo_inc_sector_image').val(imageData);
+    {% endif  %}
+    {% if aus_empl_x_edad %}
+    imageData = $("#aus_tot_empl_x_edad").highcharts().createCanvas();
+    $('#aus_tot_empl_x_edad_image').val(imageData);
+    {% endif %}
 {% endif %}
 
 {% if aus_acc %}

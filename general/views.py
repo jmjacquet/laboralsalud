@@ -297,7 +297,7 @@ def recargar_empleados_empresa(request, id):
 def recargar_empresas_agrupamiento(request, id):
     context = {}
     empresas_hab = empresas_habilitadas(request)
-    empresas = ent_empresa.objects.filter(id__in=empresas_hab, baja=False)
+    empresas = ent_empresa.objects.filter(id__in=empresas_hab, baja=False).select_related("casa_central")
     if int(id) > 0:
         empresas = empresas.filter(agrupamiento__id=id)
     lista_empresas = [{"id": e.pk, "nombre": e.get_empresa()} for e in empresas]

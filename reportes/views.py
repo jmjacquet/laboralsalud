@@ -6,7 +6,7 @@ import decimal
 import json
 from datetime import datetime, date
 from decimal import Decimal
-
+from collections import namedtuple
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q, Count
 from django.db.models import Value as V
@@ -150,10 +150,12 @@ def reporte_resumen_periodo(request):
     context["ausentismos"] = ausentismos
     context["empresa"] = empresa
     context["agrupamiento"] = agrupamiento
+    context["titulo_ventana"] = "INFORME AUSENTISMO {}".format(
+        "EMPRESA" if empresa else "GERENCIA"
+    )
     # _tipo_reporte =
-    context["titulo_reporte"] = "%s  - %s" % (
-        ("Empresa: %s" % empresa if empresa else "Gerencia: %s" % agrupamiento),
-        filtro,
+    context["titulo_reporte"] = "{}  - {}".format(
+        "Empresa: %s" % empresa if empresa else "Gerencia: %s" % agrupamiento, filtro
     )
     context["filtro"] = filtro
     context["pie_pagina"] = "Sistemas Laboral Salud - %s" % (fecha.strftime("%d/%m/%Y"))
@@ -194,7 +196,9 @@ def reporte_resumen_periodo(request):
             aus_total_x_sector, tasa_aus_tot_sector = ausentismo_total_x_sector(
                 ausentismos, fdesde, fhasta, dias_laborables, q_empresas, empleados_tot
             )
-            aus_empl_x_edad = ausencias_empleados_x_edad(ausentismos, fdesde, fhasta, dias_laborables, empleados_tot)
+            aus_empl_x_edad = ausencias_empleados_x_edad(
+                ausentismos, fdesde, fhasta, dias_laborables, empleados_tot
+            )
 
     context["aus_total"] = aus_total
     context["aus_inc"] = aus_inc
@@ -214,6 +218,15 @@ def reporte_resumen_periodo(request):
         context["aus_tot_image"] = request.POST.get("aus_tot_image")
         context["aus_inc_image"] = request.POST.get("aus_inc_image")
         context["aus_inc2_image"] = request.POST.get("aus_inc2_image")
+        context["ausentismo_inc_gerencia_image"] = request.POST.get(
+            "ausentismo_inc_gerencia_image"
+        )
+        context["ausentismo_inc_sector_image"] = request.POST.get(
+            "ausentismo_inc_sector_image"
+        )
+        context["aus_tot_empl_x_edad_image"] = request.POST.get(
+            "aus_tot_empl_x_edad_image"
+        )
         context["aus_acc_image"] = request.POST.get("aus_acc_image")
         context["aus_acc2_image"] = request.POST.get("aus_acc2_image")
         context["aus_acc3_image"] = request.POST.get("aus_acc3_image")
@@ -365,10 +378,18 @@ def ausentismo_grupo_patologico(ausentismos, fdesde, fhasta):
         .annotate(total=Count("aus_grupop"))
         .order_by("-total")[:10]
     )
+    AusentismoFechasNT = namedtuple(
+        "AusentismoFechasNT", "grupop aus_fcrondesde aus_fcronhasta"
+    )
+    fechas_ausentismos_list = [
+        AusentismoFechasNT(a.aus_grupop.id, a.aus_fcrondesde, a.aus_fcronhasta)
+        for a in ausentismos.select_related("aus_grupop")
+    ]
     aus_x_grupop = []
     for a in aus_grupop:
-        aus = ausentismos.filter(aus_grupop__id=a.get("aus_grupop__id"))
-        dias = dias_ausentes(fdesde, fhasta, aus)
+        _id = a.get("aus_grupop__id")
+        aus_x_grupo = filter(lambda x: x.grupop == _id, fechas_ausentismos_list)
+        dias = dias_ausentes(fdesde, fhasta, aus_x_grupo)
         aus_x_grupop.append(
             {
                 "patologia": a.get("aus_grupop__patologia"),
@@ -418,15 +439,26 @@ def ausentismo_total_x_gerencia(
         .annotate(total=Coalesce(Count("empleado__empresa__agrupamiento"), V(0)))
         .order_by("-total")
     )
+    AusentismoFechasNT = namedtuple(
+        "AusentismoFechasNT", "agrup aus_fcrondesde aus_fcronhasta"
+    )
+    fechas_ausentismos_list = [
+        AusentismoFechasNT(
+            a.empleado.empresa.agrupamiento.id, a.aus_fcrondesde, a.aus_fcronhasta
+        )
+        for a in ausentismos_inc_agrupam.filter(
+            empleado__empresa__agrupamiento__isnull=False
+        ).select_related("empleado__empresa__agrupamiento")
+    ]
     aus_x_agrupamiento = []
     tasa_aus_acum = 0
     for i, a in enumerate(agrupamientos_empresa):
         if i <= 7:
             a_id = a["empleado__empresa__agrupamiento"]
-            ausentismos_inc_agrup = ausentismos_inc_agrupam.filter(
-                empleado__empresa__agrupamiento__id=a_id
+            aus_inc_agrup_list = filter(
+                lambda x: x.agrup == a_id, fechas_ausentismos_list
             )
-            dias_caidos = dias_ausentes(fdesde, fhasta, ausentismos_inc_agrup)
+            dias_caidos = dias_ausentes(fdesde, fhasta, aus_inc_agrup_list)
             tasa_ausentismo = calcular_tasa_ausentismo(
                 dias_caidos, dias_laborables, empleados_tot
             )
@@ -464,16 +496,25 @@ def ausentismo_total_x_sector(
 
     ausentismos_inc_sector = ausentismos.filter(
         tipo_ausentismo=1, empleado__empresa__in=q_empresas
-    )
+    ).select_related("empleado__empresa")
     dias_caidos_tot = dias_ausentes(fdesde, fhasta, ausentismos_inc_sector)
     tasa_ausentismo_tot = calcular_tasa_ausentismo(
         dias_caidos_tot, dias_laborables, empleados_tot
     )
 
+    AusentismoFechasNT = namedtuple(
+        "AusentismoFechasNT", "empresa_id aus_fcrondesde aus_fcronhasta"
+    )
+    fechas_ausentismos_list = [
+        AusentismoFechasNT(a.empleado.empresa.id, a.aus_fcrondesde, a.aus_fcronhasta)
+        for a in ausentismos_inc_sector
+    ]
     aus_x_sector = []
     tasa_aus_acum = 0
     for i, e in enumerate(q_empresas):
-        ausentismos_inc_empresa = ausentismos_inc_sector.filter(empleado__empresa=e)
+        ausentismos_inc_empresa = filter(
+            lambda x: x.empresa_id == e.id, fechas_ausentismos_list
+        )
         dias_caidos = dias_ausentes(fdesde, fhasta, ausentismos_inc_empresa)
         tasa_ausentismo = calcular_tasa_ausentismo(
             dias_caidos, dias_laborables, empleados_tot
@@ -508,14 +549,16 @@ def ausentismo_total_x_sector(
 
 
 FRANJA_ETARIA = (
-    ((18, 29), u"De 18 a 29 años"),
-    ((30, 39), u"De 30 a 39 años"),
-    ((40, 49), u"De 40 a 49 años"),
-    ((50, 99), u"Mayores de 50 años"),
+    ((18, 29), "De 18 a 29 años"),
+    ((30, 39), "De 30 a 39 años"),
+    ((40, 49), "De 40 a 49 años"),
+    ((50, 99), "Mayores de 49 años"),
 )
 
 
-def ausencias_empleados_x_edad(ausentismos, fdesde, fhasta, dias_laborables, empleados_tot):
+def ausencias_empleados_x_edad(
+    ausentismos, fdesde, fhasta, dias_laborables, empleados_tot
+):
     if not ausentismos:
         return None
 
@@ -524,7 +567,7 @@ def ausencias_empleados_x_edad(ausentismos, fdesde, fhasta, dias_laborables, emp
     rango_2 = []
     rango_3 = []
     rangos = (rango_0, rango_1, rango_2, rango_3)
-    for a in ausentismos:
+    for a in ausentismos.select_related("empleado"):
         edad = a.empleado.get_edad
         i, f = get_franja_x_edad(edad)
         rangos[i].append(a.id)
@@ -546,10 +589,11 @@ def ausencias_empleados_x_edad(ausentismos, fdesde, fhasta, dias_laborables, emp
 
 
 def get_franja_x_edad(edad):
-    for i,f in enumerate(FRANJA_ETARIA):
-        rango = range(f[0][0], f[0][1]+1)
+    for i, f in enumerate(FRANJA_ETARIA):
+        rango = range(f[0][0], f[0][1] + 1)
         if edad in rango:
             return i, f
+    return 0, FRANJA_ETARIA[0]
 
 
 @login_required
