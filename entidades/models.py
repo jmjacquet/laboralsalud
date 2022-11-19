@@ -43,6 +43,7 @@ class ent_especialidad(models.Model):
     def __unicode__(self):
         return "%s" % self.especialidad
 
+
 class ent_empresa_agrupamiento(models.Model):
     id = models.AutoField(primary_key=True, db_index=True)
     descripcion = models.CharField(max_length=200)
@@ -57,6 +58,7 @@ class ent_empresa_agrupamiento(models.Model):
     def __unicode__(self):
         return "%s" % self.descripcion
 
+
 # Tabla de la Base de Configuracion
 
 
@@ -66,7 +68,9 @@ class ent_medico_prof(models.Model):
     cuit = models.CharField("CUIT", max_length=50, blank=True, null=True)
     nro_doc = models.CharField("Documento", max_length=50, blank=True, null=True)
     domicilio = models.CharField("Domicilio", max_length=200, blank=True, null=True)
-    provincia = models.IntegerField("Provincia", choices=PROVINCIAS, blank=True, null=True, default=12)
+    provincia = models.IntegerField(
+        "Provincia", choices=PROVINCIAS, blank=True, null=True, default=12
+    )
     localidad = models.CharField("Localidad", max_length=100, blank=True, null=True)
     cod_postal = models.CharField("CP", max_length=50, blank=True, null=True)
     email = models.EmailField("Email", blank=True)
@@ -111,14 +115,22 @@ class ent_medico_prof(models.Model):
 
 
 class ent_empresa(models.Model):
-    razon_social = models.CharField("Razón Social", max_length=200, blank=True, null=True)
+    razon_social = models.CharField(
+        "Razón Social", max_length=200, blank=True, null=True
+    )
     cuit = models.CharField("CUIT", max_length=50, blank=True, null=True)
-    categFiscal = models.IntegerField("Categoría Fiscal", choices=CATEG_FISCAL, blank=True, null=True)
+    categFiscal = models.IntegerField(
+        "Categoría Fiscal", choices=CATEG_FISCAL, blank=True, null=True
+    )
     codigo = models.CharField("Código", max_length=50, blank=True, null=True)
     iibb = models.CharField("Nº IIBB", max_length=50, blank=True, null=True)
-    fecha_inicio_activ = models.DateField("Fecha Inicio Actividades", null=True, blank=True)
+    fecha_inicio_activ = models.DateField(
+        "Fecha Inicio Actividades", null=True, blank=True
+    )
     domicilio = models.CharField("Domicilio", max_length=200, blank=True, null=True)
-    provincia = models.IntegerField("Provincia", choices=PROVINCIAS, blank=True, null=True, default=12)
+    provincia = models.IntegerField(
+        "Provincia", choices=PROVINCIAS, blank=True, null=True, default=12
+    )
     localidad = models.CharField("Localidad", max_length=100, blank=True, null=True)
     cod_postal = models.CharField("CP", max_length=50, blank=True, null=True)
     email = models.EmailField("Email", blank=True, null=True)
@@ -209,13 +221,21 @@ class ent_empresa(models.Model):
         return "%s" % unicode(self.razon_social.upper())
 
     def cantidad_empleados(self):
-        empls = ent_empleado.objects.filter(baja=False).filter(Q(trab_fbaja__isnull=True) | Q(trab_fbaja__lt=hoy()))
+        empls = (
+            ent_empleado.objects.filter(baja=False)
+            .filter(Q(trab_fbaja__isnull=True) | Q(trab_fbaja__lt=hoy()))
+            .select_related("empresa")
+        )
         cant = 0
         # Si es sucursal
         if self.casa_central:
             cant = empls.filter(empresa=self).distinct().count()
         else:
-            cant = empls.filter(Q(empresa=self) | Q(empresa__casa_central=self)).distinct().count()
+            cant = (
+                empls.filter(Q(empresa=self) | Q(empresa__casa_central=self))
+                .distinct()
+                .count()
+            )
         return cant
 
     def get_empresa(self):
@@ -242,7 +262,9 @@ class ent_art(models.Model):
     prestador = models.CharField("Prestador", max_length=500, blank=True, null=True)
     auditor = models.CharField("Auditor", max_length=500, blank=True, null=True)
     contacto_nombre = models.CharField("Nombre", max_length=500, blank=True, null=True)
-    contacto_telfijo = models.CharField("Tel.Fijo", max_length=100, blank=True, null=True)
+    contacto_telfijo = models.CharField(
+        "Tel.Fijo", max_length=100, blank=True, null=True
+    )
     contacto_telcel = models.CharField("Celular", max_length=100, blank=True, null=True)
     contacto_email = models.EmailField("Email", blank=True)
     baja = models.BooleanField(default=False)
@@ -276,7 +298,9 @@ class ent_empleado(models.Model):
     apellido_y_nombre = models.CharField("Apelido y Nombre", max_length=200)
     fecha_nac = models.DateField("Fecha Nacimiento", blank=True, null=True)
     domicilio = models.CharField("Domicilio", max_length=200, blank=True, null=True)
-    provincia = models.IntegerField("Provincia", choices=PROVINCIAS, blank=True, null=True, default=12)
+    provincia = models.IntegerField(
+        "Provincia", choices=PROVINCIAS, blank=True, null=True, default=12
+    )
     localidad = models.CharField("Localidad", max_length=100, blank=True, null=True)
     cod_postal = models.CharField("CP", max_length=50, blank=True, null=True)
     email = models.EmailField("Email", blank=True)
@@ -319,11 +343,19 @@ class ent_empleado(models.Model):
     trab_preocupac = models.CharField("¿Preocupacional?", max_length=1, default="N")
     trab_preocup_fecha = models.DateField("Fecha Preocupacional", blank=True, null=True)
 
-    trab_preocup_conclus = models.TextField("Conclusión Preocupacional", blank=True, null=True)
-    trab_factores_riesgo = models.TextField("Factores de Riesgo a lo que está Expuesto", blank=True, null=True)
-    trab_tareas_dif_det = models.TextField("Descripción Tareas Diferentes", blank=True, null=True)
+    trab_preocup_conclus = models.TextField(
+        "Conclusión Preocupacional", blank=True, null=True
+    )
+    trab_factores_riesgo = models.TextField(
+        "Factores de Riesgo a lo que está Expuesto", blank=True, null=True
+    )
+    trab_tareas_dif_det = models.TextField(
+        "Descripción Tareas Diferentes", blank=True, null=True
+    )
     trab_anteriores = models.TextField("Trabajos Anteriores", blank=True, null=True)
-    trab_antecedentes = models.TextField("Antecedentes Patológicos", blank=True, null=True)
+    trab_antecedentes = models.TextField(
+        "Antecedentes Patológicos", blank=True, null=True
+    )
     trab_accidentes = models.TextField("Accidentes ART", blank=True, null=True)
     trab_vacunas = models.TextField("Vacunas", blank=True, null=True)
 
