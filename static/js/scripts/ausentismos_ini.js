@@ -82,7 +82,97 @@ var tabla = $('#ausentismos').DataTable({
               },
             responsive: false,
 
-            dom: "<'row'<'col-sm-12'tr>>"+"<'row'<'col-sm-3'l><'col-sm-9'ip>>",
+            "columnDefs": [ {
+                  "targets"  : 'no-sort',
+                  "orderable": false,
+                }],
+           "paging":   true,
+           "lengthMenu": [[20, 50, -1], [20, 50, "Todos"]],
+           "autoWidth": false,
+           "order": [],
+           "colReorder": true,
+           "searching": true,
+            fixedHeader: {
+              header: false,
+              footer: false
+              },
+            responsive: true,
+            //dom: 'Bfrtlip',
+            dom: "Bf<'row'<'col-sm-12'tr>>"+"<'row'<'col-sm-3'l><'col-sm-9'ip>>",
+            buttons: [
+                {
+                    extend:    'colvis',
+                    text:      '<i class="fa fa-list"></i>',
+                    titleAttr: 'Ver/Ocultar',
+                    className: 'btnToolbar',
+                },
+                {
+                    extend:    'copyHtml5',
+                    text:      '<i class="fa fa-files-o"></i>',
+                    titleAttr: 'Copiar',
+                    exportOptions: { columns: ':visible' },
+                    className: 'btnToolbar',
+                },
+                {
+                    extend:    'excel',
+                    text:      '<i class="fa fa-file-excel-o"></i>',
+                    titleAttr: 'Excel',
+                    filename: 'AUSENTISMOS',
+                    exportOptions: {  modifier: {
+                                        page: 'current'
+                                    },
+                                      columns: '.imprimir',
+                                      format: {
+                                      body: function(data, row, column, node) {
+                                        var floatVal = function (i) {
+                                            if (typeof i === "number") {
+                                                return i;
+                                            } else if (typeof i === "string") {
+                                                i = i.replace(/\$/g, "");
+                    i = i.replace(/\,/g ,"");
+                    i = i.replace(/\./g, "");
+                                                var result = parseFloat(i)/100;
+                                                // console.log(result);
+                                                if (isNaN(result)) {
+                                                    try {
+                                                        var result = $jq(i).text();
+                                                        result = parseFloat(result);
+                                                        if (isNaN(result)) { result = 0 };
+                                                        return result * 1;
+                                                    } catch (error) {
+                                                        return 0;
+                                                    }
+                                                } else {
+                                                    return result * 1;
+                                                }
+                                            } else {
+                                                alert("Unhandled type for totals [" + (typeof i) + "]");
+                                                return 0
+                                            }
+                                        };
+                                          data = $('<p>' + data + '</p>').text();
+                                          return (node.className=='importe') ? floatVal(data)  : data;
+                                      }
+                                    }},
+                    className: 'btnToolbar',
+                },
+
+                {
+                    extend:    'pdfHtml5',
+                    text:      '<i class="fa fa-file-pdf-o"></i>',
+                    titleAttr: 'PDF',footer: true,
+                    exportOptions: { columns: '.imprimir'},
+                    orientation: 'landscape',
+                    className: 'btnToolbar',
+                },
+                {
+                    extend: 'print',
+                    text:      '<i class="fa fa-print"></i>',
+                    titleAttr: 'Imprimir',
+                    exportOptions: { columns: '.imprimir' },
+                    className: 'btnToolbar',
+                },
+            ],
             PreDrawCallback:function(){
             $("#cargando").show();
             },
@@ -94,7 +184,6 @@ var tabla = $('#ausentismos').DataTable({
             },
 
         });
-
 
 $("input[class='tildado']" ,tabla.rows().nodes()).change(function() {
         str1 = '/ausentismos/generar_informe/?';
@@ -129,7 +218,7 @@ $("input[class='tildado']" ,tabla.rows().nodes()).change(function() {
 
     });
 
-$('#btnEliminar').click(function() {
+ $('#btnEliminar').click(function() {
         if (listado.length == 0) {
             alertify.errorAlert("¡Debe seleccionar algún Ausentismo!");
         } else {
@@ -160,6 +249,7 @@ $('#btnEliminar').click(function() {
             return true;
         }
     });
+
 $("#enviando").hide();
 $('#btnInforme').click(function(){
      if (listado.length == 0) {
@@ -177,7 +267,7 @@ $('#btnImprimirInforme').click(function(){
            return abrir_modal('/ausentismos/imprimir_informe/?'+$('#btnInforme').val());
         }
 
-});
+})
 
 
-});
+})

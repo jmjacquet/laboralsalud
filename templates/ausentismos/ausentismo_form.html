@@ -116,25 +116,38 @@
 			<div class="row cerca">
 				<div class="col-xs-12 cerca">
 					<fieldset>
-						<legend>TIPO AUSENTISMO/CONTROL</legend>
-						<div class="col-sm-6 col-xs-12">{{ form.tipo_ausentismo|as_crispy_field }}</div>
-						<div class="col-sm-6 col-xs-12">{{ form.tipo_control|as_crispy_field }}</div>
+						<div class="col-sm-4 col-xs-12">{{ form.tipo_ausentismo|as_crispy_field }}</div>
+                        <div class="col-sm-2 col-xs-12">
+                            {{form.aus_fcrondesde|as_crispy_field}}
+                        </div>
+                        <div class="col-sm-2 col-xs-12">
+                            {{form.aus_fcronhasta|as_crispy_field}}
+                        </div>
+                        <div class="col-sm-2 col-xs-12">
+                            {{form.aus_diascaidos|as_crispy_field}}
+                        </div>
+                        <div class="col-sm-2 col-xs-12">
+                            {{form.aus_diasjustif|as_crispy_field}}
+                        </div>
+                        <div class="col-sm-8 col-xs-12">
+                            {{form.aus_medico|as_crispy_field}}
+                        </div>
+                        <div class="col-sm-2 col-xs-12">
+                            {{form.aus_freintegro|as_crispy_field}}
+                        </div>
+                        <div class="col-sm-2 col-xs-12">
+                            {{form.aus_fcontrol|as_crispy_field}}
+                        </div>
 					</fieldset>
 				</div>
 			</div>
 			<div class="row cerca">
-				<div class="col-xs-12">
+				<div class="col-xs-12 cerca">
 					
 					<fieldset>
 						<legend id='titulo'>DATOS DE LA AUSENCIA</legend>
 						<div id="tab_ausencia">
 							<div class="row cerca">
-								<div class="col-sm-2 col-xs-12">
-									{{form.aus_control|as_crispy_field}}
-								</div>
-								<div class="col-sm-2 col-xs-12">
-									{{form.aus_certificado|as_crispy_field}}
-								</div>
 								<div class="col-sm-2 col-xs-12">
 									{{form.aus_fcertif|as_crispy_field}}
 								</div>
@@ -160,12 +173,7 @@
 							</div>
 						</div>
 						<div class="row cerca">
-							<div class="col-sm-2 col-xs-12">
-								{{form.aus_fcrondesde|as_crispy_field}}
-							</div>
-							<div class="col-sm-2 col-xs-12">
-								{{form.aus_fcronhasta|as_crispy_field}}
-							</div>
+
 							<div class="col-sm-2 col-xs-12">
 								{{form.aus_diascaidos|as_crispy_field}}
 							</div>
