@@ -19,3 +19,4 @@ def validar_fecha_nacimiento(value):
             return value
     else:
         raise ValidationError(u"Verifique que la fecha sea válida")
+
