@@ -3,7 +3,7 @@ from django import forms
 from django.forms import ModelForm
 from django.forms.widgets import TextInput, NumberInput, Select
 from .models import *
-from entidades.models import ent_empleado, ent_medico_prof
+from entidades.models import ent_empleado, ent_medico_prof, ent_empresa_agrupamiento
 from laboralsalud.utilidades import *
 from usuarios.views import tiene_permiso
 
@@ -312,16 +312,13 @@ class ConsultaAusentismos(forms.Form):
     aus_diagn = forms.CharField(label=u"Diagnóstico", required=False)
     tipo_ausentismo = forms.ChoiceField(label="Tipo Ausentismo", choices=TIPO_AUSENCIA_, required=False, initial=0)
     estado = forms.ChoiceField(label="Vigencia", choices=TIPO_VIGENCIA, required=False, initial=0)
-    # fmodificacion = forms.DateField(
-    #     label="F.Modificacion",
-    #     widget=forms.DateInput(attrs={"class": "form-control datepicker", "autocomplete": "off"}),
-    #     required=False,
-    # )
-    # freintegro = forms.DateField(
-    #     label="F.Reintegro",
-    #     widget=forms.DateInput(attrs={"class": "form-control datepicker", "autocomplete": "off"}),
-    #     required=False,
-    # )
+    agrupamiento = forms.ModelChoiceField(
+        label="Agrupamiento/Gerencia",
+        queryset=ent_empresa_agrupamiento.objects.filter(baja=False),
+        initial=0,
+        required=False,
+    )
+
     def __init__(self, *args, **kwargs):
         request = kwargs.pop("request", None)
         super(ConsultaAusentismos, self).__init__(*args, **kwargs)

@@ -8,7 +8,7 @@ from django.core.mail.backends.smtp import EmailBackend
 from django.core.mail import send_mail, EmailMessage
 import random
 import datetime
-from general.views import getVariablesMixin
+from general.views import getVariablesMixin, recargar_empresas_agrupamiento
 from .forms import ImportarAusentismosForm, InformeAusenciasForm, ImprimirInformeAusenciasForm
 from django.shortcuts import render
 from django.template import RequestContext, Context
@@ -82,6 +82,7 @@ class AusentismoView(VariablesMixin, ListView):
             aus_diagn = form.cleaned_data["aus_diagn"]
             tipo_ausentismo = form.cleaned_data["tipo_ausentismo"]
             estado = form.cleaned_data["estado"]
+            agrupamiento = form.cleaned_data["agrupamiento"]
             if not fdesde:
                 fdesde = ultimo_anio()
             if not fhasta:
@@ -99,6 +100,31 @@ class AusentismoView(VariablesMixin, ListView):
                     | Q(aus_fcronhasta__range=[fdesde, fhasta])
                     | Q(aus_fcrondesde__lt=fdesde, aus_fcronhasta__gt=fhasta)
                 )
+
+            if agrupamiento and not empresa:
+                data = recargar_empresas_agrupamiento(self.request, agrupamiento.id)
+                empresas_list = [d["id"] for d in json.loads(data.content)]
+                q_empresas = ent_empresa.objects.filter(
+                    Q(id__in=empresas_list) | Q(casa_central__id__in=empresas_list)
+                )
+                empresas_list = list(q_empresas.values_list("id", flat=True))
+            elif empresa:
+                if empresa.casa_central:
+                    empresas_list = list([empresa.pk])
+                else:
+                    empresas_list = [
+                        e.id
+                        for e in ent_empresa.objects.filter(
+                            Q(id=empresa.id) | Q(casa_central=empresa)
+                        )
+                    ]
+            else:
+                empresas_list = [
+                    d["id"]
+                    for d in json.loads(recargar_empresas_agrupamiento(self.request, 0).content)
+                ]
+            ausentismos = ausentismos.filter(empleado__empresa__id__in=empresas_list)
+
             if empresa:
                 ausentismos = ausentismos.filter(
                     Q(empleado__empresa=empresa) | Q(empleado__empresa__casa_central=empresa)

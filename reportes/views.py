@@ -259,7 +259,8 @@ def ausentismo_total(ausentismos, fdesde, fhasta, dias_laborables, empleados_tot
 
 def ausentismo_inculpable(ausentismos, fdesde, fhasta, dias_laborables, empleados_tot):
     # AUSENTISMO INCULPABLE
-    ausentismos_inc = ausentismos.filter(tipo_ausentismo=1)
+    ausentismos_inc = ausentismos
+    ausentismos_inc = ausentismos_inc.filter(tipo_ausentismo=1)
     if ausentismos_inc:
         empleados_inc = ausentismos_inc.values("empleado").distinct().count()
         # empleados_tot = 77
@@ -305,6 +306,7 @@ def ausentismo_inculpable(ausentismos, fdesde, fhasta, dias_laborables, empleado
 
 def ausentismo_accidentes(ausentismos, fdesde, fhasta, dias_laborables, empleados_tot):
     # AUSENTISMO ACCIDENTES
+    ausentismos_acc = ausentismos
     ausentismos_acc = ausentismos.filter(tipo_ausentismo__in=(2, 3, 7))
     if ausentismos_acc:
         dias_caidos_tot = dias_ausentes(fdesde, fhasta, ausentismos_acc)
@@ -317,16 +319,12 @@ def ausentismo_accidentes(ausentismos, fdesde, fhasta, dias_laborables, empleado
             tot_accidentes = ausentismos_acc.count()
             acc_empls = ausentismos_acc.values("empleado").distinct().count()
             noacc_empls = empleados_tot - acc_empls
-            acc_denunciados = ausentismos_acc.exclude(
-                Q(art_ndenuncia__isnull=True) | Q(art_ndenuncia__exact="")
-            )
+            acc_denunciados = ausentismos_acc.filter(tipo_ausentismo=2)
             denunciados_empl = acc_denunciados.values("empleado").distinct().count()
             acc_denunciados = (
                 Decimal(acc_denunciados.count()) / Decimal(tot_accidentes)
             ) * 100
-            acc_sin_denunciar = ausentismos_acc.filter(
-                Q(art_ndenuncia__isnull=True) | Q(art_ndenuncia__exact="")
-            )
+            acc_sin_denunciar = ausentismos_acc.filter(tipo_ausentismo__in=(3, 7))
             if not acc_sin_denunciar:
                 sin_denunciar_empl = 0
                 acc_sin_denunciar = 0
