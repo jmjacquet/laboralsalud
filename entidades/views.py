@@ -1,13 +1,18 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+import json
+from __builtin__ import unicode
+
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse
-from django.views.generic import TemplateView,ListView,CreateView,UpdateView,FormView,DetailView
-from django.conf import settings
-from general.views import VariablesMixin
-from modal.views import AjaxCreateView,AjaxUpdateView,AjaxDeleteView
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_protect
+from django.views.generic import ListView, DetailView
+
 from entidades.forms import (ARTForm,
                              CargoForm,
                              EspecialidadForm,
@@ -16,13 +21,11 @@ from entidades.forms import (ARTForm,
                              EmpleadoForm,
                              ConsultaEmpleados, EmpresaAgrupamientoForm)
 from entidades.models import *
-from django.contrib import messages
-from laboralsalud.utilidades import ultimoNroId,usuario_actual,empresa_actual,empresas_habilitadas
-from django.contrib.auth.decorators import login_required
+from general.views import VariablesMixin
+from laboralsalud.utilidades import ultimoNroId, usuario_actual, empresa_actual, empresas_habilitadas
+from modal.views import AjaxCreateView, AjaxUpdateView
 from usuarios.views import tiene_permiso
-from django.utils.decorators import method_decorator
-import json
-from django.views.decorators.csrf import csrf_protect
+
 
 ############ ART ############################
 
@@ -724,7 +727,7 @@ def empleado_eliminar_masivo(request):
 import csv, io
 from .forms import ImportarEmpleadosForm   
 from general.views import getVariablesMixin
-import random
+
 def unicode_csv_reader(unicode_csv_data, dialect=csv.excel, **kwargs):
     # csv.py doesn't do Unicode; encode temporarily as UTF-8:
     csv_reader = csv.reader(utf_8_encoder(unicode_csv_data),
@@ -772,7 +775,7 @@ def importar_empleados(request):
                 for index,line in enumerate(reader):                      
                     campos = line[0].split(";")                               
                     cant_campos = len(campos)
-                    if cant_campos<>14:
+                    if cant_campos != 14:
                         raise Exception(u'La cantidad de campos para el registro es incorrecta!(verifique que no existan ";" ni ")')
 
                     dni = campos[0].strip()              

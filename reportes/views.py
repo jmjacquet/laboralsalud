@@ -264,17 +264,24 @@ def ausentismo_inculpable(ausentismos, fdesde, fhasta, dias_laborables, empleado
     if ausentismos_inc:
         empleados_inc = ausentismos_inc.values("empleado").distinct().count()
         # empleados_tot = 77
-        totales = tot_ausentes_inc(fdesde, fhasta, ausentismos_inc)
-        dias_caidos_tot = totales[0]
+        AusentismoFechasNT = namedtuple(
+            "AusentismoFechasNT", "aus_fcrondesde aus_fcronhasta"
+        )
+        fechas_aus_inc_list = [
+            AusentismoFechasNT(a.aus_fcrondesde, a.aus_fcronhasta)
+            for a in ausentismos_inc
+        ]
+        totales = tot_ausentes_inc(fdesde, fhasta, fechas_aus_inc_list)
+        dias_caidos_tot = totales.get("totales", 0)
         # dias_caidos_tot = 67
         dias_trab_tot = (dias_laborables * empleados_tot) - dias_caidos_tot
         tasa_ausentismo = calcular_tasa_ausentismo(
             dias_caidos_tot, dias_laborables, empleados_tot
         )
-        agudos = totales[1]
-        graves = totales[2]
-        empl_agudos = totales[3]
-        empl_graves = totales[4]
+        agudos = totales.get("tot_agudos", 0)
+        graves = totales.get("tot_graves", 0)
+        empl_agudos = totales.get("cant_empl_agudos", 0)
+        empl_graves = totales.get("cant_empl_graves", 0)
         porc_agudos = (Decimal(agudos) / Decimal(dias_caidos_tot)) * 100
         porc_cronicos = (Decimal(graves) / Decimal(dias_caidos_tot)) * 100
         tot_agudos = int(empl_agudos)
@@ -908,4 +915,10 @@ def tot_ausentes_inc(fdesde, fhasta, ausentismos):
         else:
             graves += parcial
             empl_graves += 1
-    return [tot, agudos, graves, empl_agudos, empl_graves]
+    return {
+        "totales" : tot,
+        "tot_agudos" : agudos,
+        "tot_graves" : graves,
+        "cant_empl_agudos": empl_agudos,
+        "cant_empl_graves": empl_graves,
+    }

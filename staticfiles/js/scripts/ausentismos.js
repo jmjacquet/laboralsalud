@@ -185,13 +185,9 @@ $('#id_tipo_ausentismo').change(function()
   var tipos = ['1','4','5','6','8']
     var id =  $("#id_tipo_ausentismo").val();
   if (tipos.indexOf(id) !== -1){
-    $('#tab_ausencia').show();
     $('#tab_art').hide();
-    $('#titulo').html('DATOS DE LA AUSENCIA')
   }else{
     $('#tab_art').show();
-    $('#tab_ausencia').hide();
-    $('#titulo').html('DATOS DE LA ART')
   }
   
 })
@@ -283,24 +279,47 @@ if ($('#id_tipo_form').val()=='EDICION'){
     $("#id_empleado").trigger("change");  
   }
 };
-if (isTablet==false) {
-  $("#id_empleado").chosen({
-          no_results_text: "Empleado inexistente...",
-          placeholder_text_single:"Seleccione un Empleado",
-          allow_single_deselect: true,
-      });
- };
+
 $("#id_tipo_ausentismo").trigger("change");
 
 
 
-$( "#Guardar" ).click(function() {        
-   $("#form-ausentismos :disabled").removeAttr('disabled');      
-    $("#Guardar").prop("disabled", true);    
-    $( "#form-ausentismos" ).submit();         
+$( "#Guardar" ).click(function() {
+    verificarDiasCaidosyGuardar($("#id_aus_diascaidos").val());
   });
 
+function guardarAusentismo(){
+    $("#form-ausentismos :disabled").removeAttr('disabled');
+    $("#Guardar").prop("disabled", true);
+    $( "#form-ausentismos" ).submit();
+}
 
+function verificarDiasCaidosyGuardar(dias){
+    if (dias > 90) {
+        alerta = alertify.dialog('confirm').set({
+                'labels': {
+                    ok: 'Aceptar',
+                    cancel: 'Cancelar'
+                },
+                'message': "Este empleado lleva más de 90 días caídos.<br>" +
+                            "Recuerda revisar que no esté próximo a entrar en\n" +
+                            "reserva de puesto.<br>¿Desea continuar?",
+                transition: 'fade',
+                'onok': function() {
+                    guardarAusentismo();
+                },
+                'oncancel': function() {
+                    return true;
+                }
+            });
+            alerta.setting('modal', true);
+            alerta.setHeader('RESERVA DE PUESTO');
+            alerta.show();
+    } else {
+         guardarAusentismo();
+    }
+
+}
 
 
 

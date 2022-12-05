@@ -18,7 +18,7 @@ MEDIA_ROOT = '/home/grupogua/apps/lbsl_media'
 DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.mysql', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-            'NAME': 'lbls',           # Or path to database file if using sqlite3.
+            'NAME': 'laboral_prueba',           # Or path to database file if using sqlite3.
             'USER':  DB_USER,    
             'PASSWORD':  DB_PASS,            # Not used with sqlite3.
             'HOST':  DB_HOST,                      # Set to empty string for localhost. Not used with sqlite3.

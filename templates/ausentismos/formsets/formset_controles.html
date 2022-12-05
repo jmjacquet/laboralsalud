@@ -1,0 +1,26 @@
+{% load static from staticfiles %}
+{% load bootstrap3 %}
+{% load i18n %}
+{% load crispy_forms_tags %}
+{% load humanize %}
+
+<div class="row cerca formDetalle" id="{{ form.prefix }}">
+    {{ form.non_field_errors }}
+    <div class="col-sm-3">
+        <div class="row cerca">
+            <div class="col-sm-6">{{form.fecha|as_crispy_field}}</div>
+        </div>
+        <div class="row cerca">
+            <div class="col-sm-12">{{form.tipo_control|as_crispy_field}}</div>
+        </div>
+        <div class="row cerca">
+            <div class="col-sm-6">{{form.aus_fcrondesde|as_crispy_field}}</div>
+            <div class="col-sm-6">{{form.aus_fcronhasta|as_crispy_field}}</div>
+        </div>
+    </div>
+    <div class="col-sm-9">
+        {{form.detalle|as_crispy_field}}
+    </div>
+    {% for hidden in form.hidden_fields %} {{ hidden }} {% endfor %}
+</div>
+

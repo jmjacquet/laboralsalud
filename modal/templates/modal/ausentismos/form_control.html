@@ -5,14 +5,26 @@
 
 <div id="form-container">
     <form role="form" class="form abm" autocomplete="off" method="POST" action="" id="form-alta">
-     {% csrf_token %}         
-        <div class="col-xs-12">	         	
-			  	<div class="row">										
-			  		<div class="col-sm-2"> {{form.fecha|as_crispy_field}}</div>							       
-					 <div class="col-sm-10"> {{form.detalle|as_crispy_field}}</div>															
-			  	</div>
-			  				  										
-		</div>
+     {% csrf_token %}
+    <div class="row cerca">
+        <div class="col-xs-12">
+            <div class="col-sm-3">
+            <div class="row cerca">
+                <div class="col-sm-6">{{form.fecha|as_crispy_field}}</div>
+            </div>
+            <div class="row cerca">
+                <div class="col-sm-12">{{form.tipo_control|as_crispy_field}}</div>
+            </div>
+            <div class="row cerca">
+                <div class="col-sm-6">{{form.aus_fcrondesde|as_crispy_field}}</div>
+                <div class="col-sm-6">{{form.aus_fcronhasta|as_crispy_field}}</div>
+            </div>
+        </div>
+        <div class="col-sm-9">
+            {{form.detalle|as_crispy_field}}
+        </div>
+        </div>
+    </div>
 		 {% for hidden in form.hidden_fields %} {{ hidden }} {% endfor %}	       
 </div>
 <div class="modal-buttons">

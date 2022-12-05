@@ -2,6 +2,8 @@
 from __future__ import unicode_literals
 import io
 import csv
+from __builtin__ import unicode
+
 from easy_pdf.rendering import render_to_pdf_response, render_to_pdf
 from django.template.loader import get_template
 from django.core.mail.backends.smtp import EmailBackend
@@ -300,12 +302,14 @@ class AusentismoEditView(VariablesMixin, UpdateView):
 
     def form_valid(self, form, controles_detalle, controles_patologias):
         self.object.save()
+        usr_actual = usuario_actual(self.request)
         controles_detalle.instance = self.object
         controles_detalle.ausentismo = self.object.id
+        controles_detalle.usuario_carga = usr_actual
         controles_detalle.save()
         controles_patologias.instance = self.object
         controles_patologias.ausentismo = self.object.id
-        controles_patologias.usuario_carga = usuario_actual(self.request)
+        controles_patologias.usuario_carga = usr_actual
         controles_patologias.save()
         messages.success(self.request, "Los datos se guardaron con éxito!")
         return HttpResponseRedirect(reverse("ausentismo_listado"))
@@ -315,6 +319,7 @@ class AusentismoEditView(VariablesMixin, UpdateView):
         form_class = self.get_form_class()
         form = self.get_form(form_class)
         form.fields["empleado"].widget.attrs["disabled"] = True
+        messages.error(self.request, "Verifique la carga de datos!")
         return self.render_to_response(
             self.get_context_data(
                 form=form, controles_detalle=controles_detalle, controles_patologias=controles_patologias
@@ -324,12 +329,12 @@ class AusentismoEditView(VariablesMixin, UpdateView):
     def get_form_kwargs(self):
         kwargs = super(AusentismoEditView, self).get_form_kwargs()
         kwargs["request"] = self.request
+        kwargs["tipo_form"] = "EDICION"
+        kwargs["ausentismo"] = self.get_object()
         return kwargs
 
     def get_initial(self):
         initial = super(AusentismoEditView, self).get_initial()
-        initial["request"] = self.request
-        initial["tipo_form"] = "EDICION"
         return initial
 
     def get_success_url(self):
@@ -680,15 +685,10 @@ def ausencias_importar(request):
                     else:
                         aus_fcontrol = datetime.datetime.strptime(campos[3], "%d/%m/%Y").date()
 
-                    if campos[4].strip().upper() == "SI":
-                        aus_certificado = "S"
-                    else:
-                        aus_certificado = "N"
-
-                    if campos[5] == "":
-                        aus_fcertif = None
-                    else:
-                        aus_fcertif = datetime.datetime.strptime(campos[5], "%d/%m/%Y").date()
+                    # if campos[5] == "":
+                    #     aus_fcertif = None
+                    # else:
+                    #     aus_fcertif = datetime.datetime.strptime(campos[5], "%d/%m/%Y").date()
                     if campos[6] == "":
                         aus_fentrega_certif = None
                     else:
@@ -787,8 +787,6 @@ def ausencias_importar(request):
                             defaults={
                                 "aus_control": aus_control,
                                 "aus_fcontrol": aus_fcontrol,
-                                "aus_certificado": aus_certificado,
-                                "aus_fcertif": aus_fcertif,
                                 "aus_fentrega_certif": aus_fentrega_certif,
                                 "aus_diascaidos": aus_diascaidos,
                                 "aus_diasjustif": aus_diasjustif,
@@ -818,7 +816,7 @@ def ausencias_importar(request):
 
                 messages.success(request, "Se importó el archivo con éxito!<br>(%s ausentismos creados)" % cant)
             except Exception as e:
-                print e
+                print(e)
                 messages.error(request, "Línea:%s -> %s" % (index, e))
     else:
         form = ImportarAusentismosForm(None, None, request=request)
@@ -872,7 +870,7 @@ def mandarEmail(request, ausencias, fecha, asunto, destinatario, observaciones):
         email.send()
         return True
     except Exception as e:
-        print e
+        print(e)
         return False
 
 
@@ -938,7 +936,6 @@ def imprimir_historial(request, id):
 def imprimir_informe(request):
     if request.method == "POST":
         form = ImprimirInformeAusenciasForm(request.POST or None)
-
         if form.is_valid():
             template = "ausentismos/informe_ausentismos.html"
             fecha = form.cleaned_data["fecha"]

@@ -34,7 +34,8 @@ TIPO_AUSENCIA_MEDICOS = (
     (8, 'Consulta/Control rutinario'),
 )
 
-TIPO_CONTROL = (    
+TIPO_CONTROL = (
+    ('', '----'),
     ('C', 'Consultorio'),
     ('S', 'Consultorio CIBYS'),
     ('D', u'Control Telefónico'),
@@ -386,8 +387,8 @@ def default(obj):
         return str(obj)
     raise TypeError("Object of type '%s' is not JSON serializable" % type(obj).__name__)    
 
-def popover_html(label, content):
-    return label + ' &nbsp;<i class="fa fa-question-circle" data-toggle="tooltip" data-placement="top" title="'+ content +'"></i>'
+def popover_html(label, content, placement="top"):
+    return label + ' &nbsp;<i class="fa fa-question-circle" data-toggle="tooltip" data-placement=placement title="'+ content +'"></i>'
 
 
 def agregar_nuevo_html(label, id, title, url, callback, hint, icon):

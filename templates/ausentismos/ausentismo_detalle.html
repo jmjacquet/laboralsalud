@@ -39,14 +39,14 @@
           <tbody>
             {% if a.tipo_ausentismo == 1 or a.tipo_ausentismo >= 4 %}
               <tr>
-                <td class="titulo">¿Asistió a Control?:</td><td id="empr_fingreso" class="dato">{{a.aus_control|default_if_none:'N'}}</td>
+{#                <td class="titulo">¿Asistió a Control?:</td><td id="empr_fingreso" class="dato">{{a.aus_control|default_if_none:'N'}}</td>#}
                 <td class="titulo">Fecha Próx.Control:</td><td id="antig_empresa" class="dato">{{a.get_proxcontrol|date:'d/m/Y'}}</td>
                 <td class="titulo"></td><td class="dato"></td>
               </tr>
               <tr>
-                <td class="titulo">¿Presenta Certificado?:</td><td id="empr_fingreso" class="dato">{{a.aus_certificado|default_if_none:'N'}}</td>
-                <td class="titulo">Fecha Certificado:</td><td id="antig_empresa" class="dato">{{a.aus_fcertif|date:'d/m/Y'}}</td>
-                <td class="titulo">Fecha Entrega Certif.:</td><td id="antig_empresa" class="dato">{{a.aus_fentrega_certif|date:'d/m/Y'}}</td>
+{#                <td class="titulo">¿Presenta Certificado?:</td><td id="empr_fingreso" class="dato">{{a.aus_certificado|default_if_none:'N'}}</td>#}
+{#                <td class="titulo">Fecha Certificado:</td><td id="antig_empresa" class="dato">{{a.aus_fcertif|date:'d/m/Y'}}</td>#}
+{#                <td class="titulo">Fecha Entrega Certif.:</td><td id="antig_empresa" class="dato">{{a.aus_fentrega_certif|date:'d/m/Y'}}</td>#}
                 <td class="titulo"></td><td class="titulo"></td>
               </tr>
               <tr>

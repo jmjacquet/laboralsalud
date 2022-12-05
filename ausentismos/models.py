@@ -65,13 +65,12 @@ class ausentismo(models.Model):
         on_delete=models.PROTECT,
     )
     tipo_ausentismo = models.IntegerField("Ausentismo", choices=TIPO_AUSENCIA, blank=True, null=True)
-    tipo_control = models.CharField("Tipo Control", choices=TIPO_CONTROL, max_length=1, blank=True, null=True)
-
-    aus_control = models.CharField("¿Asistió a Control?", max_length=1, default="N")
+    # tipo_control = models.CharField("Tipo Control", choices=TIPO_CONTROL, max_length=1, blank=True, null=True)
+    # aus_control = models.CharField("¿Asistió a Control?", max_length=1, default="N")
     aus_fcontrol = models.DateField("Fecha Próx.Control", blank=True, null=True)
-    aus_certificado = models.CharField("¿Presenta Certificado?", max_length=1, default="N")
-    aus_fcertif = models.DateField("Fecha Certificado", blank=True, null=True)
-    aus_fentrega_certif = models.DateField("Fecha Entrega Certif.", blank=True, null=True)
+    # aus_certificado = models.CharField("¿Presenta Certificado?", max_length=1, default="N")
+    # aus_fcertif = models.DateField("Fecha Certificado", blank=True, null=True)
+    # aus_fentrega_certif = models.DateField("Fecha Entrega Certif.", blank=True, null=True)
 
     aus_fcrondesde = models.DateField("Cronológica Desde", blank=True, null=True)
     aus_fcronhasta = models.DateField("Cronológica Hasta", blank=True, null=True)
@@ -80,6 +79,7 @@ class ausentismo(models.Model):
     aus_freintegro = models.DateField("F.Reintegro", blank=True, null=True)
     aus_falta = models.DateField("Fecha Alta", blank=True, null=True)
     aus_tipo_alta = models.IntegerField("Tipo Alta", choices=TIPO_ALTA, blank=True, null=True)
+    aus_corta_certificado = models.CharField(max_length=1, default="N")
     # aus_frevision = models.DateField(u'Fecha Próx.Control',blank=True, null=True)
     aus_medico = models.ForeignKey(
         "entidades.ent_medico_prof",
@@ -183,11 +183,7 @@ class ausentismo(models.Model):
 
     @property
     def get_ultimo_control(self):
-        try:
-            ultimo = ausentismo_controles.objects.filter(ausentismo=self).order_by("-fecha")[0]
-        except:
-            return None
-        return ultimo
+        return ausentismo_controles.objects.filter(ausentismo=self).order_by("-fecha").first()
 
 
 class ausentismo_controles(models.Model):
@@ -201,6 +197,9 @@ class ausentismo_controles(models.Model):
         on_delete=models.CASCADE,
     )
     fecha = models.DateField(blank=True, null=True)
+    tipo_control = models.CharField("Tipo Control", choices=TIPO_CONTROL, max_length=1, blank=True, null=True)
+    aus_fcrondesde = models.DateField("Cronológica Desde", blank=True, null=True)
+    aus_fcronhasta = models.DateField("Cronológica Hasta", blank=True, null=True)
     # Field name made lowercase.
     detalle = models.TextField(max_length=1000, blank=True, null=True)
     fecha_creacion = models.DateField(auto_now_add=True)

@@ -135,8 +135,10 @@
             }
         }});
         {% if messages %}
-          {% for message in messages %}                                                
-                      toastr.{{ message.tags }}('{{ message|safe }}');                                        
+          {% for message in messages %}
+              {% if message.tags != "warning" %}
+                      toastr.{{ message.tags }}('{{ message|safe }}');
+              {% endif %}
           {% endfor %}
         {% endif %}
 
