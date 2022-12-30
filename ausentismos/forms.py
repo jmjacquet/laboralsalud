@@ -201,7 +201,7 @@ class AusentismoForm(forms.ModelForm):
             self.fields["empleado"].queryset = ent_empleado.objects.filter(pk=ausentismo.empleado.pk)
         else:
             # self.fields["empleado"].queryset = ent_empleado.objects.filter(baja=False, empresa__pk__in=empresas)
-            self.fields["empleado"].queryset = ent_empleado.objects.none()
+            # self.fields["empleado"].queryset = ent_empleado.objects.none()
             self.fields["empresa"].queryset = ent_empresa.objects.filter(
                 baja=False, pk__in=empresas
             )

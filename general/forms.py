@@ -48,10 +48,10 @@ class EmpleadoModelChoiceField(forms.ModelChoiceField):
 
 class TurnosForm(forms.ModelForm):
     turno_empresa = forms.ModelChoiceField(
-        label="Empresa", queryset=None, empty_label="---", required=True
+        label="Empresa", queryset=ent_empresa.objects.filter(baja=False), empty_label="---", required=True
     )
     turno_empleado = EmpleadoModelChoiceField(
-        label="Empleado", queryset=None, empty_label="---", required=True
+        label="Empleado", queryset=ent_empleado.objects.filter(baja=False).select_related("empresa"), empty_label="---", required=True
     )
     fecha = forms.DateField(
         label="Fecha",
@@ -95,12 +95,11 @@ class TurnosForm(forms.ModelForm):
             ).select_related("empresa")
         else:
             empresas = empresas_habilitadas(request)
+            # self.fields["turno_empleado"].queryset = ent_empleado.objects.none()
             self.fields["turno_empresa"].queryset = ent_empresa.objects.filter(
                 baja=False, pk__in=empresas
             )
-            self.fields[
-                "turno_empleado"
-            ].queryset = ent_empleado.objects.none().select_related("empresa")
+
 
     def clean(self):
         fecha = self.cleaned_data.get("fecha")
