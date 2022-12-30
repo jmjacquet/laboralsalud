@@ -198,8 +198,6 @@ class ausentismo_controles(models.Model):
     )
     fecha = models.DateField(blank=True, null=True)
     tipo_control = models.CharField("Tipo Control", choices=TIPO_CONTROL, max_length=1, blank=True, null=True)
-    aus_fcrondesde = models.DateField("Cronológica Desde", blank=True, null=True)
-    aus_fcronhasta = models.DateField("Cronológica Hasta", blank=True, null=True)
     # Field name made lowercase.
     detalle = models.TextField(max_length=1000, blank=True, null=True)
     fecha_creacion = models.DateField(auto_now_add=True)

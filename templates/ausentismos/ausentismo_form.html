@@ -194,11 +194,10 @@
 			<div class="tabbable-line col-sm-12 cerca">
 				<ul class="nav nav-tabs ">
 					<li class="active">
-						<a href="#tab_obs" data-toggle="tab" aria-expanded="true">
-						OBSERVACIONES/ESTUDIOS/DETALLES</a>
+						<a href="#tab_controles" data-toggle="tab" aria-expanded="true">CONTROLES REALIZADOS </a>
 					</li>
-					<li>
-						<a href="#tab_controles" data-toggle="tab">CONTROLES REALIZADOS </a>
+                    <li>
+						<a href="#tab_obs" data-toggle="tab" >OBSERVACIONES/ESTUDIOS/DETALLES</a>
 					</li>
 					<li>
 						<a href="#tab_plan" data-toggle="tab">PLAN DE ACCIÓN </a>
@@ -208,7 +207,7 @@
 					</li>
 				</ul>
 				<div class="tab-content">
-					<div class="tab-pane active" id="tab_obs">
+					<div class="tab-pane" id="tab_obs">
 						<fieldset>
 							<div class="row cerca">
 								<div class="col-sm-12">
@@ -244,7 +243,7 @@
 							</div>
 						</fieldset>
 					</div>
-					<div class="tab-pane" id="tab_controles">
+					<div class="tab-pane active" id="tab_controles">
 
                         {% include "ausentismos/ausentismo_tab_controles.html"  %}
 					</div>

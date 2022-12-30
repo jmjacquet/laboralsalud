@@ -76,6 +76,7 @@
         <th class="imprimir" data-priority="6">F.Modif.</th>
         <th class="imprimir" data-priority="6">F.Reintegro</th>
         <th class="imprimir" data-priority="6">F.Carga</th>
+        <th class="imprimir" data-priority="6">Tipo Acc./Enf.</th>
       </tr>
     </thead>
     <tbody>
@@ -127,11 +128,13 @@
         <td title="Usuario Creación: {{a.usuario_carga|default_if_none:''}} | Última Modificación: {{a.fecha_modif|date:'d/m/Y'}}">{{ a.fecha_modif|date:'d/m/Y' }}</td>
         <td>{{ a.aus_freintegro|date:'d/m/Y' }}</td>
         <td title="Usuario Creación: {{a.usuario_carga|default_if_none:''}} | Última Modificación: {{a.fecha_modif|date:'d/m/Y'}}">{{ a.fecha_creacion|date:'d/m/Y' }}</td>
+        <td >{{ a.get_art_tipo_accidente_display|default_if_none:'' }}</td>
       </tr>
     {% endfor %}
     </tbody>
     <tfoot>
     <tr>
+      <th></th>
       <th></th>
       <th></th>
       <th></th>

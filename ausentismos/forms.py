@@ -308,7 +308,7 @@ class AusentismoForm(forms.ModelForm):
 class ControlesDetalleForm(forms.ModelForm):
     detalle = forms.CharField(
         label="Detalles/Observaciones",
-        widget=forms.Textarea(attrs={"class": "form-control2", "rows": 7}),
+        widget=forms.Textarea(attrs={"class": "form-control2", "rows": 3}),
         required=False,
     )
     fecha = forms.DateField(
@@ -325,16 +325,16 @@ class ControlesDetalleForm(forms.ModelForm):
     tipo_control = forms.ChoiceField(
         label="Tipo Control", choices=TIPO_CONTROL, required=False,
     )
-    aus_fcrondesde = forms.DateField(
-        label="Certificado Desde",
-        required=False,
-        widget=forms.DateInput(attrs={"class": "datepicker"}),
-    )
-    aus_fcronhasta = forms.DateField(
-        label="Certificado Hasta",
-        required=False,
-        widget=forms.DateInput(attrs={"class": "datepicker"}),
-    )
+    # aus_fcrondesde = forms.DateField(
+    #     label="Certificado Desde",
+    #     required=False,
+    #     widget=forms.DateInput(attrs={"class": "datepicker"}),
+    # )
+    # aus_fcronhasta = forms.DateField(
+    #     label="Certificado Hasta",
+    #     required=False,
+    #     widget=forms.DateInput(attrs={"class": "datepicker"}),
+    # )
 
     class Meta:
         model = ausentismo_controles
@@ -353,14 +353,14 @@ class ControlesDetalleForm(forms.ModelForm):
             if not tipo_control:
                 self.add_error("tipo_control", u"¡Debe cargar una Tipo de Control!")
 
-            aus_fcrondesde = self.cleaned_data.get("aus_fcrondesde")
-            aus_fcronhasta = self.cleaned_data.get("aus_fcronhasta")
-
-            if aus_fcrondesde:
-                if not aus_fcronhasta:
-                    self.add_error("aus_fcronhasta", u"¡Verifique la Fecha!")
-                elif aus_fcrondesde > aus_fcronhasta:
-                    self.add_error("aus_fcronhasta", u"¡Verifique la Fechas!")
+            # aus_fcrondesde = self.cleaned_data.get("aus_fcrondesde")
+            # aus_fcronhasta = self.cleaned_data.get("aus_fcronhasta")
+            #
+            # if aus_fcrondesde:
+            #     if not aus_fcronhasta:
+            #         self.add_error("aus_fcronhasta", u"¡Verifique la Fecha!")
+            #     elif aus_fcrondesde > aus_fcronhasta:
+            #         self.add_error("aus_fcronhasta", u"¡Verifique la Fechas!")
 
         return self.cleaned_data
 
@@ -535,7 +535,7 @@ class ImprimirInformeAusenciasForm(forms.Form):
 class SeguimControlForm(forms.ModelForm):
     detalle = forms.CharField(
         label="Detalles/Observaciones",
-        widget=forms.Textarea(attrs={"class": "form-control2", "rows": 8}),
+        widget=forms.Textarea(attrs={"class": "form-control2", "rows": 5}),
         required=True,
     )
     fecha = forms.DateField(
@@ -549,16 +549,16 @@ class SeguimControlForm(forms.ModelForm):
     tipo_control = forms.ChoiceField(
         label="Tipo Control", choices=TIPO_CONTROL, required=False,
     )
-    aus_fcrondesde = forms.DateField(
-        label="Certif. Desde",
-        required=False,
-        widget=forms.DateInput(attrs={"class": "datepicker"}),
-    )
-    aus_fcronhasta = forms.DateField(
-        label="Certif. Hasta",
-        required=False,
-        widget=forms.DateInput(attrs={"class": "datepicker"}),
-    )
+    # aus_fcrondesde = forms.DateField(
+    #     label="Certif. Desde",
+    #     required=False,
+    #     widget=forms.DateInput(attrs={"class": "datepicker"}),
+    # )
+    # aus_fcronhasta = forms.DateField(
+    #     label="Certif. Hasta",
+    #     required=False,
+    #     widget=forms.DateInput(attrs={"class": "datepicker"}),
+    # )
 
     class Meta:
         model = ausentismo_controles
@@ -575,13 +575,13 @@ class SeguimControlForm(forms.ModelForm):
             if not tipo_control:
                 self.add_error("tipo_control", u"¡Debe cargar una Tipo de Control!")
 
-            aus_fcrondesde = self.cleaned_data.get("aus_fcrondesde")
-            aus_fcronhasta = self.cleaned_data.get("aus_fcronhasta")
-
-            if aus_fcrondesde:
-                if not aus_fcronhasta:
-                    self.add_error("aus_fcronhasta", u"¡Verifique la Fecha!")
-                elif aus_fcrondesde > aus_fcronhasta:
-                    self.add_error("aus_fcronhasta", u"¡Verifique la Fechas!")
+            # aus_fcrondesde = self.cleaned_data.get("aus_fcrondesde")
+            # aus_fcronhasta = self.cleaned_data.get("aus_fcronhasta")
+            #
+            # if aus_fcrondesde:
+            #     if not aus_fcronhasta:
+            #         self.add_error("aus_fcronhasta", u"¡Verifique la Fecha!")
+            #     elif aus_fcrondesde > aus_fcronhasta:
+            #         self.add_error("aus_fcronhasta", u"¡Verifique la Fechas!")
 
         return self.cleaned_data
