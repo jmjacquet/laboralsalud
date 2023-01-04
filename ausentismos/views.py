@@ -229,6 +229,7 @@ class AusentismoCreateView(VariablesMixin, CreateView):
     def form_valid(self, form, controles_detalle, controles_patologias):
         self.object = form.save(commit=False)
         self.object.usuario_carga = usuario_actual(self.request)
+        guardar_ultimo_tipo_ausentismo_y_fcontrol(self.object, controles_detalle)
         self.object.save()
         controles_detalle.instance = self.object
         controles_detalle.ausentismo = self.object.id
@@ -263,6 +264,13 @@ class AusentismoCreateView(VariablesMixin, CreateView):
         messages.success(self.request, "Los datos se guardaron con éxito!")
         return reverse("ausentismo_listado")
 
+def guardar_ultimo_tipo_ausentismo_y_fcontrol(ausentismo, controles):
+    lista_controles_fecha = [x for x in controles.cleaned_data if x["fecha"] is not None]
+    if len(lista_controles_fecha)>0:
+        ultimo_control = sorted(lista_controles_fecha, key=lambda x: x["fecha"], reverse=True)[0]
+        if ultimo_control:
+            ausentismo.tipo_control = ultimo_control.get("tipo_control", 0)
+    
 
 class AusentismoEditView(VariablesMixin, UpdateView):
     form_class = AusentismoForm
@@ -301,6 +309,7 @@ class AusentismoEditView(VariablesMixin, UpdateView):
             return self.form_invalid(form, controles_detalle, controles_patologias)
 
     def form_valid(self, form, controles_detalle, controles_patologias):
+        guardar_ultimo_tipo_ausentismo_y_fcontrol(self.object, controles_detalle)
         self.object.save()
         usr_actual = usuario_actual(self.request)
         controles_detalle.instance = self.object

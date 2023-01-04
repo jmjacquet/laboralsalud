@@ -89,7 +89,7 @@ class AusentismoForm(forms.ModelForm):
         label=u"Corta Certificado",
         choices=SINO,
         required=False,
-        initial="N",
+        initial=None,
     )
     aus_grupop = forms.ModelChoiceField(
         label=agregar_nuevo_html(
@@ -189,7 +189,7 @@ class AusentismoForm(forms.ModelForm):
 
     class Meta:
         model = ausentismo
-        exclude = ["id", "fecha_creacion", "fecha_modif", "usuario_carga"]
+        exclude = ["id", "fecha_creacion", "fecha_modif", "usuario_carga", "aus_certificado", "aus_control"]
 
     def __init__(self, *args, **kwargs):
         request = kwargs.pop("request", None)
@@ -214,6 +214,8 @@ class AusentismoForm(forms.ModelForm):
                 hint="Crear Nuevo Empleado",
                 icon="icon-users",
             )
+            SINO_CHOICES = tuple([(None, '')] + list(SINO))
+            self.fields['aus_corta_certificado'].choices = SINO_CHOICES
 
         usuario = usuario_actual(request)
         # Si es médico no vé los últimos tipos

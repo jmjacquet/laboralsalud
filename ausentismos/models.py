@@ -65,10 +65,10 @@ class ausentismo(models.Model):
         on_delete=models.PROTECT,
     )
     tipo_ausentismo = models.IntegerField("Ausentismo", choices=TIPO_AUSENCIA, blank=True, null=True)
-    # tipo_control = models.CharField("Tipo Control", choices=TIPO_CONTROL, max_length=1, blank=True, null=True)
-    # aus_control = models.CharField("¿Asistió a Control?", max_length=1, default="N")
+    tipo_control = models.CharField("Tipo Control", choices=TIPO_CONTROL, max_length=1, blank=True, null=True)
+    aus_control = models.CharField("¿Asistió a Control?", max_length=1, default="S")
     aus_fcontrol = models.DateField("Fecha Próx.Control", blank=True, null=True)
-    # aus_certificado = models.CharField("¿Presenta Certificado?", max_length=1, default="N")
+    aus_certificado = models.CharField("¿Presenta Certificado?", max_length=1, default="N")
     # aus_fcertif = models.DateField("Fecha Certificado", blank=True, null=True)
     # aus_fentrega_certif = models.DateField("Fecha Entrega Certif.", blank=True, null=True)
 
