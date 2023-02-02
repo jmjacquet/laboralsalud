@@ -33,7 +33,6 @@
         </tr>
   </table>  
   <table class="tabla" width="100%" border="0" cellspacing="0">
-     {% if aus_total %} 
     <tr>
       <td width="60%">
         <img src="{{ aus_tot_image }}" height="500" width="1100" >
@@ -58,12 +57,11 @@
           </tbody>
         </table>
       </td>
-    </tr>
-    <tr>
-    </tr>
-    {% endif %}
+
+
     {% if aus_inc %}
-      <tr>
+    </tr>
+        <tr>
         <td width="60%">
           <img src="{{ aus_inc_image }}" height="500" width="1100" >
         </td>
@@ -110,9 +108,48 @@
             </tbody>
           </table>
         </td>
+    {% endif %}
+     {% if empl_mas_faltadores or aus_grp_image %}
+      <tr>  </tr>
+         <tr>
+        <td width="60%" valign="top" height="100%">
+          <table class="borde_reportes" width="100%" height="100%">
+            <thead >
+              <tr>
+              <th  class="tabla_header" >AUSENTISMO x GRUPO PATOLÓGICO</td>
+            </tr>
+          </thead>
+          <tbody>
+              <tr>
+                <td><img src="{{ aus_grp_image }}" height="100%" width="100%"  ></td>
+              </tr>
+          </tbody>
+        </table>
+
+        </td>
+        <td width="40%" valign="top" height="100%">
+          <table class="borde_reportes" width="80%" height="100%">
+            <thead >
+              <tr>
+              <th  class="tabla_header" colspan="2">EMPLEADOS CON MÁS AUSENCIAS</td>
+            </tr>
+            <tr>
+              <th  class="tabla_header" width="85%">Empleado</th><th  class="tabla_header texto_der" width="15%">Días</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for e in empl_mas_faltadores %}
+              <tr>
+                <td>{{ e.empleado|default_if_none:''|truncatechars:60 }}</td>
+                <td class="texto_der">{{ e.dias|default_if_none:'0' }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </td>
       </tr>
     {% endif %}
-
+    </tr>
   </table>
 
   <div id="page-footer">
@@ -134,8 +171,6 @@
     </table>
   </div>
     <table class="tabla" width="100%" border="0" cellspacing="0">
-{% endif %}
-
     {% if ausentismo_inc_gerencia_image %}
 
         <tr>
@@ -226,49 +261,10 @@
         </td>
       </tr>
       {% endif %}
-    {% if empl_mas_faltadores or aus_grp_image %}
-      <tr>  </tr>
-         <tr>
-        <td width="60%" valign="top" height="100%">
-          <table class="borde_reportes" width="100%" height="100%">
-            <thead >
-              <tr>
-              <th  class="tabla_header" >AUSENTISMO x GRUPO PATOLÓGICO</td>
-            </tr>
-          </thead>
-          <tbody>
-              <tr>
-                <td><img src="{{ aus_grp_image }}" height="100%" width="100%"  ></td>
-              </tr>
-          </tbody>
-        </table>
 
-        </td>
-        <td width="40%" valign="top" height="100%">
-          <table class="borde_reportes" width="80%" height="100%">
-            <thead >
-              <tr>
-              <th  class="tabla_header" colspan="2">EMPLEADOS CON MÁS AUSENCIAS</td>
-            </tr>
-            <tr>
-              <th  class="tabla_header" width="85%">Empleado</th><th  class="tabla_header texto_der" width="15%">Días</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for e in empl_mas_faltadores %}
-              <tr>
-                <td>{{ e.empleado|default_if_none:''|truncatechars:60 }}</td>
-                <td class="texto_der">{{ e.dias|default_if_none:'0' }}</td>
-              </tr>
-            {% endfor %}
-          </tbody>
-        </table>
-      </td>
-      </tr>
-    {% endif %}
 
      </table>
-
+    {% endif %}
 
 {% if aus_acc %} 
   <pdf:nextpage/>      

@@ -62,7 +62,7 @@
   </div>
 
  {% if ausentismos %} 
-  {% if aus_total or aus_inc %} 
+  {% if aus_total %}
   <div class="row">        
       <div class="col-sm-5 cerca">
           <div class="graficos panel panel-primary">
@@ -97,8 +97,9 @@
             </div>
           </div>
           
-      </div>           
-      
+      </div>
+   {% endif %}
+    {% if aus_inc %}
       <div class="col-sm-7 cerca">
           <div class="panel panel-primary graficos">
             <div class="panel-heading text-center">AUSENTISMO INCULPABLE</div>
@@ -151,10 +152,8 @@
           </div>
           
       </div>  
-  </div>
-  {% endif %}
+   {% endif %}
  {% if aus_total_x_gerencia %}
-    <div class="row">
       <div class="col-sm-5 cerca">
           <div class="graficos panel panel-primary">
             <div  class="panel-heading text-center">AUSENTISMO INCULPABLE x GERENCIA</div>
@@ -228,9 +227,9 @@
 
             </div>
           </div>
-
       </div>
   {% endif %}
+  </div>
   {% if aus_total_x_sector %}
     <div class="row">
       <div class="col-sm-5 cerca">

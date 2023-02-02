@@ -42,6 +42,7 @@ class DiagnosticoForm(forms.ModelForm):
         request = kwargs.pop("request", None)
         super(DiagnosticoForm, self).__init__(*args, **kwargs)
 
+SINO_CHOICES = tuple([(None, '')] + list(SINO))
 
 class AusentismoForm(forms.ModelForm):
     empleado = forms.ModelChoiceField(
@@ -87,7 +88,7 @@ class AusentismoForm(forms.ModelForm):
     )
     aus_corta_certificado = forms.ChoiceField(
         label=u"Corta Certificado",
-        choices=SINO,
+        choices=SINO_CHOICES,
         required=False,
         initial=None,
     )
@@ -214,8 +215,7 @@ class AusentismoForm(forms.ModelForm):
                 hint="Crear Nuevo Empleado",
                 icon="icon-users",
             )
-            SINO_CHOICES = tuple([(None, '')] + list(SINO))
-            self.fields['aus_corta_certificado'].choices = SINO_CHOICES
+
 
         usuario = usuario_actual(request)
         # Si es médico no vé los últimos tipos
