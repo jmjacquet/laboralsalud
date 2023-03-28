@@ -1,0 +1,82 @@
+{% load static from staticfiles %}
+{% load bootstrap3 %}
+{% load humanize %}
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/comprobantes.css'%}?{% now "Ymd"%}" type="text/css" >
+{% endblock %}
+
+  <div id="enviando" class="cargando" >
+    <span class="cargando-txt">ENVIANDO...</span>
+    <img class="cargando-img" src="{% static 'img/loading-bars.svg' %}">
+  </div>
+
+<div class="modal-dialog modal-content">
+               <div class="modal-wrapper">
+                 <div data-dismiss="modal" class="close-modal">
+                          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+                        </div>
+                 <div class="modal-head">
+                        AGRUPAMIENTO EMPLEADOS
+                </div>
+                <div id="form-container">
+                <form role="form" autocomplete="off" class="form" method="POST" action="{% url 'empleado_agrupar' %}" id="form-empleado_agrupar">
+                {% csrf_token %}
+                <div class="modal-body">
+                    <div class="col-xs-12">
+                      <div class="row">
+                        <div class="col-sm-2">{% bootstrap_field form.fecha %}</div>
+                        <div class="col-sm-10">{% bootstrap_field form.empresa %}</div>
+                     </div>
+                    </div>
+                </div>
+                <div class="modal-buttons">
+                      <div class="row">
+                          <div class="col-xs-12">
+                            <button data-dismiss="modal" class="btn btn-xs pull-left btn btn-danger" type="button">
+                                <i class="fa fa-times"></i>Cancelar</button>
+                                <button id="aceptar" type="submit" class="btn pull-right btn-xs btn-primary"><i class="fa fa-check"></i>Aceptar</button>
+                          </div>
+                      </div>
+                 </div>
+                </form>
+                 </div>
+          </div>
+     <script type="text/javascript">
+          $("#enviando").hide();
+          $.fn.datepicker.dates['es'] = {
+    days: ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"],
+    daysShort: ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb", "Dom"],
+    daysMin: ["Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa", "Do"],
+    months: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"],
+    monthsShort: ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"],
+    today: "Hoy"
+  };
+
+ $('.datepicker').datepicker({
+        format: "dd/mm/yyyy",
+        language: "es",
+        autoclose: true,
+        todayHighlight: true
+  });
+
+  $('.datepicker').each(function(){
+      $(this).datepicker();
+  });
+  const userAgent = navigator.userAgent.toLowerCase();
+  const isTablet = /(ipad|tablet|(android(?!.*mobile))|(windows(?!.*phone)(.*touch))|kindle|playbook|silk|(puffin(?!.*(IP|AP|WP))))/.test(userAgent);
+
+  if (isTablet==false) {
+  $("#id_empresa").chosen({
+      no_results_text: "Empresa inexistente...",
+      placeholder_text_single:"Seleccione una Empresa",
+      allow_single_deselect: true,
+      width:"100%",
+  });
+  };
+
+
+    </script>
+
+
+
+</div>

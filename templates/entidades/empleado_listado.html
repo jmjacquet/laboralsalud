@@ -35,8 +35,9 @@
     </div>
     <div class="col-xs-12">
     <div class="btn-group " style="float:left;margin-right:20px;margin-bottom:10px;">
-        <a class="btn btn-xs btn-primary modal-create" style="float:left;margin-right:20px;" href="{% url 'empleado_nuevo' %}" data-modal-head="AGREGAR EMPLEADO" data-modal-callback="reload">Nuevo Empleado</a>
+        <a class="btn btn-xs btn-primary modal-create" style="float:left;margin-right:10px;" href="{% url 'empleado_nuevo' %}" data-modal-head="AGREGAR EMPLEADO" data-modal-callback="reload">Nuevo Empleado</a>
         <button class="btn btn-xs btn-danger" value="" style="margin-right:10px;" id="btnEliminar">Eliminar</button>
+        <button class="btn btn-xs btn-primary" id="btnAgruparEmpleados" style="float:left;margin-right:10px;;margin-bottom:5px;" >Asignar Empresa</button>
     </div> 
     <table width="100%" id="empleado" style="display:none;" class="table table-striped compact table-hover table-no-bordered tabla_nueva text-nowrap">         
         <thead >
@@ -126,7 +127,8 @@
         </tfoot>
         
     </table>                   
-    </div> 
+    </div>
+<div id="popup" class="modal fade modal-modal" role="dialog"  data-backdrop="static"  data-keyboard="false"></div>
 {% endblock principal %}
 
 {% block scripts_js %}     
@@ -144,7 +146,8 @@ if (isTablet==false) {
   });
   };
 moment.locale('es');
-$.fn.dataTable.moment('DD/MM/YYYY'); 
+$.fn.dataTable.moment('DD/MM/YYYY');
+
 var tabla = $('#empleado').DataTable({
             "language": {
                 "decimal": ",",
@@ -367,9 +370,18 @@ $("input[class='tildado']" ,tabla.rows().nodes()).change(function() {
             alerta.show();
             return true;
         }
-    });         
+    });
+ $('#btnAgruparEmpleados').click(function(){
+ if (listado.length == 0) {
+        alertify.errorAlert("¡Debe seleccionar algún Empleado!");
+    } else {
+       return abrir_modal("/entidades/empleado_agrupar?"+ $('#btnEliminar').val());
+    }
+
 });
-</script> 
+
+});
+</script>
 {% endblock scripts_js %}
 
 

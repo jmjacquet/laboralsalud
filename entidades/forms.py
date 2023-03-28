@@ -346,6 +346,27 @@ class ImportarEmpleadosForm(forms.Form):
         return self.cleaned_data
 
 
+class AgruparEmpleadosForm(forms.Form):
+    fecha = forms.DateField(
+        label="Fecha",
+        widget=forms.DateInput(
+            attrs={"class": "form-control datepicker", "autocomplete": "off"}
+        ),
+        required=True,
+        initial=hoy(),
+    )
+    empresa = forms.ModelChoiceField(
+        label="Empresa",
+        queryset=ent_empresa.objects.filter(baja=False),
+        empty_label="----",
+        required=True,
+    )
+    listado = forms.CharField(widget=forms.HiddenInput(), required=False)
+
+    def __init__(self, *args, **kwargs):
+        super(AgruparEmpleadosForm, self).__init__(*args, **kwargs)
+
+
 class EmpresaAgrupamientoForm(forms.ModelForm):
     class Meta:
         model = ent_empresa_agrupamiento
