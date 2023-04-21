@@ -1,0 +1,32 @@
+version: '3'
+services:
+
+  mysql5_lbl:
+    container_name: mysql5_lbl
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: qwerty
+    volumes:
+      - ../tasasweb/varios/mysqldata:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    networks:
+      - repo_default
+
+  phpmyadmin_lbl:
+    container_name: phpmyadmin_lbl
+    image: phpmyadmin/phpmyadmin:5.0.1
+    environment:
+      PMA_HOST: mysql5
+      PMA_USER: root
+      PMA_PASSWORD: qwerty
+      UPLOAD_LIMIT: 300M
+    ports:
+      - "8080:80"
+    networks:
+      - repo_default
+
+
+networks:
+  repo_default:
+    external: true

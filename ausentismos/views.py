@@ -72,7 +72,7 @@ class AusentismoView(VariablesMixin, ListView):
         fhasta = finMes()
         empresas = empresas_habilitadas(self.request)
         ausentismos = ausentismo.objects.filter(
-            baja=False, empleado__empresa__pk__in=empresas, aus_fcronhasta__gte=hoy()
+            baja=False, empresa__pk__in=empresas, aus_fcronhasta__gte=hoy()
         )
         if form.is_valid():
             fcontrol = form.cleaned_data["fcontrol"]
@@ -90,7 +90,9 @@ class AusentismoView(VariablesMixin, ListView):
             if not fhasta:
                 fhasta = proximo_anio()
 
-            ausentismos = ausentismo.objects.filter(empleado__empresa__pk__in=empresas)
+            ausentismos = ausentismo.objects.filter(empresa__pk__in=empresas).select_related(
+            "empleado", "empresa", "aus_grupop", "aus_diagn", "usuario_carga"
+        )
 
             if int(estado) == 1:
                 ausentismos = ausentismos.filter(aus_fcronhasta__gte=hoy())
@@ -125,11 +127,11 @@ class AusentismoView(VariablesMixin, ListView):
                     d["id"]
                     for d in json.loads(recargar_empresas_agrupamiento(self.request, 0).content)
                 ]
-            ausentismos = ausentismos.filter(empleado__empresa__id__in=empresas_list)
+            ausentismos = ausentismos.filter(empresa__id__in=empresas_list)
 
             if empresa:
                 ausentismos = ausentismos.filter(
-                    Q(empleado__empresa=empresa) | Q(empleado__empresa__casa_central=empresa)
+                    Q(empresa=empresa) | Q(empresa__casa_central=empresa)
                 )
             if empleado:
                 ausentismos = ausentismos.filter(
@@ -154,7 +156,7 @@ class AusentismoView(VariablesMixin, ListView):
 
         context["form"] = form
         context["ausentismos"] = ausentismos.select_related(
-            "empleado", "empleado__empresa", "aus_grupop", "aus_diagn", "usuario_carga"
+            "empleado", "empresa", "aus_grupop", "aus_diagn", "usuario_carga"
         )
         return context
 
@@ -434,7 +436,7 @@ class SeguimControlCreateView(VariablesMixin, AjaxCreateView):
 def ausentismo_eliminar(request, id):
     if not tiene_permiso(request, "aus_abm"):
         return redirect(reverse("principal"))
-    aus = ausentismo.objects.get(pk=id, empleado__empresa__pk__in=empresas_habilitadas(request)).delete()
+    aus = ausentismo.objects.get(pk=id, empresa__pk__in=empresas_habilitadas(request)).delete()
     messages.success(request, "¡Los datos se eliminaron con éxito!")
     return HttpResponseRedirect(reverse("ausentismo_listado"))
 
@@ -445,7 +447,7 @@ def ausentismo_eliminar_masivo(request):
         return redirect(reverse("principal"))
     listado = request.GET.getlist("id")
     ausentismos = ausentismo.objects.filter(
-        id__in=listado, empleado__empresa__pk__in=empresas_habilitadas(request)
+        id__in=listado, empresa__pk__in=empresas_habilitadas(request)
     ).delete()
     messages.success(request, "¡Los datos se eliminaron con éxito!")
     return HttpResponse(json.dumps(len(listado)), content_type="application/json")
@@ -919,14 +921,7 @@ def imprimir_ausentismo(request, id):
 def imprimir_historial(request, id):
     template = "ausentismos/historia_clinica_impresion.html"
     empleado = ent_empleado.objects.get(pk=id)
-    historial = ausentismo.objects.filter(empleado=empleado, empleado__empresa__pk__in=empresas_habilitadas(request))
-    # try:
-    #     empleado =  ent_empleado.objects.get(pk=id)
-    #     historial =  ausentismo.objects.filter(empleado=empleado,empleado__empresa__pk__in=empresas_habilitadas(request))
-    # except Exception as e:
-    #        raise Htt
-
-    context = {}
+    historial = ausentismo.objects.filter(empleado=empleado, empresa__pk__in=empresas_habilitadas(request))
     context = getVariablesMixin(request)
     try:
         config = configuracion.objects.all().first()
@@ -951,9 +946,9 @@ def imprimir_informe(request):
             lista = request.session.get("lista_ausentismos", None)
             observaciones_finales = form.cleaned_data["observaciones"]
             ausencias = (
-                ausentismo.objects.filter(id__in=lista, empleado__empresa__pk__in=empresas_habilitadas(request))
-                .order_by("fecha_creacion", "aus_fcrondesde", "aus_fcronhasta", "empleado__empresa")
-                .select_related("empleado", "empleado__empresa", "aus_diagn", "empleado__trab_cargo")
+                ausentismo.objects.filter(id__in=lista, empresa__pk__in=empresas_habilitadas(request))
+                .order_by("fecha_creacion", "aus_fcrondesde", "aus_fcronhasta", "empresa")
+                .select_related("empleado", "empresa", "aus_diagn", "empleado__trab_cargo")
             )
             cant = len(ausencias)
 
@@ -988,9 +983,9 @@ def generarInforme(request):
             observaciones = form.cleaned_data["observaciones"]
 
             ausencias = (
-                ausentismo.objects.filter(id__in=lista, empleado__empresa__pk__in=empresas_habilitadas(request))
-                .order_by("fecha_creacion", "aus_fcrondesde", "aus_fcronhasta", "empleado__empresa")
-                .select_related("empleado", "empleado__empresa", "aus_diagn", "empleado__trab_cargo")
+                ausentismo.objects.filter(id__in=lista, empresa__pk__in=empresas_habilitadas(request))
+                .order_by("fecha_creacion", "aus_fcrondesde", "aus_fcronhasta", "empresa")
+                .select_related("empleado", "empresa", "aus_diagn", "empleado__trab_cargo")
             )
             cant = len(ausencias)
             if cant <= 0:
@@ -1021,7 +1016,7 @@ def generarInforme(request):
     else:
         form = InformeAusenciasForm(None, initial={"ausentismo_id": ""})
         lista = request.GET.getlist("id")
-        ausencias = ausentismo.objects.filter(id__in=lista, empleado__empresa__pk__in=empresas_habilitadas(request))
+        ausencias = ausentismo.objects.filter(id__in=lista, empresa__pk__in=empresas_habilitadas(request))
         variables = locals()
         return render(request, "ausentismos/informe_ausentismos_form.html", variables)
 

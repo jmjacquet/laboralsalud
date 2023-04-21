@@ -14,9 +14,8 @@ TIPO_ENTIDAD = (
     (3, 'Empleado'),
 )
 
-TIPO_AUSENCIA = (    
+TIPO_AUSENCIA = (
     (1, 'Inculpable'),    
-    (3, 'Enfermedad Profesional'),
     (2, 'Accidente Denunciado'),
     (7, 'Accidente No Denunciado'),
     (4, 'Familiar Enfermo'),
@@ -25,7 +24,7 @@ TIPO_AUSENCIA = (
     (8, 'Consulta/Control rutinario'),
 )
 
-TIPO_AUSENCIA_MEDICOS = (    
+TIPO_AUSENCIA_MEDICOS = (
     (1, 'Inculpable'),
     (3, 'Enfermedad Profesional'),
     (2, 'Accidente Denunciado'),
@@ -321,7 +320,6 @@ def empresa_y_sucursales(id_empresa):
 
 #Incluye la empresa del usuario + la empresa 1 universal
 def empresas_habilitadas(request):    
-    e = empresa_actual(request)        
     usu = usuario_actual(request)
     #Si es Admin puedo ver todas las empresas
     if usu.tipoUsr == 0:

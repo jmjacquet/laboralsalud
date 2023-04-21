@@ -122,7 +122,7 @@
         <td>{{ a.empleado.nro_doc|default_if_none:'' }}</td>
         <td title="{{ a.empleado.apellido_y_nombre|default_if_none:''}}"><a href="{% url 'empleado_detalles' id=a.empleado.id %}"  class="modal-detail" data-modal-head="DETALLE EMPLEADO {{a.empleado.legajo}}" data-modal-callback="reload"><strong>{{ a.empleado.apellido_y_nombre|default_if_none:''|truncatechars:60 }}</strong></a></td>
         <td>{{ a.aus_fcontrol|date:'d/m/Y' }}</td>
-        <td title="{{ a.empleado.empresa|default_if_none:''}}">{{ a.empleado.empresa|default_if_none:''|truncatechars:60 }}</td>
+        <td title="{{ a.empresa|default_if_none:''}}">{{ a.empresa|default_if_none:''|truncatechars:60 }}</td>
         <td>{{ a.get_tipo_ausentismo_display|default_if_none:'' }}</td>
         <td title="{{ a.aus_grupop|default_if_none:''}}">{{ a.aus_grupop|proteger_dato:info_sensible|default_if_none:''|truncatechars:60 }}</td>
         <td title="{{ a.aus_diagn|default_if_none:''}}">{{ a.aus_diagn|proteger_dato:info_sensible|default_if_none:''|truncatechars:60 }}</td>

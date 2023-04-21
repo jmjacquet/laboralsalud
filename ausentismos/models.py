@@ -8,7 +8,7 @@ from django.db import models
 
 from ausentismos.managers import AusentismosActivos
 from laboralsalud.utilidades import *
-from entidades.models import ent_empleado, ent_medico_prof
+from entidades.models import ent_empleado, ent_medico_prof, ent_empresa
 
 
 class aus_patologia(models.Model):
@@ -123,6 +123,17 @@ class ausentismo(models.Model):
 
     plan_accion = models.TextField("Observaciones", blank=True, null=True)
 
+    empresa = models.ForeignKey(
+        ent_empresa,
+        verbose_name="Empresa",
+        db_column="empresa",
+        blank=True,
+        null=True,
+        related_name="aus_empresa",
+        on_delete=models.SET_NULL,
+    )
+
+
     baja = models.BooleanField(default=False)
     fecha_creacion = models.DateField(auto_now_add=True)
     fecha_modif = models.DateField(auto_now=True)
@@ -139,7 +150,7 @@ class ausentismo(models.Model):
     ausentismos_activos = AusentismosActivos()
     class Meta:
         db_table = "ausentismo"
-        ordering = ["-aus_fcrondesde", "-aus_fcronhasta", "empleado__empresa"]
+        ordering = ["-aus_fcrondesde", "-aus_fcronhasta", "empresa"]
 
     def __unicode__(self):
         return "%s - %s (%s)" % (self.pk, self.empleado, self.get_fechas)
@@ -253,7 +264,7 @@ class ausentismo_controles_patologias(models.Model):
 
 def ausentismos_del_dia(request, fecha):
     controles = ausentismo_controles.objects.filter(fecha=fecha).values_list("ausentismo__id", flat=True)
-    ausentismos = ausentismo.objects.filter(baja=False, empleado__empresa__pk__in=empresas_habilitadas(request)).filter(
+    ausentismos = ausentismo.objects.filter(baja=False, empresa__pk__in=empresas_habilitadas(request)).filter(
         Q(fecha_creacion=fecha) | (Q(id__in=controles))
     )
     return ausentismos

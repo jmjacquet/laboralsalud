@@ -2,8 +2,8 @@
 from django import forms
 from django.forms import ModelForm
 from django.forms.widgets import TextInput, NumberInput, Select
+from entidades.models import ent_empleado, ent_medico_prof, ent_empresa_agrupamiento, ent_empresa
 from .models import *
-from entidades.models import ent_empleado, ent_medico_prof, ent_empresa_agrupamiento
 from laboralsalud.utilidades import *
 from usuarios.views import tiene_permiso
 
