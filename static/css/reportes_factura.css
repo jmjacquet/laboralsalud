@@ -242,7 +242,10 @@ td {
   font-weight: bold;
   text-align: center;
   background-color: #9fc9f9;
-
 }
 
 
+.subtitulo{
+  font-size: 12px;
+  font-weight: normal;
+}

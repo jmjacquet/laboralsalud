@@ -691,7 +691,10 @@ div.breadcrumbs a:focus, div.breadcrumbs a:hover {
     color: #c4dce8;
 }
 
-
+.subtitulo {
+    font-size: 12px;
+    text-transform: none;
+}
 
 .table-hover > tbody > tr > td.danger:hover, .table-hover > tbody > tr > th.danger:hover, .table-hover > tbody > tr.danger:hover > td, .table-hover > tbody > tr:hover > .danger, .table-hover > tbody > tr.danger:hover > th {
     background-color: #ffcac5;
@@ -699,6 +702,7 @@ div.breadcrumbs a:focus, div.breadcrumbs a:hover {
 
 .panel-body {
     padding: 5px;
+    font-size: 12px;
 }
 
 .panel > .barra_busqueda {

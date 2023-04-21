@@ -1,10 +1,18 @@
 # -*- coding: utf-8 -*-
 from django.db import models
+from django.db.models import Q
 
-# class EmpresasPermitidas(models.Manager):
-#     def __init__(self, empresas):
-#         super(EmpresasPermitidas, self).__init__()
-#         self.empresas = empresas
-#
-#     def get_queryset(self):
-#         return super(EmpresasPermitidas, self).get_queryset().filter(id__in=empresas)
+from laboralsalud.utilidades import hoy
+
+
+class EmpleadosActivos(models.Manager):
+    def __init__(self):
+        super(EmpleadosActivos, self).__init__()
+
+    def get_queryset(self):
+        return (
+            super(EmpleadosActivos, self)
+            .get_queryset()
+            .filter(baja=False)
+            .filter(Q(trab_fbaja__isnull=True) | Q(trab_fbaja__lt=hoy()))
+        )

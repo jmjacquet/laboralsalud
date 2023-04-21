@@ -19,7 +19,7 @@ from django.urls import reverse
 from easy_pdf.rendering import render_to_pdf_response
 
 from ausentismos.models import ausentismo
-from entidades.models import ent_empresa
+from entidades.models import ent_empresa, ent_empleado
 from general.views import (
     getVariablesMixin,
     recargar_empresas_agrupamiento,
@@ -58,14 +58,9 @@ def calcular_empleados_empresas(empresas_list):
     tot_empl = 0
     if not empresas_list:
         return tot_empl
-    empresas = ent_empresa.objects.filter(id__in=empresas_list).select_related(
-        "casa_central"
-    )
-    for e in empresas:
-        if not e.casa_central:
-            tot_empl += e.cantidad_empleados()
-        elif e.casa_central.id not in empresas_list:
-            tot_empl += e.cantidad_empleados()
+
+    empr_sucursales = [e for e in empresas_list if e.casa_central]
+    tot_empl = ent_empleado.empleados_activos.filter(empresa__in=empr_sucursales).distinct().count()
     return tot_empl
 
 
@@ -103,30 +98,22 @@ def reporte_resumen_periodo(request):
             Q(aus_fcrondesde__gte=fdesde, aus_fcrondesde__lte=fhasta)
             | Q(aus_fcronhasta__gte=fdesde, aus_fcronhasta__lte=fhasta)
             | Q(aus_fcrondesde__lt=fdesde, aus_fcronhasta__gt=fhasta)
-        ).filter(tipo_ausentismo__in=(1, 2, 3, 7))
+        )
+         #.filter(tipo_ausentismo__in=(1, 2, 3, 7))
         if agrupamiento and not empresa:
             data = recargar_empresas_agrupamiento(request, agrupamiento.id)
             empresas_list = [d["id"] for d in json.loads(data.content)]
             q_empresas = ent_empresa.objects.filter(
                 Q(id__in=empresas_list) | Q(casa_central__id__in=empresas_list)
             )
-            empresas_list = list(q_empresas.values_list("id", flat=True))
+            empresas_list = q_empresas
         elif empresa:
             if empresa.casa_central:
-                empresas_list = list([empresa.pk])
+                empresas_list = [empresa]
             else:
-                empresas_list = [
-                    e.id
-                    for e in ent_empresa.objects.filter(
+                empresas_list = ent_empresa.objects.filter(
                         Q(id=empresa.id) | Q(casa_central=empresa)
                     )
-                ]
-        else:
-            empresas_list = [
-                d["id"]
-                for d in json.loads(recargar_empresas_agrupamiento(request, 0).content)
-            ]
-        ausentismos = ausentismos.filter(empleado__empresa__id__in=empresas_list)
 
         if empleado:
             ausentismos = ausentismos.filter(
@@ -387,7 +374,7 @@ def ausentismo_grupo_patologico(ausentismos, fdesde, fhasta):
         "AusentismoFechasNT", "grupop aus_fcrondesde aus_fcronhasta"
     )
     fechas_ausentismos_list = [
-        AusentismoFechasNT(a.aus_grupop.id, a.aus_fcrondesde, a.aus_fcronhasta)
+        AusentismoFechasNT(a.aus_grupop_id, a.aus_fcrondesde, a.aus_fcronhasta)
         for a in ausentismos.select_related("aus_grupop")
     ]
     aus_x_grupop = []
@@ -472,7 +459,7 @@ def ausentismo_total_x_gerencia(
                     "id": a_id,
                     "nombre": a["empleado__empresa__agrupamiento__descripcion"],
                     "tasa": tasa_ausentismo,
-                    "porc": tasa_ausentismo * 100 / tasa_ausentismo_tot,
+                    "porc": 0 if tasa_ausentismo <= 0 else tasa_ausentismo * 100 / tasa_ausentismo_tot,
                 }
             )
             tasa_aus_acum += tasa_ausentismo
@@ -529,7 +516,7 @@ def ausentismo_total_x_sector(
                 "id": e.id,
                 "nombre": e.razon_social.upper(),
                 "tasa": tasa_ausentismo,
-                "porc": tasa_ausentismo * 100 / tasa_ausentismo_tot,
+                "porc": 0 if tasa_ausentismo <= 0 else tasa_ausentismo * 100 / tasa_ausentismo_tot,
             }
         )
 
@@ -638,7 +625,8 @@ def reporteResumenAnual(request):
             Q(aus_fcrondesde__gte=fdesde, aus_fcrondesde__lte=fhasta)
             | Q(aus_fcronhasta__gte=fdesde, aus_fcronhasta__lte=fhasta)
             | Q(aus_fcrondesde__lt=fdesde, aus_fcronhasta__gt=fhasta)
-        ).filter(tipo_ausentismo__in=(1, 2, 3, 7))
+        )
+        #    .filter(tipo_ausentismo__in=(1, 2, 3, 7))
         filtro = "Período desde %s al %s" % (
             fdesde.strftime("%m/%Y"),
             fhasta.strftime("%m/%Y"),
@@ -649,23 +637,16 @@ def reporteResumenAnual(request):
             q_empresas = ent_empresa.objects.filter(
                 Q(id__in=empresas_list) | Q(casa_central__id__in=empresas_list)
             )
-            empresas_list = list(q_empresas.values_list("id", flat=True))
+            empresas_list = q_empresas
         elif empresa:
             if empresa.casa_central:
-                empresas_list = list([empresa.pk])
+                empresas_list = [empresa.pk]
             else:
-                empresas_list = [
-                    e.id
-                    for e in ent_empresa.objects.filter(
+                empresas_list = ent_empresa.objects.filter(
                         Q(id=empresa.id) | Q(casa_central=empresa)
                     )
-                ]
-        else:
-            empresas_list = [
-                d["id"]
-                for d in json.loads(recargar_empresas_agrupamiento(request, 0).content)
-            ]
-        ausentismos = ausentismos.filter(empleado__empresa__id__in=empresas_list)
+
+        ausentismos = ausentismos.filter(empresa__in=empresas_list)
 
         if empleado:
             ausentismos = ausentismos.filter(

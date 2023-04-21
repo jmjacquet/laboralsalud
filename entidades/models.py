@@ -3,12 +3,15 @@ from __future__ import unicode_literals
 
 from django.db import models
 
+from entidades.managers import EmpleadosActivos
 from laboralsalud.utilidades import *
 
 # from usuarios.models import *
 import datetime
 from dateutil.relativedelta import relativedelta
 from django.db.models import Q
+
+from reportes.managers import CasasCentrales, Sucursales
 
 
 class ent_cargo(models.Model):
@@ -149,7 +152,7 @@ class ent_empresa(models.Model):
     )
 
     rubro = models.CharField("Rubro", max_length=200, blank=True, null=True)
-    cant_empleados = models.IntegerField("Cant.Empl.", blank=True, null=True)
+    cant_empleados = models.IntegerField("Cant.Empl.", blank=True, null=True, default=0)
     art = models.ForeignKey(
         "ent_art",
         verbose_name="ART",
@@ -212,13 +215,15 @@ class ent_empresa(models.Model):
     )
 
     objects = models.Manager()
+    casas_centrales = CasasCentrales()
+    sucursales = Sucursales()
 
     class Meta:
         db_table = "ent_empresa"
         ordering = ["razon_social", "cuit"]
 
     def __unicode__(self):
-        return "%s" % unicode(self.razon_social.upper())
+        return unicode(self.razon_social.upper())
 
     def cantidad_empleados(self):
         empls = (
@@ -371,6 +376,9 @@ class ent_empleado(models.Model):
         related_name="empl_usuario_carga",
         on_delete=models.SET_NULL,
     )
+
+    empleados_activos = EmpleadosActivos()
+    objects = models.Manager()
 
     class Meta:
         db_table = "ent_empleado"

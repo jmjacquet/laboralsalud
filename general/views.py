@@ -172,31 +172,27 @@ class PrincipalView(VariablesMixin, TemplateView):
         fecha1 = hoy()
         fecha2 = hoy()
         if form.is_valid():
-            fecha1 = form.cleaned_data["fecha1"]
-            fecha2 = form.cleaned_data["fecha2"]
-        if not fecha1:
-            fecha1 = hoy()
-        if not fecha2:
-            fecha2 = hoy()
+            fecha1 = form.cleaned_data["fecha1"] or hoy()
+            fecha2 = form.cleaned_data["fecha2"] or hoy()
         empresas = empresas_habilitadas(self.request)
         ausentismos = ausentismos_del_dia(self.request, fecha1).order_by(
             "-aus_fcontrol"
         )
         fechas_control = ausentismo.objects.filter(
-            baja=False, aus_fcontrol=fecha1, empleado__empresa__pk__in=empresas
+            baja=False, aus_fcontrol=fecha1, empresa__pk__in=empresas
         ).order_by("-aus_fcontrol")
         prox_turnos = turnos.objects.filter(
             turno_empresa__pk__in=empresas, fecha__gte=fecha2
         )
         context["form"] = form
         context["ausentismo"] = ausentismos.select_related(
-            "empleado", "empleado__empresa", "aus_grupop", "aus_diagn"
+            "empleado", "empresa", "aus_grupop", "aus_diagn"
         )
         context["turnos"] = prox_turnos.select_related(
             "turno_empleado", "turno_empresa", "usuario_carga"
         )
         context["fechas_control"] = fechas_control.select_related(
-            "empleado", "empleado__empresa", "aus_grupop", "aus_diagn"
+            "empleado", "empresa", "aus_grupop", "aus_diagn"
         )
         return context
 
