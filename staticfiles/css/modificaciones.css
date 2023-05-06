@@ -154,7 +154,8 @@ textarea.form-control{height:auto}
     border-top-left-radius: 3px;
     border-top-right-radius: 3px;
     background-color: #417690;
-    color: #fff
+    color: #fff;
+    text-align: left;
 }
 
 .barra_busqueda .panel-body {
@@ -722,6 +723,7 @@ div.breadcrumbs a:focus, div.breadcrumbs a:hover {
     text-align: center;
     color: #fff;
 }
+
 
 .panel > .panel-heading > .caption {
     float: right;

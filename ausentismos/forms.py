@@ -436,10 +436,10 @@ class ConsultaAusentismos(forms.Form):
     )
 
     def __init__(self, *args, **kwargs):
-        request = kwargs.pop("request", None)
+        empresas = kwargs.pop("empresas", [])
         super(ConsultaAusentismos, self).__init__(*args, **kwargs)
         self.fields["empresa"].queryset = ent_empresa.objects.filter(
-            baja=False, pk__in=empresas_habilitadas(request)
+            baja=False, pk__in=empresas
         )
 
 

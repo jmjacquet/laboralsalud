@@ -8,7 +8,7 @@ from datetime import datetime, date
 from decimal import Decimal
 from collections import namedtuple
 from django.contrib.auth.decorators import login_required
-from django.db.models import Q, Count
+from django.db.models import Q, Count, F, Sum
 from django.db.models import Value as V
 from django.db.models.functions import Coalesce
 from django.shortcuts import (
@@ -19,7 +19,7 @@ from django.urls import reverse
 from easy_pdf.rendering import render_to_pdf_response
 
 from ausentismos.models import ausentismo
-from entidades.models import ent_empresa, ent_empleado
+from entidades.models import ent_empresa, ent_empleado, empleado_empresa_historico
 from general.views import (
     getVariablesMixin,
     recargar_empresas_agrupamiento,
@@ -28,7 +28,7 @@ from laboralsalud.utilidades import (
     ultimo_anio,
     hoy,
     DecimalEncoder,
-    MESES,
+    MESES, inicioAnio, inicio_de_los_tiempos,
 )
 from usuarios.views import tiene_permiso
 from .forms import ConsultaPeriodo, ConsultaAnual
@@ -50,18 +50,22 @@ def calcular_tasa_ausentismo(dias_caidos_tot, dias_laborables, empleados_tot):
     return tasa_ausentismo
 
 
-def calcular_empleados_empresas(empresas_list):
+def calcular_empleados_empresas(empresas_list, fdesde=inicio_de_los_tiempos(), fhasta=hoy()):
     """
-    Calcula la cantidad de empleados de un listado de empresas
+    Calcula la cantidad de empleados de un listado de empresas activos para un rango de fechas dado
     (si hay casas centrales y sucursales debe filtrar para que no se repitan los empleados)
     """
     tot_empl = 0
     if not empresas_list:
         return tot_empl
-
-    empr_sucursales = [e for e in empresas_list if e.casa_central]
-    tot_empl = ent_empleado.empleados_activos.filter(empresa__in=empr_sucursales).distinct().count()
-    return tot_empl
+    empr_sucursales = [e for e in empresas_list if e.casa_central_id]
+    tot_empl_empr = ent_empleado.empleados_activos.filter(empresa__in=empr_sucursales)\
+        .filter(Q(empr_fingreso__gte=fdesde) | Q(empr_fingreso__lte=fhasta))\
+        .distinct().count()
+    tot_empl_hist = empleado_empresa_historico.objects.filter(empresa__in=empr_sucursales) \
+        .filter(Q(empr_fingreso__gte=fdesde) | Q(empr_fingreso__lte=fhasta)) \
+        .distinct().count()
+    return tot_empl_empr + tot_empl_hist
 
 
 @login_required
@@ -77,7 +81,7 @@ def reporte_resumen_periodo(request):
     empresas_list = []
     empresa = None
     agrupamiento = None
-    filtro = ""
+    filtro_str = ""
     q_empresas = None
     if form.is_valid():
         periodo = form.cleaned_data["periodo"]
@@ -93,13 +97,11 @@ def reporte_resumen_periodo(request):
             periodo.month,
             calendar.monthrange(periodo.year, periodo.month)[1],
         )
-        filtro = "Período: %s " % (periodo.strftime("%m/%Y"))
-        ausentismos = ausentismo.ausentismos_activos.filter(
-            Q(aus_fcrondesde__gte=fdesde, aus_fcrondesde__lte=fhasta)
+        filtro_str = "Período: %s " % (periodo.strftime("%m/%Y"))
+        filtros_fechas_Q = (Q(aus_fcrondesde__gte=fdesde, aus_fcrondesde__lte=fhasta)
             | Q(aus_fcronhasta__gte=fdesde, aus_fcronhasta__lte=fhasta)
-            | Q(aus_fcrondesde__lt=fdesde, aus_fcronhasta__gt=fhasta)
-        )
-         #.filter(tipo_ausentismo__in=(1, 2, 3, 7))
+            | Q(aus_fcrondesde__lt=fdesde, aus_fcronhasta__gt=fhasta))
+
         if agrupamiento and not empresa:
             data = recargar_empresas_agrupamiento(request, agrupamiento.id)
             empresas_list = [d["id"] for d in json.loads(data.content)]
@@ -115,36 +117,43 @@ def reporte_resumen_periodo(request):
                         Q(id=empresa.id) | Q(casa_central=empresa)
                     )
 
+        ausentismos = ausentismo.ausentismos_activos \
+            .filter(filtros_fechas_Q) \
+            .filter(empresa__in=empresas_list)\
+            .select_related("empresa", "empleado")
+
         if empleado:
             ausentismos = ausentismos.filter(
                 Q(empleado__apellido_y_nombre__icontains=empleado)
                 | Q(empleado__nro_doc__icontains=empleado)
             )
-            filtro = filtro + " - Empleado: %s" % (empleado)
+            filtro_str += " - Empleado: %s" % (empleado)
         if trab_cargo:
             ausentismos = ausentismos.filter(empleado__trab_cargo=trab_cargo)
-            filtro += " - Puesto de Trabajo: %s" % (trab_cargo)
+            filtro_str += " - Puesto de Trabajo: %s" % (trab_cargo)
         if int(tipo_ausentismo) > 0:
             ausentismos = ausentismos.filter(tipo_ausentismo=int(tipo_ausentismo))
         if grupop:
             ausentismos = ausentismos.filter(aus_grupop__patologia=grupop)
     else:
         ausentismos = None
+
     context["form"] = form
     context["fecha"] = fecha
     context["fdesde"] = fdesde
     context["fhasta"] = fhasta
     context["ausentismos"] = ausentismos
     context["empresa"] = empresa
+    context["inicio_anio"] = inicioAnio()
     context["agrupamiento"] = agrupamiento
     context["titulo_ventana"] = "INFORME AUSENTISMO {}".format(
         "EMPRESA" if empresa else "GERENCIA"
     )
     # _tipo_reporte =
     context["titulo_reporte"] = "{}  - {}".format(
-        "Empresa: %s" % empresa if empresa else "Gerencia: %s" % agrupamiento, filtro
+        "Empresa: %s" % empresa if empresa else "Gerencia: %s" % agrupamiento, filtro_str
     )
-    context["filtro"] = filtro
+    context["filtro"] = filtro_str
     context["pie_pagina"] = "Sistemas Laboral Salud - %s" % (fecha.strftime("%d/%m/%Y"))
     aus_total = None
     aus_inc = None
@@ -160,7 +169,7 @@ def reporte_resumen_periodo(request):
     dias_laborables = int((fhasta - fdesde).days + 1)
     empl_mas_faltadores = []
     if ausentismos:
-        empleados_tot = calcular_empleados_empresas(empresas_list)
+        empleados_tot = calcular_empleados_empresas(empresas_list, fdesde, fhasta)
         aus_total = ausentismo_total(
             ausentismos, fdesde, fhasta, dias_laborables, empleados_tot
         )
@@ -173,7 +182,7 @@ def reporte_resumen_periodo(request):
         aus_x_grupop, max_grupop = ausentismo_grupo_patologico(
             ausentismos, fdesde, fhasta
         )
-        empl_mas_faltadores = calcular_empleados_faltadores(ausentismos, fdesde, fhasta)
+        empl_mas_faltadores = calcular_empleados_faltadores(ausentismos, fhasta)
 
         if empresa:
             aus_total_x_gerencia, tasa_aus_tot_gerencia = ausentismo_total_x_gerencia(
@@ -220,6 +229,224 @@ def reporte_resumen_periodo(request):
         context["aus_grp_image"] = request.POST.get("aus_grp_image")
         return render_to_pdf_response(request, template, context)
     return render(request, template, context)
+
+
+@login_required
+def reporteResumenAnual(request):
+    if not tiene_permiso(request, "indic_pantalla"):
+        return redirect(reverse("principal"))
+    template_name = "reportes/resumen_anual.html"
+    form = ConsultaAnual(request.POST or None, request=request)
+    fecha = date.today()
+    fdesde = ultimo_anio()
+    fhasta = hoy()
+    context = {}
+    context = getVariablesMixin(request)
+    empresas_list = []
+    empresa = None
+    agrupamiento = None
+    filtro_str = ""
+    max_grupop = 20
+    if form.is_valid():
+        periodo_desde = form.cleaned_data["periodo_desde"]
+        periodo_hasta = form.cleaned_data["periodo_hasta"]
+        agrupamiento = form.cleaned_data["agrupamiento"]
+        empresa = form.cleaned_data["empresa"]
+        empleado = form.cleaned_data["empleado"]
+        tipo_ausentismo = form.cleaned_data["tipo_ausentismo"]
+        trab_cargo = form.cleaned_data["trab_cargo"]
+        grupop = form.cleaned_data["grupo_patologico"]
+
+        fdesde = date(periodo_desde.year, periodo_desde.month, 1)
+        fhasta = date(
+            periodo_hasta.year,
+            periodo_hasta.month,
+            calendar.monthrange(periodo_hasta.year, periodo_hasta.month)[1],
+        )
+        filtro_str = "Período desde %s al %s" % (
+            fdesde.strftime("%m/%Y"),
+            fhasta.strftime("%m/%Y"),
+        )
+        filtros_fechas_Q = (
+            Q(aus_fcrondesde__gte=fdesde, aus_fcrondesde__lte=fhasta)
+            | Q(aus_fcronhasta__gte=fdesde, aus_fcronhasta__lte=fhasta)
+            | Q(aus_fcrondesde__lt=fdesde, aus_fcronhasta__gt=fhasta)
+        )
+
+        if agrupamiento and not empresa:
+            data = recargar_empresas_agrupamiento(request, agrupamiento.id)
+            empresas_list = [d["id"] for d in json.loads(data.content)]
+            q_empresas = ent_empresa.objects.filter(
+                Q(id__in=empresas_list) | Q(casa_central__id__in=empresas_list)
+            )
+            empresas_list = q_empresas
+        elif empresa:
+            if empresa.casa_central:
+                empresas_list = [empresa.pk]
+            else:
+                empresas_list = ent_empresa.objects.filter(
+                        Q(id=empresa.id) | Q(casa_central=empresa)
+                    )
+
+        ausentismos = ausentismo.ausentismos_activos\
+            .filter(filtros_fechas_Q)\
+            .filter(empresa__in=empresas_list)\
+            .select_related("empresa", "empleado")
+
+        if empleado:
+            ausentismos = ausentismos.filter(
+                Q(empleado__apellido_y_nombre__icontains=empleado)
+                | Q(empleado__nro_doc__icontains=empleado)
+            )
+        if trab_cargo:
+            ausentismos = ausentismos.filter(empleado__trab_cargo=trab_cargo)
+            filtro_str += " - Puesto de Trabajo: %s" % (trab_cargo)
+        if int(tipo_ausentismo) > 0:
+            ausentismos = ausentismos.filter(tipo_ausentismo=int(tipo_ausentismo))
+        if grupop:
+            ausentismos = ausentismos.filter(aus_grupop__patologia=grupop)
+    else:
+        ausentismos = None
+
+    context["form"] = form
+    context["fecha"] = fecha
+    context["fdesde"] = fdesde
+    context["fhasta"] = fhasta
+    context["ausentismos"] = ausentismos
+    context["empresa"] = empresa
+    context["agrupamiento"] = agrupamiento
+    totales = []
+    inculpables = []
+    accidentes = []
+    datos_tabla = []
+    from dateutil.rrule import rrule, MONTHLY
+
+    meses = [
+        [int(dt.strftime("%m")), int(dt.strftime("%Y"))]
+        for dt in rrule(MONTHLY, dtstart=fdesde, until=fhasta)
+    ]
+
+    listado_meses = [
+        "%s%s" % (MESES[int(dt.strftime("%m")) - 1][1].upper(), (dt.strftime("%Y")))
+        for dt in rrule(MONTHLY, dtstart=fdesde, until=fhasta)
+    ]
+    if ausentismos:
+        empleados_tot = calcular_empleados_empresas(empresas_list, fdesde, fhasta)
+        for m in meses:
+            dias_laborables = int(dias_mes(m[0], m[1], fdesde, fhasta))
+            ausencias = en_mes_anio(m[0], m[1], ausentismos)
+            qs_totales = ausencias
+            ausenc_totales = dias_ausentes_mes(m[0], m[1], ausencias)
+            empl_totales = empleados_tot
+            if ausenc_totales > 0:
+                tasa_total = calcular_tasa_ausentismo(
+                    ausenc_totales, dias_laborables, empl_totales
+                )
+            else:
+                tasa_total = 0
+            ta_cant_empls = (
+                qs_totales.values("empleado", "tipo_ausentismo").distinct().count()
+            )
+
+            totales.append({"y": tasa_total, "custom": {"empleados": ta_cant_empls}})
+
+            qs_inculpables = ausencias.filter(tipo_ausentismo=1)
+            ausenc_inculp = dias_ausentes_mes(m[0], m[1], qs_inculpables)
+            empl_tot_inculp = empleados_tot
+            if ausenc_inculp > 0:
+                tasa_inclup = calcular_tasa_ausentismo(
+                    ausenc_inculp, dias_laborables, empl_tot_inculp
+                )
+            else:
+                tasa_inclup = 0
+            empl_inculp = qs_inculpables.values("empleado").distinct().count()
+            inculpables.append({"y": tasa_inclup, "custom": {"empleados": empl_inculp}})
+
+            qs_accidentes = ausencias.filter(tipo_ausentismo__in=(2, 3, 7))
+            ausenc_acc = dias_ausentes_mes(m[0], m[1], qs_accidentes)
+            empl_tot_acc = empleados_tot
+            if ausenc_acc > 0:
+                tasa_acc = calcular_tasa_ausentismo(
+                    ausenc_acc, dias_laborables, empl_tot_acc
+                )
+            else:
+                tasa_acc = 0
+            empl_acc = qs_accidentes.values("empleado").distinct().count()
+            accidentes.append({"y": tasa_acc, "custom": {"empleados": empl_acc}})
+
+            datos_tabla.append(
+                {
+                    "mes": m,
+                    "tasa_total": tasa_total,
+                    "ta_cant_empls": ta_cant_empls,
+                    "tasa_inclup": tasa_inclup,
+                    "empl_inculp": empl_inculp,
+                    "tasa_acc": tasa_acc,
+                    "empl_acc": empl_acc,
+                }
+            )
+
+        aus_x_grupop_tot = (
+            ausentismos.values("aus_grupop__pk", "aus_grupop__patologia")
+            .annotate(total=Count("aus_grupop"))
+            .order_by("-total")[:4]
+        )
+
+        id_grupos = [int(x["aus_grupop__pk"]) for x in aus_x_grupop_tot]
+
+        listado = []
+        aus_x_grupop = []
+        for x in aus_x_grupop_tot:
+            nombre = x["aus_grupop__patologia"]
+            id = x["aus_grupop__pk"]
+            datos = []
+            for m in meses:
+                ausencias = en_mes_anio(m[0], m[1], ausentismos)
+                aus_x_grupop = list(
+                    ausencias.filter(aus_grupop__pk__in=id_grupos)
+                    .values("aus_grupop__patologia", "aus_grupop__pk")
+                    .annotate(total=Count("aus_grupop"))
+                    .order_by("-total")
+                    .values("aus_grupop__patologia", "aus_grupop__pk", "total")
+                )
+                total = sum(
+                    [int(p["total"]) for p in aus_x_grupop if id == p["aus_grupop__pk"]]
+                )
+                datos.append(total)
+            listado.append(dict(name=nombre, data=datos))
+
+        if aus_x_grupop:
+            max_grupop = max([max(l["data"]) for l in listado])
+
+        context["max_grupop"] = max_grupop
+        context["inculpables"] = json.dumps(inculpables, cls=DecimalEncoder)
+        context["accidentes"] = json.dumps(accidentes, cls=DecimalEncoder)
+        context["totales"] = json.dumps(totales, cls=DecimalEncoder)
+        context["grupop"] = listado
+
+    else:
+        context["inculpables"] = None
+        context["accidentes"] = None
+        context["totales"] = None
+        context["grupop"] = None
+
+    context["listado_meses"] = json.dumps(listado_meses, cls=DecimalEncoder)
+    context["datos_tabla"] = datos_tabla
+    context["empresa"] = empresa
+    context["titulo_reporte"] = "%s  - %s" % (
+        ("Empresa: %s" % empresa if empresa else "Gerencia: %s" % agrupamiento),
+        filtro_str,
+    )
+    context["filtro"] = filtro_str
+    context["pie_pagina"] = "Sistemas Laboral Salud - %s" % (fecha.strftime("%d/%m/%Y"))
+
+    if ("pdf" in request.POST) and ausentismos:
+        template_name = "reportes/reporte_anual.html"
+        context["aus_tot_image"] = request.POST.get("aus_tot_image")
+        context["aus_grupop_image"] = request.POST.get("aus_grupop_image")
+
+        return render_to_pdf_response(request, template_name, context)
+    return render(request, template_name, context)
 
 
 def ausentismo_total(ausentismos, fdesde, fhasta, dias_laborables, empleados_tot):
@@ -366,8 +593,10 @@ def ausentismo_accidentes(ausentismos, fdesde, fhasta, dias_laborables, empleado
 def ausentismo_grupo_patologico(ausentismos, fdesde, fhasta):
     # AUSENTISMO por Grupo Patologico
     aus_grupop = (
-        ausentismos.values("aus_grupop__patologia", "aus_grupop__id")
-        .annotate(total=Count("aus_grupop"))
+
+        ausentismos
+        .values("aus_grupop__patologia", "aus_grupop_id")
+        .annotate(total=Count("aus_grupop_id"))
         .order_by("-total")[:10]
     )
     AusentismoFechasNT = namedtuple(
@@ -379,7 +608,7 @@ def ausentismo_grupo_patologico(ausentismos, fdesde, fhasta):
     ]
     aus_x_grupop = []
     for a in aus_grupop:
-        _id = a.get("aus_grupop__id")
+        _id = a.get("aus_grupop_id")
         aus_x_grupo = filter(lambda x: x.grupop == _id, fechas_ausentismos_list)
         dias = dias_ausentes(fdesde, fhasta, aus_x_grupo)
         aus_x_grupop.append(
@@ -397,12 +626,10 @@ def ausentismo_grupo_patologico(ausentismos, fdesde, fhasta):
     return aus_x_grupop, max_grupop
 
 
-def calcular_empleados_faltadores(ausentismos, fdesde, fhasta):
-    # Empleados más faltadores
-    empl_mas_faltadores = []
-    for a in ausentismos.select_related("empleado"):
-        dias = dias_ausentes_tot(fdesde, fhasta, a.aus_fcrondesde, a.aus_fcronhasta)
-        empl_mas_faltadores.append({"empleado": a.empleado, "dias": dias})
+def calcular_empleados_faltadores(ausentismos, fhasta):
+    # Empleados más faltadores desde principios del año
+    empl_mas_faltadores = dias_ausentes_anio_en_curso(ausentismos, fhasta)
+        # empl_mas_faltadores.append({"empleado": a.empleado, "dias": dias})
     return sorted(empl_mas_faltadores, key=lambda i: i["dias"], reverse=True)
 
 
@@ -415,7 +642,7 @@ def ausentismo_total_x_gerencia(
 
     empresas = [e.id for e in ent_empresa.objects.filter(casa_central=empresa)]
     ausentismos_inc_agrupam = ausentismos.filter(
-        tipo_ausentismo=1, empleado__empresa__id__in=empresas
+        tipo_ausentismo=1, empresa__id__in=empresas
     )
 
     dias_caidos_tot = dias_ausentes(fdesde, fhasta, ausentismos_inc_agrupam)
@@ -423,12 +650,16 @@ def ausentismo_total_x_gerencia(
         dias_caidos_tot, dias_laborables, empleados_tot
     )
     agrupamientos_empresa = (
-        ausentismos_inc_agrupam.filter(empleado__empresa__agrupamiento__isnull=False)
-        .values(
-            "empleado__empresa__agrupamiento",
-            "empleado__empresa__agrupamiento__descripcion",
+        ausentismos_inc_agrupam.filter(empresa__agrupamiento__isnull=False)
+        .annotate(
+            agrup_id=F("empresa__agrupamiento"),
+            agrup_descr=F("empresa__agrupamiento__descripcion"),
         )
-        .annotate(total=Coalesce(Count("empleado__empresa__agrupamiento"), V(0)))
+        .values(
+            "agrup_id",
+            "agrup_descr",
+        )
+        .annotate(total=Coalesce(Count("agrup_id"), V(0)))
         .order_by("-total")
     )
     AusentismoFechasNT = namedtuple(
@@ -439,14 +670,14 @@ def ausentismo_total_x_gerencia(
             a.empleado.empresa.agrupamiento.id, a.aus_fcrondesde, a.aus_fcronhasta
         )
         for a in ausentismos_inc_agrupam.filter(
-            empleado__empresa__agrupamiento__isnull=False
-        ).select_related("empleado__empresa__agrupamiento")
+            empresa__agrupamiento__isnull=False
+        ).select_related("empresa__agrupamiento")
     ]
     aus_x_agrupamiento = []
     tasa_aus_acum = 0
     for i, a in enumerate(agrupamientos_empresa):
         if i <= 7:
-            a_id = a["empleado__empresa__agrupamiento"]
+            a_id = a["agrup_id"]
             aus_inc_agrup_list = filter(
                 lambda x: x.agrup == a_id, fechas_ausentismos_list
             )
@@ -457,7 +688,7 @@ def ausentismo_total_x_gerencia(
             aus_x_agrupamiento.append(
                 {
                     "id": a_id,
-                    "nombre": a["empleado__empresa__agrupamiento__descripcion"],
+                    "nombre": a["agrup_descr"],
                     "tasa": tasa_ausentismo,
                     "porc": 0 if tasa_ausentismo <= 0 else tasa_ausentismo * 100 / tasa_ausentismo_tot,
                 }
@@ -487,8 +718,8 @@ def ausentismo_total_x_sector(
         return None, 0
 
     ausentismos_inc_sector = ausentismos.filter(
-        tipo_ausentismo=1, empleado__empresa__in=q_empresas
-    ).select_related("empleado__empresa")
+        tipo_ausentismo=1, empresa__in=q_empresas
+    ).select_related("empresa")
     dias_caidos_tot = dias_ausentes(fdesde, fhasta, ausentismos_inc_sector)
     tasa_ausentismo_tot = calcular_tasa_ausentismo(
         dias_caidos_tot, dias_laborables, empleados_tot
@@ -498,7 +729,7 @@ def ausentismo_total_x_sector(
         "AusentismoFechasNT", "empresa_id aus_fcrondesde aus_fcronhasta"
     )
     fechas_ausentismos_list = [
-        AusentismoFechasNT(a.empleado.empresa.id, a.aus_fcrondesde, a.aus_fcronhasta)
+        AusentismoFechasNT(a.empresa_id, a.aus_fcrondesde, a.aus_fcronhasta)
         for a in ausentismos_inc_sector
     ]
     aus_x_sector = []
@@ -588,222 +819,6 @@ def get_franja_x_edad(edad):
     return 0, FRANJA_ETARIA[0]
 
 
-@login_required
-def reporteResumenAnual(request):
-    if not tiene_permiso(request, "indic_pantalla"):
-        return redirect(reverse("principal"))
-    template_name = "reportes/resumen_anual.html"
-    form = ConsultaAnual(request.POST or None, request=request)
-    fecha = date.today()
-    fdesde = ultimo_anio()
-    fhasta = hoy()
-    context = {}
-    context = getVariablesMixin(request)
-    empresas_list = []
-    empresa = None
-    agrupamiento = None
-    filtro = ""
-    max_grupop = 20
-    if form.is_valid():
-        periodo_desde = form.cleaned_data["periodo_desde"]
-        periodo_hasta = form.cleaned_data["periodo_hasta"]
-        agrupamiento = form.cleaned_data["agrupamiento"]
-        empresa = form.cleaned_data["empresa"]
-        empleado = form.cleaned_data["empleado"]
-        tipo_ausentismo = form.cleaned_data["tipo_ausentismo"]
-        trab_cargo = form.cleaned_data["trab_cargo"]
-        grupop = form.cleaned_data["grupo_patologico"]
-
-        fdesde = date(periodo_desde.year, periodo_desde.month, 1)
-        fhasta = date(
-            periodo_hasta.year,
-            periodo_hasta.month,
-            calendar.monthrange(periodo_hasta.year, periodo_hasta.month)[1],
-        )
-
-        ausentismos = ausentismo.ausentismos_activos.filter(
-            Q(aus_fcrondesde__gte=fdesde, aus_fcrondesde__lte=fhasta)
-            | Q(aus_fcronhasta__gte=fdesde, aus_fcronhasta__lte=fhasta)
-            | Q(aus_fcrondesde__lt=fdesde, aus_fcronhasta__gt=fhasta)
-        )
-        #    .filter(tipo_ausentismo__in=(1, 2, 3, 7))
-        filtro = "Período desde %s al %s" % (
-            fdesde.strftime("%m/%Y"),
-            fhasta.strftime("%m/%Y"),
-        )
-        if agrupamiento and not empresa:
-            data = recargar_empresas_agrupamiento(request, agrupamiento.id)
-            empresas_list = [d["id"] for d in json.loads(data.content)]
-            q_empresas = ent_empresa.objects.filter(
-                Q(id__in=empresas_list) | Q(casa_central__id__in=empresas_list)
-            )
-            empresas_list = q_empresas
-        elif empresa:
-            if empresa.casa_central:
-                empresas_list = [empresa.pk]
-            else:
-                empresas_list = ent_empresa.objects.filter(
-                        Q(id=empresa.id) | Q(casa_central=empresa)
-                    )
-
-        ausentismos = ausentismos.filter(empresa__in=empresas_list)
-
-        if empleado:
-            ausentismos = ausentismos.filter(
-                Q(empleado__apellido_y_nombre__icontains=empleado)
-                | Q(empleado__nro_doc__icontains=empleado)
-            )
-        if trab_cargo:
-            ausentismos = ausentismos.filter(empleado__trab_cargo=trab_cargo)
-            filtro += " - Puesto de Trabajo: %s" % (trab_cargo)
-        if int(tipo_ausentismo) > 0:
-            ausentismos = ausentismos.filter(tipo_ausentismo=int(tipo_ausentismo))
-        if grupop:
-            ausentismos = ausentismos.filter(aus_grupop__patologia=grupop)
-    else:
-        ausentismos = None
-    context["form"] = form
-    context["fecha"] = fecha
-    context["fdesde"] = fdesde
-    context["fhasta"] = fhasta
-    context["ausentismos"] = ausentismos
-    context["empresa"] = empresa
-    context["agrupamiento"] = agrupamiento
-    totales = []
-    inculpables = []
-    accidentes = []
-    datos_tabla = []
-    from dateutil.rrule import rrule, MONTHLY
-
-    meses = [
-        [int(dt.strftime("%m")), int(dt.strftime("%Y"))]
-        for dt in rrule(MONTHLY, dtstart=fdesde, until=fhasta)
-    ]
-
-    # import locale
-    # locale.setlocale(locale.LC_ALL, '')
-    listado_meses = [
-        "%s%s" % (MESES[int(dt.strftime("%m")) - 1][1].upper(), (dt.strftime("%Y")))
-        for dt in rrule(MONTHLY, dtstart=fdesde, until=fhasta)
-    ]
-    if ausentismos:
-        empleados_tot = calcular_empleados_empresas(empresas_list)
-        for m in meses:
-            dias_laborables = int(dias_mes(m[0], m[1], fdesde, fhasta))
-            ausencias = en_mes_anio(m[0], m[1], ausentismos)
-            qs_totales = ausencias
-            ausenc_totales = dias_ausentes_mes(m[0], m[1], ausencias)
-            empl_totales = empleados_tot
-            if ausenc_totales > 0:
-                tasa_total = calcular_tasa_ausentismo(
-                    ausenc_totales, dias_laborables, empl_totales
-                )
-            else:
-                tasa_total = 0
-            ta_cant_empls = (
-                qs_totales.values("empleado", "tipo_ausentismo").distinct().count()
-            )
-
-            totales.append({"y": tasa_total, "custom": {"empleados": ta_cant_empls}})
-
-            qs_inculpables = ausencias.filter(tipo_ausentismo=1)
-            ausenc_inculp = dias_ausentes_mes(m[0], m[1], qs_inculpables)
-            empl_tot_inculp = empleados_tot
-            if ausenc_inculp > 0:
-                tasa_inclup = calcular_tasa_ausentismo(
-                    ausenc_inculp, dias_laborables, empl_tot_inculp
-                )
-            else:
-                tasa_inclup = 0
-            empl_inculp = qs_inculpables.values("empleado").distinct().count()
-            inculpables.append({"y": tasa_inclup, "custom": {"empleados": empl_inculp}})
-
-            qs_accidentes = ausencias.filter(tipo_ausentismo__in=(2, 3, 7))
-            ausenc_acc = dias_ausentes_mes(m[0], m[1], qs_accidentes)
-            empl_tot_acc = empleados_tot
-            if ausenc_acc > 0:
-                tasa_acc = calcular_tasa_ausentismo(
-                    ausenc_acc, dias_laborables, empl_tot_acc
-                )
-            else:
-                tasa_acc = 0
-            empl_acc = qs_accidentes.values("empleado").distinct().count()
-            accidentes.append({"y": tasa_acc, "custom": {"empleados": empl_acc}})
-
-            datos_tabla.append(
-                {
-                    "mes": m,
-                    "tasa_total": tasa_total,
-                    "ta_cant_empls": ta_cant_empls,
-                    "tasa_inclup": tasa_inclup,
-                    "empl_inculp": empl_inculp,
-                    "tasa_acc": tasa_acc,
-                    "empl_acc": empl_acc,
-                }
-            )
-
-        aus_x_grupop_tot = (
-            ausentismos.values("aus_grupop__pk", "aus_grupop__patologia")
-            .annotate(total=Count("aus_grupop"))
-            .order_by("-total")[:4]
-        )
-
-        id_grupos = [int(x["aus_grupop__pk"]) for x in aus_x_grupop_tot]
-
-        listado = []
-        aus_x_grupop = []
-        for x in aus_x_grupop_tot:
-            nombre = x["aus_grupop__patologia"]
-            id = x["aus_grupop__pk"]
-            datos = []
-            for m in meses:
-                ausencias = en_mes_anio(m[0], m[1], ausentismos)
-                aus_x_grupop = list(
-                    ausencias.filter(aus_grupop__pk__in=id_grupos)
-                    .values("aus_grupop__patologia", "aus_grupop__pk")
-                    .annotate(total=Count("aus_grupop"))
-                    .order_by("-total")
-                    .values("aus_grupop__patologia", "aus_grupop__pk", "total")
-                )
-                total = sum(
-                    [int(p["total"]) for p in aus_x_grupop if id == p["aus_grupop__pk"]]
-                )
-                datos.append(total)
-            listado.append(dict(name=nombre, data=datos))
-
-        if aus_x_grupop:
-            max_grupop = max([max(l["data"]) for l in listado])
-
-        context["max_grupop"] = max_grupop
-        context["inculpables"] = json.dumps(inculpables, cls=DecimalEncoder)
-        context["accidentes"] = json.dumps(accidentes, cls=DecimalEncoder)
-        context["totales"] = json.dumps(totales, cls=DecimalEncoder)
-        context["grupop"] = listado
-
-    else:
-        context["inculpables"] = None
-        context["accidentes"] = None
-        context["totales"] = None
-        context["grupop"] = None
-
-    context["listado_meses"] = json.dumps(listado_meses, cls=DecimalEncoder)
-    context["datos_tabla"] = datos_tabla
-    context["empresa"] = empresa
-    context["titulo_reporte"] = "%s  - %s" % (
-        ("Empresa: %s" % empresa if empresa else "Gerencia: %s" % agrupamiento),
-        filtro,
-    )
-    context["filtro"] = filtro
-    context["pie_pagina"] = "Sistemas Laboral Salud - %s" % (fecha.strftime("%d/%m/%Y"))
-
-    if ("pdf" in request.POST) and ausentismos:
-        template_name = "reportes/reporte_anual.html"
-        context["aus_tot_image"] = request.POST.get("aus_tot_image")
-        context["aus_grupop_image"] = request.POST.get("aus_grupop_image")
-
-        return render_to_pdf_response(request, template_name, context)
-    return render(request, template_name, context)
-
 
 ######################################################################################
 
@@ -851,6 +866,17 @@ def dias_ausentes_tot(fdesde, fhasta, fini, ffin):
         ffin = fhasta
     tot = (ffin - fini).days + 1
     return tot
+
+
+def dias_ausentes_anio_en_curso(ausentismos, fhasta):
+    finicio_anio = inicioAnio()
+    aus_ini_anio = ausentismos.filter(aus_fcrondesde__gte=finicio_anio, aus_fcronhasta__lte=fhasta).values('empleado__apellido_y_nombre', 'empleado_id')
+    return aus_ini_anio.annotate(
+        dias=Sum('aus_diascaidos'),
+        empl_nombre=F('empleado__apellido_y_nombre'),
+        empl_id=F('empleado_id'),
+    ).order_by('-dias')
+
 
 
 def dias_ausentes_mes(mes, anio, ausentismos):

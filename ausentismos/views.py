@@ -67,17 +67,13 @@ class AusentismoView(VariablesMixin, ListView):
             busq = self.request.POST
         elif "ausentismos" in self.request.session:
             busq = self.request.session["ausentismos"]
-        form = ConsultaAusentismos(busq or None, request=self.request)
-        fdesde = hoy()
-        fhasta = finMes()
         empresas = empresas_habilitadas(self.request)
-        ausentismos = ausentismo.objects.filter(
-            baja=False, empresa__pk__in=empresas, aus_fcronhasta__gte=hoy()
-        )
+        form = ConsultaAusentismos(busq or None, empresas=empresas)
+
         if form.is_valid():
             fcontrol = form.cleaned_data["fcontrol"]
-            fdesde = form.cleaned_data["fdesde"]
-            fhasta = form.cleaned_data["fhasta"]
+            fdesde = form.cleaned_data["fdesde"] or inicioMesAnt()
+            fhasta = form.cleaned_data["fhasta"] or finMes()
             empresa = form.cleaned_data["empresa"]
             empleado = form.cleaned_data["empleado"]
             aus_grupop = form.cleaned_data["aus_grupop"]
@@ -85,25 +81,6 @@ class AusentismoView(VariablesMixin, ListView):
             tipo_ausentismo = form.cleaned_data["tipo_ausentismo"]
             estado = form.cleaned_data["estado"]
             agrupamiento = form.cleaned_data["agrupamiento"]
-            if not fdesde:
-                fdesde = ultimo_anio()
-            if not fhasta:
-                fhasta = proximo_anio()
-
-            ausentismos = ausentismo.objects.filter(empresa__pk__in=empresas).select_related(
-            "empleado", "empresa", "aus_grupop", "aus_diagn", "usuario_carga"
-        )
-
-            if int(estado) == 1:
-                ausentismos = ausentismos.filter(aus_fcronhasta__gte=hoy())
-            elif int(estado) == 2:
-                ausentismos = ausentismos.filter(aus_fcronhasta__lt=hoy())
-            elif int(estado) == 0:
-                ausentismos = ausentismos.filter(
-                    Q(aus_fcrondesde__range=[fdesde, fhasta])
-                    | Q(aus_fcronhasta__range=[fdesde, fhasta])
-                    | Q(aus_fcrondesde__lt=fdesde, aus_fcronhasta__gt=fhasta)
-                )
 
             if agrupamiento and not empresa:
                 data = recargar_empresas_agrupamiento(self.request, agrupamiento.id)
@@ -114,7 +91,7 @@ class AusentismoView(VariablesMixin, ListView):
                 empresas_list = list(q_empresas.values_list("id", flat=True))
             elif empresa:
                 if empresa.casa_central:
-                    empresas_list = list([empresa.pk])
+                    empresas_list = [empresa.pk]
                 else:
                     empresas_list = [
                         e.id
@@ -127,16 +104,25 @@ class AusentismoView(VariablesMixin, ListView):
                     d["id"]
                     for d in json.loads(recargar_empresas_agrupamiento(self.request, 0).content)
                 ]
-            ausentismos = ausentismos.filter(empresa__id__in=empresas_list)
 
-            if empresa:
+            ausentismos = ausentismo.ausentismos_activos.filter(empresa_id__in=empresas_list)
+
+            if int(estado) == 1:
+                ausentismos = ausentismos.filter(aus_fcronhasta__gte=hoy())
+            elif int(estado) == 2:
+                ausentismos = ausentismos.filter(aus_fcronhasta__lt=hoy())
+            elif int(estado) == 0:
                 ausentismos = ausentismos.filter(
-                    Q(empresa=empresa) | Q(empresa__casa_central=empresa)
+                    Q(aus_fcrondesde__range=[fdesde, fhasta])
+                    | Q(aus_fcronhasta__range=[fdesde, fhasta])
+                    | Q(aus_fcrondesde__lt=fdesde, aus_fcronhasta__gt=fhasta)
                 )
+
             if empleado:
                 ausentismos = ausentismos.filter(
                     Q(empleado__apellido_y_nombre__icontains=empleado) | Q(empleado__nro_doc__icontains=empleado)
                 )
+
             if fcontrol:
                 ausentismos = ausentismos.filter(aus_fcontrol=fcontrol)
 
@@ -147,13 +133,17 @@ class AusentismoView(VariablesMixin, ListView):
                     ausentismos = ausentismos.filter(Q(aus_diascaidos__gt=30))
                 else:
                     ausentismos = ausentismos.filter(tipo_ausentismo=int(tipo_ausentismo))
+
             if aus_grupop:
                 ausentismos = ausentismos.filter(aus_grupop__patologia__icontains=aus_grupop)
             if aus_diagn:
                 ausentismos = ausentismos.filter(aus_diagn__diagnostico__icontains=aus_diagn)
 
             self.request.session["ausentismos"] = self.request.POST or busq
-
+        else:
+            ausentismos = ausentismo.ausentismos_activos.filter(
+                empresa_id__in=empresas, aus_fcronhasta__gte=hoy()
+            )
         context["form"] = form
         context["ausentismos"] = ausentismos.select_related(
             "empleado", "empresa", "aus_grupop", "aus_diagn", "usuario_carga"

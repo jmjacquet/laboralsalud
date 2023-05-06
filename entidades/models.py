@@ -2,6 +2,8 @@
 from __future__ import unicode_literals
 
 from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 from entidades.managers import EmpleadosActivos
 from laboralsalud.utilidades import *
@@ -460,3 +462,37 @@ class ent_empleado(models.Model):
             return unicode(self.art.nombre)
         else:
             return ""
+
+
+class empleado_empresa_historico(models.Model):
+    empresa = models.ForeignKey(
+        "ent_empresa",
+        verbose_name="Empresa",
+        db_column="empresa",
+        blank=True,
+        null=True,
+        related_name="empresa_hist",
+        on_delete=models.SET_NULL,
+    )
+    empr_fingreso = models.DateField("Fecha Ingreso", blank=True, null=True)
+    empleado = models.ForeignKey(
+        "ent_empleado",
+        verbose_name="Empleado",
+        db_column="empleado",
+        blank=True,
+        null=True,
+        related_name="empleado_hist",
+        on_delete=models.PROTECT,
+    )
+
+    class Meta:
+        db_table = "empleado_empresa_historico"
+
+    def __unicode__(self):
+        return "{} - {} ({})".format(self.empresa, self.empleado, self.empr_fingreso)
+
+
+@receiver(post_save, sender=ent_empleado, dispatch_uid="guardar_historico_laboral_empl")
+def guardar_historico_laboral_empl(sender, instance, created, **kwargs):
+    if instance:
+        empleado_empresa_historico(empresa=instance.empresa, empleado=instance, empr_fingreso=instance.empr_fingreso).save()

@@ -25,7 +25,7 @@ from entidades.forms import (
     AgruparEmpleadosForm,
 )
 from entidades.models import *
-from general.views import VariablesMixin
+from general.views import VariablesMixin, recargar_empresas_agrupamiento
 from laboralsalud.utilidades import (
     ultimoNroId,
     usuario_actual,
@@ -584,13 +584,14 @@ class EmpleadoView(VariablesMixin, ListView):
             busq = self.request.session["empleados"]
         form = ConsultaEmpleados(busq or None, request=self.request)
         empresas = empresas_habilitadas(self.request)
-        empleados = ent_empleado.objects.filter(
-            baja=False, empresa__pk__in=empresas
-        ).select_related("empresa", "trab_cargo", "art", "usuario_carga")[:100]
+        empleados = ent_empleado.objects.none()
+
         if form.is_valid():
             qempresa = form.cleaned_data["qempresa"]
+            qagrupamiento = form.cleaned_data["qagrupamiento"]
             estado = form.cleaned_data["estado"]
             art = form.cleaned_data["art"]
+
             empleados = ent_empleado.objects.filter(
                 empresa__pk__in=empresas
             ).select_related("empresa", "trab_cargo", "art", "usuario_carga")
@@ -600,19 +601,25 @@ class EmpleadoView(VariablesMixin, ListView):
             elif int(estado) == 1:
                 empleados = empleados.filter(baja=True)
 
-            if qempresa:
+            if qagrupamiento and not qempresa:
+                data = recargar_empresas_agrupamiento(self.request, qagrupamiento.id)
+                empresas_list = [d["id"] for d in json.loads(data.content)]
+                q_empresas = ent_empresa.objects.filter(
+                    Q(id__in=empresas_list) | Q(casa_central__id__in=empresas_list)
+                )
+                empleados = empleados.filter(empresa__in=q_empresas)
+            elif qempresa:
                 empleados = empleados.filter(
                     Q(empresa=qempresa) | Q(empresa__casa_central=qempresa)
                 )
+            else:
+                empleados = empleados[:100]
+
             if art:
                 empleados = empleados.filter(art=art)
 
-            self.request.session["empleados"] = self.request.POST or busq
-
         context["form"] = form
-
         context["empleados"] = empleados
-
         return context
 
     def post(self, *args, **kwargs):

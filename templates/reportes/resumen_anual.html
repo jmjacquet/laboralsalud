@@ -188,7 +188,6 @@ jQuery(document).ready(function($) {
                 title: {
                     text: 'Tasa Ausentismo'
                 },
-                 
             },
     legend: {
         layout: 'horizontal',
@@ -223,7 +222,10 @@ jQuery(document).ready(function($) {
           
         },
         column: {
-            grouping: true,
+            stacking: 'normal',
+            dataLabels: {
+                enabled: true
+            },
             shadow: false
         }
     },
@@ -235,16 +237,19 @@ jQuery(document).ready(function($) {
         data: {{totales|safe}},         
     }
     ,{
-        name: 'Tasa x Inculpables',
-        data: {{inculpables|safe}},
-        type: 'column',
-         pointPadding: 0
-    }, {
         name: 'Tasa x Accidente',
         data: {{accidentes|safe}},
         type: 'column',
-         pointPadding: 0.1
-    },],
+        color: '#aadc68'
+    }
+    ,{
+        name: 'Tasa x Inculpables',
+        data: {{inculpables|safe}},
+        type: 'column',
+        color: '#31364b'
+
+    }
+    ],
 
     responsive: {
         rules: [{
@@ -335,8 +340,8 @@ jQuery(document).ready(function($) {
 (function (H) {
     H.Chart.prototype.createCanvas = function (divId) {
         var svg = this.getSVG(),
-            width = parseInt(svg.match(/width="([0-9]+)"/)[1]),
-            height = parseInt(svg.match(/height="([0-9]+)"/)[1]),
+            width = parseInt(svg.match(/width="([0-9]+)"/)[1]) * 6,
+            height = parseInt(svg.match(/height="([0-9]+)"/)[1]) * 6,
             canvas = document.createElement('canvas');
 
         canvas.setAttribute('width', width);
@@ -346,7 +351,7 @@ jQuery(document).ready(function($) {
 
             canvg(canvas, svg);
 
-            return canvas.toDataURL("image/png",1);
+            return canvas.toDataURL("image/png",15);
 
         } 
         else {

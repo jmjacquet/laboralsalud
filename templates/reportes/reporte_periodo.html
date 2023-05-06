@@ -34,11 +34,11 @@
   </table>  
   <table class="tabla" width="100%" border="0" cellspacing="0">
     <tr>
-      <td width="60%">
-        <img src="{{ aus_tot_image }}" height="500" width="1100" >
+      <td width="70%">
+        <img src="{{ aus_tot_image }}"  >
       </td>
-      <td width="40%" class="centered">
-        <table class="borde_reportes" width="80%">
+      <td width="30%" class="centered">
+        <table class="borde_reportes" width="90%">
           <thead >
             <tr>
                 <th  class="tabla_header" colspan="2">AUSENTISMO TOTAL <br><label class="letra_cod">(inculpable, cuidado familiar y art)</label></th>
@@ -62,11 +62,11 @@
     {% if aus_inc %}
     </tr>
         <tr>
-        <td width="60%">
-          <img src="{{ aus_inc_image }}" height="500" width="1100" >
+        <td >
+          <img src="{{ aus_inc_image }}"  >
         </td>
-        <td width="40%" class="centered">
-          <table class="borde_reportes" width="80%">
+        <td class="centered">
+          <table class="borde_reportes" width="90%">
             <thead >
               <tr>
                 <th  class="tabla_header" colspan="2">AUSENTISMO INCULPABLE</th>
@@ -88,11 +88,11 @@
       </tr>
        <tr></tr>
       <tr>
-        <td width="60%">
-          <img src="{{ aus_inc2_image }}" height="500" width="1100" >
+        <td >
+          <img src="{{ aus_inc2_image }}" >
         </td>
-        <td width="40%" class="centered">
-          <table class="borde_reportes" width="80%">
+        <td class="centered">
+          <table class="borde_reportes" width="90%">
             <thead >
               <tr>
                 <th  class="tabla_header" colspan="2">AUSENTISMO INCULPABLE</th>
@@ -112,35 +112,34 @@
      {% if empl_mas_faltadores or aus_grp_image %}
       <tr>  </tr>
          <tr>
-        <td width="60%" valign="top" height="100%">
+        <td valign="top" height="100%">
           <table class="borde_reportes" width="100%" height="100%">
             <thead >
               <tr>
               <th  class="tabla_header" >AUSENTISMO x GRUPO PATOLÓGICO</td>
             </tr>
-          </thead>
-          <tbody>
+            </thead>
+            <tbody>
               <tr>
-                <td><img src="{{ aus_grp_image }}" height="100%" width="100%"  ></td>
+                <td><img src="{{ aus_grp_image }}" ></td>
               </tr>
-          </tbody>
-        </table>
-
+            </tbody>
+            </table>
         </td>
-        <td width="40%" valign="top" height="100%">
-          <table class="borde_reportes" width="80%" height="100%">
+        <td valign="top" height="100%">
+          <table class="borde_reportes" height="100%" width="90%">
             <thead >
               <tr>
-              <th  class="tabla_header" colspan="2">EMPLEADOS CON MÁS AUSENCIAS</td>
+                  <th  class="tabla_header" colspan="2">TOP AUSENCIAS EMPLEADOS </td>
             </tr>
             <tr>
-              <th  class="tabla_header" width="85%">Empleado</th><th  class="tabla_header texto_der" width="15%">Días</th>
+              <th  class="tabla_header letra_cod" width="85%">(desde {{ inicio_anio|date:'d/m/Y' }})</th><th  class="tabla_header texto_der" width="15%">Días</th>
             </tr>
           </thead>
           <tbody>
             {% for e in empl_mas_faltadores %}
               <tr>
-                <td>{{ e.empleado|default_if_none:''|truncatechars:60 }}</td>
+                <td class="texto_pequenio_tabla">{{ e.empl_nombre|default_if_none:''|truncatechars:50 }}</td>
                 <td class="texto_der">{{ e.dias|default_if_none:'0' }}</td>
               </tr>
             {% endfor %}
@@ -150,35 +149,15 @@
       </tr>
     {% endif %}
     </tr>
-  </table>
-
-  <div id="page-footer">
-    <table class="tabla" width="100%" border="0" cellspacing="0">
-      <tr>
-        <td width="90%" class="pie_sistema"><img alt="" class="pie_logo" src="{% static 'img/loguito.jpg' %}"/>&nbsp;&nbsp;Laboral Salud - {{fecha|date:'d/m/Y'}} </td>
-        <td width="10%" class="pie_texto"><pdf:pagenumber /> de <pdf:pagecount/> </td>
-      </tr>
-    </table>
-  </div>
 {% if ausentismo_inc_gerencia_image or  ausentismo_inc_sector_image or aus_empl_x_edad_image %}
-   <pdf:nextpage/>
-    <div id="page-footer">
-    <table class="tabla" width="100%" border="0" cellspacing="0">
-      <tr>
-        <td width="90%" class="pie_sistema"><img alt="" class="pie_logo" src="{% static 'img/loguito.jpg' %}"/>&nbsp;&nbsp;Laboral Salud - {{fecha|date:'d/m/Y'}} </td>
-        <td width="10%" class="pie_texto"><pdf:pagenumber /> de <pdf:pagecount/> </td>
-      </tr>
-    </table>
-  </div>
-    <table class="tabla" width="100%" border="0" cellspacing="0">
-    {% if ausentismo_inc_gerencia_image %}
+       {% if ausentismo_inc_gerencia_image %}
 
         <tr>
-        <td width="60%">
-          <img src="{{ ausentismo_inc_gerencia_image }}" height="500" width="1100" >
+        <td>
+          <img src="{{ ausentismo_inc_gerencia_image }}" >
         </td>
-        <td width="40%" class="centered">
-          <table class="borde_reportes" width="80%">
+        <td class="centered">
+          <table class="borde_reportes" width="90%">
             <thead >
               <tr>
                 <th  class="tabla_header" colspan="2">AUSENTISMO INCULPABLE x GERENCIA</th>
@@ -205,11 +184,11 @@
     {% if ausentismo_inc_sector_image %}
         <tr>  </tr>
         <tr>
-        <td width="60%">
-          <img src="{{ ausentismo_inc_sector_image }}" height="500" width="1100" >
+        <td >
+          <img src="{{ ausentismo_inc_sector_image }}" >
         </td>
-        <td width="40%" class="centered">
-          <table class="borde_reportes" width="80%">
+        <td class="centered">
+          <table class="borde_reportes" width="90%">
             <thead >
               <tr>
                 <th  class="tabla_header" colspan="2">AUSENTISMO INCULPABLE x SECTOR</th>
@@ -236,11 +215,11 @@
     {% if aus_tot_empl_x_edad_image %}
         <tr>  </tr>
         <tr>
-        <td width="60%">
-          <img src="{{ aus_tot_empl_x_edad_image }}" height="500" width="1100" >
+        <td>
+          <img src="{{ aus_tot_empl_x_edad_image }}" >
         </td>
-        <td width="40%" class="centered">
-          <table class="borde_reportes" width="80%">
+        <td class="centered">
+          <table class="borde_reportes" width="90%">
             <thead >
               <tr>
                 <th  class="tabla_header" colspan="2">AUSENTISMO x RANGO ETARIO</th>
@@ -261,11 +240,17 @@
         </td>
       </tr>
       {% endif %}
-
-
-     </table>
     {% endif %}
+  </table>
 
+  <div id="page-footer">
+    <table class="tabla" width="100%" border="0" cellspacing="0">
+      <tr>
+        <td width="90%" class="pie_sistema"><img alt="" class="pie_logo" src="{% static 'img/loguito.jpg' %}"/>&nbsp;&nbsp;Laboral Salud - {{fecha|date:'d/m/Y'}} </td>
+        <td width="10%" class="pie_texto"><pdf:pagenumber /> de <pdf:pagecount/> </td>
+      </tr>
+    </table>
+  </div>
 {% if aus_acc %} 
   <pdf:nextpage/>      
   <table class="tabla" width="90%" border="0" cellspacing="0">    
@@ -277,7 +262,7 @@
               <td class="titulo_grafico" colspan="2"><p>AUSENTISMO ACCIDENTES</td>
             </tr>   
               <tr>
-                <td width="75%"><img src="{{ aus_acc_image }}" height="500" width="1100" ></td>                
+                <td width="75%"><img src="{{ aus_acc_image }}" ></td>
                 <td width="25%">
                   <table class="borde_reportes">
                     <thead >

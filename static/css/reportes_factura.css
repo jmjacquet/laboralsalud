@@ -249,3 +249,8 @@ td {
   font-size: 12px;
   font-weight: normal;
 }
+
+.texto_pequenio_tabla{
+  font-size: 9px;
+  font-weight: normal;
+}

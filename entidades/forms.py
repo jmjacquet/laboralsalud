@@ -303,6 +303,12 @@ class ConsultaEmpleados(forms.Form):
         empty_label="Todas",
         required=False,
     )
+    qagrupamiento = forms.ModelChoiceField(
+        label="Agrupamiento/Gerencia",
+        queryset=ent_empresa_agrupamiento.objects.filter(baja=False),
+        initial=0,
+        required=False,
+    )
 
     def __init__(self, *args, **kwargs):
         request = kwargs.pop("request", None)

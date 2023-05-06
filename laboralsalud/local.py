@@ -3,7 +3,6 @@ from .settings import *
 from decouple import config
 
 DEBUG = True
-TEMPLATE_DEBUG = True
 # DEBUG = False
 # USE_TZ = False
 LANGUAGE_CODE = 'es'

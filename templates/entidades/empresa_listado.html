@@ -25,17 +25,17 @@
                 <th data-priority="1" class="imprimir">Código</th>
                 <th data-priority="1" class="imprimir">Razón Social</th>
                 <th data-priority="1" class="imprimir">CUIT</th>
-                <th data-priority="2" class="imprimir">Rubro</th>
                 <th data-priority="1" class="imprimir">Cant.Empl.</th>
                 <th data-priority="1" class="imprimir">ART</th>
-                <th data-priority="1" class="imprimir">EMail</th>                                           
+                <th data-priority="1" class="imprimir">EMail</th>
                 <th data-priority="1" class="imprimir">Domicilio</th>
-                <th data-priority="1" class="imprimir">Localidad</th>           
-                <th data-priority="1" class="imprimir">Provincia</th>           
-                <th data-priority="1" class="imprimir">Tel.</th>                           
-                <th data-priority="1" class="imprimir">Cel.</th>                           
+                <th data-priority="1" class="imprimir">Localidad</th>
+                <th data-priority="1" class="imprimir">Provincia</th>
+                <th data-priority="1" class="imprimir">Tel.</th>
+                <th data-priority="1" class="imprimir">Cel.</th>
                 <th data-priority="2" class="imprimir">Casa Central</th>
                 <th data-priority="2" class="imprimir">Agrupamiento/Gerencia</th>
+                <th data-priority="3" class="imprimir">Rubro</th>
             </tr>
         </thead>
         <tbody>
@@ -67,17 +67,17 @@
                 <td>{{ a.codigo|default_if_none:'' }}</td>
                 <td>{{ a.razon_social|default_if_none:'' }}</td>
                 <td>{{ a.cuit|default_if_none:'' }}</td>
-                <td>{{ a.rubro|default_if_none:'' }}</td>
                 <td>{{ a.cant_empleados|default_if_none:'' }}</td>
                 <td>{{ a.art|default_if_none:'' }}</td>
                 <td>{{ a.email|default_if_none:'' }}</td>
                 <td>{{ a.domicilio|default_if_none:'' }}</td>
-                <td>{{ a.localidad|default_if_none:'' }}</td>                                
-                <td>{{ a.get_provincia_display|default_if_none:'' }}</td>                                
-                <td>{{ a.telefono|default_if_none:'' }}</td>                                
-                <td>{{ a.celular|default_if_none:'' }}</td>                                
+                <td>{{ a.localidad|default_if_none:'' }}</td>
+                <td>{{ a.get_provincia_display|default_if_none:'' }}</td>
+                <td>{{ a.telefono|default_if_none:'' }}</td>
+                <td>{{ a.celular|default_if_none:'' }}</td>
                 <td>{{ a.casa_central|default_if_none:'' }}</td>
                 <td>{{ a.agrupamiento|default_if_none:'' }}</td>
+                <td>{{ a.rubro|default_if_none:'' }}</td>
             </tr>
             {% endfor %}
         </tbody>
@@ -237,7 +237,7 @@ var tabla = $('#empresa').DataTable({
             },
             initComplete: function () {
                // this.api().columns().every( function () {[0, 1, 9]
-                this.api().columns([4,6,9,10,13]).every( function () {
+                this.api().columns([3,5,8,9,12,13]).every( function () {
                     var column = this;
                     var select = $('<select class="form-control"><option value="">Todos</option></select>')
                         .appendTo( $(column.footer()).empty() )
@@ -290,8 +290,8 @@ var tabla = $('#empresa').DataTable({
             };
 
 
-            pageTotal = api.column(5, { page: 'current'} ).data().reduce( function (a, b) {return parseFloat(a) + parseFloat(b);}, 0 );
-            $( api.column(5).footer() ).html(pageTotal.toLocaleString(undefined,{minimumFractionDigits:0}));
+            pageTotal = api.column(4, { page: 'current'} ).data().reduce( function (a, b) {return parseFloat(a) + parseFloat(b);}, 0 );
+            $( api.column(4).footer() ).html(pageTotal.toLocaleString(undefined,{minimumFractionDigits:0}));
 
         }
         });

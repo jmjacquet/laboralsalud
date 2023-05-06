@@ -14,5 +14,4 @@ class EmpleadosActivos(models.Manager):
             super(EmpleadosActivos, self)
             .get_queryset()
             .filter(baja=False)
-            .filter(Q(trab_fbaja__isnull=True) | Q(trab_fbaja__lt=hoy()))
         )
