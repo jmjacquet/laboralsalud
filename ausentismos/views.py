@@ -81,7 +81,6 @@ class AusentismoView(VariablesMixin, ListView):
             tipo_ausentismo = form.cleaned_data["tipo_ausentismo"]
             estado = form.cleaned_data["estado"]
             agrupamiento = form.cleaned_data["agrupamiento"]
-
             if agrupamiento and not empresa:
                 data = recargar_empresas_agrupamiento(self.request, agrupamiento.id)
                 empresas_list = [d["id"] for d in json.loads(data.content)]
@@ -99,13 +98,14 @@ class AusentismoView(VariablesMixin, ListView):
                             Q(id=empresa.id) | Q(casa_central=empresa)
                         )
                     ]
+
             else:
                 empresas_list = [
                     d["id"]
                     for d in json.loads(recargar_empresas_agrupamiento(self.request, 0).content)
                 ]
 
-            ausentismos = ausentismo.ausentismos_activos.filter(empresa_id__in=empresas_list)
+            ausentismos = ausentismo.objects.filter(empresa_id__in=empresas_list)
 
             if int(estado) == 1:
                 ausentismos = ausentismos.filter(aus_fcronhasta__gte=hoy())
@@ -221,6 +221,7 @@ class AusentismoCreateView(VariablesMixin, CreateView):
     def form_valid(self, form, controles_detalle, controles_patologias):
         self.object = form.save(commit=False)
         self.object.usuario_carga = usuario_actual(self.request)
+        self.object.empresa = self.object.empleado.empresa
         guardar_ultimo_tipo_ausentismo_y_fcontrol(self.object, controles_detalle)
         self.object.save()
         controles_detalle.instance = self.object
@@ -302,6 +303,8 @@ class AusentismoEditView(VariablesMixin, UpdateView):
 
     def form_valid(self, form, controles_detalle, controles_patologias):
         guardar_ultimo_tipo_ausentismo_y_fcontrol(self.object, controles_detalle)
+        if not self.object.empresa:
+            self.object.empresa = self.object.empleado.empresa
         self.object.save()
         usr_actual = usuario_actual(self.request)
         controles_detalle.instance = self.object

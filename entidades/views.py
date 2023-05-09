@@ -612,9 +612,6 @@ class EmpleadoView(VariablesMixin, ListView):
                 empleados = empleados.filter(
                     Q(empresa=qempresa) | Q(empresa__casa_central=qempresa)
                 )
-            else:
-                empleados = empleados[:100]
-
             if art:
                 empleados = empleados.filter(art=art)
 
