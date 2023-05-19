@@ -6,3 +6,4 @@
 requirements.txt
 !varios/Modificaciones en sistema.docx
 varios/
+/.pytest_cache/
