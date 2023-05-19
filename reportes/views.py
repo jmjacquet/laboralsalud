@@ -282,7 +282,7 @@ def reporteResumenAnual(request):
             empresas_list = q_empresas
         elif empresa:
             if empresa.casa_central:
-                empresas_list = [empresa.pk]
+                empresas_list = [empresa]
             else:
                 empresas_list = ent_empresa.objects.filter(
                         Q(id=empresa.id) | Q(casa_central=empresa)
@@ -585,6 +585,7 @@ def ausentismo_accidentes(ausentismos, fdesde, fhasta, dias_laborables, empleado
             }
         else:
             aus_acc = None
+            aus_acc2 = None
 
         return aus_acc, aus_acc2
     return None, None

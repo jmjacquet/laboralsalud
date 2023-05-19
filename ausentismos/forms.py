@@ -55,7 +55,7 @@ class AusentismoForm(forms.ModelForm):
         label="Tipo Ausentismo", choices=TIPO_AUSENCIA, required=False, initial=1
     )
     aus_tipo_alta = forms.ChoiceField(choices=TIPO_ALTA, required=True, initial=0)
-    # tipo_control = forms.ChoiceField(label="Tipo Control", choices=TIPO_CONTROL, required=False, initial="C")
+
     observaciones = forms.CharField(
         label=u"Recordatorio Médicos/Información Adicional",
         widget=forms.Textarea(attrs={"class": "form-control2", "rows": 3}),
@@ -143,12 +143,6 @@ class AusentismoForm(forms.ModelForm):
         required=False,
         widget=forms.DateInput(attrs={"class": "datepicker"}),
     )
-    # aus_fcertif = forms.DateField(
-    #     label="Fecha Certificado", required=False, widget=forms.DateInput(attrs={"class": "datepicker"})
-    # )
-    # aus_fentrega_certif = forms.DateField(
-    #     label="Fecha Entrega Certif.", required=False, widget=forms.DateInput(attrs={"class": "datepicker"})
-    # )
     aus_fcrondesde = forms.DateField(
         label="Fecha Desde",
         required=False,
@@ -219,8 +213,8 @@ class AusentismoForm(forms.ModelForm):
 
         usuario = usuario_actual(request)
         # Si es médico no vé los últimos tipos
-        if usuario.tipoUsr == 1:
-            self.fields["tipo_ausentismo"].choices = TIPO_AUSENCIA_MEDICOS
+        if usuario.tipoUsr > 1:
+            self.fields["tipo_ausentismo"].choices = TIPO_AUSENCIA
 
         if not tiene_permiso(request, "pat_pantalla"):
             self.fields["aus_grupop"].queryset = aus_patologia.objects.filter(

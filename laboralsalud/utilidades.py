@@ -22,16 +22,19 @@ TIPO_AUSENCIA = (
     (5, "Licencias Especiales"),
     (6, "Embarazo"),
     (8, "Consulta/Control rutinario"),
+    (3, "Enfermedad Profesional"),
 )
 
-TIPO_AUSENCIA_MEDICOS = (
-    (1, "Inculpable"),
-    (3, "Enfermedad Profesional"),
-    (2, "Accidente Denunciado"),
-    (7, "Accidente No Denunciado"),
-    (4, "Familiar Enfermo"),
-    (8, "Consulta/Control rutinario"),
-)
+# TIPO_AUSENCIA_MEDICOS = (
+#     (1, "Inculpable"),
+#     (2, "Accidente Denunciado"),
+#     (7, "Accidente No Denunciado"),
+#     (4, "Familiar Enfermo"),
+#     (5, "Licencias Especiales"),
+#     (6, "Embarazo"),
+#     (8, "Consulta/Control rutinario"),
+# )
+
 
 TIPO_CONTROL = (
     ("", "----"),
