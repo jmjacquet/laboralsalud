@@ -8,7 +8,7 @@ from datetime import datetime, date
 from decimal import Decimal
 from collections import namedtuple
 from django.contrib.auth.decorators import login_required
-from django.db.models import Q, Count, F, Sum
+from django.db.models import Q, Count, F, Sum, Max
 from django.db.models import Value as V
 from django.db.models.functions import Coalesce
 from django.shortcuts import (
@@ -58,13 +58,17 @@ def calcular_empleados_empresas(empresas_list, fdesde=inicio_de_los_tiempos(), f
     tot_empl = 0
     if not empresas_list:
         return tot_empl
-    empr_sucursales = [e for e in empresas_list if e.casa_central_id]
-    tot_empl_empr = ent_empleado.empleados_activos.filter(empresa__in=empr_sucursales)\
-        .filter(Q(empr_fingreso__gte=fdesde) | Q(empr_fingreso__lte=fhasta))\
-        .distinct().count()
-    tot_empl_hist = empleado_empresa_historico.objects.filter(empresa__in=empr_sucursales) \
-        .filter(Q(empr_fingreso__gte=fdesde) | Q(empr_fingreso__lte=fhasta)) \
-        .distinct().count()
+    # empr_sucursales = [e for e in empresas_list if e.casa_central_id]
+    empl_empr = ent_empleado.empleados_activos.filter(empresa__in=empresas_list)
+    empl_empr_activos = empl_empr.filter(Q(empr_fingreso__gte=fdesde) | Q(empr_fingreso__lte=fhasta) | Q(empr_fingreso__isnull=True))\
+        .distinct().values_list("id", flat=True)
+    tot_empl_empr = empl_empr_activos.count()
+    empl_hist = empleado_empresa_historico.objects.filter(empresa__in=empresas_list) \
+        .filter(Q(empr_fingreso__gte=fdesde) | Q(empr_fingreso__lte=fhasta) | Q(empr_fingreso__isnull=True)) \
+        .filter(empleado__baja=False).exclude(empleado_id__in=empl_empr_activos) \
+        .annotate(latest_fingreso=Max('id'))        \
+        .distinct()
+    tot_empl_hist = empl_hist.count()
     return tot_empl_empr + tot_empl_hist
 
 
@@ -98,9 +102,7 @@ def reporte_resumen_periodo(request):
             calendar.monthrange(periodo.year, periodo.month)[1],
         )
         filtro_str = "Período: %s " % (periodo.strftime("%m/%Y"))
-        filtros_fechas_Q = (Q(aus_fcrondesde__gte=fdesde, aus_fcrondesde__lte=fhasta)
-            | Q(aus_fcronhasta__gte=fdesde, aus_fcronhasta__lte=fhasta)
-            | Q(aus_fcrondesde__lt=fdesde, aus_fcronhasta__gt=fhasta))
+        filtros_fechas_Q = get_queryset_date_filters(fdesde, fhasta)
 
         if agrupamiento and not empresa:
             data = recargar_empresas_agrupamiento(request, agrupamiento.id)
@@ -118,8 +120,8 @@ def reporte_resumen_periodo(request):
                     )
 
         ausentismos = ausentismo.ausentismos_activos \
-            .filter(filtros_fechas_Q) \
             .filter(empresa__in=empresas_list)\
+            .exclude(tipo_ausentismo=8)\
             .select_related("empresa", "empleado")
 
         if empleado:
@@ -135,6 +137,9 @@ def reporte_resumen_periodo(request):
             ausentismos = ausentismos.filter(tipo_ausentismo=int(tipo_ausentismo))
         if grupop:
             ausentismos = ausentismos.filter(aus_grupop__patologia=grupop)
+
+        aus_no_dates = ausentismos
+        ausentismos = aus_no_dates.filter(filtros_fechas_Q)
     else:
         ausentismos = None
 
@@ -182,7 +187,7 @@ def reporte_resumen_periodo(request):
         aus_x_grupop, max_grupop = ausentismo_grupo_patologico(
             ausentismos, fdesde, fhasta
         )
-        empl_mas_faltadores = calcular_empleados_faltadores(ausentismos, fhasta)
+        empl_mas_faltadores = calcular_empleados_faltadores(aus_no_dates, fhasta)
 
         if empresa:
             aus_total_x_gerencia, tasa_aus_tot_gerencia = ausentismo_total_x_gerencia(
@@ -290,7 +295,8 @@ def reporteResumenAnual(request):
 
         ausentismos = ausentismo.ausentismos_activos\
             .filter(filtros_fechas_Q)\
-            .filter(empresa__in=empresas_list)\
+            .filter(empresa__in=empresas_list) \
+            .exclude(tipo_ausentismo=8) \
             .select_related("empresa", "empleado")
 
         if empleado:
@@ -868,15 +874,33 @@ def dias_ausentes_tot(fdesde, fhasta, fini, ffin):
     tot = (ffin - fini).days + 1
     return tot
 
+def get_queryset_date_filters(fdesde, fhasta):
+    return (Q(aus_fcrondesde__gte=fdesde, aus_fcronhasta__lte=fhasta)
+                        | Q(aus_fcrondesde__lte=fdesde, aus_fcronhasta__gte=fhasta)
+                        | Q(aus_fcrondesde__lte=fdesde, aus_fcronhasta__lte=fhasta,
+                            aus_fcronhasta__gte=fdesde)
+                        | Q(aus_fcrondesde__gte=fdesde, aus_fcronhasta__lte=fhasta,
+                            aus_fcrondesde__lte=fhasta)
+                        )
 
 def dias_ausentes_anio_en_curso(ausentismos, fhasta):
     finicio_anio = inicioAnio()
-    aus_ini_anio = ausentismos.filter(aus_fcrondesde__gte=finicio_anio, aus_fcronhasta__lte=fhasta).values('empleado__apellido_y_nombre', 'empleado_id')
-    return aus_ini_anio.annotate(
-        dias=Sum('aus_diascaidos'),
-        empl_nombre=F('empleado__apellido_y_nombre'),
-        empl_id=F('empleado_id'),
-    ).order_by('-dias')
+
+    empl_dias_totales = []
+    fechas_aus_empleados = ausentismos.filter(get_queryset_date_filters(finicio_anio, fhasta)).values(empl_id=F('empleado_id'), empl_nombre=F('empleado__apellido_y_nombre'), fdesde=F('aus_fcrondesde'), fhasta=F('aus_fcronhasta'))
+    empleados_ids = set((a["empl_id"], a["empl_nombre"]) for a in fechas_aus_empleados)
+    for e_id, e_nombre in empleados_ids:
+        ausentismos_fechas = filter(lambda f: f["empl_id"] == e_id, fechas_aus_empleados)
+        tot = 0
+        for aus in ausentismos_fechas:
+            tot += dias_ausentes_tot(finicio_anio, fhasta, aus["fdesde"], aus["fhasta"])
+        empl_dias_totales.append(dict(empl_nombre=e_nombre, empl_id=e_id, dias=tot))
+    return empl_dias_totales
+    # return aus_ini_anio.annotate(
+    #     dias=Sum('aus_diascaidos'),
+    #     empl_nombre=F('empleado__apellido_y_nombre'),
+    #     empl_id=F('empleado_id'),
+    # ).order_by('-dias')
 
 
 

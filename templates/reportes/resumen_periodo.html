@@ -366,7 +366,7 @@
                     <tbody>
                         {% for e in empl_mas_faltadores %}
                         <tr>
-                            <td title="{{ e.empl_nombre|default_if_none:''}}"><a href="{% url 'empleado_detalles' id=e.empleado_id %}"  class="modal-detail" data-modal-head="DETALLE EMPLEADO {{e.empl_nombre}}" data-modal-callback="reload"><strong>{{ e.empl_nombre|default_if_none:''|truncatechars:60 }}</strong></a></td>
+                            <td title="{{ e.empl_nombre|default_if_none:''}}"><a href="{% url 'empleado_detalles' id=e.empl_id %}"  class="modal-detail" data-modal-head="DETALLE EMPLEADO {{e.empl_nombre}}" data-modal-callback="reload"><strong>{{ e.empl_nombre|default_if_none:''|truncatechars:60 }}</strong></a></td>
                             <td class="text-right">{{ e.dias|default_if_none:'0' }}</td>
                         </tr>
                         {% endfor %}

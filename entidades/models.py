@@ -390,10 +390,21 @@ class ent_empleado(models.Model):
         return "%s" % (self.apellido_y_nombre)
 
     def save(self, *args, **kwargs):
-        if self.apellido_y_nombre:
-            self.apellido_y_nombre = self.apellido_y_nombre.upper()
-        if self.domicilio:
-            self.domicilio = self.domicilio.upper()
+        if self.id:
+            empl_anterior = self.__class__.objects.get(id=self.id)
+            if (empl_anterior.empr_fingreso != self.empr_fingreso) or \
+                    (empl_anterior.empresa != self.empresa):
+                empleado_empresa_historico(
+                    empresa=empl_anterior.empresa,
+                    empleado=self,
+                    empr_fingreso=empl_anterior.empr_fingreso,
+                ).save()
+        else:
+            if self.apellido_y_nombre:
+                self.apellido_y_nombre = self.apellido_y_nombre.upper()
+            if self.domicilio:
+                self.domicilio = self.domicilio.upper()
+
 
         super(ent_empleado, self).save()
 
@@ -490,9 +501,3 @@ class empleado_empresa_historico(models.Model):
 
     def __unicode__(self):
         return "{} - {} ({})".format(self.empresa, self.empleado, self.empr_fingreso)
-
-
-@receiver(post_save, sender=ent_empleado, dispatch_uid="guardar_historico_laboral_empl")
-def guardar_historico_laboral_empl(sender, instance, created, **kwargs):
-    if instance:
-        empleado_empresa_historico(empresa=instance.empresa, empleado=instance, empr_fingreso=instance.empr_fingreso).save()

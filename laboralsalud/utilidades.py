@@ -59,6 +59,7 @@ TIPO_AUSENCIA_ = (
     (4, "Familiar Enfermo"),
     (5, "Licencias Especiales"),
     (6, "Embarazo"),
+    (8, "Consulta/Control rutinario"),
 )
 
 TIPO_ALTA = (
