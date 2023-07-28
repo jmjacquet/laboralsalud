@@ -44,6 +44,7 @@ TIPO_CONTROL = (
     ("E", u"Evolución ART"),
     ("R", u"Otros Registros"),
     ("V", u"Visita a Domicilio"),
+    ("M", u"Videollamada"),
 )
 
 TIPO_CONTROL_ = (("T", "Todos"),) + TIPO_CONTROL

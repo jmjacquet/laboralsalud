@@ -415,6 +415,8 @@ class TurnosCreateView(VariablesMixin, AjaxCreateView):
     def get_form_kwargs(self):
         kwargs = super(TurnosCreateView, self).get_form_kwargs()
         kwargs["request"] = self.request
+        kwargs["tipo_form"] = "ALTA"
+        kwargs["es_admin"] = esAdmin(self.request)
         return kwargs
 
     def get_initial(self):
@@ -486,6 +488,7 @@ class TurnosLightCreateView(VariablesMixin, AjaxCreateView):
     def get_form_kwargs(self):
         kwargs = super(TurnosLightCreateView, self).get_form_kwargs()
         kwargs["request"] = self.request
+        kwargs["tipo_form"] = "ALTA"
         return kwargs
 
     def get_initial(self):

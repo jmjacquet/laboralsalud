@@ -875,13 +875,19 @@ def dias_ausentes_tot(fdesde, fhasta, fini, ffin):
     return tot
 
 def get_queryset_date_filters(fdesde, fhasta):
+    """
+    To handle all these cases
+    fini	!!			!!	ffin
+            !!fini	ffin!!
+    fini	!!ffin		!!
+            !!fini		!!	ffin
+    """
     return (Q(aus_fcrondesde__gte=fdesde, aus_fcronhasta__lte=fhasta)
-                        | Q(aus_fcrondesde__lte=fdesde, aus_fcronhasta__gte=fhasta)
-                        | Q(aus_fcrondesde__lte=fdesde, aus_fcronhasta__lte=fhasta,
-                            aus_fcronhasta__gte=fdesde)
-                        | Q(aus_fcrondesde__gte=fdesde, aus_fcronhasta__lte=fhasta,
-                            aus_fcrondesde__lte=fhasta)
-                        )
+            | Q(aus_fcrondesde__lte=fdesde, aus_fcronhasta__gte=fhasta)
+            | Q(aus_fcrondesde__gte=fdesde, aus_fcronhasta__gte=fhasta,aus_fcrondesde__lte=fhasta)
+            | Q(aus_fcrondesde__lte=fdesde, aus_fcronhasta__lte=fhasta,aus_fcronhasta__gte=fdesde)
+            )
+
 
 def dias_ausentes_anio_en_curso(ausentismos, fhasta):
     finicio_anio = inicioAnio()

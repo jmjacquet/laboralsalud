@@ -85,6 +85,7 @@ class TurnosForm(forms.ModelForm):
         request = kwargs.pop("request", None)
         tipo_form = kwargs.pop("tipo_form", None)
         turno = kwargs.pop("turno", None)
+        es_admin = kwargs.pop("es_admin", False)
         super(TurnosForm, self).__init__(*args, **kwargs)
         if tipo_form == "EDICION":
             self.fields["turno_empresa"].queryset = ent_empresa.objects.filter(
@@ -94,11 +95,11 @@ class TurnosForm(forms.ModelForm):
                 pk=turno.turno_empleado.pk
             ).select_related("empresa")
         else:
-            empresas = empresas_habilitadas(request)
-            # self.fields["turno_empleado"].queryset = ent_empleado.objects.none()
-            self.fields["turno_empresa"].queryset = ent_empresa.objects.filter(
-                baja=False, pk__in=empresas
-            )
+            empresas_habil_ids = empresas_habilitadas(request)
+            empresas_qs = ent_empresa.objects.filter(baja=False, pk__in=empresas_habil_ids)
+            self.fields["turno_empresa"].queryset = empresas_qs
+            if not es_admin:
+                self.fields["turno_empresa"].empty_label = None
 
 
     def clean(self):
