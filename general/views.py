@@ -488,13 +488,11 @@ class TurnosLightCreateView(VariablesMixin, AjaxCreateView):
     def get_form_kwargs(self):
         kwargs = super(TurnosLightCreateView, self).get_form_kwargs()
         kwargs["request"] = self.request
-        kwargs["tipo_form"] = "ALTA"
         return kwargs
 
     def get_initial(self):
         initial = super(TurnosLightCreateView, self).get_initial()
         initial["request"] = self.request
-        initial["tipo_form"] = "ALTA"
         return initial
 
     def form_invalid(self, form, empresa_form, empleado_form):

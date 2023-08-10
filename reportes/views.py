@@ -55,21 +55,27 @@ def calcular_empleados_empresas(empresas_list, fdesde=inicio_de_los_tiempos(), f
     Calcula la cantidad de empleados de un listado de empresas activos para un rango de fechas dado
     (si hay casas centrales y sucursales debe filtrar para que no se repitan los empleados)
     """
-    tot_empl = 0
     if not empresas_list:
-        return tot_empl
-    # empr_sucursales = [e for e in empresas_list if e.casa_central_id]
-    empl_empr = ent_empleado.empleados_activos.filter(empresa__in=empresas_list)
-    empl_empr_activos = empl_empr.filter(Q(empr_fingreso__gte=fdesde) | Q(empr_fingreso__lte=fhasta) | Q(empr_fingreso__isnull=True))\
+        return 0
+    empleados_activos_empresa = get_empleados_activos_empresa(empresas_list, fdesde, fhasta)
+    tot_empl_empr = empleados_activos_empresa.count()
+    empleados_activos_empresa_historico = get_empleados_activos_empresa_historico(empresas_list, fdesde, fhasta, empleados_activos_empresa)
+    tot_empl_empr_hist = empleados_activos_empresa_historico.count()
+    return tot_empl_empr + tot_empl_empr_hist
+
+
+def get_empleados_activos_empresa(empresas_list, fdesde=inicio_de_los_tiempos(), fhasta=hoy()):
+    empl_empr_activos = ent_empleado.empleados_activos.filter(empresa__in=empresas_list)
+    return empl_empr_activos.filter(
+        Q(empr_fingreso__gte=fdesde) | Q(empr_fingreso__lte=fhasta) | Q(empr_fingreso__isnull=True)) \
         .distinct().values_list("id", flat=True)
-    tot_empl_empr = empl_empr_activos.count()
-    empl_hist = empleado_empresa_historico.objects.filter(empresa__in=empresas_list) \
+
+def get_empleados_activos_empresa_historico(empresas_list, fdesde=inicio_de_los_tiempos(), fhasta=hoy(), empl_empr_activos=None):
+    return empleado_empresa_historico.objects.filter(empresa__in=empresas_list) \
         .filter(Q(empr_fingreso__gte=fdesde) | Q(empr_fingreso__lte=fhasta) | Q(empr_fingreso__isnull=True)) \
         .filter(empleado__baja=False).exclude(empleado_id__in=empl_empr_activos) \
-        .annotate(latest_fingreso=Max('id'))        \
-        .distinct()
-    tot_empl_hist = empl_hist.count()
-    return tot_empl_empr + tot_empl_hist
+        .annotate(latest_fingreso=Max('id')) \
+        .distinct().values_list("id", flat=True)
 
 
 @login_required
@@ -187,7 +193,7 @@ def reporte_resumen_periodo(request):
         aus_x_grupop, max_grupop = ausentismo_grupo_patologico(
             ausentismos, fdesde, fhasta
         )
-        empl_mas_faltadores = calcular_empleados_faltadores(aus_no_dates, fhasta)
+        empl_mas_faltadores = calcular_empleados_faltadores(aus_no_dates, fdesde, fhasta, empresas_list)
 
         if empresa:
             aus_total_x_gerencia, tasa_aus_tot_gerencia = ausentismo_total_x_gerencia(
@@ -633,9 +639,13 @@ def ausentismo_grupo_patologico(ausentismos, fdesde, fhasta):
     return aus_x_grupop, max_grupop
 
 
-def calcular_empleados_faltadores(ausentismos, fhasta):
+def calcular_empleados_faltadores(ausentismos, fdesde, fhasta, empresas_list):
     # Empleados más faltadores desde principios del año
-    empl_mas_faltadores = dias_ausentes_anio_en_curso(ausentismos, fhasta)
+    ids_empl_activos_actual = get_empleados_activos_empresa(empresas_list, fdesde, fhasta)
+    ids_empl_activos_hist = get_empleados_activos_empresa_historico(empresas_list, fdesde, fhasta, ids_empl_activos_actual)
+    ids_empl_activos = list(ids_empl_activos_actual) + list(ids_empl_activos_hist)
+    ausentismos_empl_activos = ausentismos.filter(empleado_id__in=ids_empl_activos)
+    empl_mas_faltadores = dias_ausentes_anio_en_curso(ausentismos_empl_activos, fhasta)
         # empl_mas_faltadores.append({"empleado": a.empleado, "dias": dias})
     return sorted(empl_mas_faltadores, key=lambda i: i["dias"], reverse=True)
 
@@ -902,12 +912,6 @@ def dias_ausentes_anio_en_curso(ausentismos, fhasta):
             tot += dias_ausentes_tot(finicio_anio, fhasta, aus["fdesde"], aus["fhasta"])
         empl_dias_totales.append(dict(empl_nombre=e_nombre, empl_id=e_id, dias=tot))
     return empl_dias_totales
-    # return aus_ini_anio.annotate(
-    #     dias=Sum('aus_diascaidos'),
-    #     empl_nombre=F('empleado__apellido_y_nombre'),
-    #     empl_id=F('empleado_id'),
-    # ).order_by('-dias')
-
 
 
 def dias_ausentes_mes(mes, anio, ausentismos):

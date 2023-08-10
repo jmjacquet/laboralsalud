@@ -65,15 +65,15 @@ class AusentismoView(VariablesMixin, ListView):
         busq = None
         if self.request.POST:
             busq = self.request.POST
-        elif "ausentismos" in self.request.session:
-            busq = self.request.session["ausentismos"]
+        # elif "ausentismos" in self.request.session:
+        #     busq = self.request.session["ausentismos"]
         empresas = empresas_habilitadas(self.request)
         form = ConsultaAusentismos(busq or None, empresas=empresas)
 
         if form.is_valid():
             fcontrol = form.cleaned_data["fcontrol"]
-            fdesde = form.cleaned_data["fdesde"] or inicioMesAnt()
-            fhasta = form.cleaned_data["fhasta"] or finMes()
+            fdesde = form.cleaned_data["fdesde"]
+            fhasta = form.cleaned_data["fhasta"]
             empresa = form.cleaned_data["empresa"]
             empleado = form.cleaned_data["empleado"]
             aus_grupop = form.cleaned_data["aus_grupop"]
@@ -112,6 +112,8 @@ class AusentismoView(VariablesMixin, ListView):
             elif int(estado) == 2:
                 ausentismos = ausentismos.filter(aus_fcronhasta__lt=hoy())
             elif int(estado) == 0:
+                fdesde = fdesde or inicioAnio()
+                fhasta = fhasta or fin_de_los_tiempos()
                 ausentismos = ausentismos.filter(
                     Q(aus_fcrondesde__range=[fdesde, fhasta])
                     | Q(aus_fcronhasta__range=[fdesde, fhasta])

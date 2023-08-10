@@ -242,6 +242,9 @@ def inicioAnio():
 def inicio_de_los_tiempos():
     return date(1900, 1, 1)
 
+def fin_de_los_tiempos():
+    return date(3000, 1, 1)
+
 def hoy():
     return date.today()
 

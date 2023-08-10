@@ -398,6 +398,7 @@ class ConsultaAusentismos(forms.Form):
         widget=forms.DateInput(
             attrs={"class": "form-control datepicker", "autocomplete": "off"}
         ),
+        initial=inicioAnio(),
         required=False,
     )
     fhasta = forms.DateField(
@@ -405,6 +406,7 @@ class ConsultaAusentismos(forms.Form):
         widget=forms.DateInput(
             attrs={"class": "form-control datepicker", "autocomplete": "off"}
         ),
+        initial=fin_de_los_tiempos(),
         required=False,
     )
     empresa = forms.ModelChoiceField(
@@ -545,16 +547,6 @@ class SeguimControlForm(forms.ModelForm):
     tipo_control = forms.ChoiceField(
         label="Tipo Control", choices=TIPO_CONTROL, required=False,
     )
-    # aus_fcrondesde = forms.DateField(
-    #     label="Certif. Desde",
-    #     required=False,
-    #     widget=forms.DateInput(attrs={"class": "datepicker"}),
-    # )
-    # aus_fcronhasta = forms.DateField(
-    #     label="Certif. Hasta",
-    #     required=False,
-    #     widget=forms.DateInput(attrs={"class": "datepicker"}),
-    # )
 
     class Meta:
         model = ausentismo_controles
@@ -570,14 +562,4 @@ class SeguimControlForm(forms.ModelForm):
         if fecha:
             if not tipo_control:
                 self.add_error("tipo_control", u"¡Debe cargar una Tipo de Control!")
-
-            # aus_fcrondesde = self.cleaned_data.get("aus_fcrondesde")
-            # aus_fcronhasta = self.cleaned_data.get("aus_fcronhasta")
-            #
-            # if aus_fcrondesde:
-            #     if not aus_fcronhasta:
-            #         self.add_error("aus_fcronhasta", u"¡Verifique la Fecha!")
-            #     elif aus_fcrondesde > aus_fcronhasta:
-            #         self.add_error("aus_fcronhasta", u"¡Verifique la Fechas!")
-
         return self.cleaned_data
