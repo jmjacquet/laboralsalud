@@ -48,4 +48,7 @@ urlpatterns = [
     url(r'^empr_agrupamiento/nuevo/$', EmprAgrupamientoCreateView.as_view(), name="empr_agrupamiento_nuevo"),
     url(r'^empr_agrupamiento/editar/(?P<id>\d+)/$', EmprAgrupamientoEditView.as_view(), name="empr_agrupamiento_editar"),
     url(r'^empr_agrupamiento/baja_alta/(?P<id>\d+)/$', empr_agrupamiento_baja_alta, name='empr_agrupamiento_baja_alta'),
+
+    url(r'^empleado_dt/$', EmpleadoView.as_view(), name="empleado_listado_dt"),
+
 ]

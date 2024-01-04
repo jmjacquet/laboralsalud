@@ -1,0 +1,411 @@
+{% extends "base.html" %}
+{% load static from staticfiles %}
+{% load i18n l10n %}
+{% load humanize %}
+{% load bootstrap3 %}
+{% block breadcrumbs %}              
+        <div class="breadcrumbs">
+            Listado de Empleados <small> carga e impresión</small>        
+        <button tittle="Búsqueda Avanzada" data-toggle="collapse" aria-expanded="true"  class="btn btn-xs btn-circle pull-right boton_busqueda" data-target="#barra_busqueda" aria-controls="barra_busqueda"><i class="glyphicon glyphicon-search"></i></button>
+        </div>
+{% endblock breadcrumbs %}
+{% block cargando %}            
+  <div id="cargando" class="cargando" >
+    <span class="cargando-txt">CARGANDO...</span>
+    <img class="cargando-img" src="{% static 'img/loading-bars.svg' %}">
+  </div>
+{% endblock cargando %}
+{% block principal %}                            
+<br>    
+    <div class="collapse barra_busqueda" id="barra_busqueda">
+          <div class="panel panel-primary">
+              <div class="panel-heading"> PARÁMETROS DE BÚSQUEDA</div> 
+              <div class="panel-body">
+                      <div class="col-md-12">
+                       <form class="form" accept-charset="UTF-8" autocomplete="off" role="form" action="" method="post">
+                        {% csrf_token %}                                                                                                               
+                          <div class="col-sm-4">{% bootstrap_field form.qempresa  %}</div>
+                          <div class="col-sm-3">{% bootstrap_field form.qagrupamiento  %}</div>
+                          <div class="col-sm-3">{% bootstrap_field form.art  %}</div>
+                          <div class="col-sm-1">{% bootstrap_field form.estado  %}</div>
+                          <div class="col-sm-1"><button class="btn btn-xs text-center" type="submit">Buscar</button></div>                      
+                        </form>             
+                      </div>
+              </div>  
+          </div>                  
+    </div>
+    <div class="col-xs-12">
+    <div class="btn-group " style="float:left;margin-right:20px;margin-bottom:10px;">
+        <a class="btn btn-xs btn-primary modal-create" style="float:left;margin-right:10px;" href="{% url 'empleado_nuevo' %}" data-modal-head="AGREGAR EMPLEADO" data-modal-callback="reload">Nuevo Empleado</a>
+        <button class="btn btn-xs btn-danger" value="" style="margin-right:10px;" id="btnEliminar">Eliminar</button>
+        <button class="btn btn-xs btn-primary" id="btnAgruparEmpleados" style="float:left;margin-right:10px;;margin-bottom:5px;" >Asignar Empresa</button>
+    </div> 
+    <table width="100%" id="empleado" style="display:none;" class="table table-striped compact table-hover table-no-bordered tabla_nueva text-nowrap">         
+        <thead >
+            <tr>
+                <th class="no-sort text-center"data-priority="1">#</th>
+                <th class="no-sort text-center" data-priority="2"><input type="checkbox" id="checkall" title="Seleccionar Todos"/></th>
+                <th class="imprimir" data-priority="1">Legajo</th>
+                <th class="imprimir" data-priority="2">Apellido y Nombre</th>
+                <th class="imprimir" data-priority="3">Documento</th>
+                <th class="imprimir" data-priority="4">F.Nacim.</th>
+                <th class="imprimir">Edad</th>
+                <th class="imprimir">Empresa</th>
+                <th class="imprimir">Antig.</th>
+                <th class="imprimir">ART</th>
+                <th class="imprimir">EMail</th>
+                <th class="imprimir">Domicilio</th>
+                <th class="imprimir">Localidad</th>           
+                <th class="imprimir">Provincia</th>           
+                <th class="imprimir">Puesto/Cargo</th> 
+                <th class="imprimir" data-priority="12">F.Carga</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for a in empleados %}
+            <tr
+             {% if a.baja %}
+                class='danger'
+             {% endif %}>
+                
+                <td><div class="btn-group">
+                      <button type="button" title="{{ a.pk|safe}}" class="btn btn-xs color_barra" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="icon-settings"> </i> <span class="caret"></span>
+                      </button>
+                      <ul class="dropdown-menu">
+                        <li><a href="{% url 'empleado_detalles' id=a.pk %}" class="modal-detail" data-modal-head="DETALLE EMPLEADO {{a.codigo}}" data-modal-callback="reload">
+                        <i class=" icon-screen-desktop"></i> Detalle</a></li>
+                        
+                        <li><a href="{% url 'empleado_editar' id=a.pk %}"  class="modal-update " title="Editar" data-modal-callback="reload" data-modal-head="EDITAR EMPLEADO"data-modal-target="#object-{{ a.pk }}"><i class="icon-note"></i> Editar</a></li>
+
+                        <li><a href="#" id="alta_baja" onClick="alerta= alertify.dialog('confirm').set({'labels':{ok:'Aceptar', cancel:'Cancelar'},'message': '¿DESEA DAR DE BAJA/REACTIVAR EL REGISTRO ACTUAL?',transition:'fade','onok': function(){ window.location.href = '{% url 'empleado_baja_alta' id=a.pk  %}'; },'oncancel': function(){ return true;} }); alerta.setting('modal', true); alerta.setHeader('BAJA/REACTIVAR'); alerta.show(); return true;" ><i class="icon-dislike"></i><i class="icon-like"></i>Baja/Reactivar</a>
+                            </li>     
+                        
+                        
+                      </ul>                                      
+                    </div>
+                </td> 
+                <td class="text-center">
+                        <input type="checkbox" class="tildado" id="chk_{{forloop.counter0}}" value="{{ a.pk|safe }}" aria-label="chk_{{forloop.counter0}}">                         
+                </td> 
+                <td>{{ a.legajo|default_if_none:'' }}</td>
+                <td title="{{ a.apellido_y_nombre}}">{{ a.apellido_y_nombre|default_if_none:''|truncatechars:60 }}</td>
+                <td>{{ a.nro_doc|default_if_none:'' }}</td>
+                <td>{{ a.fecha_nac|date:'d/m/Y' }}</td>
+                <td>{{ a.get_edad|default_if_none:'' }} años</td>
+                <td title="{{ a.empresa}}">{{ a.empresa|default_if_none:''|truncatechars:60 }}</td>
+                <td>{{ a.get_antiguedad_empr|default_if_none:'' }} años</td>
+                <td title="{{ a.art}}">{{ a.art|default_if_none:''|truncatechars:60 }}</td>
+                <td>{{ a.email|default_if_none:'' }}</td>
+                <td title="{{ a.domicilio}}">{{ a.domicilio|default_if_none:''|truncatechars:60 }}</td>
+                <td>{{ a.localidad|default_if_none:'' }}</td>                                
+                <td>{{ a.get_provincia_display|default_if_none:'' }}</td>                                
+                <td title="{{ a.trab_cargo}}">{{ a.trab_cargo|default_if_none:''|truncatechars:60 }}</td>                                                                
+                <td title="Usuario Creación: {{a.usuario_carga|default_if_none:'SISTEMA'}} | Última Modificación: {{a.fecha_modif|date:'d/m/Y'}}">{{ a.fecha_creacion|date:'d/m/Y' }}</td>
+                
+            </tr>
+            {% endfor %}
+        </tbody>
+        <tfoot>
+            <tr>
+                <th></th> 
+                <th></th> 
+                <th></th>
+                <th></th> 
+                <th></th>                                
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>                                                                
+                <th></th>                                                                
+                <th></th>
+                <th></th>                
+                <th></th>                
+                <th></th>                
+            </tr>
+        </tfoot>
+        
+    </table>                   
+    </div>
+<div id="popup" class="modal fade modal-modal" role="dialog"  data-backdrop="static"  data-keyboard="false"></div>
+{% endblock principal %}
+
+{% block scripts_js %}     
+<script type="text/javascript">
+
+$(document).ready(function() { 
+const userAgent = navigator.userAgent.toLowerCase();
+const isTablet = /(ipad|tablet|(android(?!.*mobile))|(windows(?!.*phone)(.*touch))|kindle|playbook|silk|(puffin(?!.*(IP|AP|WP))))/.test(userAgent);
+
+if (isTablet==false) {
+  $("#id_qempresa").chosen({
+      no_results_text: "Empresa inexistente...",
+      placeholder_text_single:"Seleccione una Empresa",
+      allow_single_deselect: true,
+  });
+  };
+moment.locale('es');
+$.fn.dataTable.moment('DD/MM/YYYY');
+
+var tabla = $('#empleado').DataTable({
+            "language": {
+                "decimal": ",",
+                "thousands": ".",                 
+                "sProcessing": "Procesando...",
+                "sLengthMenu": "Mostrar _MENU_ registros",
+                "sZeroRecords": "No se encontraron resultados",
+                "sEmptyTable": "No hay registros en esta tabla",
+                "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                "sInfoPostFix": "",
+                "sSearch": "Buscar:",
+                "sUrl": "",
+                "sInfoThousands": ",",
+                "sLoadingRecords": "Cargando...",
+                "oPaginate": {
+                    "sFirst": "Primero",
+                    "sLast": "Ãšltimo",
+                    "sNext": "Siguiente",
+                    "sPrevious": "Anterior"
+                },
+                "oAria": {
+                    "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                    "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                },
+                "decimal": ",",
+                "thousands": ".",                
+            },                      
+           
+         "columnDefs": [ {
+                  "targets"  : 'no-sort',
+                  "orderable": false,
+                }],          
+           "paging":   true,
+           "lengthMenu": [[20, 50, -1], [20, 50, "Todos"]],
+           "autoWidth": false,
+           "order": [],
+           "colReorder": true,
+           "searching": true,
+           "bProcessing": true,
+           "bServerSide": true,
+           "sAjaxSource": "{% url 'empleados_ajax_list' %}",
+            fixedHeader: {
+              header: true,
+              footer: false
+              },
+            responsive: true,
+            //dom: 'Bfrtlip',
+            dom: "Bf<'row'<'col-sm-12'tr>>"+"<'row'<'col-sm-3'l><'col-sm-9'ip>>",
+            "fnRowCallback": function(nRow, aData, iDisplayIndex) {
+            return nRow;
+            },
+            "fnServerParams": function(aoData) {
+                aoData.push.apply(
+                    aoData,
+                    $('#remote_db_form').serializeArray());
+            },
+            "fnServerData": function(sSource, aoData, fnCallback, oSettings) {
+
+                oSettings.jqXHR = $.ajax({
+                    dataType: 'json',
+                    type: 'GET',
+                    url: sSource,
+                    data: aoData,
+                    success: fnCallback
+                });
+
+            },
+            buttons: [
+                {
+                    extend:    'colvis',
+                    text:      '<i class="fa fa-list"></i>',
+                    titleAttr: 'Ver/Ocultar',
+                    className: 'btnToolbar',                    
+                },
+                {
+                    extend:    'copyHtml5',
+                    text:      '<i class="fa fa-files-o"></i>',
+                    titleAttr: 'Copiar',
+                    exportOptions: { columns: ':visible' },
+                    className: 'btnToolbar',                    
+                },
+                {
+                    extend:    'excel',
+                    text:      '<i class="fa fa-file-excel-o"></i>',
+                    titleAttr: 'Excel',
+                    filename: 'EMPLEADOS',                    
+                    exportOptions: {  modifier: {
+                                        page: 'current'
+                                    }, 
+                                      columns: '.imprimir',
+                                      format: {
+                                      body: function(data, row, column, node) {
+                                        var floatVal = function (i) {
+                                            if (typeof i === "number") {
+                                                return i;
+                                            } else if (typeof i === "string") {
+                                                i = i.replace(/\$/g, "");
+                                                i = i.replace(/\,/g ,"");                    
+                                                i = i.replace(/\./g, "");
+                                                var result = parseFloat(i)/100;
+                                                // console.log(result);
+                                                if (isNaN(result)) {
+                                                    try {
+                                                        var result = $jq(i).text();
+                                                        result = parseFloat(result);
+                                                        if (isNaN(result)) { result = 0 };
+                                                        return result * 1;
+                                                    } catch (error) {
+                                                        return 0;
+                                                    }
+                                                } else {
+                                                    return result * 1;
+                                                }
+                                            } else {
+                                                alert("Unhandled type for totals [" + (typeof i) + "]");
+                                                return 0
+                                            }
+                                        };
+                                          data = $('<p>' + data + '</p>').text();
+                                          return (node.className=='importe') ? floatVal(data)  : data;
+                                      }
+                                    }},
+                    className: 'btnToolbar',     
+                },
+               
+                {
+                    extend:    'pdfHtml5',
+                    text:      '<i class="fa fa-file-pdf-o"></i>',
+                    titleAttr: 'PDF',footer: true,
+                    exportOptions: { columns: '.imprimir'},
+                    orientation: 'landscape',
+                    className: 'btnToolbar',                    
+                },
+                {
+                    extend: 'print',
+                    text:      '<i class="fa fa-print"></i>',
+                    titleAttr: 'Imprimir',
+                    exportOptions: { columns: '.imprimir' },
+                    className: 'btnToolbar',                    
+                },
+            ],
+            PreDrawCallback:function(){
+            $("#cargando").show();
+            },
+            initComplete: function () {
+               // this.api().columns().every( function () {[0, 1, 9]
+                this.api().columns([7,9,12,13,14]).every( function () {
+                    var column = this;
+                    var select = $('<select class="form-control"><option value="">Todos</option></select>')
+                        .appendTo( $(column.footer()).empty() )
+                        .on( 'change', function () {
+                            var val = $.fn.dataTable.util.escapeRegex(
+                                $(this).val()
+                            );
+     
+                            column
+                                .search( val ? '^'+val+'$' : '', true, false )
+                                .draw();
+                        } );
+     
+                     column.data().unique().sort().each( function ( d, j ) {
+                    //column.cells('', column[0]).render('display').sort().unique().each( function ( d, j ){
+                        select.append( '<option value="'+d+'">'+d+'</option>' )
+                    } );
+                } );
+                $("#empleado").show();
+                  this.fnAdjustColumnSizing();
+                $("#cargando").hide();
+            }
+        });
+
+
+
+$("#checkall").click (function () {
+     var checkedStatus = this.checked;
+    $("input[class='tildado']").each(function () {
+        $(this).prop("checked", checkedStatus);
+        $(this).change();
+     });
+  });
+
+var listado = [];
+
+$("input[class='tildado']" ,tabla.rows().nodes()).change(function() {                        
+        str2 = '';
+        checkbox=this;
+        id = checkbox.value;
+        if (checkbox.checked) {               
+                //Agrego al array de aus seleccionados
+                listado.push(id);                
+                $(checkbox).closest('tr').toggleClass('selected', checkbox.checked);                                
+        } else {
+            if ($(checkbox).closest('tr').hasClass('selected')) {
+                $(checkbox).closest('tr').removeClass('selected');
+            };
+            var listado2=[];
+            //Regenero el array de ids selecionados sin el que acabo de quitar
+            for( var i = 0; i < listado.length; i++){
+                if ( listado[i] != id) listado2.push(listado[i]);                    
+                };
+            listado=listado2;     
+        };
+        //Armo el String para los botones
+        for (var i = 0; i < listado.length; i++) {                
+                if (str2 == '') {
+                    str2 = str2 + 'id=' + listado[i];
+                } else {
+                    str2 = str2 + '&id=' + listado[i];
+                };
+        };
+      $('#btnEliminar').val(str2);   
+    });
+ $('#btnEliminar').click(function() {
+        if (listado.length == 0) {
+            alertify.errorAlert("¡Debe seleccionar algún Empleado!");
+        } else {
+            alerta = alertify.dialog('confirm').set({
+                'labels': {
+                    ok: 'Aceptar',
+                    cancel: 'Cancelar'
+                },
+                'message': '¿Desea Eliminar los Empleados seleccionados?',
+                transition: 'fade',
+                'onok': function() {
+                    $.ajax({
+                        url: "/entidades/empleado_eliminar_masivo?" + $('#btnEliminar').val(),
+                        type: "get",
+                        dataType: 'json',
+                        success: function(data) {
+                            window.location.href = window.location.href
+                        }
+                    });
+                },
+                'oncancel': function() {
+                    return true;
+                }
+            });
+            alerta.setting('modal', true);
+            alerta.setHeader('ELIMINAR EMPLEADOS');
+            alerta.show();
+            return true;
+        }
+    });
+ $('#btnAgruparEmpleados').click(function(){
+ if (listado.length == 0) {
+        alertify.errorAlert("¡Debe seleccionar algún Empleado!");
+    } else {
+       return abrir_modal("/entidades/empleado_agrupar?"+ $('#btnEliminar').val());
+    }
+
+});
+
+});
+</script>
+{% endblock scripts_js %}
+
+
+

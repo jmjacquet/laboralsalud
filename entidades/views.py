@@ -10,6 +10,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.utils.decorators import method_decorator
+from django.views import View
 from django.views.decorators.csrf import csrf_protect
 from django.views.generic import ListView, DetailView
 
@@ -25,6 +26,7 @@ from entidades.forms import (
     AgruparEmpleadosForm,
 )
 from entidades.models import *
+from general.datatables_data import _get_datatable_response
 from general.views import VariablesMixin, recargar_empresas_agrupamiento
 from laboralsalud.utilidades import (
     ultimoNroId,
@@ -1053,3 +1055,122 @@ def empr_agrupamiento_baja_alta(request, id):
     ent.save()
     messages.success(request, "¡Los datos se guardaron con éxito!")
     return HttpResponseRedirect(reverse("empr_agrupamiento_listado"))
+
+
+##################################################################################3
+
+class EmpleadoViewDT(VariablesMixin, View):
+    model = ent_empleado
+    template_name = "entidades/empleado_listado2.html"
+    context_object_name = "empleados"
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        if not tiene_permiso(self.request, "empl_pantalla"):
+            return redirect(reverse("principal"))
+        return super(EmpleadoViewDT, self).dispatch(*args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super(EmpleadoViewDT, self).get_context_data(**kwargs)
+        busq = None
+        if self.request.POST:
+            busq = self.request.POST
+        elif "empleados" in self.request.session:
+            busq = self.request.session["empleados"]
+        form = ConsultaEmpleados(busq or None, request=self.request)
+        empresas = empresas_habilitadas(self.request)
+        empleados = ent_empleado.objects.none()
+
+        if form.is_valid():
+            qempresa = form.cleaned_data["qempresa"]
+            qagrupamiento = form.cleaned_data["qagrupamiento"]
+            estado = form.cleaned_data["estado"]
+            art = form.cleaned_data["art"]
+
+            empleados = ent_empleado.objects.filter(
+                empresa__pk__in=empresas
+            ).select_related("empresa", "trab_cargo", "art", "usuario_carga")
+
+            if int(estado) == 0:
+                empleados = empleados.filter(baja=False)
+            elif int(estado) == 1:
+                empleados = empleados.filter(baja=True)
+
+            if qagrupamiento and not qempresa:
+                data = recargar_empresas_agrupamiento(self.request, qagrupamiento.id)
+                empresas_list = [d["id"] for d in json.loads(data.content)]
+                q_empresas = ent_empresa.objects.filter(
+                    Q(id__in=empresas_list) | Q(casa_central__id__in=empresas_list)
+                )
+                empleados = empleados.filter(empresa__in=q_empresas)
+            elif qempresa:
+                empleados = empleados.filter(
+                    Q(empresa=qempresa) | Q(empresa__casa_central=qempresa)
+                )
+            if art:
+                empleados = empleados.filter(art=art)
+
+        context["form"] = form
+        context["empleados"] = empleados
+        return context
+
+    def get(self, response, **kwargs):
+        try:
+            dt_request = DTREmpleados(self.request)
+            data, total = self._get_datarows(dt_request)
+            errors = None
+            status_code = 200
+        except Exception as e:
+            data = []
+            total = 0
+            status_code = 400
+            errors = e
+        return _get_datatable_response(
+            data, total, dt_request.sEcho, "sync", status_code, errors
+        )
+
+    def _get_datarows(self, dt_request):
+        rows = self._get_data(connection, dt_request)
+        data_rows, last_row = rows[:-1], rows[-1]
+        total = self._get_num_matches(last_row)
+        data = self._add_metadata_changes(data_rows, dt_request)
+        return data, total
+
+    def _get_data(self, conn, dt_request, query_from="fulldata_results"):
+        qr_params = EntityQueryParams(dt_request)
+        return qr_params.sql_query.fetchall_as_dict(
+            conn,
+            sql_where=qr_params.sql_where,
+            remote_db=qr_params.remote_db,
+            statuses=qr_params.statuses,
+            entity_types=qr_params.entity_types,
+            source_db=qr_params.source_db,
+            query_from=query_from,
+            search_term=qr_params.search_term,
+            order_col=dt_request.order_col,
+            order_dir=dt_request.order_dir,
+            select_start=dt_request.select_start,
+            select_length=dt_request.select_length,
+            jira_search=qr_params.jira_search,
+            jira_where=qr_params.jira_where,
+            jiras_requested=",".join(qr_params.jira_list),
+        )
+
+
+class DTREmpleados(object):
+    """Wrapper for a request to EmpleadosData"""
+
+    def __init__(self, request):
+        p = request.REQUEST.get
+        self.sEcho = p("sEcho")
+        self.order_col = int(p("iSortCol_0", 4))
+        self.order_dir = (
+            "asc NULLS FIRST" if p("sSortDir_0", "asc") == "asc" else "desc NULLS LAST"
+        )
+        self.select_start = int(p("iDisplayStart", 0))
+        self.select_length = int(p("iDisplayLength", 25))
+        self.search_term = p("sSearch", "").upper().strip()
+        self.change_statuses = request.REQUEST.getlist("change_status")
+        self.product_type = p("product_type")
+        self.entity_types = request.REQUEST.getlist("entity_types")
+        self.schema_db = p("schema_db")
