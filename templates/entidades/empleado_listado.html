@@ -38,6 +38,7 @@
     <div class="btn-group " style="float:left;margin-right:20px;margin-bottom:10px;">
         <a class="btn btn-xs btn-primary modal-create" style="float:left;margin-right:10px;" href="{% url 'empleado_nuevo' %}" data-modal-head="AGREGAR EMPLEADO" data-modal-callback="reload">Nuevo Empleado</a>
         <button class="btn btn-xs btn-danger" value="" style="margin-right:10px;" id="btnEliminar">Eliminar</button>
+        <button class="btn btn-xs btn-danger" value="" style="margin-right:10px;" id="btnBaja">Baja</button>
         <button class="btn btn-xs btn-primary" id="btnAgruparEmpleados" style="float:left;margin-right:10px;;margin-bottom:5px;" >Asignar Empresa</button>
     </div> 
     <table width="100%" id="empleado" style="display:none;" class="table table-striped compact table-hover table-no-bordered tabla_nueva text-nowrap">         
@@ -372,6 +373,39 @@ $("input[class='tildado']" ,tabla.rows().nodes()).change(function() {
             return true;
         }
     });
+
+ $('#btnBaja').click(function() {
+        if (listado.length == 0) {
+            alertify.errorAlert("¡Debe seleccionar algún Empleado!");
+        } else {
+            alerta = alertify.dialog('confirm').set({
+                'labels': {
+                    ok: 'Aceptar',
+                    cancel: 'Cancelar'
+                },
+                'message': '¿Desea dar de Baja a los Empleados seleccionados?',
+                transition: 'fade',
+                'onok': function() {
+                    $.ajax({
+                        url: "/entidades/empleado_baja_masivo?" + $('#btnEliminar').val(),
+                        type: "get",
+                        dataType: 'json',
+                        success: function(data) {
+                            window.location.href = window.location.href
+                        }
+                    });
+                },
+                'oncancel': function() {
+                    return true;
+                }
+            });
+            alerta.setting('modal', true);
+            alerta.setHeader('BAJA EMPLEADOS');
+            alerta.show();
+            return true;
+        }
+    });
+
  $('#btnAgruparEmpleados').click(function(){
  if (listado.length == 0) {
         alertify.errorAlert("¡Debe seleccionar algún Empleado!");
