@@ -18,6 +18,8 @@ jobs:
           script: |
             cd /home/${{ secrets.SSH_USERNAME }}/apps/lblsl_prueba2/laboralsalud
             git pull
-            python manage.py collectstatic --noinput
-            ../apache2/bin/apachectl restart
+            cd ..
+            source lblsl_env/bin/activate 
+            python laboralsalud/manage.py collectstatic --noinput
+            apache2/bin/apachectl restart
             
