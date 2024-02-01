@@ -17,7 +17,8 @@ jobs:
           password: ${{ secrets.SSH_PASSWORD }}
           script: |
             cd /home/username/apps/lblsl_prueba2/laboralsalud
-            git pull            
-            ./restart_apache            
+            git pull       
+            python manage.py collectstatic --noinput
+            ../apache2/bin/apachectl restart
         env:
           SSH_KNOWN_HOSTS_CONTENT: ${{ secrets.SSH_KNOWN_HOSTS_CONTENT }}
