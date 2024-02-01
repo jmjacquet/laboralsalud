@@ -9,12 +9,15 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-      - name: Restart server via SSH
+      - name: Connect to Server via SSH
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USERNAME }}
           password: ${{ secrets.SSH_PASSWORD }}
-        shell: bash
-        run: /home/${{ secrets.SSH_USERNAME }}/apps/lblsl_prueba2/laboralsalud/new_version_deployment.sh
+          script: |
+            cd /home/${{ secrets.SSH_USERNAME }}/apps/lblsl_prueba2/laboralsalud
+            git pull
+            python manage.py collectstatic --noinput
+            ../apache2/bin/apachectl restart
             
