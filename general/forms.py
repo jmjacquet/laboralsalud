@@ -18,7 +18,7 @@ from laboralsalud.utilidades import *
 
 class EmpresasLoginModelChoiceField(forms.ModelChoiceField):
     def label_from_instance(self, obj):
-        return u"%s" % unicode(obj.razon_social.upper().replace(" (CC)", ""))
+        return u"%s" % unicode(obj.razon_social.upper().replace(" (CCCC)", ""))
 
 
 class LoginForm(forms.Form):
