@@ -4,12 +4,29 @@ on:
     branches:
       - master
 jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Connect Opalstack to Update Repo and Run Tests
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          script: echo "TESTS!!"
+
   deploy:
+    needs: test
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
+      - name: Checkout repository
         uses: actions/checkout@v2
-      - name: Connect to Server via SSH
+
+      - name: Connect Opalstack to Update Repo and Deploy changes
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.SSH_HOST }}
