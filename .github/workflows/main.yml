@@ -15,7 +15,7 @@ jobs:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USERNAME }}
           password: ${{ secrets.SSH_PASSWORD }}
-          script: |
+          script:
             cd /home/username/apps/lblsl_prueba2/laboralsalud
             git pull       
             python manage.py collectstatic --noinput
