@@ -24,14 +24,9 @@ DATABASES = {
             'PORT': '',      
         },
     }
-#
-# MIDDLEWARE_CLASSES += (
-#     'debug_toolbar.middleware.DebugToolbarMiddleware',#Barra DEBUG
-# )
 
 
 INSTALLED_APPS += [
-     # 'debug_toolbar',       
     'compressor' ,
 ]
 
@@ -40,10 +35,10 @@ STATICFILES_FINDERS += [
     ]
 
 
-
 COMPRESS_ENABLED = False
 COMPRESS_OUTPUT_DIR = 'bundles'
 
 
 COMPRESS_CSS_FILTERS = ['compressor.filters.css_default.CssAbsoluteFilter','compressor.filters.cssmin.CSSMinFilter']
 COMPRESS_JS_FILTERS = ["compressor.filters.jsmin.JSMinFilter"]
+

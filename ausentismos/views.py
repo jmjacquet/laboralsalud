@@ -112,7 +112,7 @@ class AusentismoView(VariablesMixin, ListView):
             elif int(estado) == 2:
                 ausentismos = ausentismos.filter(aus_fcronhasta__lt=hoy())
             elif int(estado) == 0:
-                fdesde = fdesde or inicioAnio()
+                fdesde = fdesde or ultimo_anio()
                 fhasta = fhasta or fin_de_los_tiempos()
                 ausentismos = ausentismos.filter(
                     Q(aus_fcrondesde__range=[fdesde, fhasta])

@@ -731,19 +731,22 @@ def empleado_baja_alta(request, id):
     if not tiene_permiso(request, "empl_pantalla"):
         return redirect(reverse("principal"))
     try:
-        ent = ent_empleado.objects.get(pk=id)
-        ent.baja = not ent.baja
-        if ent.baja:
-            ent.trab_fbaja = hoy()
-        else:
-            ent.trab_fbaja = None
-        ent.save()
-        recalcular_cantidad_empleados(ent.empresa)
+        empl = ent_empleado.objects.get(pk=id)
+        dar_baja_empleado(empl)
+        recalcular_cantidad_empleados(empl.empresa)
         messages.success(request, "¡Los datos se guardaron con éxito!")
-    except:
-        pass
+    except Exception as e:
+        messages.error(request, "¡No se pudo dar de Baja al Empleado!")
     return HttpResponseRedirect(reverse("empleado_listado"))
 
+
+def dar_baja_empleado(empleado):
+    empleado.baja = not empleado.baja
+    if empleado.baja:
+        empleado.trab_fbaja = hoy()
+    else:
+        empleado.trab_fbaja = None
+    empleado.save()
 
 @login_required
 def empleado_eliminar_masivo(request):
@@ -760,6 +763,25 @@ def empleado_eliminar_masivo(request):
         messages.error(
             request,
             "¡El Empleado no debe tener cargado Ausentismos a su nombre!<br>(elimínelos y vuelva a intentar)",
+        )
+
+    return HttpResponse(json.dumps(len(listado)), content_type="application/json")
+
+@login_required
+def empleado_baja_masivo(request):
+    if not tiene_permiso(request, "empl_pantalla"):
+        return redirect(reverse("principal"))
+    listado = request.GET.getlist("id")
+    try:
+        empleados = ent_empleado.objects.filter(id__in=listado)
+        for e in empleados:
+            dar_baja_empleado(e)
+            recalcular_cantidad_empleados(e.empresa)
+        messages.success(request, "¡Los empleados fueron dados de baja con éxito!")
+    except:
+        messages.error(
+            request,
+            "¡El Empleado no pudo ser dado de baja",
         )
 
     return HttpResponse(json.dumps(len(listado)), content_type="application/json")
@@ -934,6 +956,7 @@ def recalcular_cantidad_empleados(empresa):
     )
     empresa.cant_empleados = cant
     empresa.save()
+
 
 
 @login_required

@@ -398,7 +398,7 @@ class ConsultaAusentismos(forms.Form):
         widget=forms.DateInput(
             attrs={"class": "form-control datepicker", "autocomplete": "off"}
         ),
-        initial=inicioAnio(),
+        initial=ultimo_anio(),
         required=False,
     )
     fhasta = forms.DateField(

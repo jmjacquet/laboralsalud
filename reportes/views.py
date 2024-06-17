@@ -155,7 +155,7 @@ def reporte_resumen_periodo(request):
     context["fhasta"] = fhasta
     context["ausentismos"] = ausentismos
     context["empresa"] = empresa
-    context["inicio_anio"] = inicioAnio()
+    context["inicio_anio"] = ultimo_anio()
     context["agrupamiento"] = agrupamiento
     context["titulo_ventana"] = "INFORME AUSENTISMO {}".format(
         "EMPRESA" if empresa else "GERENCIA"

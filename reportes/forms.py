@@ -76,7 +76,7 @@ class ConsultaAnual(forms.Form):
         input_formats=["%m/%Y"],
         widget=forms.DateInput(attrs={"class": "form-control datepicker"}),
         required=True,
-        initial=mes_anio(inicioAnio()),
+        initial=mes_anio(ultimo_anio()),
     )
     periodo_hasta = forms.DateField(
         label="Período Hasta",
