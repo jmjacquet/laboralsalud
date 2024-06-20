@@ -38,7 +38,13 @@ from laboralsalud.utilidades import (
     ultimoMes,
 )
 from modal.views import AjaxCreateView, AjaxUpdateView
-from .forms import TurnosForm, ConsultaTurnos, ConsultaFechasInicio, ConfiguracionForm, TurnosLightForm
+from .forms import (
+    TurnosForm,
+    ConsultaTurnos,
+    ConsultaFechasInicio,
+    ConfiguracionForm,
+    TurnosLightForm,
+)
 from .models import turnos, configuracion
 
 
@@ -175,25 +181,25 @@ class PrincipalView(VariablesMixin, TemplateView):
             fecha1 = form.cleaned_data["fecha1"] or hoy()
             fecha2 = form.cleaned_data["fecha2"] or hoy()
         empresas = empresas_habilitadas(self.request)
-        ausentismos = ausentismos_del_dia(self.request, fecha1).order_by(
-            "-aus_fcontrol"
+        ausentismos = (
+            ausentismos_del_dia(self.request, fecha1)
+            .order_by("-aus_fcontrol")
+            .select_related("empleado", "empresa", "aus_grupop", "aus_diagn")
         )
-        fechas_control = ausentismo.objects.filter(
-            baja=False, aus_fcontrol=fecha1, empresa__pk__in=empresas
-        ).order_by("-aus_fcontrol")
+        fechas_control = (
+            ausentismo.objects.filter(
+                baja=False, aus_fcontrol=fecha1, empresa__pk__in=empresas
+            )
+            .order_by("-aus_fcontrol")
+            .select_related("empleado", "empresa", "aus_grupop", "aus_diagn")
+        )
         prox_turnos = turnos.objects.filter(
             turno_empresa__pk__in=empresas, fecha__gte=fecha2
-        )
+        ).select_related("turno_empleado", "turno_empresa", "usuario_carga")
         context["form"] = form
-        context["ausentismo"] = ausentismos.select_related(
-            "empleado", "empresa", "aus_grupop", "aus_diagn"
-        )
-        context["turnos"] = prox_turnos.select_related(
-            "turno_empleado", "turno_empresa", "usuario_carga"
-        )
-        context["fechas_control"] = fechas_control.select_related(
-            "empleado", "empresa", "aus_grupop", "aus_diagn"
-        )
+        context["ausentismo"] = ausentismos
+        context["turnos"] = prox_turnos
+        context["fechas_control"] = fechas_control
         return context
 
     def post(self, *args, **kwargs):
@@ -293,7 +299,9 @@ def recargar_empleados_empresa(request, id):
 def recargar_empresas_agrupamiento(request, id):
     context = {}
     empresas_hab = empresas_habilitadas(request)
-    empresas = ent_empresa.objects.filter(id__in=empresas_hab, baja=False).select_related("casa_central")
+    empresas = ent_empresa.objects.filter(
+        id__in=empresas_hab, baja=False
+    ).select_related("casa_central")
     if int(id) > 0:
         empresas = empresas.filter(agrupamiento__id=id)
     lista_empresas = [{"id": e.pk, "nombre": e.get_empresa()} for e in empresas]
@@ -449,7 +457,11 @@ class TurnosLightCreateView(VariablesMixin, AjaxCreateView):
         form = self.get_form(form_class)
         empresa_form = EmpresaLightForm(prefix="empresa_form")
         empleado_form = EmpleadoLightForm(prefix="empleado_form")
-        return self.render_to_response(self.get_context_data(form=form, empresa_form=empresa_form, empleado_form=empleado_form))
+        return self.render_to_response(
+            self.get_context_data(
+                form=form, empresa_form=empresa_form, empleado_form=empleado_form
+            )
+        )
 
     def post(self, request, *args, **kwargs):
         self.object = None
@@ -460,7 +472,9 @@ class TurnosLightCreateView(VariablesMixin, AjaxCreateView):
         if form.is_valid() and empresa_form.is_valid() and empleado_form.is_valid():
             return self.form_valid(form, empresa_form, empleado_form)
         else:
-            return self.form_invalid(form=form, empresa_form=empresa_form, empleado_form=empleado_form)
+            return self.form_invalid(
+                form=form, empresa_form=empresa_form, empleado_form=empleado_form
+            )
 
     def form_valid(self, form, empresa_form, empleado_form):
         try:
@@ -496,8 +510,9 @@ class TurnosLightCreateView(VariablesMixin, AjaxCreateView):
         return initial
 
     def form_invalid(self, form, empresa_form, empleado_form):
-        return super(TurnosLightCreateView, self).form_invalid(form=form, empresa_form=empresa_form, empleado_form=empleado_form)
-
+        return super(TurnosLightCreateView, self).form_invalid(
+            form=form, empresa_form=empresa_form, empleado_form=empleado_form
+        )
 
 
 class TurnosEditView(VariablesMixin, AjaxUpdateView):

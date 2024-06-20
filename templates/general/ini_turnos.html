@@ -4,16 +4,16 @@
 {% load filtros_especiales %}
 
 <div id="container" style="width: 100%; height:100%;min-height:300px; margin: 0 auto">
-<div class="row">
+  <div class="table-responsive">
    {% if esAdmin %}
-    <div class="caption pull-right col-sm-2" title="Actualizar a la Fecha seleccionada">           
+    <div class="btn-group " style="float:right;margin-right:20px;margin-bottom:0px;">
+      <div class="caption pull-right" title="Actualizar a la Fecha Desde Seleccionada">
        <div class="col-xs-9">{{form.fecha2}}</div>
-       <div class="col-xs-3"><button title="Recargar" class="btn btn-xs btn-circle btn-primary pull-right" type="submit"><i class="icon-refresh"></i></button></div>           
+       <div class="col-xs-3"><button title="Recargar" class="btn btn-xs btn-circle btn-primary pull-right" type="submit"><i class="icon-refresh"></i></button></div>
+      </div>
     </div>
    {% endif %}
-</div>
 
-<div class="table-responsive">
 
     <table width="100%" id="fturnos" class="table table-striped table-responsive compact table-hover table-no-bordered tabla_nueva text-nowrap">
     <thead >
@@ -96,9 +96,9 @@
   </tfoot>            		            
     
 </table> 
-</div>
-</div>
 
+</div>
+</div>
   
 <script type="text/javascript">
 
@@ -151,30 +151,11 @@ var tabla = $('#fturnos').DataTable({
               footer: false
               },
             responsive: false,            
-            dom: "<'row'<'col-sm-12'tr>>"+"<'row'<'col-sm-3'l><'col-sm-9'ip>>",
-            PreDrawCallback:function(){
+            dom: "f<'row'<'col-sm-12'tr>>"+"<'row'<'col-sm-3'l><'col-sm-9'ip>>",
+        PreDrawCallback:function(){
             $("#cargando").show();
             },
             initComplete: function () {
-               this.api().columns([3,4,5]).every( function () {
-                    var column = this;
-                    var select = $('<select class="form-control"><option value="">Todos</option></select>')
-                        .appendTo( $(column.footer()).empty() )
-                        .on( 'change', function () {
-                            var val = $.fn.dataTable.util.escapeRegex(
-                                $(this).val()
-                            );
-     
-                            column
-                                .search( val ? '^'+val+'$' : '', true, false )
-                                .draw();
-                        } );
-     
-                     column.data().unique().sort().each( function ( d, j ) {
-                    //column.cells('', column[0]).render('display').sort().unique().each( function ( d, j ){
-                        select.append( '<option value="'+d+'">'+d+'</option>' )
-                    } );
-                } );           
                 $("#fturnos").show();
                   this.fnAdjustColumnSizing();
                 $("#cargando").hide();
