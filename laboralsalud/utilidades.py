@@ -38,13 +38,18 @@ TIPO_AUSENCIA = (
 
 TIPO_CONTROL = (
     ("", "----"),
-    ("C", "Consultorio"),
-    ("S", "Consultorio CIBYS"),
+    ("C", u"Consultorio Planta"),
+    ("S", u"Consultorio CIBYS"),
     ("D", u"Control Telefónico"),
+    ("Z", u"Esperanza"),
     ("E", u"Evolución ART"),
-    ("R", u"Otros Registros"),
+    ("P", u"Parque Industrial"),
+    ("L", u"PB Leiner"),
+    ("F", u"Santa Fe"),
+    ("T", u"Santo Tome "),
     ("V", u"Visita a Domicilio"),
     ("M", u"Videollamada"),
+    ("R", u"Otros Registros"),
 )
 
 TIPO_CONTROL_ = (("T", "Todos"),) + TIPO_CONTROL
