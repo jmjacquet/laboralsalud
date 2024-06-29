@@ -174,12 +174,19 @@ class PrincipalView(VariablesMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(PrincipalView, self).get_context_data(**kwargs)
-        form = ConsultaFechasInicio(self.request.POST or None)
+        busq = None
+        if self.request.POST:
+            busq = self.request.POST
+        elif "principal" in self.request.session:
+            busq = self.request.session["principal"]
+
+        form = ConsultaFechasInicio(busq or None)
         fecha1 = hoy()
         fecha2 = hoy()
         if form.is_valid():
             fecha1 = form.cleaned_data["fecha1"] or hoy()
             fecha2 = form.cleaned_data["fecha2"] or hoy()
+            self.request.session["principal"] = self.request.POST or busq
         empresas = empresas_habilitadas(self.request)
         ausentismos = (
             ausentismos_del_dia(self.request, fecha1)
@@ -236,7 +243,7 @@ def buscarDatosAPICUIT(request):
 def buscarDatosEntidad(request):
     lista = {}
     id = request.GET["id"]
-    e = ent_empleado.objects.get(pk=id)
+    e = ent_empleado.objects.filter(pk=id).select_related("art", "empresa", "trab_cargo").first()
     lista = {
         "id": e.id,
         "nro_doc": e.nro_doc,
@@ -263,7 +270,7 @@ def buscarDatosEntidad(request):
         "edad": e.get_edad,
         "antig_empresa": e.get_antiguedad_empr,
         "antig_trabajo": e.get_antiguedad_trab,
-        "id_empresa": e.empresa.pk,
+        "id_empresa": e.empresa_id,
     }
     # try:
     #    id = request.GET['id']
@@ -280,18 +287,17 @@ def buscarDatosEntidad(request):
 # @login_required
 def recargar_empleados(request):
     context = {}
-    empleados = ent_empleado.objects.filter(
-        empresa__pk__in=empresas_habilitadas(request), baja=False
-    ).order_by("apellido_y_nombre")
+    empleados = (ent_empleado.objects.filter(
+        empresa_id__in=empresas_habilitadas(request), baja=False).select_related("empresa")
+                 .order_by("apellido_y_nombre"))
     context["empleados"] = [{"id": e.pk, "nombre": e.get_empleado()} for e in empleados]
     return HttpResponse(json.dumps(context))
 
 
 def recargar_empleados_empresa(request, id):
     context = {}
-    empleados = ent_empleado.objects.filter(empresa__pk=id, baja=False).order_by(
-        "apellido_y_nombre"
-    )
+    empleados = (ent_empleado.objects.filter(empresa_id=id, baja=False).select_related("empresa")
+    .order_by("apellido_y_nombre"))
     context["empleados"] = [{"id": e.pk, "nombre": e.get_empleado()} for e in empleados]
     return HttpResponse(json.dumps(context))
 

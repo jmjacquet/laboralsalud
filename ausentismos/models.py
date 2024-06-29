@@ -122,6 +122,9 @@ class ausentismo(models.Model):
     recalificac_art = models.TextField("Recalificación ART", blank=True, null=True)
 
     plan_accion = models.TextField("Observaciones", blank=True, null=True)
+    resumen_patologias = models.TextField(u"Resúmen Patologías", blank=True, null=True)
+    tareas_diferentes = models.CharField("¿Tareas Diferentes?", max_length=1, default="N")
+    preocupacional = models.TextField("Preocupacional", blank=True, null=True)
 
     empresa = models.ForeignKey(
         ent_empresa,

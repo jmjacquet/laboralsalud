@@ -65,8 +65,8 @@ class AusentismoView(VariablesMixin, ListView):
         busq = None
         if self.request.POST:
             busq = self.request.POST
-        # elif "ausentismos" in self.request.session:
-        #     busq = self.request.session["ausentismos"]
+        elif "ausentismos" in self.request.session:
+            busq = self.request.session["ausentismos"]
         empresas = empresas_habilitadas(self.request)
         form = ConsultaAusentismos(busq or None, empresas=empresas)
 
@@ -98,7 +98,6 @@ class AusentismoView(VariablesMixin, ListView):
                             Q(id=empresa.id) | Q(casa_central=empresa)
                         )
                     ]
-
             else:
                 empresas_list = [
                     d["id"]
@@ -205,8 +204,7 @@ class AusentismoCreateView(VariablesMixin, CreateView):
         controles_patologias = PatologiaDetalleFormSet(prefix="formDetalle2")
         return self.render_to_response(
             self.get_context_data(
-                form=form, controles_detalle=controles_detalle, controles_patologias=controles_patologias
-            )
+                form=form, controles_detalle=controles_detalle)
         )
 
     def post(self, request, *args, **kwargs):
@@ -214,13 +212,13 @@ class AusentismoCreateView(VariablesMixin, CreateView):
         form_class = self.get_form_class()
         form = self.get_form(form_class)
         controles_detalle = ControlDetalleFormSet(self.request.POST, instance=self.object, prefix="formDetalle")
-        controles_patologias = PatologiaDetalleFormSet(self.request.POST, instance=self.object, prefix="formDetalle2")
-        if form.is_valid() and controles_detalle.is_valid() and controles_patologias.is_valid():
-            return self.form_valid(form, controles_detalle, controles_patologias)
+        # controles_patologias = PatologiaDetalleFormSet(self.request.POST, instance=self.object, prefix="formDetalle2")
+        if form.is_valid() and controles_detalle.is_valid():
+            return self.form_valid(form, controles_detalle)
         else:
-            return self.form_invalid(form, controles_detalle, controles_patologias)
+            return self.form_invalid(form, controles_detalle)
 
-    def form_valid(self, form, controles_detalle, controles_patologias):
+    def form_valid(self, form, controles_detalle):
         self.object = form.save(commit=False)
         self.object.usuario_carga = usuario_actual(self.request)
         self.object.empresa = self.object.empleado.empresa
@@ -230,17 +228,17 @@ class AusentismoCreateView(VariablesMixin, CreateView):
         controles_detalle.ausentismo = self.object.id
         controles_detalle.usuario_carga = usuario_actual(self.request)
         controles_detalle.save()
-        controles_patologias.instance = self.object
-        controles_patologias.ausentismo = self.object.id
-        controles_patologias.usuario_carga = usuario_actual(self.request)
-        controles_patologias.save()
+        # controles_patologias.instance = self.object
+        # controles_patologias.ausentismo = self.object.id
+        # controles_patologias.usuario_carga = usuario_actual(self.request)
+        # controles_patologias.save()
         messages.success(self.request, "Los datos se guardaron con éxito!")
         return HttpResponseRedirect(reverse("ausentismo_listado"))
 
-    def form_invalid(self, form, controles_detalle, controles_patologias):
+    def form_invalid(self, form, controles_detalle):
         return self.render_to_response(
             self.get_context_data(
-                form=form, controles_detalle=controles_detalle, controles_patologias=controles_patologias
+                form=form, controles_detalle=controles_detalle
             )
         )
 
@@ -285,10 +283,10 @@ class AusentismoEditView(VariablesMixin, UpdateView):
         form = self.get_form(form_class)
         form.fields["empleado"].widget.attrs["disabled"] = True
         controles_detalle = ControlDetalleFormSet(instance=self.object, prefix="formDetalle")
-        controles_patologias = PatologiaDetalleFormSet(instance=self.object, prefix="formDetalle2")
+        # controles_patologias = PatologiaDetalleFormSet(instance=self.object, prefix="formDetalle2")
         return self.render_to_response(
             self.get_context_data(
-                form=form, controles_detalle=controles_detalle, controles_patologias=controles_patologias
+                form=form, controles_detalle=controles_detalle
             )
         )
 
@@ -298,12 +296,12 @@ class AusentismoEditView(VariablesMixin, UpdateView):
         form = self.get_form(form_class)
         controles_detalle = ControlDetalleFormSet(self.request.POST, instance=self.object, prefix="formDetalle")
         controles_patologias = PatologiaDetalleFormSet(self.request.POST, instance=self.object, prefix="formDetalle2")
-        if form.is_valid() and controles_detalle.is_valid() and controles_patologias.is_valid():
-            return self.form_valid(form, controles_detalle, controles_patologias)
+        if form.is_valid() and controles_detalle.is_valid():
+            return self.form_valid(form, controles_detalle)
         else:
-            return self.form_invalid(form, controles_detalle, controles_patologias)
+            return self.form_invalid(form, controles_detalle)
 
-    def form_valid(self, form, controles_detalle, controles_patologias):
+    def form_valid(self, form, controles_detalle):
         guardar_ultimo_tipo_ausentismo_y_fcontrol(self.object, controles_detalle)
         if not self.object.empresa:
             self.object.empresa = self.object.empleado.empresa
@@ -313,14 +311,14 @@ class AusentismoEditView(VariablesMixin, UpdateView):
         controles_detalle.ausentismo = self.object.id
         controles_detalle.usuario_carga = usr_actual
         controles_detalle.save()
-        controles_patologias.instance = self.object
-        controles_patologias.ausentismo = self.object.id
-        controles_patologias.usuario_carga = usr_actual
-        controles_patologias.save()
+        # controles_patologias.instance = self.object
+        # controles_patologias.ausentismo = self.object.id
+        # controles_patologias.usuario_carga = usr_actual
+        # controles_patologias.save()
         messages.success(self.request, "Los datos se guardaron con éxito!")
         return HttpResponseRedirect(reverse("ausentismo_listado"))
 
-    def form_invalid(self, form, controles_detalle, controles_patologias):
+    def form_invalid(self, form, controles_detalle):
         self.object = self.get_object()
         form_class = self.get_form_class()
         form = self.get_form(form_class)
@@ -328,7 +326,7 @@ class AusentismoEditView(VariablesMixin, UpdateView):
         messages.error(self.request, "Verifique la carga de datos!")
         return self.render_to_response(
             self.get_context_data(
-                form=form, controles_detalle=controles_detalle, controles_patologias=controles_patologias
+                form=form, controles_detalle=controles_detalle
             )
         )
 

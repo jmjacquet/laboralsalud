@@ -215,12 +215,6 @@ class EmpleadoForm(forms.ModelForm):
         widget=forms.Textarea(attrs={"class": "form-control2", "rows": 2}),
         required=False,
     )
-    trab_armas = forms.ChoiceField(
-        label=u"¿Portación de Armas?", choices=SINO, required=True, initial="N"
-    )
-    trab_tareas_dif = forms.ChoiceField(
-        label=u"¿Tareas Diferentes?", choices=SINO, required=True, initial="N"
-    )
     trab_preocupac = forms.ChoiceField(
         label="¿Preocupacional?", choices=SINO, required=True, initial="N"
     )
@@ -236,7 +230,14 @@ class EmpleadoForm(forms.ModelForm):
 
     class Meta:
         model = ent_empleado
-        exclude = ["id", "fecha_creacion", "fecha_modif", "usuario_carga"]
+        exclude = [
+            "id",
+            "fecha_creacion",
+            "fecha_modif",
+            "usuario_carga",
+            "trab_armas",
+            "trab_tareas_dif",
+        ]
 
     def __init__(self, *args, **kwargs):
         request = kwargs.pop("request", None)

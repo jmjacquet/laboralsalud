@@ -72,8 +72,8 @@ class AusentismoForm(forms.ModelForm):
         required=False,
     )
     estudios_partic = forms.CharField(
-        label=u"Estudios Particulares",
-        widget=forms.Textarea(attrs={"class": "form-control2", "rows": 2}),
+        label=u"Estudios Complementarios",
+        widget=forms.Textarea(attrs={"class": "form-control2", "rows": 5}),
         required=False,
     )
     estudios_art = forms.CharField(
@@ -175,8 +175,23 @@ class AusentismoForm(forms.ModelForm):
     )
 
     plan_accion = forms.CharField(
-        label=u"Detalle del Plan de Acción",
-        widget=forms.Textarea(attrs={"class": "form-control2", "rows": 10}),
+        label=u"Plan de Acción",
+        widget=forms.Textarea(attrs={"class": "form-control2", "rows": 5}),
+        required=False,
+    )
+
+    resumen_patologias = forms.CharField(
+        label=u"Resúmen Patología",
+        widget=forms.Textarea(attrs={"class": "form-control2", "rows": 5}),
+        required=False,
+    )
+
+    tareas_diferentes = forms.ChoiceField(
+            label="¿Tareas Diferentes?", choices=SINO, required=True, initial="N"
+    )
+    preocupacional = forms.CharField(
+        label=u"Preocupacional",
+        widget=forms.Textarea(attrs={"class": "form-control2", "rows": 5}),
         required=False,
     )
 

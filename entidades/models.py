@@ -348,7 +348,7 @@ class ent_empleado(models.Model):
     trab_armas = models.CharField("¿Portación de Armas?", max_length=1, default="N")
     trab_tareas_dif = models.CharField("¿Tareas Diferentes?", max_length=1, default="N")
     trab_preocupac = models.CharField("¿Preocupacional?", max_length=1, default="N")
-    trab_preocup_fecha = models.DateField("Fecha Preocupacional", blank=True, null=True)
+    trab_preocup_fecha = models.DateField("Fecha Preocupac.", blank=True, null=True)
 
     trab_preocup_conclus = models.TextField(
         "Conclusión Preocupacional", blank=True, null=True
@@ -366,6 +366,7 @@ class ent_empleado(models.Model):
     trab_accidentes = models.TextField("Accidentes ART", blank=True, null=True)
     trab_vacunas = models.TextField("Vacunas", blank=True, null=True)
 
+    tipo_apto = models.CharField("Tipo de APTO", max_length=100, blank=True, null=True)
     observaciones = models.TextField("Otras Observaciones", blank=True, null=True)
     baja = models.BooleanField(default=False)
     fecha_creacion = models.DateTimeField(auto_now_add=True)

@@ -43,13 +43,13 @@
 					             </div>             					             
 					            </div>
 					            <div class="row cerca">
-						             <div class="col-sm-4 col-xs-6">
+						             <div class="col-sm-3 col-xs-6">
 						                 {{form.celular|as_crispy_field}}
 						             </div>         
 						             <div class="col-sm-4 col-xs-6">
 						                 {{form.telefono|as_crispy_field}}
 						             </div>
-						             <div class="col-sm-4 col-xs-12">
+						             <div class="col-sm-5 col-xs-12">
 						                 {{form.email|as_crispy_field}}
 						             </div>
 					             </div>		       
@@ -57,66 +57,66 @@
 					             <div class="col-sm-2 col-xs-6">
 					                 {{form.fecha_nac|as_crispy_field}}
 					             </div>         
-					             <div class="col-sm-2 col-xs-6">
+					             <div class="col-sm-1 col-xs-6">
 					                 {{form.cod_postal|as_crispy_field}}
 					             </div>         
 					             <div class="col-sm-4 col-xs-6">
 					                 {{form.localidad|as_crispy_field}}
 					             </div>  
-					             <div class="col-sm-4 col-xs-12">
+					             <div class="col-sm-5 col-xs-12">
 					                 {{form.provincia|as_crispy_field}}
 					             </div> 
 						        </div> 
-						        <div class="row cerca">
-						             <div class="col-sm-4 col-xs-12">
-						                 {{form.art|as_crispy_field}}
-						             </div>
-						             <div class="col-sm-4 col-xs-12">
-							                 {{form.empresa|as_crispy_field}}
-							             </div>           					             						        
-							         <div class="col-sm-2 col-xs-12">
-							                 {{form.empr_fingreso|as_crispy_field}}
-							             </div> 
-							         <div class="col-sm-2 col-xs-12">
-							               {{form.empr_antig|as_crispy_field}}
-							          </div>
-					         	</div>
+
 						        
 					        	</fieldset> 
 					        </div>
 					        
 					        <div class="row cerca">	
 					        	<fieldset>
-						        <legend>Datos Laborales</legend>	
-				  		         <div class="row cerca">						         
+						        <legend>Datos Laborales</legend>
+                                 <div class="row cerca">
+						             <div class="col-sm-8 col-xs-12">
+							                 {{form.empresa|as_crispy_field}}
+							             </div>
+                                     <div class="col-sm-2 col-xs-12">
+							                 {{form.empr_fingreso|as_crispy_field}}
+							             </div>
+							         <div class="col-sm-2 col-xs-12">
+							               {{form.empr_antig|as_crispy_field}}
+							          </div>
+                                     
+					         	</div>
+						         <div class="row cerca">						         
+						             <div class="col-sm-4 col-xs-12">
+						                 {{form.art|as_crispy_field}}
+						             </div>
+                                     <div class="col-sm-4 col-xs-12">
+						                 {{form.tipo_apto|as_crispy_field}}
+						             </div>
+                                     <div class="col-sm-2 col-xs-12">
+						                 {{form.trab_preocupac|as_crispy_field}}
+						             </div>
+                                     <div class="col-sm-2 col-xs-12">
+						             	{{form.trab_preocup_fecha|as_crispy_field}}
+						             </div> 
+						             
+				  		         </div>
+                                 <div class="row cerca">						         
 						             <div class="col-sm-6 col-xs-12">
 						                 {{form.trab_cargo|as_crispy_field}}
 						             </div>  
-						             <div class="col-sm-2 col-xs-12">
+						            <div class="col-sm-2 col-xs-12">
 						                 {{form.trab_fingreso|as_crispy_field}}
 						             </div>
-						              <div class="col-sm-2 col-xs-12">
+                                     <div class="col-sm-2 col-xs-12">
 						                 {{form.trab_fbaja|as_crispy_field}}
 						             </div>
 						             <div class="col-sm-2 col-xs-12">
 						                 {{form.trab_antig|as_crispy_field}}
 						             </div>
-				  		         </div>
-						         
-						         <div class="row cerca">						         
-						              <div class="col-sm-3 col-xs-12">
-						                 {{form.trab_armas|as_crispy_field}}
-						             </div> 
-						             <div class="col-sm-3 col-xs-12">
-						                 {{form.trab_tareas_dif|as_crispy_field}}
-						             </div>
-						             <div class="col-sm-3 col-xs-12">
-						                 {{form.trab_preocupac|as_crispy_field}}
-						             </div>
-						             <div class="col-sm-3 col-xs-12">
-						             	{{form.trab_preocup_fecha|as_crispy_field}}
-						             </div>  
-				  		         </div>
+                                     
+				  		         </div>   
 					             
 					    		</fieldset>
 					    	</div>

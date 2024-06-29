@@ -68,7 +68,9 @@
                 <td class="titulo">Fecha Preocupacional:</td><td id="trab_preocup_fecha" class="dato">{{empleados.trab_preocup_fecha|date:'d/m/Y'}}</td>
               </tr>
               <tr>
-                <td class="titulo">Conclusión Preocupacional</td><td colspan="3" class="dato">{{empleados.trab_preocup_conclus|default_if_none:''}}</td>
+                <td class="titulo">Conclusión Preocupacional:</td><td colspan="3" class="dato">{{empleados.trab_preocup_conclus|default_if_none:''}}</td>
+              </tr><tr>
+                <td class="titulo">Tipo de APTO:</td><td colspan="3" class="dato">{{empleados.tipo_apto|default_if_none:''}}</td>
               </tr>
             </tbody>
           </table>
