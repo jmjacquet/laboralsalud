@@ -24,9 +24,10 @@
                       <div class="col-md-12">
                        <form class="form" accept-charset="UTF-8" autocomplete="off" role="form" action="" method="post">
                         {% csrf_token %}                                                                                                               
+                          <div class="col-sm-2">{% bootstrap_field form.qnombre_empleado  %}</div>
                           <div class="col-sm-4">{% bootstrap_field form.qempresa  %}</div>
-                          <div class="col-sm-3">{% bootstrap_field form.qagrupamiento  %}</div>
-                          <div class="col-sm-3">{% bootstrap_field form.art  %}</div>
+                          <div class="col-sm-2">{% bootstrap_field form.qagrupamiento  %}</div>
+                          <div class="col-sm-2">{% bootstrap_field form.art  %}</div>
                           <div class="col-sm-1">{% bootstrap_field form.estado  %}</div>
                           <div class="col-sm-1"><button class="btn btn-xs text-center" type="submit">Buscar</button></div>                      
                         </form>             

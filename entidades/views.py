@@ -587,6 +587,7 @@ class EmpleadoView(VariablesMixin, ListView):
         empleados = ent_empleado.objects.none()
 
         if form.is_valid():
+            qnombre_empleado = form.cleaned_data["qnombre_empleado"]
             qempresa = form.cleaned_data["qempresa"]
             qagrupamiento = form.cleaned_data["qagrupamiento"]
             estado = form.cleaned_data["estado"]
@@ -595,6 +596,9 @@ class EmpleadoView(VariablesMixin, ListView):
             empleados = ent_empleado.objects.filter(
                 empresa__pk__in=empresas
             ).select_related("empresa", "trab_cargo", "art", "usuario_carga")
+
+            if qnombre_empleado:
+                empleados = empleados.filter(apellido_y_nombre__icontains=qnombre_empleado)
 
             if int(estado) == 0:
                 empleados = empleados.filter(baja=False)

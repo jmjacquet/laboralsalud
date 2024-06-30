@@ -289,9 +289,10 @@ class EmpleadoForm(forms.ModelForm):
 
 
 class ConsultaEmpleados(forms.Form):
+    qnombre_empleado = forms.CharField(required=False)
     qempresa = forms.ModelChoiceField(
         label="Empresa",
-        queryset=ent_empresa.objects.filter(baja=False),
+        queryset=ent_empresa.objects.none(),
         empty_label="Todas",
         required=False,
     )
