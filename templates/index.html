@@ -28,7 +28,7 @@
            <div class="col-xs-2"><button title="Recargar" class="btn btn-xs btn-circle pull-right boton_busqueda" type="submit"><i class="icon-refresh"></i></button></div>           
         </div>
         {% endif %}
-        <ul class="nav nav-tabs">
+        <ul class="nav nav-tabs" id="tabs">
             {% if 'inicio_ausentismos' in permisos_grupo %}
             <li class="active">
                 <a href="#tab_1" id="pausentismos" data-toggle="tab" aria-expanded="true">AUSENTISMOS/CONTROLES DEL DÍA</a>
@@ -41,7 +41,7 @@
             {% endif %}
             {% if inicio_turnos %}
             <li class="">
-                <a href="#tab_21" id="pturnos" data-toggle="tab" aria-expanded="false">TURNOS PROGRAMADOS</a>
+                <a href="#tab_3" id="pturnos" data-toggle="tab" aria-expanded="false">TURNOS PROGRAMADOS</a>
               </li>            
             {% endif %}
         </ul>
@@ -64,7 +64,7 @@
           </div>
           {% endif %}
            {% if inicio_turnos %}
-            <div class="tab-pane" id="tab_21">
+            <div class="tab-pane" id="tab_3">
                   <div id="pturnos" style="padding: 0px; position: relative;"> 
                       {% include 'general/ini_turnos.html' %}
                   </div>

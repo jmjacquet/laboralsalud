@@ -56,20 +56,8 @@
 									<td class="titulo">Nº Legajo:</td><td id="legajo" class="dato"></td>
 								</tr>
 								<tr>
-									<td class="titulo">Fecha Nacimiento:</td><td id="fecha_nac" class="dato"></td>
-									<td class="titulo">Edad:</td><td id="edad" class="dato"></td>
-								</tr>
-								<tr>
 									<td class="titulo">Teléfono/Celular:</td><td id="telcel" class="dato"></td>
 									<td class="titulo">E-mail:</td><td id="email" class="dato"></td>
-								</tr>
-								<tr>
-									<td class="titulo">Dirección:</td><td id="domicilio" class="dato"></td>
-									<td class="titulo">C.P.:</td><td id="cod_postal" class="dato"></td>
-								</tr>
-								<tr>
-									<td class="titulo">Localidad:</td><td id="localidad" class="dato"></td>
-									<td class="titulo">Provincia:</td><td id="provincia" class="dato"></td>
 								</tr>
 								<tr>
 									<td class="titulo">ART:</td><td colspan="3" id="art" class="dato"></td>
@@ -97,17 +85,6 @@
 									<td class="titulo">Fecha Ingreso Puesto:</td><td id="trab_fingreso" class="dato"></td>
 									<td class="titulo">Antigüedad Puesto:</td><td id="antig_trabajo" class="dato"></td>
 								</tr>
-								<tr>
-									<td class="titulo">Fecha Cese de Actividad:</td><td colspan="3" id="trab_fbaja" class="dato"></td>
-								</tr>
-								<tr>
-									<td class="titulo">¿Portación de Armas?</td><td id="trab_armas" class="dato"></td>
-									<td class="titulo">¿Tareas Diferentes?</td><td id="trab_tareas_dif" class="dato"></td>
-								</tr>
-								<tr>
-									<td class="titulo">¿Preocupacional?</td><td id="trab_preocupac" class="dato"></td>
-									<td class="titulo">Fecha Preocupacional:</td><td id="trab_preocup_fecha" class="dato"></td>
-								</tr>
 							</tbody>
 						</table>
 					</fieldset>
@@ -128,9 +105,7 @@
                         <div class="col-sm-2 col-xs-12">
                             {{form.aus_diascaidos|as_crispy_field}}
                         </div>
-                        <div class="col-sm-2 col-xs-12">
-                            {{form.aus_diasjustif|as_crispy_field}}
-                        </div>
+
                         <div class="col-sm-6 col-xs-12">
                             {{form.aus_medico|as_crispy_field}}
                         </div>
@@ -140,9 +115,7 @@
                         <div class="col-sm-2 col-xs-12">
                             {{form.aus_fcontrol|as_crispy_field}}
                         </div>
-                        <div class="col-sm-2 col-xs-12">
-                            {{form.aus_corta_certificado|as_crispy_field}}
-                        </div>
+
 					</fieldset>
 				</div>
 			</div>
@@ -260,11 +233,6 @@
 					</div>
 					<div class="tab-pane" id="tab_resumen">
 						<fieldset>
-							<div class="row cerca">
-                                <div class="col-sm-3 col-xs-12">
-									{{form.tareas_diferentes|as_crispy_field}}
-								</div>
-							</div>
                             <div class="row cerca">
 								<div class="col-sm-12">
 									{{form.observaciones|as_crispy_field}}

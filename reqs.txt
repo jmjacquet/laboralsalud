@@ -36,7 +36,6 @@ contextlib2==0.6.0.post1
 cookiecutter==1.7.3
 cssmin==0.2.0
 cssselect==0.9.1
-cx-Oracle==5.3
 dbus-python==1.2.16
 decorator==4.4.2
 defusedxml==0.5.0

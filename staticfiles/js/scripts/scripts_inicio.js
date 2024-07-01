@@ -23,4 +23,11 @@ $.fn.datepicker.dates['es'] = {
     });
     
    $("#cargando").hide();
+
+    $('[href="#tab_2"]').tab('show');
+    $("ul.nav-tabs > li > a").click(function() {
+      console.log(
+        $(this).attr("href").replace("#", "")
+      )
+    });
 });

@@ -186,9 +186,6 @@ class AusentismoForm(forms.ModelForm):
         required=False,
     )
 
-    tareas_diferentes = forms.ChoiceField(
-            label="¿Tareas Diferentes?", choices=SINO, required=True, initial="N"
-    )
     preocupacional = forms.CharField(
         label=u"Preocupacional",
         widget=forms.Textarea(attrs={"class": "form-control2", "rows": 5}),
@@ -199,7 +196,7 @@ class AusentismoForm(forms.ModelForm):
 
     class Meta:
         model = ausentismo
-        exclude = ["id", "fecha_creacion", "fecha_modif", "usuario_carga", "aus_certificado", "aus_control"]
+        exclude = ["id", "fecha_creacion", "fecha_modif", "usuario_carga", "aus_certificado", "aus_control", "tareas_diferentes"]
 
     def __init__(self, *args, **kwargs):
         request = kwargs.pop("request", None)
@@ -432,6 +429,7 @@ class ConsultaAusentismos(forms.Form):
     )
     empleado = forms.CharField(required=False, label="Empleado")
     aus_grupop = forms.CharField(label=u"Grupo Patológico", required=False)
+    art = forms.CharField(label=u"ART", required=False)
     aus_diagn = forms.CharField(label=u"Diagnóstico", required=False)
     tipo_ausentismo = forms.ChoiceField(
         label="Tipo Ausentismo", choices=TIPO_AUSENCIA_, required=False, initial=0

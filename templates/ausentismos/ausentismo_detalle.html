@@ -37,7 +37,8 @@
         </table>
       </fieldset>
       <fieldset>
-        <legend>DATOS AUSENTISMO/CONTROL - {{a.get_tipo_ausentismo_display|upper}} ( {{a.get_tipo_control_display|upper}} )</legend>
+        <legend>DATOS AUSENTISMO/CONTROL - {{a.get_tipo_ausentismo_display|default_if_none:''|upper}}
+           {% if a.tipo_control %} ( {{a.get_tipo_control_display|default_if_none:''|upper}} ){% endif %}</legend>
         <table class="table table-striped table-hover table-condensed table-no-bordered tabla_detalle">
           <tbody>
             {% if a.tipo_ausentismo == 1 or a.tipo_ausentismo >= 4 %}
