@@ -2,7 +2,7 @@
 from django import forms
 from django.forms import ModelForm
 from django.forms.widgets import TextInput, NumberInput, Select
-from entidades.models import ent_empleado, ent_medico_prof, ent_empresa_agrupamiento, ent_empresa
+from entidades.models import ent_empleado, ent_medico_prof, ent_empresa_agrupamiento, ent_empresa, ent_art
 from .models import *
 from laboralsalud.utilidades import *
 from usuarios.views import tiene_permiso
@@ -429,7 +429,12 @@ class ConsultaAusentismos(forms.Form):
     )
     empleado = forms.CharField(required=False, label="Empleado")
     aus_grupop = forms.CharField(label=u"Grupo Patológico", required=False)
-    art = forms.CharField(label=u"ART", required=False)
+    art = forms.ModelChoiceField(
+        label="ART",
+        queryset=ent_art.objects.filter(baja=False),
+        empty_label="Todas",
+        required=False,
+    )
     aus_diagn = forms.CharField(label=u"Diagnóstico", required=False)
     tipo_ausentismo = forms.ChoiceField(
         label="Tipo Ausentismo", choices=TIPO_AUSENCIA_, required=False, initial=0

@@ -141,7 +141,7 @@ class AusentismoView(VariablesMixin, ListView):
             if aus_diagn:
                 ausentismos = ausentismos.filter(aus_diagn__diagnostico__icontains=aus_diagn)
             if art:
-                ausentismos = ausentismos.filter(empleado__art__nombre__icontains=art)
+                ausentismos = ausentismos.filter(empleado__art=art)
             self.request.session["ausentismos"] = self.request.POST or busq
         else:
             ausentismos = ausentismo.ausentismos_activos.filter(
