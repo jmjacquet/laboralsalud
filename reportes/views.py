@@ -666,8 +666,9 @@ def ausentismo_total_x_gerencia(
     tasa_ausentismo_tot = calcular_tasa_ausentismo(
         dias_caidos_tot, dias_laborables, empleados_tot
     )
+    aus_empr_con_agrupamiento = ausentismos_inc_agrupam.filter(empresa__agrupamiento__isnull=False)
     agrupamientos_empresa = (
-        ausentismos_inc_agrupam.filter(empresa__agrupamiento__isnull=False)
+        aus_empr_con_agrupamiento
         .annotate(
             agrup_id=F("empresa__agrupamiento"),
             agrup_descr=F("empresa__agrupamiento__descripcion"),
@@ -684,11 +685,9 @@ def ausentismo_total_x_gerencia(
     )
     fechas_ausentismos_list = [
         AusentismoFechasNT(
-            a.empleado.empresa.agrupamiento.id, a.aus_fcrondesde, a.aus_fcronhasta
+            a.empresa.agrupamiento.id, a.aus_fcrondesde, a.aus_fcronhasta
         )
-        for a in ausentismos_inc_agrupam.filter(
-            empresa__agrupamiento__isnull=False
-        ).select_related("empresa__agrupamiento")
+        for a in aus_empr_con_agrupamiento
     ]
     aus_x_agrupamiento = []
     tasa_aus_acum = 0
