@@ -504,8 +504,8 @@ class InformeAusenciasForm(forms.Form):
         initial=hoy(),
     )
     asunto = forms.CharField(required=False, label="Asunto")
-    destinatario = forms.EmailField(
-        max_length=50, label="E-Mail Destinatario/s", required=True
+    destinatario = forms.CharField(
+        max_length=400, label="E-Mail Destinatario/s", required=True
     )
     observaciones = forms.CharField(
         label="Observaciones Informe",

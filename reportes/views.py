@@ -657,9 +657,9 @@ def ausentismo_total_x_gerencia(
     if not empresa:
         return None, 0
 
-    empresas = [e.id for e in ent_empresa.objects.filter(casa_central=empresa)]
+    empresas = [e.id for e in ent_empresa.objects.filter(casa_central=empresa) if e.agrupamiento]
     ausentismos_inc_agrupam = ausentismos.filter(
-        tipo_ausentismo=1, empresa__id__in=empresas
+        tipo_ausentismo=1, empresa_id__in=empresas
     )
 
     dias_caidos_tot = dias_ausentes(fdesde, fhasta, ausentismos_inc_agrupam)

@@ -184,9 +184,9 @@ class ent_empresa(models.Model):
         on_delete=models.SET_NULL,
     )
     observaciones = models.TextField("Observaciones", blank=True, null=True)
-    contacto_nombre = models.CharField("Nombre", max_length=200, blank=True, null=True)
-    contacto_email = models.EmailField("Email", blank=True, null=True)
-    contacto_tel = models.CharField("Teléfono", max_length=50, blank=True, null=True)
+    contacto_nombre = models.CharField("Nombre Contacto", max_length=200, blank=True, null=True)
+    contacto_email = models.CharField("Emails Contacto (separados por comas)", max_length=300, blank=True, null=True)
+    contacto_tel = models.CharField("Teléfono contacto", max_length=50, blank=True, null=True)
     contacto_cargo = models.ForeignKey(
         "ent_cargo",
         verbose_name="Cargo",

@@ -123,13 +123,15 @@
 				             <div class="col-sm-6">
 				                 {{form.contacto_nombre|as_crispy_field}}
 				             </div>         
-				             <div class="col-sm-3">
-				                 {{form.contacto_email|as_crispy_field}}
-				             </div>         
-				             <div class="col-sm-3">
+				             <div class="col-sm-6">
 				                 {{form.contacto_tel|as_crispy_field}}
-				             </div>         
+				             </div>
 					        </div>
+                            <div class="row cerca">
+				             <div class="col-sm-12">
+				                 {{form.contacto_email|as_crispy_field}}
+				             </div>
+                            </div>
 					        <div class="row cerca">
 				             <div class="col-sm-6">
 				                 {{form.contacto_cargo|as_crispy_field}}

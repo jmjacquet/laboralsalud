@@ -106,9 +106,7 @@ $("#id_empleado").change(function(){
                             $("#trab_fbaja").text(''); 
                           }else{
                           $("#trab_fbaja").text(moment(data['trab_fbaja']).format("DD/MM/YYYY"));}; 
-                          $("#trab_armas").text(data['trab_armas']); 
-                          $("#trab_tareas_dif").text(data['trab_tareas_dif']); 
-                          $("#trab_preocupac").text(data['trab_preocupac']); 
+                          $("#trab_preocupac").text(data['trab_preocupac']);
                           if (data['trab_preocup_fecha']==null){
                             $("#trab_preocup_fecha").text(''); 
                           }else{
@@ -136,8 +134,6 @@ $("#id_empleado").change(function(){
                           $("#trab_fingreso").text('');
                           $("#trab_fbaja").text('');
                           $("#trab_preocupac").text('');
-                          $("#trab_armas").text('');
-                          $("#trab_tareas_dif").text('');
                           $("#trab_preocup_fecha").text('');
                           $("#antig_empresa").text('');
                           $("#antig_trabajo").text('');

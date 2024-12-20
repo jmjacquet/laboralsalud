@@ -3,6 +3,7 @@ $(document).ready(function() {
 
 moment.locale('es');
 
+
  $('.datepicker').datepicker({
         format: "dd/mm/yyyy",
         language: "es",
@@ -81,23 +82,6 @@ var tabla = $('#ausentismos').DataTable({
               footer: false
               },
             responsive: false,
-
-            "columnDefs": [ {
-                  "targets"  : 'no-sort',
-                  "orderable": false,
-                }],
-           "paging":   true,
-           "lengthMenu": [[20, 50, -1], [20, 50, "Todos"]],
-           "autoWidth": false,
-           "order": [],
-           "colReorder": true,
-           "searching": true,
-            fixedHeader: {
-              header: false,
-              footer: false
-              },
-            responsive: true,
-            //dom: 'Bfrtlip',
             dom: "Bf<'row'<'col-sm-12'tr>>"+"<'row'<'col-sm-3'l><'col-sm-9'ip>>",
             buttons: [
                 {

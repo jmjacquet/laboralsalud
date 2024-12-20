@@ -130,9 +130,9 @@ class AusentismoView(VariablesMixin, ListView):
 
             if int(tipo_ausentismo) > 0:
                 if int(tipo_ausentismo) == 11:
-                    ausentismos = ausentismos.filter(Q(aus_diascaidos__lte=30))
+                    ausentismos = ausentismos.filter(aus_diascaidos__lte=30, tipo_ausentismo=1)
                 elif int(tipo_ausentismo) == 12:
-                    ausentismos = ausentismos.filter(Q(aus_diascaidos__gt=30))
+                    ausentismos = ausentismos.filter(aus_diascaidos__gt=30, tipo_ausentismo=1)
                 else:
                     ausentismos = ausentismos.filter(tipo_ausentismo=int(tipo_ausentismo))
 
@@ -834,11 +834,9 @@ def ausencias_importar(request):
 
 
 @login_required
-def mandarEmail(request, ausencias, fecha, asunto, destinatario, observaciones):
+def mandarEmail(request, ausencias, fecha, asunto, destinatarios, observaciones):
     try:
-        mail_destino = []
-        mail_destino.append(destinatario)
-
+        mail_destino = destinatarios
         try:
             config = configuracion.objects.all().first()
         except configuracion.DoesNotExist:
@@ -974,7 +972,7 @@ def generarInforme(request):
         if form.is_valid():
             fecha = form.cleaned_data["fecha"]
             asunto = form.cleaned_data["asunto"]
-            destinatario = form.cleaned_data["destinatario"]
+            destinatarios = form.cleaned_data["destinatario"].split(",")
             observaciones = form.cleaned_data["observaciones"]
 
             ausencias = (
@@ -988,7 +986,7 @@ def generarInforme(request):
                 return HttpResponse(json.dumps(response, default=default), content_type="application/json")
             # blah blah blah
             try:
-                if not mandarEmail(request, ausencias, fecha, asunto, destinatario, observaciones):
+                if not mandarEmail(request, ausencias, fecha, asunto, destinatarios, observaciones):
                     response = {
                         "cant": 0,
                         "message": "El informe no pudo ser enviado! (verifique la dirección de correo del destinatario)",
@@ -1009,11 +1007,18 @@ def generarInforme(request):
 
         return HttpResponse(json.dumps(response, default=default), content_type="application/json")
     else:
-        form = InformeAusenciasForm(None, initial={"ausentismo_id": ""})
         lista = request.GET.getlist("id")
         ausencias = ausentismo.objects.filter(id__in=lista, empresa__pk__in=empresas_habilitadas(request))
+        emails_empresas = cleanup_email_empresas(ausencias)
+        form = InformeAusenciasForm(None, initial={"ausentismo_id": "", "destinatario": emails_empresas})
         variables = locals()
         return render(request, "ausentismos/informe_ausentismos_form.html", variables)
+
+
+def cleanup_email_empresas(ausencias):
+    emails_str = ','.join([a.empresa.contacto_email for a in ausencias if a.empresa])
+    cleaned_emails = ','.join(set(emails_str.split(',')))
+    return cleaned_emails
 
 
 def generarInformeIndividual(request, id):
@@ -1022,7 +1027,7 @@ def generarInformeIndividual(request, id):
         if form.is_valid():
             fecha = form.cleaned_data["fecha"]
             asunto = form.cleaned_data["asunto"]
-            destinatario = form.cleaned_data["destinatario"]
+            destinatarios = form.cleaned_data["destinatario"].split(",")
             observaciones = form.cleaned_data["observaciones"]
 
             ausencias = ausentismo.objects.filter(id=id)
@@ -1032,7 +1037,7 @@ def generarInformeIndividual(request, id):
                 return HttpResponse(json.dumps(response, default=default), content_type="application/json")
             # blah blah blah
             try:
-                if not mandarEmail(request, ausencias, fecha, asunto, destinatario, observaciones):
+                if not mandarEmail(request, ausencias, fecha, asunto, destinatarios, observaciones):
                     response = {
                         "cant": 0,
                         "message": "El informe no pudo ser enviado! (verifique la dirección de correo del destinatario)",
