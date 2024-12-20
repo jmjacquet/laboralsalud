@@ -1016,7 +1016,10 @@ def generarInforme(request):
 
 
 def cleanup_email_empresas(ausencias):
-    emails_str = ','.join([a.empresa.contacto_email for a in ausencias if a.empresa])
+    emails_list = [a.empresa.contacto_email for a in ausencias if a.empresa.contacto_email]
+    if len(emails_list) == 0:
+        return ""
+    emails_str = ','.join(emails_list)
     cleaned_emails = ','.join(set(emails_str.split(',')))
     return cleaned_emails
 
