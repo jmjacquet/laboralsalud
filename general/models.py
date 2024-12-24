@@ -98,7 +98,7 @@ class configuracion(models.Model):
         d["mail_usuario"] = self.mail_usuario or settings.EMAIL_HOST_USER
         d["mail_password"] = self.mail_password or settings.EMAIL_HOST_PASSWORD
         d["mail_origen"] = (
-            settings.DEFAULT_FROM_EMAIL or "contacto@sistemaslaboralsalud.com.ar"
+            settings.DEFAULT_FROM_EMAIL or "laboralsalud@sistemaslaboralsalud.com.ar"
         )
         d["mail_cuerpo"] = self.mail_cuerpo
 

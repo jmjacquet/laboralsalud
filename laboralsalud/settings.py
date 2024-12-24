@@ -200,7 +200,7 @@ LOGGING = {
         },
         "django": {
             "handlers": ["logfile"],
-            "level": "ERROR",
+            "level": "INFO",
             "propagate": False,
         },
         'django.db.backends': {
@@ -212,6 +212,12 @@ LOGGING = {
             "level": "DEBUG",
             "propagate": False,
         },
+        "ausentismos": {
+            "handlers": ["logfile"],
+            "level": "DEBUG",
+            "propagate": False,
+        },
+
     },
 }
 

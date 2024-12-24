@@ -11,11 +11,22 @@ from django.core.mail import send_mail, EmailMessage
 import random
 import datetime
 from general.views import getVariablesMixin, recargar_empresas_agrupamiento
-from .forms import ImportarAusentismosForm, InformeAusenciasForm, ImprimirInformeAusenciasForm
+from .forms import (
+    ImportarAusentismosForm,
+    InformeAusenciasForm,
+    ImprimirInformeAusenciasForm,
+)
 from django.shortcuts import render
 from django.template import RequestContext, Context
 from django.shortcuts import *
-from django.views.generic import TemplateView, ListView, CreateView, UpdateView, FormView, DetailView
+from django.views.generic import (
+    TemplateView,
+    ListView,
+    CreateView,
+    UpdateView,
+    FormView,
+    DetailView,
+)
 from django.conf import settings
 from django.utils.decorators import method_decorator
 from django.contrib import messages
@@ -24,7 +35,11 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from modal.views import AjaxCreateView, AjaxUpdateView, AjaxDeleteView
 from django.db.models import Q, Sum, Count, FloatField, Func
-from django.forms.models import inlineformset_factory, BaseInlineFormSet, formset_factory
+from django.forms.models import (
+    inlineformset_factory,
+    BaseInlineFormSet,
+    formset_factory,
+)
 from django.utils.functional import curry
 from django.http import FileResponse
 from django.db import transaction
@@ -46,6 +61,10 @@ from .forms import (
 )
 from general.models import configuracion
 
+
+import logging
+
+logger = logging.getLogger(__name__)
 ############ AUSENTISMOS ############################
 
 
@@ -102,7 +121,9 @@ class AusentismoView(VariablesMixin, ListView):
             else:
                 empresas_list = [
                     d["id"]
-                    for d in json.loads(recargar_empresas_agrupamiento(self.request, 0).content)
+                    for d in json.loads(
+                        recargar_empresas_agrupamiento(self.request, 0).content
+                    )
                 ]
 
             ausentismos = ausentismo.objects.filter(empresa_id__in=empresas_list)
@@ -122,7 +143,8 @@ class AusentismoView(VariablesMixin, ListView):
 
             if empleado:
                 ausentismos = ausentismos.filter(
-                    Q(empleado__apellido_y_nombre__icontains=empleado) | Q(empleado__nro_doc__icontains=empleado)
+                    Q(empleado__apellido_y_nombre__icontains=empleado)
+                    | Q(empleado__nro_doc__icontains=empleado)
                 )
 
             if fcontrol:
@@ -130,16 +152,26 @@ class AusentismoView(VariablesMixin, ListView):
 
             if int(tipo_ausentismo) > 0:
                 if int(tipo_ausentismo) == 11:
-                    ausentismos = ausentismos.filter(aus_diascaidos__lte=30, tipo_ausentismo=1)
+                    ausentismos = ausentismos.filter(
+                        aus_diascaidos__lte=30, tipo_ausentismo=1
+                    )
                 elif int(tipo_ausentismo) == 12:
-                    ausentismos = ausentismos.filter(aus_diascaidos__gt=30, tipo_ausentismo=1)
+                    ausentismos = ausentismos.filter(
+                        aus_diascaidos__gt=30, tipo_ausentismo=1
+                    )
                 else:
-                    ausentismos = ausentismos.filter(tipo_ausentismo=int(tipo_ausentismo))
+                    ausentismos = ausentismos.filter(
+                        tipo_ausentismo=int(tipo_ausentismo)
+                    )
 
             if aus_grupop:
-                ausentismos = ausentismos.filter(aus_grupop__patologia__icontains=aus_grupop)
+                ausentismos = ausentismos.filter(
+                    aus_grupop__patologia__icontains=aus_grupop
+                )
             if aus_diagn:
-                ausentismos = ausentismos.filter(aus_diagn__diagnostico__icontains=aus_diagn)
+                ausentismos = ausentismos.filter(
+                    aus_diagn__diagnostico__icontains=aus_diagn
+                )
             if art:
                 ausentismos = ausentismos.filter(empleado__art=art)
             self.request.session["ausentismos"] = self.request.POST or busq
@@ -205,15 +237,16 @@ class AusentismoCreateView(VariablesMixin, CreateView):
         controles_detalle = ControlDetalleFormSet(prefix="formDetalle")
         controles_patologias = PatologiaDetalleFormSet(prefix="formDetalle2")
         return self.render_to_response(
-            self.get_context_data(
-                form=form, controles_detalle=controles_detalle)
+            self.get_context_data(form=form, controles_detalle=controles_detalle)
         )
 
     def post(self, request, *args, **kwargs):
         self.object = None
         form_class = self.get_form_class()
         form = self.get_form(form_class)
-        controles_detalle = ControlDetalleFormSet(self.request.POST, instance=self.object, prefix="formDetalle")
+        controles_detalle = ControlDetalleFormSet(
+            self.request.POST, instance=self.object, prefix="formDetalle"
+        )
         # controles_patologias = PatologiaDetalleFormSet(self.request.POST, instance=self.object, prefix="formDetalle2")
         if form.is_valid() and controles_detalle.is_valid():
             return self.form_valid(form, controles_detalle)
@@ -239,9 +272,7 @@ class AusentismoCreateView(VariablesMixin, CreateView):
 
     def form_invalid(self, form, controles_detalle):
         return self.render_to_response(
-            self.get_context_data(
-                form=form, controles_detalle=controles_detalle
-            )
+            self.get_context_data(form=form, controles_detalle=controles_detalle)
         )
 
     def get_form_kwargs(self):
@@ -259,13 +290,18 @@ class AusentismoCreateView(VariablesMixin, CreateView):
         messages.success(self.request, "Los datos se guardaron con éxito!")
         return reverse("ausentismo_listado")
 
+
 def guardar_ultimo_tipo_ausentismo_y_fcontrol(ausentismo, controles):
-    lista_controles_fecha = [x for x in controles.cleaned_data if x["fecha"] is not None]
-    if len(lista_controles_fecha)>0:
-        ultimo_control = sorted(lista_controles_fecha, key=lambda x: x["fecha"], reverse=True)[0]
+    lista_controles_fecha = [
+        x for x in controles.cleaned_data if x["fecha"] is not None
+    ]
+    if len(lista_controles_fecha) > 0:
+        ultimo_control = sorted(
+            lista_controles_fecha, key=lambda x: x["fecha"], reverse=True
+        )[0]
         if ultimo_control:
             ausentismo.tipo_control = ultimo_control.get("tipo_control", 0)
-    
+
 
 class AusentismoEditView(VariablesMixin, UpdateView):
     form_class = AusentismoForm
@@ -284,20 +320,24 @@ class AusentismoEditView(VariablesMixin, UpdateView):
         form_class = self.get_form_class()
         form = self.get_form(form_class)
         form.fields["empleado"].widget.attrs["disabled"] = True
-        controles_detalle = ControlDetalleFormSet(instance=self.object, prefix="formDetalle")
+        controles_detalle = ControlDetalleFormSet(
+            instance=self.object, prefix="formDetalle"
+        )
         # controles_patologias = PatologiaDetalleFormSet(instance=self.object, prefix="formDetalle2")
         return self.render_to_response(
-            self.get_context_data(
-                form=form, controles_detalle=controles_detalle
-            )
+            self.get_context_data(form=form, controles_detalle=controles_detalle)
         )
 
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
         form_class = self.get_form_class()
         form = self.get_form(form_class)
-        controles_detalle = ControlDetalleFormSet(self.request.POST, instance=self.object, prefix="formDetalle")
-        controles_patologias = PatologiaDetalleFormSet(self.request.POST, instance=self.object, prefix="formDetalle2")
+        controles_detalle = ControlDetalleFormSet(
+            self.request.POST, instance=self.object, prefix="formDetalle"
+        )
+        controles_patologias = PatologiaDetalleFormSet(
+            self.request.POST, instance=self.object, prefix="formDetalle2"
+        )
         if form.is_valid() and controles_detalle.is_valid():
             return self.form_valid(form, controles_detalle)
         else:
@@ -327,9 +367,7 @@ class AusentismoEditView(VariablesMixin, UpdateView):
         form.fields["empleado"].widget.attrs["disabled"] = True
         messages.error(self.request, "Verifique la carga de datos!")
         return self.render_to_response(
-            self.get_context_data(
-                form=form, controles_detalle=controles_detalle
-            )
+            self.get_context_data(form=form, controles_detalle=controles_detalle)
         )
 
     def get_form_kwargs(self):
@@ -361,11 +399,17 @@ class AusentismoVerView(VariablesMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super(AusentismoVerView, self).get_context_data(**kwargs)
         a = self.get_object()
-        context["controles"] = ausentismo_controles.objects.filter(ausentismo=a).exclude(
-            Q(fecha__isnull=True, detalle__isnull=True) | Q(fecha__isnull=True, detalle="")
+        context["controles"] = ausentismo_controles.objects.filter(
+            ausentismo=a
+        ).exclude(
+            Q(fecha__isnull=True, detalle__isnull=True)
+            | Q(fecha__isnull=True, detalle="")
         )
-        context["controles_pat"] = ausentismo_controles_patologias.objects.filter(ausentismo=a).exclude(
-            Q(fecha__isnull=True, detalle__isnull=True) | Q(fecha__isnull=True, detalle="")
+        context["controles_pat"] = ausentismo_controles_patologias.objects.filter(
+            ausentismo=a
+        ).exclude(
+            Q(fecha__isnull=True, detalle__isnull=True)
+            | Q(fecha__isnull=True, detalle="")
         )
         return context
 
@@ -431,7 +475,9 @@ class SeguimControlCreateView(VariablesMixin, AjaxCreateView):
 def ausentismo_eliminar(request, id):
     if not tiene_permiso(request, "aus_abm"):
         return redirect(reverse("principal"))
-    aus = ausentismo.objects.get(pk=id, empresa__pk__in=empresas_habilitadas(request)).delete()
+    aus = ausentismo.objects.get(
+        pk=id, empresa__pk__in=empresas_habilitadas(request)
+    ).delete()
     messages.success(request, "¡Los datos se eliminaron con éxito!")
     return HttpResponseRedirect(reverse("ausentismo_listado"))
 
@@ -644,10 +690,16 @@ def ausencias_importar(request):
                 return HttpResponseRedirect(reverse("importar_empleados"))
 
             if csv_file.multiple_chunks():
-                messages.error(request, "El archivo es demasiado grande (%.2f MB)." % (csv_file.size / (1000 * 1000),))
+                messages.error(
+                    request,
+                    "El archivo es demasiado grande (%.2f MB)."
+                    % (csv_file.size / (1000 * 1000),),
+                )
                 return HttpResponseRedirect(reverse("importar_empleados"))
 
-            decoded_file = csv_file.read().decode("latin1").replace(",", "").replace("'", "")
+            decoded_file = (
+                csv_file.read().decode("latin1").replace(",", "").replace("'", "")
+            )
             # decoded_file=decoded_file.decode("latin1")
             io_string = io.StringIO(decoded_file)
             reader = unicode_csv_reader(io_string)
@@ -679,7 +731,9 @@ def ausencias_importar(request):
                         tipoa = None
                     else:
                         ta = dict(TIPO_AUSENCIA)
-                        tipoa = [k for k, v in ta.items() if v.upper() == tipoa.upper()][0]
+                        tipoa = [
+                            k for k, v in ta.items() if v.upper() == tipoa.upper()
+                        ][0]
 
                     if campos[2].strip().upper() == "SI":
                         aus_control = "S"
@@ -689,7 +743,9 @@ def ausencias_importar(request):
                     if campos[3].strip() == "":
                         aus_fcontrol = None
                     else:
-                        aus_fcontrol = datetime.datetime.strptime(campos[3], "%d/%m/%Y").date()
+                        aus_fcontrol = datetime.datetime.strptime(
+                            campos[3], "%d/%m/%Y"
+                        ).date()
 
                     # if campos[5] == "":
                     #     aus_fcertif = None
@@ -698,16 +754,22 @@ def ausencias_importar(request):
                     if campos[6] == "":
                         aus_fentrega_certif = None
                     else:
-                        aus_fentrega_certif = datetime.datetime.strptime(campos[6], "%d/%m/%Y").date()
+                        aus_fentrega_certif = datetime.datetime.strptime(
+                            campos[6], "%d/%m/%Y"
+                        ).date()
 
                     if campos[7] == "":
                         aus_fcrondesde = None
                     else:
-                        aus_fcrondesde = datetime.datetime.strptime(campos[7], "%d/%m/%Y").date()
+                        aus_fcrondesde = datetime.datetime.strptime(
+                            campos[7], "%d/%m/%Y"
+                        ).date()
                     if campos[8] == "":
                         aus_fcronhasta = None
                     else:
-                        aus_fcronhasta = datetime.datetime.strptime(campos[8], "%d/%m/%Y").date()
+                        aus_fcronhasta = datetime.datetime.strptime(
+                            campos[8], "%d/%m/%Y"
+                        ).date()
 
                     if campos[9] == "":
                         aus_diascaidos = None
@@ -722,45 +784,63 @@ def ausencias_importar(request):
                     if campos[11] == "":
                         aus_freintegro = None
                     else:
-                        aus_freintegro = datetime.datetime.strptime(campos[11], "%d/%m/%Y").date()
+                        aus_freintegro = datetime.datetime.strptime(
+                            campos[11], "%d/%m/%Y"
+                        ).date()
 
                     if campos[12] == "":
                         aus_falta = None
                     else:
-                        aus_falta = datetime.datetime.strptime(campos[12], "%d/%m/%Y").date()
+                        aus_falta = datetime.datetime.strptime(
+                            campos[12], "%d/%m/%Y"
+                        ).date()
 
                     austa = campos[13].strip()
                     if austa == "":
                         aus_tipo_alta = None
                     else:
                         aus_tipo_alta = dict(TIPO_ALTA)
-                        aus_tipo_alta = [k for k, v in aus_tipo_alta.items() if v.upper() == austa.upper()][0]
+                        aus_tipo_alta = [
+                            k
+                            for k, v in aus_tipo_alta.items()
+                            if v.upper() == austa.upper()
+                        ][0]
 
                     aus_medico = campos[14].strip().upper()
 
                     if aus_medico == "":
                         aus_medico = None
                     else:
-                        aus_medico = ent_medico_prof.objects.get_or_create(apellido_y_nombre=aus_medico)[0]
+                        aus_medico = ent_medico_prof.objects.get_or_create(
+                            apellido_y_nombre=aus_medico
+                        )[0]
 
                     aus_grupop = campos[15].strip().upper()
                     if aus_grupop == "":
                         aus_grupop = None
                     else:
-                        aus_grupop = aus_patologia.objects.get_or_create(patologia=aus_grupop)[0]
+                        aus_grupop = aus_patologia.objects.get_or_create(
+                            patologia=aus_grupop
+                        )[0]
 
                     aus_diagn = campos[16].strip().upper()
                     if aus_diagn == "":
                         aus_diagn = None
                     else:
-                        aus_diagn = aus_diagnostico.objects.get_or_create(diagnostico=aus_diagn)[0]
+                        aus_diagn = aus_diagnostico.objects.get_or_create(
+                            diagnostico=aus_diagn
+                        )[0]
 
                     tacc = campos[17].strip()
                     if tacc == "":
                         art_tipo_accidente = None
                     else:
                         art_tipo_accidente = dict(TIPO_ACCIDENTE)
-                        art_tipo_accidente = [k for k, v in art_tipo_accidente.items() if v.upper() == tacc.upper()][0]
+                        art_tipo_accidente = [
+                            k
+                            for k, v in art_tipo_accidente.items()
+                            if v.upper() == tacc.upper()
+                        ][0]
 
                     if campos[18] == "":
                         art_ndenuncia = None
@@ -770,12 +850,16 @@ def ausencias_importar(request):
                     if campos[19] == "":
                         art_faccidente = None
                     else:
-                        art_faccidente = datetime.datetime.strptime(campos[19], "%d/%m/%Y").date()
+                        art_faccidente = datetime.datetime.strptime(
+                            campos[19], "%d/%m/%Y"
+                        ).date()
 
                     if campos[20] == "":
                         art_fdenuncia = None
                     else:
-                        art_fdenuncia = datetime.datetime.strptime(campos[20], "%d/%m/%Y").date()
+                        art_fdenuncia = datetime.datetime.strptime(
+                            campos[20], "%d/%m/%Y"
+                        ).date()
 
                     observaciones = campos[21].strip()
                     descr_altaparc = campos[22].strip()
@@ -820,7 +904,11 @@ def ausencias_importar(request):
                         error = "Línea:%s -> %s " % (index, e)
                         messages.error(request, error)
 
-                messages.success(request, "Se importó el archivo con éxito!<br>(%s ausentismos creados)" % cant)
+                messages.success(
+                    request,
+                    "Se importó el archivo con éxito!<br>(%s ausentismos creados)"
+                    % cant,
+                )
             except Exception as e:
                 print(e)
                 messages.error(request, "Línea:%s -> %s" % (index, e))
@@ -835,47 +923,57 @@ def ausencias_importar(request):
 
 @login_required
 def mandarEmail(request, ausencias, fecha, asunto, destinatarios, observaciones):
+    mail_destino = [str(d).strip() for d in destinatarios.split(",")]
+
     try:
-        mail_destino = destinatarios
-        try:
-            config = configuracion.objects.all().first()
-        except configuracion.DoesNotExist:
-            raise ValueError
+        config = configuracion.objects.all().first()
+    except configuracion.DoesNotExist:
+        raise ValueError
 
-        datos = config.get_datos_mail()
-        mensaje_inicial = datos["mensaje_inicial"]
-        mail_cuerpo = datos["mail_cuerpo"]
-        mail_servidor = datos["mail_servidor"]
-        mail_puerto = int(datos["mail_puerto"])
-        mail_usuario = datos["mail_usuario"]
-        mail_password = str(datos["mail_password"])
-        mail_origen = datos["mail_origen"]
-        observaciones_finales = observaciones
-        context = Context()
+    datos = config.get_datos_mail()
+    mensaje_inicial = datos["mensaje_inicial"]
+    mail_cuerpo = datos["mail_cuerpo"]
+    mail_servidor = datos["mail_servidor"]
+    mail_puerto = int(datos["mail_puerto"])
+    mail_usuario = datos["mail_usuario"]
+    mail_password = str(datos["mail_password"])
+    mail_origen = datos["mail_origen"]
+    observaciones_finales = observaciones
 
-        template = "ausentismos/informe_ausentismos.html"
-        post_pdf = render_to_pdf(template, locals())
+    context = getVariablesMixin(request)
+    context["ausencias"] = ausencias
+    context["observaciones_finales"] = observaciones_finales
+    context["cant"] = len(ausencias)
+    context["config"] = config
+    context["fecha"] = fecha
+    template = "ausentismos/informe_ausentismos.html"
+    post_pdf = render_to_pdf(template, context)
 
-        fecha = fecha
-        nombre = "Informe_%s" % fecha
+    fecha = fecha
+    nombre = "Informe_%s" % fecha
 
-        html_content = get_template("general/email.html").render(
-            {"mensaje_inicial": mensaje_inicial, "mail_cuerpo": mail_cuerpo}
-        )
+    html_content = get_template("general/email.html").render(
+        {"mensaje_inicial": mensaje_inicial, "mail_cuerpo": mail_cuerpo}
+    )
 
-        backend = EmailBackend(
-            host=mail_servidor, port=mail_puerto, username=mail_usuario, password=mail_password, fail_silently=False
-        )
-        email = EmailMessage(
-            subject="%s" % (asunto), body=html_content, from_email=mail_origen, to=mail_destino, connection=backend
-        )
-        email.attach("%s.pdf" % nombre, post_pdf, "application/pdf")
-        email.content_subtype = "html"
-        email.send()
-        return True
-    except Exception as e:
-        print(e)
-        return False
+    backend = EmailBackend(
+        host=mail_servidor,
+        port=mail_puerto,
+        username=mail_usuario,
+        password=mail_password,
+        fail_silently=False,
+    )
+    email = EmailMessage(
+        subject="%s" % (asunto),
+        body=html_content,
+        from_email=mail_origen,
+        to=mail_destino,
+        connection=backend,
+    )
+    email.attach("%s.pdf" % nombre, post_pdf, "application/pdf")
+    email.content_subtype = "html"
+    email.send()
+    return True
 
 
 @login_required
@@ -884,10 +982,14 @@ def imprimir_ausentismo(request, id):
     try:
         ausencia = ausentismo.objects.get(pk=id)
         controles = ausentismo_controles.objects.filter(ausentismo=ausencia).exclude(
-            Q(fecha__isnull=True, detalle__isnull=True) | Q(fecha__isnull=True, detalle="")
+            Q(fecha__isnull=True, detalle__isnull=True)
+            | Q(fecha__isnull=True, detalle="")
         )
-        controles_pat = ausentismo_controles_patologias.objects.filter(ausentismo=ausencia).exclude(
-            Q(fecha__isnull=True, detalle__isnull=True) | Q(fecha__isnull=True, detalle="")
+        controles_pat = ausentismo_controles_patologias.objects.filter(
+            ausentismo=ausencia
+        ).exclude(
+            Q(fecha__isnull=True, detalle__isnull=True)
+            | Q(fecha__isnull=True, detalle="")
         )
     except Exception as e:
         ausencia = None
@@ -914,7 +1016,9 @@ def imprimir_ausentismo(request, id):
 def imprimir_historial(request, id):
     template = "ausentismos/historia_clinica_impresion.html"
     empleado = ent_empleado.objects.get(pk=id)
-    historial = ausentismo.objects.filter(empleado=empleado, empresa__pk__in=empresas_habilitadas(request))
+    historial = ausentismo.objects.filter(
+        empleado=empleado, empresa__pk__in=empresas_habilitadas(request)
+    )
     context = getVariablesMixin(request)
     try:
         config = configuracion.objects.all().first()
@@ -939,9 +1043,15 @@ def imprimir_informe(request):
             lista = request.session.get("lista_ausentismos", None)
             observaciones_finales = form.cleaned_data["observaciones"]
             ausencias = (
-                ausentismo.objects.filter(id__in=lista, empresa__pk__in=empresas_habilitadas(request))
-                .order_by("fecha_creacion", "aus_fcrondesde", "aus_fcronhasta", "empresa")
-                .select_related("empleado", "empresa", "aus_diagn", "empleado__trab_cargo")
+                ausentismo.objects.filter(
+                    id__in=lista, empresa__pk__in=empresas_habilitadas(request)
+                )
+                .order_by(
+                    "fecha_creacion", "aus_fcrondesde", "aus_fcronhasta", "empresa"
+                )
+                .select_related(
+                    "empleado", "empresa", "aus_diagn", "empleado__trab_cargo"
+                )
             )
             cant = len(ausencias)
 
@@ -962,7 +1072,9 @@ def imprimir_informe(request):
         request.session["lista_ausentismos"] = lista
         form = ImprimirInformeAusenciasForm(initial={"lista": lista})
         variables = locals()
-        return render(request, "ausentismos/imprimir_informe_ausentismos_form.html", variables)
+        return render(
+            request, "ausentismos/imprimir_informe_ausentismos_form.html", variables
+        )
 
 
 def generarInforme(request):
@@ -972,55 +1084,80 @@ def generarInforme(request):
         if form.is_valid():
             fecha = form.cleaned_data["fecha"]
             asunto = form.cleaned_data["asunto"]
-            destinatarios = form.cleaned_data["destinatario"].split(",")
+            destinatarios = str(form.cleaned_data["destinatario"])
             observaciones = form.cleaned_data["observaciones"]
 
             ausencias = (
-                ausentismo.objects.filter(id__in=lista, empresa__pk__in=empresas_habilitadas(request))
-                .order_by("fecha_creacion", "aus_fcrondesde", "aus_fcronhasta", "empresa")
-                .select_related("empleado", "empresa", "aus_diagn", "empleado__trab_cargo")
+                ausentismo.objects.filter(
+                    id__in=lista, empresa__pk__in=empresas_habilitadas(request)
+                )
+                .order_by(
+                    "fecha_creacion", "aus_fcrondesde", "aus_fcronhasta", "empresa"
+                )
+                .select_related(
+                    "empleado", "empresa", "aus_diagn", "empleado__trab_cargo"
+                )
             )
             cant = len(ausencias)
             if cant <= 0:
-                response = {"cant": 0, "message": "¡Debe seleccionar al menos un Ausentismo!"}
-                return HttpResponse(json.dumps(response, default=default), content_type="application/json")
-            # blah blah blah
-            try:
-                if not mandarEmail(request, ausencias, fecha, asunto, destinatarios, observaciones):
-                    response = {
-                        "cant": 0,
-                        "message": "El informe no pudo ser enviado! (verifique la dirección de correo del destinatario)",
-                    }
-                else:
-                    response = {"cant": cant, "message": "¡El Informe fué generado/enviado con éxito!."}  # for ok
-            except:
                 response = {
                     "cant": 0,
-                    "message": "El informe no pudo ser enviado! (verifique la dirección de correo del destinatario)",
+                    "message": "¡Debe seleccionar al menos un Ausentismo!",
+                }
+                return HttpResponse(
+                    json.dumps(response, default=default),
+                    content_type="application/json",
+                )
+            # blah blah blah
+            try:
+                if mandarEmail(
+                    request, ausencias, fecha, asunto, destinatarios, observaciones
+                ):
+                    response = {
+                        "cant": cant,
+                        "message": "¡El Informe fué generado/enviado con éxito!.",
+                    }  # for ok
+            except Exception as e:
+                logger.error("Error sending Email: " + str(e), exc_info=True)
+                response = {
+                    "cant": 0,
+                    "message": "El informe no pudo ser enviado! %s"
+                    % str(e),
                 }
 
         else:
             errores = ""
             for err in form.errors:
                 errores += "<b>" + err + "</b><br>"
-            response = {"cant": 0, "message": "¡Verifique los siguientes datos: <br>" + errores.strip()}
+            response = {
+                "cant": 0,
+                "message": "¡Verifique los siguientes datos: <br>" + errores.strip(),
+            }
 
-        return HttpResponse(json.dumps(response, default=default), content_type="application/json")
+        return HttpResponse(
+            json.dumps(response, default=default), content_type="application/json"
+        )
     else:
         lista = request.GET.getlist("id")
-        ausencias = ausentismo.objects.filter(id__in=lista, empresa__pk__in=empresas_habilitadas(request))
+        ausencias = ausentismo.objects.filter(
+            id__in=lista, empresa__pk__in=empresas_habilitadas(request)
+        )
         emails_empresas = cleanup_email_empresas(ausencias)
-        form = InformeAusenciasForm(None, initial={"ausentismo_id": "", "destinatario": emails_empresas})
+        form = InformeAusenciasForm(
+            None, initial={"ausentismo_id": "", "destinatario": emails_empresas}
+        )
         variables = locals()
         return render(request, "ausentismos/informe_ausentismos_form.html", variables)
 
 
 def cleanup_email_empresas(ausencias):
-    emails_list = [a.empresa.contacto_email for a in ausencias if a.empresa.contacto_email]
+    emails_list = [
+        a.empresa.contacto_email for a in ausencias if a.empresa.contacto_email
+    ]
     if len(emails_list) == 0:
         return ""
-    emails_str = ','.join(emails_list)
-    cleaned_emails = ','.join(set(emails_str.split(',')))
+    emails_str = ",".join(emails_list)
+    cleaned_emails = ",".join(set(emails_str.split(",")))
     return cleaned_emails
 
 
@@ -1030,36 +1167,49 @@ def generarInformeIndividual(request, id):
         if form.is_valid():
             fecha = form.cleaned_data["fecha"]
             asunto = form.cleaned_data["asunto"]
-            destinatarios = form.cleaned_data["destinatario"].split(",")
+            destinatarios = form.cleaned_data["destinatario"]
             observaciones = form.cleaned_data["observaciones"]
 
             ausencias = ausentismo.objects.filter(id=id)
             cant = len(ausencias)
             if cant <= 0:
-                response = {"cant": 0, "message": "¡Debe seleccionar al menos un Ausentismo!"}
-                return HttpResponse(json.dumps(response, default=default), content_type="application/json")
-            # blah blah blah
-            try:
-                if not mandarEmail(request, ausencias, fecha, asunto, destinatarios, observaciones):
-                    response = {
-                        "cant": 0,
-                        "message": "El informe no pudo ser enviado! (verifique la dirección de correo del destinatario)",
-                    }
-                else:
-                    response = {"cant": cant, "message": "¡El Informe fué generado/enviado con éxito!."}  # for ok
-            except:
                 response = {
                     "cant": 0,
-                    "message": "El informe no pudo ser enviado! (verifique la dirección de correo del destinatario)",
+                    "message": "¡Debe seleccionar al menos un Ausentismo!",
+                }
+                return HttpResponse(
+                    json.dumps(response, default=default),
+                    content_type="application/json",
+                )
+            # blah blah blah
+            try:
+                if mandarEmail(
+                    request, ausencias, fecha, asunto, destinatarios, observaciones
+                ):
+                    response = {
+                        "cant": cant,
+                        "message": "¡El Informe fué generado/enviado con éxito!.",
+                    }  # for ok
+            except Exception as e:
+                print(str(e))
+                response = {
+                    "cant": 0,
+                    "message": "El informe no pudo ser enviado! (verifique la dirección de correo del destinatario) %s"
+                    % str(e),
                 }
 
         else:
             errores = ""
             for err in form.errors:
                 errores += "<b>" + err + "</b><br>"
-            response = {"cant": 0, "message": "¡Verifique los siguientes datos: <br>" + errores.strip()}
+            response = {
+                "cant": 0,
+                "message": "¡Verifique los siguientes datos: <br>" + errores.strip(),
+            }
 
-        return HttpResponse(json.dumps(response, default=default), content_type="application/json")
+        return HttpResponse(
+            json.dumps(response, default=default), content_type="application/json"
+        )
     else:
         form = InformeAusenciasForm(None, initial={"ausentismo_id": id})
         ausencias = ausentismo.objects.filter(id=id)
