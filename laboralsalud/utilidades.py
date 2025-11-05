@@ -17,7 +17,7 @@ TIPO_ENTIDAD = (
 TIPO_AUSENCIA = (
     (1, "Inculpable"),
     (2, "Accidente Denunciado"),
-    (7, "Incidente"),
+    (7, "Accidente No Denunciado"),
     (4, "Familiar Enfermo"),
     (5, "Licencias Especiales"),
     (6, "Embarazo"),
@@ -58,7 +58,7 @@ TIPO_AUSENCIA_ = (
     (11, "Inculpable Agudos (<=30 días)"),
     (12, u"Inculpable Crónicos (>30 días)"),
     (2, "Accidente Denunciado"),
-    (7, "Incidente"),
+    (7, "Accidente No Denunciado"),
     (3, "Enfermedad"),
     (4, "Familiar Enfermo"),
     (5, "Licencias Especiales"),
