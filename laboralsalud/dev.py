@@ -3,7 +3,7 @@ from .settings import *
 from decouple import config
 import os
 
-DEBUG = config('DB_USER', default="True")
+DEBUG = config('DEBUG', default="True")
 
 DB_USER = config('DB_USER', default="")
 DB_PASS = config('DB_PASS', default="")
