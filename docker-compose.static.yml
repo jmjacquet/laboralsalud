@@ -1,0 +1,33 @@
+version: "3.9"
+
+services:
+  laboralsalud-static:
+    image: nginx:alpine
+    container_name: laboralsalud_static
+    restart: unless-stopped
+    volumes:
+      - laboral_static:/usr/share/nginx/html/static:ro
+      - laboral_media:/usr/share/nginx/html/media:ro
+      - ./nginx-static.conf:/etc/nginx/conf.d/default.conf:ro
+    networks:
+      - dokploy-network
+    labels:
+      - traefik.docker.network=dokploy-network
+      - traefik.enable=true
+      - traefik.http.services.laboralsalud-static.loadbalancer.server.port=80
+      # Route static/media paths to nginx with high priority
+      # Match the domain that Dokploy assigned
+      - traefik.http.routers.laboralsalud-static.rule=Host(`laboralsalud-kc7a75-adbd80-72-62-138-200.traefik.me`) && (PathPrefix(`/static`) || PathPrefix(`/media`))
+      - traefik.http.routers.laboralsalud-static.entrypoints=web
+      - traefik.http.routers.laboralsalud-static.priority=100
+      - traefik.http.routers.laboralsalud-static.service=laboralsalud-static
+
+volumes:
+  laboral_static:
+    external: true
+  laboral_media:
+    external: true
+
+networks:
+  dokploy-network:
+    external: true
