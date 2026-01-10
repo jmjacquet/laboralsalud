@@ -5,9 +5,9 @@ import os
 
 DEBUG = False
 
-DB_USER = config('DB_USER')
-DB_PASS = config('DB_PASS')
-DB_HOST = config('DB_HOST')
+DB_USER = config('DB_USER', default="")
+DB_PASS = config('DB_PASS', default="")
+DB_HOST = config('DB_HOST', default="")
 DB_PORT = config('DB_PORT', default='3306')
 DB_NAME = config('DB_NAME', default='lbls')
 
