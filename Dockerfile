@@ -11,15 +11,25 @@ RUN echo "deb http://archive.debian.org/debian buster main" > /etc/apt/sources.l
     echo "Acquire::Check-Valid-Until false;" > /etc/apt/apt.conf.d/99no-check-valid-until
 
 # Install system dependencies
+# Image libraries for Pillow
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
     gcc \
+    g++ \
     libffi-dev \
     libssl-dev \
     libmariadb-dev \
     pkg-config \
     curl \
     netcat-openbsd \
+    libjpeg-dev \
+    libpng-dev \
+    zlib1g-dev \
+    libfreetype6-dev \
+    liblcms2-dev \
+    libwebp-dev \
+    libtiff-dev \
+    libopenjp2-7-dev \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy requirements and install Python packages
