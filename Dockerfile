@@ -34,6 +34,7 @@ RUN apt-get update && \
 # Copy requirements and install Python packages
 COPY reqs.txt /app/
 RUN pip install --no-cache-dir --upgrade pip && \
+    pip install --no-cache-dir django-appconf==1.0.3 && \
     pip install --no-cache-dir -r reqs.txt && \
     pip install --no-cache-dir gunicorn==19.10.0
 

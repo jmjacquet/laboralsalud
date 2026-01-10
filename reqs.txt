@@ -16,21 +16,22 @@ python-decouple==3.3
 # ============================================
 # Django Extensions
 # ============================================
-django-extensions==2.1.9  # Compatible with Django 1.11
+django-extensions==1.6.1  # From working server config
 
 # ============================================
 # Forms and UI
 # ============================================
-django-bootstrap3==11.1.0
+django-bootstrap3==11.1.0  # From working server config
 django-crispy-forms==1.7.2
-django-localflavor==1.5.2
+django-localflavor==1.5.2  # From working server config
 
 # ============================================
 # Static Files Compression
 # ============================================
-django-compressor==2.4
+django-appconf==1.0.3  # Python 2.7 compatible - MUST be before django-compressor
+django-compressor==2.4  # Works with appconf 1.0.3
 rcssmin==1.0.6
-rjsmin==1.0.12
+rjsmin==1.1.0  # From working server config
 
 # ============================================
 # PDF Generation
@@ -53,7 +54,7 @@ Pillow==6.2.2
 # ============================================
 # Development Tools
 # ============================================
-django-debug-toolbar==1.11.1
+django-debug-toolbar==1.11.1 # From working server config
 
 # ============================================
 # Gunicorn Support (Python 2.7 threading)

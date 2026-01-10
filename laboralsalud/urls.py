@@ -33,11 +33,17 @@ urlpatterns = [
     url(r'^logout/$', logout,name="logout"),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
+# Serve media files
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+# Serve static files in development
 if settings.DEBUG:
     import debug_toolbar
     urlpatterns = [
         url(r'^__debug__/', include(debug_toolbar.urls)),
     ] + urlpatterns
+    # Add static files URL patterns for development
+    urlpatterns += staticfiles_urlpatterns()
 
 
 handler500 = volverHome
