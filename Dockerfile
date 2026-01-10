@@ -42,7 +42,7 @@ RUN pip install --no-cache-dir --upgrade pip && \
 COPY . /app/
 
 # Create necessary directories
-RUN mkdir -p /app/static /app/media /app/logs
+RUN mkdir -p /app/static /app/media /app/logs /app/staticfiles
 
 # Create entrypoint script
 COPY docker-entrypoint.sh /app/
