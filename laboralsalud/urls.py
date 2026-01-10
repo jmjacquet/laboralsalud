@@ -21,30 +21,37 @@ from django.conf.urls.static import static
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from .views import login,logout,volverHome
 
+# Start with debug toolbar URLs if DEBUG (must be before catch-all)
+urlpatterns = []
 
-urlpatterns = [
+if settings.DEBUG:
+    try:
+        import debug_toolbar
+        urlpatterns += [
+            url(r'^__debug__/', include(debug_toolbar.urls)),
+        ]
+    except ImportError:
+        pass
+
+# Add all other URLs
+urlpatterns += [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^entidades/', include('entidades.urls')),
     url(r'^ausentismos/', include('ausentismos.urls')),
     url(r'^reportes/', include('reportes.urls')),
     url(r'^usuarios/', include('usuarios.urls')),
+    url(r'^login/$', login, name="login"),
+    url(r'^logout/$', logout, name="logout"),
+    # Catch-all must be LAST
     url(r'^', include('general.urls')),
-    url(r'^login/$', login,name="login"),
-    url(r'^logout/$', logout,name="logout"),
-]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+]
 
-# Serve media files
+# Serve media files (only once)
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 # Serve static files in development
 if settings.DEBUG:
-    import debug_toolbar
-    urlpatterns = [
-        url(r'^__debug__/', include(debug_toolbar.urls)),
-    ] + urlpatterns
-    # Add static files URL patterns for development
     urlpatterns += staticfiles_urlpatterns()
-
 
 handler500 = volverHome
 handler404 = volverHome
