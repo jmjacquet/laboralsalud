@@ -32,7 +32,7 @@ services:
       - laboral_dev_media:/app/media
       - laboral_dev_logs:/app/logs
     ports:
-      - "8000:8000"
+      - "8001:8000"
     networks:
       - dokploy-network
     labels:
