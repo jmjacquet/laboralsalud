@@ -1,0 +1,38 @@
+version: "3.9"
+
+services:
+  mariadb:
+    image: mariadb:11
+    container_name: mariadb_shared
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: piranha
+      TZ: America/Argentina/Buenos_Aires
+    volumes:
+      - ../tasasweb/varios/mysqldata:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    networks:
+      - app_network
+
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mariadb
+    networks:
+      - app_network
+
+volumes:
+  mariadb_data:
+    driver: local
+
+networks:
+  app_network:
+    external: true  # Make it external
+    name: dokploy-network  # Use Dokploy's network name
+
+

@@ -21,21 +21,24 @@ django-extensions==2.1.9  # Compatible with Django 1.11
 # ============================================
 # Forms and UI
 # ============================================
-django-bootstrap3==12.1.0  # Updated for Django 1.11
-django-crispy-forms==1.7.2  # Updated for Django 1.11
-django-localflavor==2.2  # Updated for Django 1.11
+django-bootstrap3==11.1.0
+django-crispy-forms==1.7.2
+django-localflavor==1.5.2
 
 # ============================================
 # Static Files Compression
 # ============================================
-# django-compressor==1.6  # Python 2.7 compatible version
-# rcssmin==1.0.6
-# rjsmin==1.0.12
+django-compressor==2.4
+rcssmin==1.0.6
+rjsmin==1.0.12
 
 # ============================================
 # PDF Generation
 # ============================================
-django-easy-pdf==0.1.0
+django-easy-pdf==0.1.1
+xhtml2pdf==0.2.3  # Required dependency for django-easy-pdf
+html5lib==1.0.1  # Required by xhtml2pdf
+reportlab==3.5.34  # Required by xhtml2pdf (Python 2.7 compatible)
 
 # ============================================
 # Date Utilities
@@ -50,7 +53,7 @@ Pillow==6.2.2
 # ============================================
 # Development Tools
 # ============================================
-django-debug-toolbar==1.11.1  # Updated for Django 1.11
+django-debug-toolbar==1.11.1
 
 # ============================================
 # Gunicorn Support (Python 2.7 threading)
@@ -60,4 +63,4 @@ futures==3.3.0
 # ============================================
 # Python 2.7 Compatibility & Utilities
 # ============================================
-six==1.10.0
+six==1.15.0
