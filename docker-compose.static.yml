@@ -24,9 +24,11 @@ services:
 
 volumes:
   laboral_static:
-    external: true  # Changed to true - use existing volume from main service
+    external: true
+    name: laboral_static  # Must match exactly
   laboral_media:
     external: true
+    name: laboral_media  # Must match exactly
 
 networks:
   dokploy-network:

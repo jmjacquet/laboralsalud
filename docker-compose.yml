@@ -41,11 +41,12 @@ services:
 volumes:
   laboral_static:
     driver: local
+    name: laboral_static  # Explicit name
   laboral_media:
     driver: local
+    name: laboral_media  # Explicit name
   laboral_logs:
     driver: local
-    # Note: laboral_static and laboral_media are shared with docker-compose.static.yml
 
 networks:
   dokploy-network:
