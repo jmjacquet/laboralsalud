@@ -1,18 +1,18 @@
 version: "3.9"
 
 services:
-  laboralsalud:
+  laboralsalud_dev:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: laboralsalud
+    container_name: laboralsalud_dev
     restart: unless-stopped
     environment:
       PYTHONUNBUFFERED: 1
     volumes:
-      - laboral_static:/app/static
-      - laboral_media:/app/media
-      - laboral_logs:/app/logs
+      - laboral_dev_static:/app/static
+      - laboral_dev_media:/app/media
+      - laboral_dev_logs:/app/logs
     ports:
       - "8000:8000"
     networks:
@@ -22,11 +22,11 @@ services:
       - traefik.enable=true
 
 volumes:
-  laboral_prod_static:
+  laboral_dev_static:
     driver: local
-  laboral_prod_media:
+  laboral_dev_media:
     driver: local
-  laboral_prod_logs:
+  laboral_dev_logs:
     driver: local
 
 networks:
