@@ -7,14 +7,20 @@ services:
       dockerfile: Dockerfile
     container_name: laboralsalud_app
     restart: unless-stopped
-    env_file:
-      - .env
+    # Comment out for production (use Dokploy env vars)
+    # Uncomment for local development with .env file
+    # env_file:
+    #   - .env
     environment:
-      # Override specific vars if needed
+      # Defaults (will be overridden by Dokploy or .env)
       PYTHONUNBUFFERED: 1
-      # DB_HOST should match your MariaDB service name in Dokploy
-      DB_HOST: mariadb
-      DB_PORT: 3306
+      DB_HOST: ${DB_HOST:-mariadb}
+      DB_PORT: ${DB_PORT:-3306}
+      # Gunicorn configuration
+      GUNICORN_WORKERS: ${GUNICORN_WORKERS:-3}
+      GUNICORN_THREADS: ${GUNICORN_THREADS:-2}
+      GUNICORN_TIMEOUT: ${GUNICORN_TIMEOUT:-60}
+      GUNICORN_BIND: ${GUNICORN_BIND:-0.0.0.0:8000}
     volumes:
       - laboral_static:/app/static
       - laboral_media:/app/media
@@ -23,12 +29,6 @@ services:
       - "8000:8000"
     networks:
       - app_network
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8000/health/", "||", "exit", "1"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 40s
 
 volumes:
   laboral_static:

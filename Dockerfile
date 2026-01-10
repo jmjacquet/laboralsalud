@@ -34,4 +34,6 @@ RUN chmod +x /app/docker-entrypoint.sh
 EXPOSE 8000
 
 ENTRYPOINT ["/app/docker-entrypoint.sh"]
-CMD ["gunicorn", "--bind", "0.0.0.0:8000", "--workers", "3", "--threads", "2", "--timeout", "60", "--access-logfile", "-", "--error-logfile", "-", "laboralsalud.wsgi:application"]
+# No CMD - entrypoint will build the command from env vars
+# Or you can keep a default CMD that will be overridden
+CMD []

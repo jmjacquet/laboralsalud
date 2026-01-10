@@ -2,7 +2,9 @@
 *.log
 !generarI25.pyc
 *.ini
-
+.env
+*.env
+!.env.example
 requirements.txt
 !varios/Modificaciones en sistema.docx
 varios/
