@@ -28,9 +28,9 @@ django-localflavor==1.5.2
 # ============================================
 # Static Files Compression
 # ============================================
-django-compressor==1.6  # Python 2.7 compatible version
-rcssmin==1.0.6
-rjsmin==1.0.12
+# django-compressor==1.6  # Python 2.7 compatible version
+# rcssmin==1.0.6
+# rjsmin==1.0.12
 
 # ============================================
 # PDF Generation
