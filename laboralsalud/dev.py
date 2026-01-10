@@ -31,14 +31,44 @@ DATABASES = {
 }
 
 INSTALLED_APPS += [
-    'debug_toolbar',
+    "compressor",
+]
+
+STATICFILES_FINDERS += [
+    "compressor.finders.CompressorFinder",
 ]
 
 
-# Debug Toolbar Configuration
-MIDDLEWARE += [
-    "debug_toolbar.middleware.DebugToolbarMiddleware",
-]
+
+COMPRESS_ENABLED = False
+COMPRESS_OUTPUT_DIR = "bundles"
+
+COMPRESS_CSS_FILTERS = ["compressor.filters.css_default.CssAbsoluteFilter", "compressor.filters.cssmin.CSSMinFilter"]
+COMPRESS_JS_FILTERS = ["compressor.filters.jsmin.JSMinFilter"]
+
+if DEBUG:
+    INSTALLED_APPS += [
+        'debug_toolbar',
+    ]
+
+    # Add middleware at the beginning
+    MIDDLEWARE = [
+                     'debug_toolbar.middleware.DebugToolbarMiddleware',
+                 ] + list(MIDDLEWARE)
+
+
+    # Always show toolbar in DEBUG mode
+    def show_toolbar(request):
+        return True
+
+
+    DEBUG_TOOLBAR_CONFIG = {
+        'SHOW_TOOLBAR_CALLBACK': show_toolbar,
+        'INTERCEPT_REDIRECTS': False,
+    }
+
+    # INTERNAL_IPS (not strictly needed with SHOW_TOOLBAR_CALLBACK, but good to have)
+    INTERNAL_IPS = ['127.0.0.1', 'localhost', '0.0.0.0']
 
 DEBUG_TOOLBAR_PANELS = [
     'debug_toolbar.panels.versions.VersionsPanel',
@@ -58,4 +88,3 @@ DEBUG_TOOLBAR_PANELS = [
 DEBUG_TOOLBAR_CONFIG = {
     'INTERCEPT_REDIRECTS': False,
 }
-
