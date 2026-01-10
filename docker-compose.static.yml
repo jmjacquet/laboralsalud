@@ -24,11 +24,9 @@ services:
 
 volumes:
   laboral_static:
-    external: false  # Not external if in same project
-    name: laboral_static  # Explicit name to match main service
+    external: true  # Changed to true - use existing volume from main service
   laboral_media:
-    external: false
-    name: laboral_media
+    external: true
 
 networks:
   dokploy-network:
