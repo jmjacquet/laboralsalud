@@ -37,23 +37,6 @@ DATETIME_FORMAT = "d/m/Y H:i"
 SHORT_DATE_FORMAT = "d/m/Y"
 
 
-
-INSTALLED_APPS += [
-    "compressor",
-]
-
-STATICFILES_FINDERS += [
-    "compressor.finders.CompressorFinder",
-]
-
-
-
-COMPRESS_ENABLED = False
-COMPRESS_OUTPUT_DIR = "bundles"
-
-COMPRESS_CSS_FILTERS = ["compressor.filters.css_default.CssAbsoluteFilter", "compressor.filters.cssmin.CSSMinFilter"]
-COMPRESS_JS_FILTERS = ["compressor.filters.jsmin.JSMinFilter"]
-
 if DEBUG:
     INSTALLED_APPS += [
         'debug_toolbar',
