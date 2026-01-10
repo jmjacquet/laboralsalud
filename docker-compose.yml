@@ -1,32 +1,44 @@
-version: '3'
+version: '3.9'
+
 services:
-
-  mysql5_lbl:
-    container_name: mysql5_lbl
-    image: mysql:5.7
+  laboralsalud:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: laboralsalud_app
+    restart: unless-stopped
+    env_file:
+      - .env
     environment:
-      MYSQL_ROOT_PASSWORD: qwerty
+      # Override specific vars if needed
+      PYTHONUNBUFFERED: 1
+      # DB_HOST should match your MariaDB service name in Dokploy
+      DB_HOST: mariadb
+      DB_PORT: 3306
     volumes:
-      - ../tasasweb/varios/mysqldata:/var/lib/mysql
+      - laboral_static:/app/static
+      - laboral_media:/app/media
+      - laboral_logs:/app/logs
     ports:
-      - "3306:3306"
+      - "8000:8000"
     networks:
-      - repo_default
+      - app_network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health/", "||", "exit", "1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
 
-  phpmyadmin_lbl:
-    container_name: phpmyadmin_lbl
-    image: phpmyadmin/phpmyadmin:5.0.1
-    environment:
-      PMA_HOST: mysql5
-      PMA_USER: root
-      PMA_PASSWORD: qwerty
-      UPLOAD_LIMIT: 300M
-    ports:
-      - "8080:80"
-    networks:
-      - repo_default
-
+volumes:
+  laboral_static:
+    driver: local
+  laboral_media:
+    driver: local
+  laboral_logs:
+    driver: local
 
 networks:
-  repo_default:
+  app_network:
     external: true
+    name: production_apps_network
