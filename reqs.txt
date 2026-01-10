@@ -28,8 +28,7 @@ django-localflavor==1.5.2
 # ============================================
 # Static Files Compression
 # ============================================
-appconf==1.0.1  # MUST be before django-compressor - Python 2.7 compatible
-django-compressor==2.0
+django-compressor==1.6  # Python 2.7 compatible version
 rcssmin==1.0.6
 rjsmin==1.0.12
 
