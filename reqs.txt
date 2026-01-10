@@ -1,7 +1,7 @@
 # ============================================
 # Core Django Framework
 # ============================================
-Django==1.8.5
+Django==1.11.29  # Last LTS version supporting Python 2.7
 
 # ============================================
 # Database
@@ -16,14 +16,14 @@ python-decouple==3.3
 # ============================================
 # Django Extensions
 # ============================================
-django-extensions==2.2.1
+django-extensions==2.1.9  # Compatible with Django 1.11
 
 # ============================================
 # Forms and UI
 # ============================================
-django-bootstrap3==6.2.1
-django-crispy-forms==1.5.0
-django-localflavor==1.5.2
+django-bootstrap3==12.1.0  # Updated for Django 1.11
+django-crispy-forms==1.7.2  # Updated for Django 1.11
+django-localflavor==2.2  # Updated for Django 1.11
 
 # ============================================
 # Static Files Compression
@@ -50,7 +50,7 @@ Pillow==6.2.2
 # ============================================
 # Development Tools
 # ============================================
-django-debug-toolbar==1.3.2
+django-debug-toolbar==1.11.1  # Updated for Django 1.11
 
 # ============================================
 # Gunicorn Support (Python 2.7 threading)
