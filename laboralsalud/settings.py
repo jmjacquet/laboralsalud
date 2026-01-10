@@ -152,10 +152,10 @@ EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD", default="")
 EMAIL_HOST_USER = config("EMAIL_HOST_USER", default="")
 EMAIL_PORT = 587
 
-SERVER_EMAIL = config("SERVER_EMAIL")
-DEFAULT_FROM_EMAIL = config("DEFAULT_FROM_EMAIL")
-SESSION_COOKIE_NAME = config("SESSION_COOKIE_NAME")
-SECRET_KEY = config("SECRET_KEY")
+SERVER_EMAIL = config("SERVER_EMAIL", default="server@laboralsalud.com.ar")
+DEFAULT_FROM_EMAIL = config("DEFAULT_FROM_EMAIL", default="noreply@laboralsalud.com.ar")
+SESSION_COOKIE_NAME = config("SESSION_COOKIE_NAME", default="laboral_session")
+SECRET_KEY = config("SECRET_KEY", default="change-me-in-production-min-50-chars-required-please-set-in-env")
 
 
 LOGGING = {
