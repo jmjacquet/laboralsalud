@@ -40,11 +40,11 @@ services:
       - traefik.enable=true
 
 volumes:
-  laboral_prod_static:
+  laboral_static:
     driver: local
-  laboral_prod_media:
+  laboral_media:
     driver: local
-  laboral_prod_logs:
+  laboral_logs:
     driver: local
 
 networks:
