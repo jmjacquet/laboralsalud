@@ -1,44 +1,35 @@
-version: '3.9'
+version: "3.9"
 
 services:
   laboralsalud:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: laboralsalud_app
+    container_name: ${CONTAINER_NAME:-laboralsalud_app}
     restart: unless-stopped
-    # Comment out for production (use Dokploy env vars)
-    # Uncomment for local development with .env file
-    # env_file:
-    #   - .env
     environment:
-      # Defaults (will be overridden by Dokploy or .env)
       PYTHONUNBUFFERED: 1
-      DB_HOST: ${DB_HOST:-mariadb}
-      DB_PORT: ${DB_PORT:-3306}
-      # Gunicorn configuration
-      GUNICORN_WORKERS: ${GUNICORN_WORKERS:-3}
-      GUNICORN_THREADS: ${GUNICORN_THREADS:-2}
-      GUNICORN_TIMEOUT: ${GUNICORN_TIMEOUT:-60}
-      GUNICORN_BIND: ${GUNICORN_BIND:-0.0.0.0:8000}
+      # All other environment variables set in Dokploy UI
     volumes:
-      - laboral_static:/app/static
-      - laboral_media:/app/media
-      - laboral_logs:/app/logs
+      - ${VOLUME_PREFIX:-laboral}_static:/app/static
+      - ${VOLUME_PREFIX:-laboral}_media:/app/media
+      - ${VOLUME_PREFIX:-laboral}_logs:/app/logs
     ports:
       - "8000:8000"
     networks:
       - dokploy-network
+    labels:
+      - traefik.docker.network=dokploy-network
+      - traefik.enable=true
 
 volumes:
-  laboral_static:
+  ${VOLUME_PREFIX:-laboral}_static:
     driver: local
-  laboral_media:
+  ${VOLUME_PREFIX:-laboral}_media:
     driver: local
-  laboral_logs:
+  ${VOLUME_PREFIX:-laboral}_logs:
     driver: local
 
-# Use default network or remove network section entirely
 networks:
   dokploy-network:
     external: true

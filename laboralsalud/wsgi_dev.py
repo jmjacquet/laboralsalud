@@ -1,16 +1,21 @@
 """
-WSGI config for laboralsalud project.
+WSGI config for laboralsalud project - DEVELOPMENT
 
-It exposes the WSGI callable as a module-level variable named ``application``.
-
-For more information on this file, see
-https://docs.djangoproject.com/en/1.8/howto/deployment/wsgi/
+This exposes the WSGI callable as a module-level variable named ``application``.
+For development with debug toolbar and other dev tools.
 """
 
 import os
+import sys
+
+# Add project directory to path
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+PROJECT_DIR = os.path.abspath(os.path.join(BASE_DIR, '..'))
+sys.path.append(PROJECT_DIR)
+
+# Set Django settings module for development
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "laboralsalud.dev")
 
 from django.core.wsgi import get_wsgi_application
-
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "laboralsalud.development")
 
 application = get_wsgi_application()

@@ -1,56 +1,44 @@
-# ============================================
-# DATABASE CONFIGURATION
-# ============================================
-DB_HOST=mariadb
-DB_PORT=3306
-DB_USER=laboral_user
-DB_PASS=CHANGE_ME_IN_DOKPLOY
+# Service Identification
+CONTAINER_NAME=laboralsalud_app
+VOLUME_PREFIX=laboral
 
-# ============================================
-# DJANGO SETTINGS
-# ============================================
-SECRET_KEY=CHANGE_ME_IN_DOKPLOY_MIN_50_CHARS
-SESSION_COOKIE_NAME=laboral_session
-DJANGO_SETTINGS_MODULE=laboralsalud.opal
+# Environment Configuration
+ENV=production
 DEBUG=False
 
-# ============================================
-# EMAIL CONFIGURATION
-# ============================================
+# WSGI Configuration
+GUNICORN_WSGI=laboralsalud.wsgi:application
+DJANGO_SETTINGS_MODULE=laboralsalud.opal
+
+# Database Configuration
+DB_HOST=mariadb_shared
+DB_PORT=3306
+DB_NAME=lbls
+DB_USER=laboral_user
+DB_PASS=CHANGE_ME
+
+# Django Settings
+SECRET_KEY=CHANGE_ME_MIN_50_CHARS
+SESSION_COOKIE_NAME=laboral_session
+
+# Static and Media Paths
+STATIC_ROOT=/app/static
+MEDIA_ROOT=/app/media
+
+# Email Configuration
 EMAIL_HOST=smtp.gmail.com
 EMAIL_HOST_USER=your_email@gmail.com
-EMAIL_HOST_PASSWORD=CHANGE_ME_IN_DOKPLOY
+EMAIL_HOST_PASSWORD=CHANGE_ME
 EMAIL_PORT=587
 SERVER_EMAIL=server@laboralsalud.com.ar
 DEFAULT_FROM_EMAIL=noreply@laboralsalud.com.ar
 
-# ============================================
-# GUNICORN CONFIGURATION
-# ============================================
-# Number of worker processes
-# Recommended: (2 × CPU cores) + 1
-# For 2 cores: 5, For 4 cores: 9
+# Gunicorn Configuration
 GUNICORN_WORKERS=3
-
-# Number of threads per worker
-# Recommended: 2-4 threads per worker
 GUNICORN_THREADS=2
-
-# Request timeout in seconds
-# Increase for long-running requests
 GUNICORN_TIMEOUT=60
-
-# Bind address and port
-# Format: IP:PORT or just :PORT
 GUNICORN_BIND=0.0.0.0:8000
 
-# WSGI application path
-# Usually don't need to change this
-GUNICORN_WSGI=laboralsalud.wsgi:application
-
-# ============================================
-# APPLICATION FLAGS
-# ============================================
+# Application Flags
 COLLECT_STATIC=false
-RUN_MIGRATIONS=false
 PYTHONUNBUFFERED=1
