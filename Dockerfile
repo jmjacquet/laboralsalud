@@ -5,11 +5,18 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 WORKDIR /app
 
+# Fix Debian Buster repositories (moved to archive after EOL)
+RUN echo "deb http://archive.debian.org/debian buster main" > /etc/apt/sources.list && \
+    echo "deb http://archive.debian.org/debian-security buster/updates main" >> /etc/apt/sources.list && \
+    echo "Acquire::Check-Valid-Until false;" > /etc/apt/apt.conf.d/99no-check-valid-until
+
 # Install system dependencies
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
     gcc \
-    default-libmysqlclient-dev \
+    libffi-dev \
+    libssl-dev \
+    libmariadb-dev \
     pkg-config \
     curl \
     netcat-openbsd \
@@ -34,6 +41,4 @@ RUN chmod +x /app/docker-entrypoint.sh
 EXPOSE 8000
 
 ENTRYPOINT ["/app/docker-entrypoint.sh"]
-# No CMD - entrypoint will build the command from env vars
-# Or you can keep a default CMD that will be overridden
 CMD []
