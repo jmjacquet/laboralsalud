@@ -28,7 +28,7 @@ services:
     ports:
       - "8000:8000"
     networks:
-      - app_network
+      - default
 
 volumes:
   laboral_static:
@@ -38,7 +38,7 @@ volumes:
   laboral_logs:
     driver: local
 
+# Use default network or remove network section entirely
 networks:
-  app_network:
-    external: true
-    name: app_network
+  default:
+    external: false
