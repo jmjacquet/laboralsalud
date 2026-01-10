@@ -41,4 +41,4 @@ volumes:
 networks:
   app_network:
     external: true
-    name: production_apps_network
+    name: app_network
