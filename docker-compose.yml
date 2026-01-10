@@ -28,7 +28,7 @@ services:
     ports:
       - "8000:8000"
     networks:
-      - default
+      - dokploy-network
 
 volumes:
   laboral_static:
@@ -40,5 +40,5 @@ volumes:
 
 # Use default network or remove network section entirely
 networks:
-  default:
-    external: false
+  dokploy-network:
+    external: true
