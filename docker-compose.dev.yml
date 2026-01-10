@@ -9,6 +9,24 @@ services:
     restart: unless-stopped
     environment:
       PYTHONUNBUFFERED: 1
+      ENV: ${ENV:-development}
+      DEBUG: ${DEBUG:-True}
+      GUNICORN_WSGI: ${GUNICORN_WSGI:-laboralsalud.wsgi_dev:application}
+      DB_HOST: ${DB_HOST:-mariadb_shared}
+      DB_PORT: ${DB_PORT:-3306}
+      DB_NAME: ${DB_NAME:-lbls_dev}
+      DB_USER: ${DB_USER}
+      DB_PASS: ${DB_PASS}
+      SECRET_KEY: ${SECRET_KEY}
+      SESSION_COOKIE_NAME: ${SESSION_COOKIE_NAME:-laboral_session_dev}
+      SERVER_EMAIL: ${SERVER_EMAIL}
+      DEFAULT_FROM_EMAIL: ${DEFAULT_FROM_EMAIL}
+      GUNICORN_WORKERS: ${GUNICORN_WORKERS:-2}
+      GUNICORN_THREADS: ${GUNICORN_THREADS:-1}
+      GUNICORN_TIMEOUT: ${GUNICORN_TIMEOUT:-120}
+      GUNICORN_BIND: ${GUNICORN_BIND:-0.0.0.0:8000}
+      COLLECT_STATIC: ${COLLECT_STATIC:-true}
+      RUN_MIGRATIONS: ${RUN_MIGRATIONS:-true}
     volumes:
       - laboral_dev_static:/app/static
       - laboral_dev_media:/app/media
