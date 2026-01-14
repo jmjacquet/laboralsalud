@@ -230,9 +230,8 @@ def inicioMes():
     hoy = date(hoy.year, hoy.month, 1)
     return hoy
 
-def inicioAnio():
-    hoy = date.today()
-    return date(hoy.year, 1, 1)
+def inicioAnio(fhasta):
+    return date(fhasta.year, 1, 1)
 
 def inicio_de_los_tiempos():
     return date(1900, 1, 1)

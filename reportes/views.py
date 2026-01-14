@@ -899,8 +899,8 @@ def get_queryset_date_filters(fdesde, fhasta):
 
 
 def dias_ausentes_anio_en_curso(ausentismos, fhasta):
-    finicio_anio = inicioAnio()
-
+    finicio_anio = inicioAnio(fhasta)
+    print("finicio_anio {}".format(finicio_anio))
     empl_dias_totales = []
     fechas_aus_empleados = ausentismos.filter(get_queryset_date_filters(finicio_anio, fhasta)).values(empl_id=F('empleado_id'), empl_nombre=F('empleado__apellido_y_nombre'), fdesde=F('aus_fcrondesde'), fhasta=F('aus_fcronhasta'))
     empleados_ids = set((a["empl_id"], a["empl_nombre"]) for a in fechas_aus_empleados)
