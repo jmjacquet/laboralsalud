@@ -3,7 +3,7 @@
   <component name="Black">
     <option name="sdkName" value="Python 2.7 (laboralsalud)" />
   </component>
-  <component name="ProjectRootManager" version="2" project-jdk-name="Python 2.7 (laboralsalud)" project-jdk-type="Python SDK" />
+  <component name="ProjectRootManager" version="2" project-jdk-name="Poetry (content_catalog_service_api)" project-jdk-type="Python SDK" />
   <component name="PythonCompatibilityInspectionAdvertiser">
     <option name="version" value="3" />
   </component>

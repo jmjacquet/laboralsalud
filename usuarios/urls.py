@@ -1,11 +1,9 @@
-from django.conf.urls import *
 from django.conf import settings
-import os
-from .views import *
-from django.views.generic import RedirectView,TemplateView
+from django.conf.urls import *
+from django.views.generic import RedirectView, TemplateView
 
-# Uncomment the next two lines to enable the admin:
-
+from usuarios.utilidades import password, unpassword
+from usuarios.views import *
 
 urlpatterns = [
 	

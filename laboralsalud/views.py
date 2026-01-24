@@ -1,20 +1,18 @@
 # -*- coding: utf-8 -*-
-from django.contrib.auth import login as django_login, authenticate, logout as django_logout
-from django.shortcuts import *
-from settings import *
-from django.core.urlresolvers import reverse
 from django.contrib import messages
-from entidades.models import ent_empresa
-from usuarios.models import UserProfile
+from django.contrib.auth import login as django_login, authenticate, logout as django_logout
+from django.core.urlresolvers import reverse
 from django.db.models import Q
+from django.shortcuts import *
 from django.template.defaulttags import register
-from .utilidades import usuario_actual
+
 from general.forms import LoginForm
+from settings import *
+
 LOGIN_URL = '/login/'
 ROOT_URL = '/'
 
 def login(request):
-    from usuarios.views import ver_permisos
     error = None
     ROOT_URL='/'
     request.session.clear()
@@ -35,8 +33,6 @@ def login(request):
             django_login(request, user)            
             if empresa:
               request.session["empresa"] = empresa.pk                     
-              # request.session["permisos"] = list(ver_permisos(request))
-              # request.session["permisos"] = list(ver_permisos(request))
 
             ROOT_URL = reverse('principal')              
             return HttpResponseRedirect(ROOT_URL)

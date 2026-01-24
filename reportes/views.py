@@ -30,7 +30,7 @@ from laboralsalud.utilidades import (
     DecimalEncoder,
     MESES, inicioAnio, inicio_de_los_tiempos,
 )
-from usuarios.views import tiene_permiso
+from usuarios.utilidades import tiene_permiso
 from .forms import ConsultaPeriodo, ConsultaAnual
 
 

@@ -34,7 +34,7 @@ from laboralsalud.utilidades import (
     default,
 )
 from modal.views import AjaxCreateView, AjaxUpdateView
-from usuarios.views import tiene_permiso
+from usuarios.utilidades import tiene_permiso
 
 
 ############ ART ############################

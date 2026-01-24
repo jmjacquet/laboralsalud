@@ -3,7 +3,7 @@ from django.conf import settings
 from .models import *
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import make_password,check_password
-from .views import tiene_empresa
+from usuarios.utilidades import tiene_empresa
 
 
 class UsuarioBackend(object):

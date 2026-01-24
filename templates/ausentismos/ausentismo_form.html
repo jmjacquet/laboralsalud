@@ -170,20 +170,22 @@
 						<a href="#tab_controles" data-toggle="tab" aria-expanded="true">CONTROLES REALIZADOS</a>
 					</li>
                     <li>
-						<a href="#tab_obs" data-toggle="tab">RESUMEN MÉDICO</a>
+						<a href="#tab_res_med" data-toggle="tab">RESUMEN MÉDICO</a>
 					</li>
-					<li>
+					{% if info_medicos %}
+                    <li>
 						<a href="#tab_resumen" data-toggle="tab">RRHH</a>
 					</li>
                     <li>
 						<a href="#tab_otros" data-toggle="tab">OTRAS OBSERVACIONES</a>
 					</li>
+                    {% endif %}
 				</ul>
 				<div class="tab-content">
 					<div class="tab-pane active" id="tab_controles">
                         {% include "ausentismos/ausentismo_tab_controles.html"  %}
 					</div>
-                    <div class="tab-pane" id="tab_obs">
+                    <div class="tab-pane" id="tab_res_med">
 						<fieldset>
 							<div class="row cerca">
 								<div class="col-sm-12">

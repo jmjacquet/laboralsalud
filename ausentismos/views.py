@@ -1,24 +1,33 @@
 # -*- coding: utf8 -*-
 from __future__ import unicode_literals
-import io
-import csv
-from __builtin__ import unicode
 
-from easy_pdf.rendering import render_to_pdf_response, render_to_pdf
-from django.template.loader import get_template
-from django.core.mail.backends.smtp import EmailBackend
-from django.core.mail import send_mail, EmailMessage
-import random
+import csv
 import datetime
-from general.views import getVariablesMixin, recargar_empresas_agrupamiento
-from .forms import (
-    ImportarAusentismosForm,
-    InformeAusenciasForm,
-    ImprimirInformeAusenciasForm,
+import io
+import logging
+
+from __builtin__ import unicode
+from django.conf import settings
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.core.mail import send_mail, EmailMessage
+from django.core.mail.backends.smtp import EmailBackend
+from django.db import transaction
+from django.db.models import Q, Sum, Count, FloatField, Func
+from django.forms.models import (
+    inlineformset_factory,
+    BaseInlineFormSet,
+    formset_factory,
 )
+from django.http import FileResponse
+from django.shortcuts import *
 from django.shortcuts import render
 from django.template import RequestContext, Context
-from django.shortcuts import *
+from django.template.loader import get_template
+from django.utils.decorators import method_decorator
+from django.utils.decorators import method_decorator
+from django.utils.functional import curry
+from django.views.decorators.csrf import csrf_protect
 from django.views.generic import (
     TemplateView,
     ListView,
@@ -27,29 +36,14 @@ from django.views.generic import (
     FormView,
     DetailView,
 )
-from django.conf import settings
-from django.utils.decorators import method_decorator
-from django.contrib import messages
-from laboralsalud.utilidades import ultimoNroId, usuario_actual
-from django.contrib.auth.decorators import login_required
-from django.utils.decorators import method_decorator
-from modal.views import AjaxCreateView, AjaxUpdateView, AjaxDeleteView
-from django.db.models import Q, Sum, Count, FloatField, Func
-from django.forms.models import (
-    inlineformset_factory,
-    BaseInlineFormSet,
-    formset_factory,
-)
-from django.utils.functional import curry
-from django.http import FileResponse
-from django.db import transaction
-from django.views.decorators.csrf import csrf_protect
+from easy_pdf.rendering import render_to_pdf_response, render_to_pdf
 
-
-from .models import *
 from entidades.models import ent_empleado
+from general.models import configuracion
 from general.views import VariablesMixin
-from usuarios.views import tiene_permiso
+from general.views import getVariablesMixin, recargar_empresas_agrupamiento
+from modal.views import AjaxCreateView, AjaxUpdateView
+from usuarios.utilidades import tiene_permiso
 from .forms import (
     AusentismoForm,
     PatologiaForm,
@@ -59,10 +53,12 @@ from .forms import (
     PatologiaDetalleForm,
     SeguimControlForm,
 )
-from general.models import configuracion
-
-
-import logging
+from .forms import (
+    ImportarAusentismosForm,
+    InformeAusenciasForm,
+    ImprimirInformeAusenciasForm,
+)
+from .models import *
 
 logger = logging.getLogger(__name__)
 ############ AUSENTISMOS ############################

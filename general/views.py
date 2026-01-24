@@ -38,6 +38,7 @@ from laboralsalud.utilidades import (
     ultimoMes,
 )
 from modal.views import AjaxCreateView, AjaxUpdateView
+from usuarios.utilidades import ver_permisos
 from .forms import (
     TurnosForm,
     ConsultaTurnos,
@@ -50,66 +51,14 @@ from .models import turnos, configuracion
 
 class VariablesMixin(object):
     def get_context_data(self, **kwargs):
-        from usuarios.views import ver_permisos
-
         context = super(VariablesMixin, self).get_context_data(**kwargs)
-        usr = self.request.user
-        try:
-            context["usuario"] = usuario_actual(self.request)
-        except:
-            context["usuario"] = None
-        try:
-            context["usr"] = usr
-        except:
-            context["usr"] = None
-        try:
-            context["empresa"] = empresa_actual(self.request)
-        except:
-            context["empresa"] = None
-        try:
-            context["esAdmin"] = self.request.user.userprofile.id_usuario.tipoUsr == 0
-        except:
-            context["esAdmin"] = False
-
-        permisos_grupo = ver_permisos(self.request)
-        context["permisos_grupo"] = permisos_grupo
-        context["permisos_empelados"] = (
-            ("aus_pantalla" in permisos_grupo)
-            or ("empl_pantalla" in permisos_grupo)
-            or ("turnos_pantalla" in permisos_grupo)
-        )
-        context["permisos_indicadores"] = ("indic_pantalla" in permisos_grupo) or (
-            "indic_anual_pantalla" in permisos_grupo
-        )
-        context["permisos_configuracion"] = (
-            ("art_pantalla" in permisos_grupo)
-            or ("emp_pantalla" in permisos_grupo)
-            or ("med_pantalla" in permisos_grupo)
-            or ("pat_pantalla" in permisos_grupo)
-            or ("diag_pantalla" in permisos_grupo)
-            or ("ptrab_pantalla" in permisos_grupo)
-            or ("esp_pantalla" in permisos_grupo)
-        )
-
-        context["inicio_ausentismos"] = ("inicio_ausentismos" in permisos_grupo) or (
-            "inicio_controles" in permisos_grupo
-        )
-        context["inicio_turnos"] = "inicio_turnos" in permisos_grupo
-        context["info_sensible"] = (
-            "info_sensible" in permisos_grupo
-            or self.request.user.userprofile.id_usuario.tipoUsr == 0
-        )
-        context["empresas"] = ent_empresa.objects.filter(baja=False)
-        context["sitio_mobile"] = mobile(self.request)
-        context["hoy"] = hoy()
-        # context['EMAIL_CONTACTO'] = EMAIL_CONTACTO
-        return context
+        new_context = getVariablesMixin(request=self.request, old_context=context)
+        return new_context
 
 
-def getVariablesMixin(request):
-    from usuarios.views import ver_permisos
+def getVariablesMixin(request, old_context = None):
 
-    context = dict({})
+    context = dict({}) if not old_context else old_context
     usr = request.user
     try:
         context["usuario"] = usuario_actual(request)
@@ -158,6 +107,10 @@ def getVariablesMixin(request):
     context["info_sensible"] = (
         "info_sensible" in permisos_grupo
         or request.user.userprofile.id_usuario.tipoUsr == 0
+    )
+    context["info_medicos"] = (
+            "info_medicos" in permisos_grupo
+            or request.user.userprofile.id_usuario.tipoUsr <= 1
     )
     context["empresas"] = ent_empresa.objects.filter(baja=False)
     context["sitio_mobile"] = mobile(request)
@@ -345,7 +298,7 @@ def recargar_patologias(request):
 
 
 ############ TURNOS ############################
-from usuarios.views import tiene_permiso
+from usuarios.utilidades import tiene_permiso
 
 
 class TurnosView(VariablesMixin, ListView):

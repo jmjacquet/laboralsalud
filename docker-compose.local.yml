@@ -11,33 +11,47 @@ services:
       PYTHONUNBUFFERED: 1
       ENV: ${ENV:-local}
       DEBUG: ${DEBUG:-True}
-      GUNICORN_WSGI: ${GUNICORN_WSGI:-laboralsalud.wsgi_local:application}
       DB_HOST: ${DB_HOST:-mariadb_shared}
       DB_PORT: ${DB_PORT:-3306}
       DB_NAME: ${DB_NAME:-lbls_local}
-      DB_USER: ${DB_USER}
-      DB_PASS: ${DB_PASS}
-      SECRET_KEY: ${SECRET_KEY}
+      DB_USER: ${DB_USER:-root}
+      DB_PASS: ${DB_PASS:-piranha}
+      SECRET_KEY: ${SECRET_KEY:-dev-secret-key-change-in-production}
       SESSION_COOKIE_NAME: ${SESSION_COOKIE_NAME:-laboral_session_local}
       SERVER_EMAIL: ${SERVER_EMAIL}
       DEFAULT_FROM_EMAIL: ${DEFAULT_FROM_EMAIL}
-      GUNICORN_WORKERS: ${GUNICORN_WORKERS:-2}
-      GUNICORN_THREADS: ${GUNICORN_THREADS:-1}
-      GUNICORN_TIMEOUT: ${GUNICORN_TIMEOUT:-120}
-      GUNICORN_BIND: ${GUNICORN_BIND:-0.0.0.0:8000}
-      COLLECT_STATIC: ${COLLECT_STATIC:-true}
-      RUN_MIGRATIONS: ${RUN_MIGRATIONS:-true}
     volumes:
-      - laboral_local_static:/app/static
+      # Mount source code for real-time changes
+      - .:/app
+      # Keep these as named volumes to persist data
+      - laboral_local_static:/app/staticfiles
       - laboral_local_media:/app/media
       - laboral_local_logs:/app/logs
     ports:
       - "8000:8000"
     networks:
       - dokploy-network
-    labels:
-      - traefik.docker.network=dokploy-network
-      - traefik.enable=true
+    # Override entrypoint to use bash and then run Django dev server
+    entrypoint: ["/bin/bash", "-c"]
+    command:
+      - |
+        set -e
+        echo "Starting LaboralSalud development server..."
+        echo "Waiting for database at mariadb_shared:3306..."
+        for i in {1..30}; do
+          if nc -z mariadb_shared 3306; then
+            echo "Database is ready!"
+            break
+          fi
+          echo "Attempt $i/30: Database not ready, waiting..."
+          sleep 2
+        done        
+        echo "Collecting static files..."
+        python manage.py collectstatic --noinput || echo "Collectstatic failed, continuing..."
+        echo "Starting Django development server..."
+        exec python manage.py runserver 0.0.0.0:8000
+    depends_on:
+      - mariadb
 
   mariadb:
     image: mariadb:11
@@ -53,7 +67,6 @@ services:
       - "3306:3306"
     networks:
       - dokploy-network
-
 
   adminer:
     image: adminer

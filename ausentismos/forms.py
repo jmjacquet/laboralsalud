@@ -5,7 +5,7 @@ from django.forms.widgets import TextInput, NumberInput, Select
 from entidades.models import ent_empleado, ent_medico_prof, ent_empresa_agrupamiento, ent_empresa, ent_art
 from .models import *
 from laboralsalud.utilidades import *
-from usuarios.views import tiene_permiso
+from usuarios.utilidades import tiene_permiso
 
 
 class MedicoModelChoiceField(forms.ModelChoiceField):
