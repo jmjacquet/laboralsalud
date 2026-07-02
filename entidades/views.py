@@ -703,7 +703,7 @@ class EmpleadoEditView(VariablesMixin, AjaxUpdateView):
         return initial
 
 
-class EmpleadoVerView(VariablesMixin, DetailView):
+class EmpleadoVerView(DetailView):
     model = ent_empleado
     pk_url_kwarg = "id"
     context_object_name = "empleados"
