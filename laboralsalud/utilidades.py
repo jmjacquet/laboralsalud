@@ -86,6 +86,12 @@ TIPO_VIGENCIA = (
     (2, "NO VIGENTES"),
 )
 
+TIPO_AUDITADO = (
+    (0, "TODOS"),
+    (1, "AUDITADOS"),
+    (2, "NO AUDITADOS"),
+)
+
 ESTADO_TURNO = (
     (0, "PENDIENTE"),
     (1, "ATENDIDO"),

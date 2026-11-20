@@ -26,5 +26,6 @@ urlpatterns = [
     url(r"^imprimir_informe/$", imprimir_informe, name="imprimir_informe"),
     url(r"^imprimir_ausentismo/(?P<id>\d+)/$", imprimir_ausentismo, name="imprimir_ausentismo"),
     url(r"^imprimir_historial/(?P<id>\d+)/$", imprimir_historial, name="imprimir_historial"),
+    url(r"^marcar_auditado/$", ausentismo_marcar_auditado, name="ausentismo_marcar_auditado"),
     url(r"^ausentismo_eliminar_masivo/$", ausentismo_eliminar_masivo, name="ausentismo_eliminar_masivo"),
 ]

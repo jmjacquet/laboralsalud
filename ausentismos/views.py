@@ -19,7 +19,7 @@ from django.forms.models import (
     BaseInlineFormSet,
     formset_factory,
 )
-from django.http import FileResponse
+from django.http import FileResponse, JsonResponse
 from django.shortcuts import *
 from django.shortcuts import render
 from django.template import RequestContext, Context
@@ -27,7 +27,9 @@ from django.template.loader import get_template
 from django.utils.decorators import method_decorator
 from django.utils.decorators import method_decorator
 from django.utils.functional import curry
+from django.utils import timezone
 from django.views.decorators.csrf import csrf_protect
+from django.views.decorators.http import require_POST
 from django.views.generic import (
     TemplateView,
     ListView,
@@ -61,6 +63,16 @@ from .forms import (
 from .models import *
 
 logger = logging.getLogger(__name__)
+
+
+def inicio_del_dia(fecha, dias=0):
+    """Datetime aware de las 00:00 de `fecha` (+ `dias`)."""
+    from datetime import datetime as _datetime, time as _time, timedelta as _timedelta
+
+    return timezone.make_aware(
+        _datetime.combine(fecha + _timedelta(days=dias), _time.min)
+    )
+
 ############ AUSENTISMOS ############################
 
 
@@ -170,6 +182,36 @@ class AusentismoView(VariablesMixin, ListView):
                 )
             if art:
                 ausentismos = ausentismos.filter(empleado__art=art)
+
+            auditado = int(form.cleaned_data.get("auditado") or 0)
+            faudit_desde = form.cleaned_data.get("faudit_desde")
+            faudit_hasta = form.cleaned_data.get("faudit_hasta")
+            if auditado == 1:
+                # Auditados: el rango aplica a la fecha/hora de auditoría.
+                ausentismos = ausentismos.filter(auditado=True)
+                if faudit_desde:
+                    ausentismos = ausentismos.filter(
+                        fecha_auditado__gte=inicio_del_dia(faudit_desde)
+                    )
+                if faudit_hasta:
+                    ausentismos = ausentismos.filter(
+                        fecha_auditado__lt=inicio_del_dia(faudit_hasta, dias=1)
+                    )
+            elif auditado == 2:
+                # No auditados: el rango aplica a la fecha de la evolución
+                # (fecha de carga o fecha de algún control).
+                ausentismos = ausentismos.filter(auditado=False)
+                if faudit_desde or faudit_hasta:
+                    f1 = faudit_desde or ultimo_anio()
+                    f2 = faudit_hasta or fin_de_los_tiempos()
+                    ausentismos = ausentismos.filter(
+                        Q(fecha_creacion__range=[f1, f2])
+                        | Q(
+                            id__in=ausentismo_controles.objects.filter(
+                                fecha__range=[f1, f2]
+                            ).values_list("ausentismo_id", flat=True)
+                        )
+                    )
             self.request.session["ausentismos"] = self.request.POST or busq
         else:
             ausentismos = ausentismo.ausentismos_activos.filter(
@@ -479,6 +521,21 @@ def ausentismo_eliminar(request, id):
 
 
 @login_required
+@require_POST
+def ausentismo_marcar_auditado(request):
+    if not tiene_permiso(request, "aus_abm"):
+        return JsonResponse({"ok": False, "message": "Sin permisos."}, status=403)
+    ids = [int(i) for i in request.POST.getlist("id") if i.isdigit()]
+    cant = ausentismo.objects.filter(
+        id__in=ids, empresa__pk__in=empresas_habilitadas(request), auditado=False
+    ).update(
+        auditado=True,
+        fecha_auditado=timezone.now(),
+        auditado_por=usuario_actual(request).usuario,
+    )
+    return JsonResponse({"ok": True, "cant": cant})
+
+
 def ausentismo_eliminar_masivo(request):
     if not tiene_permiso(request, "aus_abm"):
         return redirect(reverse("principal"))

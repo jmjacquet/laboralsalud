@@ -148,6 +148,11 @@ class ausentismo(models.Model):
         related_name="aus_usuario_carga",
         on_delete=models.SET_NULL,
     )
+    # Auditoría médica: se marca desde el listado (queryset.update, sin save())
+    # y se limpia ante cualquier modificación del ausentismo/control.
+    auditado = models.BooleanField("Auditado", default=False)
+    fecha_auditado = models.DateTimeField("F.Auditado", blank=True, null=True)
+    auditado_por = models.CharField("Auditado por", max_length=100, blank=True, null=True)
 
     objects = models.Manager()
     ausentismos_activos = AusentismosActivos()
@@ -157,6 +162,13 @@ class ausentismo(models.Model):
 
     def __unicode__(self):
         return "%s - %s (%s)" % (self.pk, self.empleado, self.get_fechas)
+
+    def save(self, *args, **kwargs):
+        # Toda actualización del ausentismo invalida la auditoría previa.
+        self.auditado = False
+        self.fecha_auditado = None
+        self.auditado_por = None
+        super(ausentismo, self).save(*args, **kwargs)
 
     @property
     def get_dias_caidos(self):
@@ -271,6 +283,16 @@ def ausentismos_del_dia(request, fecha):
         Q(fecha_creacion=fecha) | (Q(id__in=controles))
     )
     return ausentismos
+
+
+@receiver(post_save, sender=ausentismo_controles, dispatch_uid="desauditar_por_control_guardado")
+@receiver(post_delete, sender=ausentismo_controles, dispatch_uid="desauditar_por_control_eliminado")
+def desauditar_ausentismo_por_control(sender, instance, **kwargs):
+    # Alta/modificación/baja de un control: el ausentismo vuelve a "no auditado".
+    if instance.ausentismo_id:
+        ausentismo.objects.filter(pk=instance.ausentismo_id, auditado=True).update(
+            auditado=False, fecha_auditado=None, auditado_por=None
+        )
 
 
 @receiver(post_save, sender=ausentismo, dispatch_uid="eliminar_controles_vacios")

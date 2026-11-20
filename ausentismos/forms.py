@@ -196,7 +196,7 @@ class AusentismoForm(forms.ModelForm):
 
     class Meta:
         model = ausentismo
-        exclude = ["id", "fecha_creacion", "fecha_modif", "usuario_carga", "aus_certificado", "aus_control", "tareas_diferentes"]
+        exclude = ["id", "fecha_creacion", "fecha_modif", "usuario_carga", "aus_certificado", "aus_control", "tareas_diferentes", "auditado", "fecha_auditado", "auditado_por"]
 
     def __init__(self, *args, **kwargs):
         request = kwargs.pop("request", None)
@@ -446,6 +446,23 @@ class ConsultaAusentismos(forms.Form):
         label="Agrupamiento/Gerencia",
         queryset=ent_empresa_agrupamiento.objects.filter(baja=False),
         initial=0,
+        required=False,
+    )
+    auditado = forms.ChoiceField(
+        label="Auditoría", choices=TIPO_AUDITADO, required=False, initial=0
+    )
+    faudit_desde = forms.DateField(
+        label="Auditoría Desde",
+        widget=forms.DateInput(
+            attrs={"class": "form-control datepicker", "autocomplete": "off"}
+        ),
+        required=False,
+    )
+    faudit_hasta = forms.DateField(
+        label="Auditoría Hasta",
+        widget=forms.DateInput(
+            attrs={"class": "form-control datepicker", "autocomplete": "off"}
+        ),
         required=False,
     )
 

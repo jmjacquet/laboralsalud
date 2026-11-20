@@ -40,6 +40,9 @@
                 <div class="col-sm-2">{% bootstrap_field form.aus_diagn  %}</div>
                 <div class="col-sm-2">{% bootstrap_field form.agrupamiento  %}</div>
                 <div class="col-sm-2">{% bootstrap_field form.art  %}</div>
+                <div class="col-sm-2">{% bootstrap_field form.auditado  %}</div>
+                <div class="col-sm-2">{% bootstrap_field form.faudit_desde  %}</div>
+                <div class="col-sm-2">{% bootstrap_field form.faudit_hasta  %}</div>
                 <div class="col-sm-1"><button class="btn btn-xs text-center" type="submit">Buscar</button></div>
               </div>
             </div>
@@ -55,7 +58,8 @@
       <button class="btn btn-xs btn-danger" value="" style="float:left;margin-right:10px;;margin-bottom:5px;" id="btnEliminar">Eliminar</button>
       
       <button class="btn btn-xs btn-primary" id="btnImprimirInforme" style="float:left;margin-right:10px;;margin-bottom:5px;" >Generar Informe</button>
-      <button class="btn btn-xs btn-primary" id="btnInforme" style="float:left;margin-bottom:5px;" > Enviar Informe</button>
+      <button class="btn btn-xs btn-primary" id="btnInforme" style="float:left;margin-right:10px;margin-bottom:5px;" > Enviar Informe</button>
+      <button class="btn btn-xs btn-success" id="btnAuditado" style="float:left;margin-bottom:5px;" >Marcar Auditado</button>
     </div>
   {% endif %}
   
@@ -64,6 +68,7 @@
       <tr>
         <th class="no-sort text-center" data-priority="1">#</th>
         <th class="no-sort text-center" data-priority="2"><input type="checkbox" id="checkall" title="Seleccionar Todas"/></th>
+        <th class="text-center" data-priority="2">Auditado</th>
         <th class="imprimir" data-priority="2">F.Cron.Desde</th>
         <th class="imprimir" data-priority="3">F.Cron.Hasta</th>
         <th class="imprimir" width"5%" data-priority="4">DíasCaídos</th>
@@ -80,6 +85,8 @@
         <th class="imprimir" data-priority="6">Tipo Acc./Enf.</th>
         <th class="imprimir" data-priority="16">Corta Certif.</th>
         <th class="imprimir" data-priority="6">Legajo</th>
+        <th data-priority="20">F.Auditado</th>
+        <th data-priority="20">Auditado por</th>
       </tr>
     </thead>
     <tbody>
@@ -118,6 +125,7 @@
           <input type="checkbox" class="tildado" id="chk_{{forloop.counter0}}" value="{{ a.pk|safe }}" aria-label="chk_{{forloop.counter0}}">
           {% if a.observaciones %}  <i title="{{a.observaciones}}" class="icon-speech icono_seguimiento"></i> {% endif %}
         </td>
+        <td class="text-center" data-order="{% if a.auditado %}1{% else %}0{% endif %}">{% if a.auditado %}<i class="fa fa-check text-success" title="Auditado"></i>{% endif %}</td>
         <td>{{ a.get_fcrondesde|date:'d/m/Y' }}</td>
         <td>{{ a.get_fcronhasta|date:'d/m/Y' }}</td>
         <td>{{ a.get_dias_caidos|default_if_none:'' }}</td>
@@ -134,11 +142,16 @@
         <td >{{ a.get_art_tipo_accidente_display|default_if_none:'' }}</td>
         <td >{{ a.aus_corta_certificado|default_if_none:''|upper }}</td>
         <td>{{ a.empleado.legajo|default_if_none:'' }}</td>
+        <td data-order="{{ a.fecha_auditado|date:'YmdHi' }}">{{ a.fecha_auditado|date:'d/m/Y H:i' }}</td>
+        <td>{{ a.auditado_por|default_if_none:'' }}</td>
       </tr>
     {% endfor %}
     </tbody>
     <tfoot>
     <tr>
+      <th></th>
+      <th></th>
+      <th></th>
       <th></th>
       <th></th>
       <th></th>
