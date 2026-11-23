@@ -68,6 +68,10 @@ var tabla = $('#ausentismos').DataTable({
          "columnDefs": [ {
                   "targets"  : 'no-sort',
                   "orderable": false,
+                },
+                {
+                  "targets"  : [-2, -1],
+                  "visible": false,
                 }],          
            "paging":   true,
            "lengthMenu": [[20, 50, -1], [20, 50, "Todos"]],
@@ -161,7 +165,7 @@ var tabla = $('#ausentismos').DataTable({
             },
             initComplete: function () {
                // this.api().columns().every( function () {[0, 1, 9]
-                this.api().columns([8,9,10,11]).every( function () {
+                this.api().columns([9,10,11,12]).every( function () {
                     var column = this;
                     var select = $('<select class="form-control"><option value="">Todos</option></select>')
                         .appendTo( $(column.footer()).empty() )
@@ -214,8 +218,8 @@ var tabla = $('#ausentismos').DataTable({
             };
                         
             
-            pageTotal = api.column(4, { page: 'current'} ).data().reduce( function (a, b) {return parseFloat(a) + parseFloat(b);}, 0 );            
-            $( api.column(4).footer() ).html(pageTotal.toLocaleString(undefined,{minimumFractionDigits:0}));
+            pageTotal = api.column(5, { page: 'current'} ).data().reduce( function (a, b) {return parseFloat(a) + parseFloat(b);}, 0 );            
+            $( api.column(5).footer() ).html(pageTotal.toLocaleString(undefined,{minimumFractionDigits:0}));
           
         }
         });
@@ -303,6 +307,29 @@ $('#btnInforme').click(function(){
            return abrir_modal('/ausentismos/generar_informe/?'+$('#btnInforme').val()); 
         }
          
+});
+
+$('#btnAuditado').click(function(){
+     if (listado.length == 0) {
+            alertify.errorAlert("¡Debe seleccionar algún Ausentismo!");
+     } else {
+            $.ajax({
+                url: "/ausentismos/marcar_auditado/",
+                type: "post",
+                dataType: "json",
+                traditional: true,
+                data: {
+                    id: listado,
+                    csrfmiddlewaretoken: $("input[name='csrfmiddlewaretoken']").first().val()
+                },
+                success: function(data) {
+                    window.location.href = window.location.href;
+                },
+                error: function() {
+                    alertify.errorAlert("¡No se pudo marcar como Auditado!");
+                }
+            });
+     }
 });
 
 $('#btnImprimirInforme').click(function(){   

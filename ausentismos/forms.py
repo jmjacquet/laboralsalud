@@ -451,20 +451,6 @@ class ConsultaAusentismos(forms.Form):
     auditado = forms.ChoiceField(
         label="Auditoría", choices=TIPO_AUDITADO, required=False, initial=0
     )
-    faudit_desde = forms.DateField(
-        label="Auditoría Desde",
-        widget=forms.DateInput(
-            attrs={"class": "form-control datepicker", "autocomplete": "off"}
-        ),
-        required=False,
-    )
-    faudit_hasta = forms.DateField(
-        label="Auditoría Hasta",
-        widget=forms.DateInput(
-            attrs={"class": "form-control datepicker", "autocomplete": "off"}
-        ),
-        required=False,
-    )
 
     def __init__(self, *args, **kwargs):
         empresas = kwargs.pop("empresas", [])

@@ -64,15 +64,6 @@ from .models import *
 
 logger = logging.getLogger(__name__)
 
-
-def inicio_del_dia(fecha, dias=0):
-    """Datetime aware de las 00:00 de `fecha` (+ `dias`)."""
-    from datetime import datetime as _datetime, time as _time, timedelta as _timedelta
-
-    return timezone.make_aware(
-        _datetime.combine(fecha + _timedelta(days=dias), _time.min)
-    )
-
 ############ AUSENTISMOS ############################
 
 
@@ -184,34 +175,10 @@ class AusentismoView(VariablesMixin, ListView):
                 ausentismos = ausentismos.filter(empleado__art=art)
 
             auditado = int(form.cleaned_data.get("auditado") or 0)
-            faudit_desde = form.cleaned_data.get("faudit_desde")
-            faudit_hasta = form.cleaned_data.get("faudit_hasta")
             if auditado == 1:
-                # Auditados: el rango aplica a la fecha/hora de auditoría.
                 ausentismos = ausentismos.filter(auditado=True)
-                if faudit_desde:
-                    ausentismos = ausentismos.filter(
-                        fecha_auditado__gte=inicio_del_dia(faudit_desde)
-                    )
-                if faudit_hasta:
-                    ausentismos = ausentismos.filter(
-                        fecha_auditado__lt=inicio_del_dia(faudit_hasta, dias=1)
-                    )
             elif auditado == 2:
-                # No auditados: el rango aplica a la fecha de la evolución
-                # (fecha de carga o fecha de algún control).
                 ausentismos = ausentismos.filter(auditado=False)
-                if faudit_desde or faudit_hasta:
-                    f1 = faudit_desde or ultimo_anio()
-                    f2 = faudit_hasta or fin_de_los_tiempos()
-                    ausentismos = ausentismos.filter(
-                        Q(fecha_creacion__range=[f1, f2])
-                        | Q(
-                            id__in=ausentismo_controles.objects.filter(
-                                fecha__range=[f1, f2]
-                            ).values_list("ausentismo_id", flat=True)
-                        )
-                    )
             self.request.session["ausentismos"] = self.request.POST or busq
         else:
             ausentismos = ausentismo.ausentismos_activos.filter(
@@ -526,14 +493,25 @@ def ausentismo_marcar_auditado(request):
     if not tiene_permiso(request, "aus_abm"):
         return JsonResponse({"ok": False, "message": "Sin permisos."}, status=403)
     ids = [int(i) for i in request.POST.getlist("id") if i.isdigit()]
-    cant = ausentismo.objects.filter(
-        id__in=ids, empresa__pk__in=empresas_habilitadas(request), auditado=False
-    ).update(
+    seleccion = ausentismo.objects.filter(
+        id__in=ids, empresa__pk__in=empresas_habilitadas(request)
+    )
+    # Se parten antes de actualizar: si no, el segundo update pisa al primero.
+    ids_pendientes = list(
+        seleccion.filter(auditado=False).values_list("id", flat=True)
+    )
+    ids_auditados = list(
+        seleccion.filter(auditado=True).values_list("id", flat=True)
+    )
+    marcados = ausentismo.objects.filter(id__in=ids_pendientes).update(
         auditado=True,
         fecha_auditado=timezone.now(),
         auditado_por=usuario_actual(request).usuario,
     )
-    return JsonResponse({"ok": True, "cant": cant})
+    desmarcados = ausentismo.objects.filter(id__in=ids_auditados).update(
+        auditado=False, fecha_auditado=None, auditado_por=None
+    )
+    return JsonResponse({"ok": True, "marcados": marcados, "desmarcados": desmarcados})
 
 
 def ausentismo_eliminar_masivo(request):

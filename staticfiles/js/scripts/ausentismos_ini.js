@@ -70,6 +70,10 @@ var tabla = $('#ausentismos').DataTable({
          "columnDefs": [ {
                   "targets"  : 'no-sort',
                   "orderable": false,
+                },
+                {
+                  "targets"  : [-2, -1],
+                  "visible": false,
                 }],
            "paging":   true,
            "lengthMenu": [[25, 50, -1], [25, 50, "Todos"]],
@@ -242,6 +246,29 @@ $('#btnInforme').click(function(){
            return abrir_modal('/ausentismos/generar_informe/?'+$('#btnInforme').val());
         }
 
+});
+
+$('#btnAuditado').click(function(){
+     if (listado.length == 0) {
+            alertify.errorAlert("¡Debe seleccionar algún Ausentismo!");
+     } else {
+            $.ajax({
+                url: "/ausentismos/marcar_auditado/",
+                type: "post",
+                dataType: "json",
+                traditional: true,
+                data: {
+                    id: listado,
+                    csrfmiddlewaretoken: $("input[name='csrfmiddlewaretoken']").first().val()
+                },
+                success: function(data) {
+                    window.location.href = window.location.href;
+                },
+                error: function() {
+                    alertify.errorAlert("¡No se pudo marcar como Auditado!");
+                }
+            });
+     }
 });
 
 $('#btnImprimirInforme').click(function(){
