@@ -72,7 +72,7 @@ var tabla = $('#ausentismos').DataTable({
                   "orderable": false,
                 },
                 {
-                  "targets"  : [-2, -1],
+                  "targets"  : 'audit-detalle',
                   "visible": false,
                 }],
            "paging":   true,

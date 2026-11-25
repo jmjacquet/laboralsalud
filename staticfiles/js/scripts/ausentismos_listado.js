@@ -70,14 +70,14 @@ var tabla = $('#ausentismos').DataTable({
                   "orderable": false,
                 },
                 {
-                  "targets"  : [-2, -1],
+                  "targets"  : 'audit-detalle',
                   "visible": false,
                 }],          
            "paging":   true,
            "lengthMenu": [[20, 50, -1], [20, 50, "Todos"]],
            "autoWidth": false,
            "order": [],
-           "colReorder": true,
+            "colReorder": false,
            "searching": true,
             fixedHeader: {
               header: false,
@@ -165,7 +165,7 @@ var tabla = $('#ausentismos').DataTable({
             },
             initComplete: function () {
                // this.api().columns().every( function () {[0, 1, 9]
-                this.api().columns([9,10,11,12]).every( function () {
+                 this.api().columns('.filtro-select').every( function () {
                     var column = this;
                     var select = $('<select class="form-control"><option value="">Todos</option></select>')
                         .appendTo( $(column.footer()).empty() )
@@ -218,8 +218,8 @@ var tabla = $('#ausentismos').DataTable({
             };
                         
             
-            pageTotal = api.column(5, { page: 'current'} ).data().reduce( function (a, b) {return parseFloat(a) + parseFloat(b);}, 0 );            
-            $( api.column(5).footer() ).html(pageTotal.toLocaleString(undefined,{minimumFractionDigits:0}));
+             pageTotal = api.column('.total-dias', { page: 'current'} ).data().reduce( function (a, b) {return parseFloat(a) + parseFloat(b);}, 0 );
+             $( api.column('.total-dias').footer() ).html(pageTotal.toLocaleString(undefined,{minimumFractionDigits:0}));
           
         }
         });

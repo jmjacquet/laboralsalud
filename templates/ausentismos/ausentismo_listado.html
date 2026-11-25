@@ -40,7 +40,9 @@
                 <div class="col-sm-2">{% bootstrap_field form.aus_diagn  %}</div>
                 <div class="col-sm-2">{% bootstrap_field form.agrupamiento  %}</div>
                 <div class="col-sm-2">{% bootstrap_field form.art  %}</div>
+                {% if 'aus_auditado' in permisos_grupo %}
                 <div class="col-sm-2">{% bootstrap_field form.auditado  %}</div>
+                {% endif %}
                 <div class="col-sm-1"><button class="btn btn-xs text-center" type="submit">Buscar</button></div>
               </div>
             </div>
@@ -70,25 +72,29 @@
       <tr>
         <th class="no-sort text-center" data-priority="1">#</th>
         <th class="no-sort text-center" data-priority="2"><input type="checkbox" id="checkall" title="Seleccionar Todas"/></th>
-        <th class="text-center" data-priority="2">Auditado</th>
+        {% if 'aus_auditado' in permisos_grupo %}
+        <th class="text-center audit-estado" data-priority="0">Auditado</th>
+        {% endif %}
         <th class="imprimir" data-priority="2">F.Cron.Desde</th>
         <th class="imprimir" data-priority="3">F.Cron.Hasta</th>
-        <th class="imprimir" width"5%" data-priority="4">DíasCaídos</th>
+        <th class="imprimir total-dias" width"5%" data-priority="4">DíasCaídos</th>
         <th class="imprimir" data-priority="5">Documento</th>
         <th class="imprimir" data-priority="6">Apellido y Nombre</th>
         <th class="imprimir" data-priority="7">F.Próx.Control</th>
-        <th class="imprimir" data-priority="8">Empresa</th>
-        <th class="imprimir" data-priority="9">Tipo Ausentismo</th>
-        <th class="imprimir" data-priority="11">Grupo Patologico</th>
-        <th class="imprimir" data-priority="10">Diagnóstico</th>
+        <th class="imprimir filtro-select" data-priority="8">Empresa</th>
+        <th class="imprimir filtro-select" data-priority="9">Tipo Ausentismo</th>
+        <th class="imprimir filtro-select" data-priority="11">Grupo Patologico</th>
+        <th class="imprimir filtro-select" data-priority="10">Diagnóstico</th>
         <th class="imprimir" data-priority="6">F.Modif.</th>
         <th class="imprimir" data-priority="6">F.Reintegro</th>
         <th class="imprimir" data-priority="6">F.Carga</th>
         <th class="imprimir" data-priority="6">Tipo Acc./Enf.</th>
         <th class="imprimir" data-priority="16">Corta Certif.</th>
         <th class="imprimir" data-priority="6">Legajo</th>
-        <th data-priority="20">F.Auditado</th>
-        <th data-priority="20">Auditado por</th>
+        {% if 'aus_auditado' in permisos_grupo %}
+        <th class="audit-detalle" data-priority="20">F.Auditado</th>
+        <th class="audit-detalle" data-priority="20">Auditado por</th>
+        {% endif %}
       </tr>
     </thead>
     <tbody>
@@ -127,7 +133,9 @@
           <input type="checkbox" class="tildado" id="chk_{{forloop.counter0}}" value="{{ a.pk|safe }}" aria-label="chk_{{forloop.counter0}}">
           {% if a.observaciones %}  <i title="{{a.observaciones}}" class="icon-speech icono_seguimiento"></i> {% endif %}
         </td>
+        {% if 'aus_auditado' in permisos_grupo %}
         <td class="text-center" data-order="{% if a.auditado %}1{% else %}0{% endif %}">{% if a.auditado %}<i class="fa fa-check text-success" title="Auditado"></i>{% endif %}</td>
+        {% endif %}
         <td>{{ a.get_fcrondesde|date:'d/m/Y' }}</td>
         <td>{{ a.get_fcronhasta|date:'d/m/Y' }}</td>
         <td>{{ a.get_dias_caidos|default_if_none:'' }}</td>
@@ -144,8 +152,10 @@
         <td >{{ a.get_art_tipo_accidente_display|default_if_none:'' }}</td>
         <td >{{ a.aus_corta_certificado|default_if_none:''|upper }}</td>
         <td>{{ a.empleado.legajo|default_if_none:'' }}</td>
+        {% if 'aus_auditado' in permisos_grupo %}
         <td data-order="{{ a.fecha_auditado|date:'YmdHi' }}">{{ a.fecha_auditado|date:'d/m/Y H:i' }}</td>
         <td>{{ a.auditado_por|default_if_none:'' }}</td>
+        {% endif %}
       </tr>
     {% endfor %}
     </tbody>
@@ -153,6 +163,9 @@
     <tr>
       <th></th>
       <th></th>
+      {% if 'aus_auditado' in permisos_grupo %}
+      <th></th>
+      {% endif %}
       <th></th>
       <th></th>
       <th></th>
@@ -169,9 +182,10 @@
       <th></th>
       <th></th>
       <th></th>
+      {% if 'aus_auditado' in permisos_grupo %}
       <th></th>
       <th></th>
-      <th></th>
+      {% endif %}
     </tr>
     </tfoot>
     

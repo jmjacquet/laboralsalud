@@ -91,11 +91,13 @@
                 <td class="titulo">Médico Tratante:</td><td class="dato" colspan="7">{{a.aus_medico|default_if_none:''}}</td>
               </tr>
             {% endif %}
+            {% if 'aus_auditado' in permisos_grupo %}
             <tr>
               <td class="titulo">Auditado:</td><td id="auditado" class="dato">{% if a.auditado %}Sí{% else %}No{% endif %}</td>
               <td class="titulo">F. Auditado:</td><td id="fecha_auditado" class="dato">{{a.fecha_auditado|date:'d/m/Y H:i'}}</td>
               <td class="titulo">Auditado por:</td><td id="auditado_por" class="dato">{{a.auditado_por|default_if_none:''}}</td>
             </tr>
+            {% endif %}
             {% if info_sensible %}
             <tr>
               <td class="titulo">Grupo Patológico:</td><td colspan="3" class="dato">{{a.aus_grupop|default_if_none:''}}</td>
