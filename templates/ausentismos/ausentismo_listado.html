@@ -57,7 +57,11 @@
       
       <button class="btn btn-xs btn-primary" id="btnImprimirInforme" style="float:left;margin-right:10px;;margin-bottom:5px;" >Generar Informe</button>
       <button class="btn btn-xs btn-primary" id="btnInforme" style="float:left;margin-right:10px;margin-bottom:5px;" > Enviar Informe</button>
-      <button class="btn btn-xs btn-success" id="btnAuditado" style="float:left;margin-bottom:5px;" >Auditado</button>
+    </div>
+  {% endif %}
+  {% if 'aus_auditado' in permisos_grupo %}
+    <div class="btn-group " style="float:left;margin-right:20px;margin-bottom:0px;">
+      <button class="btn btn-xs btn-success" id="btnAuditado" style="float:left;margin-bottom:5px;" >Marca Auditado</button>
     </div>
   {% endif %}
   

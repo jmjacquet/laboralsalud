@@ -490,7 +490,7 @@ def ausentismo_eliminar(request, id):
 @login_required
 @require_POST
 def ausentismo_marcar_auditado(request):
-    if not tiene_permiso(request, "aus_abm"):
+    if not tiene_permiso(request, "aus_auditado"):
         return JsonResponse({"ok": False, "message": "Sin permisos."}, status=403)
     ids = [int(i) for i in request.POST.getlist("id") if i.isdigit()]
     seleccion = ausentismo.objects.filter(
